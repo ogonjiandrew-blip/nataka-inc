@@ -1,0 +1,205 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --teal: #0ABFBF;
+  --teal-light: #2DD4D4;
+  --teal-dark: #089090;
+  --ink: #080808;
+  --cream: #F0EDE6;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  background-color: #080808;
+  color: #F0EDE6;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Custom cursor — mouse only, not keyboard ── */
+@media (pointer: fine) {
+  body { cursor: none; }
+
+  .cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: #0ABFBF;
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 99999;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+  }
+
+  .cursor-ring {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(10, 191, 191, 0.35);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 99998;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+    background: transparent;
+  }
+
+  .cursor-ring.hover {
+    width: 48px;
+    height: 48px;
+    border-color: rgba(10, 191, 191, 0.7);
+    background: transparent;
+  }
+
+  /* Label floats below the cursor dot — separate element */
+  .cursor-label {
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 99997;
+    pointer-events: none;
+    transform: translate(-50%, 14px);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: rgba(10, 191, 191, 0.9);
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+  }
+}
+
+/* ── Skip to content — keyboard navigation ── */
+.skip-to-content {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 99999;
+  background: #0ABFBF;
+  color: #080808;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.5rem;
+  transition: top 0.2s;
+  text-decoration: none;
+}
+.skip-to-content:focus { top: 1rem; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #080808; }
+::-webkit-scrollbar-thumb { background: #0ABFBF; }
+
+/* ── Grain texture ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* ── Selection ── */
+::selection { background: #0ABFBF; color: #080808; }
+
+/* ── Teal gradient text ── */
+.text-teal-gradient {
+  background: linear-gradient(135deg, #0ABFBF 0%, #2DD4D4 50%, #089090 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── HR ── */
+.hr-teal {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #0ABFBF, transparent);
+  display: block;
+}
+
+/* ── Nataka logo font ── */
+.font-nataka {
+  font-family: "Helvetica Neue", "Helvetica", "Arial Black", Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+/* ── Blog / Article prose ── */
+.prose-nataka {
+  color: rgba(240, 237, 230, 0.75);
+  font-family: var(--font-dm-sans);
+  font-size: 1rem;
+  line-height: 1.85;
+}
+.prose-nataka p { margin-bottom: 1.6rem; }
+.prose-nataka h2 {
+  font-family: var(--font-geist-sans);
+  font-weight: 900;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.prose-nataka h3 {
+  font-family: var(--font-geist-sans);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #0ABFBF;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.prose-nataka ul, .prose-nataka ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.6rem;
+}
+.prose-nataka li { margin-bottom: 0.5rem; }
+.prose-nataka ul li { list-style-type: disc; }
+.prose-nataka ol li { list-style-type: decimal; }
+.prose-nataka a { color: #0ABFBF; text-decoration: underline; text-underline-offset: 3px; }
+.prose-nataka a:hover { color: #2DD4D4; }
+.prose-nataka strong { color: #fff; font-weight: 600; }
+.prose-nataka em { color: rgba(240,237,230,0.9); font-style: italic; }
+
+/* ── Sound toggle equalizer ── */
+@keyframes eq { from { height: 20%; } to { height: 100%; } }
+
+/* ── Keyboard focus rings — restores visibility killed by focus:outline-none ── */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #0ABFBF !important;
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #0ABFBF;
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
