@@ -64,16 +64,48 @@ const PROJECTS: Project[] = [
   { client: "NATAKA STUDIO", title: "EDITORIAL", tags: ["FASHION", "BOLD"], year: "2026", image: "/stills/fashion/7.jpg" },
   { client: "NATAKA STUDIO", title: "EDITORIAL", tags: ["FASHION", "STREET"], year: "2026", image: "/stills/fashion/3.jpg" },
   { client: "NATAKA STUDIO", title: "EDITORIAL", tags: ["FASHION", "CAMPAIGN"], year: "2026", image: "/stills/fashion/9.jpg" },
+  // ── Studio / Visual Stills ──
+  { client: "NATAKA STUDIO", title: "VISUAL STUDIO", tags: ["STUDIO", "STILL"], year: "2026", image: "/stills/ai/1/1.jpg" },
+  { client: "NATAKA STUDIO", title: "CONCEPT STILLS", tags: ["VISUAL", "CONCEPT"], year: "2026", image: "/stills/ai/1/2.jpg" },
+  { client: "NATAKA STUDIO", title: "STUDIO STILL", tags: ["PORTRAIT", "STUDIO"], year: "2026", image: "/stills/ai/1/3.jpg" },
+  { client: "NATAKA STUDIO", title: "CINEMATIC STILL", tags: ["CINEMATIC", "LIGHT"], year: "2026", image: "/stills/ai/1/4.jpg" },
+  { client: "NATAKA STUDIO", title: "VISUAL STUDIO", tags: ["STUDIO", "BOLD"], year: "2026", image: "/stills/ai/1/5.jpg" },
+  { client: "NATAKA STUDIO", title: "CONCEPT STILLS", tags: ["VISUAL", "STILL"], year: "2026", image: "/stills/ai/1/6.jpg" },
+  { client: "NATAKA STUDIO", title: "STUDIO STILL", tags: ["STUDIO", "STILL"], year: "2026", image: "/stills/ai/1/7.jpg" },
+  { client: "NATAKA STUDIO", title: "CINEMATIC STILL", tags: ["VISUAL", "CONCEPT"], year: "2026", image: "/stills/ai/1/8.jpg" },
+  { client: "NATAKA STUDIO", title: "VISUAL STUDIO", tags: ["PORTRAIT", "STUDIO"], year: "2026", image: "/stills/ai/1/9.jpg" },
+  { client: "NATAKA STUDIO", title: "CONCEPT STILLS", tags: ["CINEMATIC", "LIGHT"], year: "2026", image: "/stills/ai/1/10.jpg" },
+  { client: "NATAKA STUDIO", title: "STUDIO STILL", tags: ["STUDIO", "BOLD"], year: "2026", image: "/stills/ai/1/11.jpg" },
+  { client: "NATAKA STUDIO", title: "CINEMATIC STILL", tags: ["VISUAL", "STILL"], year: "2026", image: "/stills/ai/1/12.jpg" },
+  { client: "NATAKA STUDIO", title: "VISUAL STUDIO", tags: ["STUDIO", "STILL"], year: "2026", image: "/stills/ai/1/13.jpg" },
+  { client: "NATAKA STUDIO", title: "CONCEPT STILLS", tags: ["VISUAL", "CONCEPT"], year: "2026", image: "/stills/ai/1/14.jpg" },
+  { client: "NATAKA STUDIO", title: "STUDIO STILL", tags: ["PORTRAIT", "STUDIO"], year: "2026", image: "/stills/ai/1/15.jpg" },
+  { client: "NATAKA STUDIO", title: "CINEMATIC STILL", tags: ["CINEMATIC", "LIGHT"], year: "2026", image: "/stills/ai/1/16.jpg" },
+  { client: "NATAKA STUDIO", title: "VISUAL STUDIO", tags: ["STUDIO", "BOLD"], year: "2026", image: "/stills/ai/1/17.jpg" },
+  { client: "NATAKA STUDIO", title: "CONCEPT STILLS", tags: ["VISUAL", "STILL"], year: "2026", image: "/stills/ai/1/18.jpg" },
+  { client: "NATAKA STUDIO", title: "STUDIO STILL", tags: ["STUDIO", "STILL"], year: "2026", image: "/stills/ai/1/19.jpg" },
+  { client: "NATAKA STUDIO", title: "CINEMATIC STILL", tags: ["VISUAL", "CONCEPT"], year: "2026", image: "/stills/ai/1/20.jpg" },
+  { client: "NATAKA STUDIO", title: "VISUAL STUDIO", tags: ["PORTRAIT", "STUDIO"], year: "2026", image: "/stills/ai/1/21.jpg" },
+  { client: "NATAKA STUDIO", title: "CONCEPT STILLS", tags: ["CINEMATIC", "LIGHT"], year: "2026", image: "/stills/ai/1/22.jpg" },
+  { client: "NATAKA STUDIO", title: "STUDIO STILL", tags: ["STUDIO", "BOLD"], year: "2026", image: "/stills/ai/1/23.jpg" },
+  { client: "NATAKA STUDIO", title: "CINEMATIC STILL", tags: ["VISUAL", "STILL"], year: "2026", image: "/stills/ai/1/24.jpg" },
+  { client: "NATAKA STUDIO", title: "VISUAL STUDIO", tags: ["STUDIO", "STILL"], year: "2026", image: "/stills/ai/1/25.jpg" },
+  { client: "NATAKA STUDIO", title: "CONCEPT STILLS", tags: ["VISUAL", "CONCEPT"], year: "2026", image: "/stills/ai/1/26.jpg" },
+  { client: "NATAKA STUDIO", title: "STUDIO STILL", tags: ["PORTRAIT", "STUDIO"], year: "2026", image: "/stills/ai/1/27.jpg" },
+  { client: "NATAKA STUDIO", title: "CINEMATIC STILL", tags: ["CINEMATIC", "LIGHT"], year: "2026", image: "/stills/ai/1/28.jpg" },
+  { client: "NATAKA STUDIO", title: "VISUAL STUDIO", tags: ["STUDIO", "BOLD"], year: "2026", image: "/stills/ai/1/29.jpg" },
+  { client: "NATAKA STUDIO", title: "CONCEPT STILLS", tags: ["VISUAL", "STILL"], year: "2026", image: "/stills/ai/1/30.jpg" },
+  { client: "NATAKA STUDIO", title: "STUDIO STILL", tags: ["STUDIO", "STILL"], year: "2026", image: "/stills/ai/1/31.jpg" },
 ];
 
 /* Sphere layout */
 const RADIUS = 20;
 const ROWS = [
-  { phi: -0.72, count: 10 },
-  { phi: -0.36, count: 13 },
-  { phi: 0.0,  count: 14 },
-  { phi: 0.36, count: 13 },
-  { phi: 0.72, count: 10 },
+  { phi: -0.72, count: 12 },
+  { phi: -0.36, count: 15 },
+  { phi: 0.0,  count: 16 },
+  { phi: 0.36, count: 15 },
+  { phi: 0.72, count: 12 },
 ];
 
 const CARD_W = 5.2;
