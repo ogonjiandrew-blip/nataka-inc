@@ -1,6 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const SITE = "https://www.natakainc.com";
+
+const videos = [
+  { title: "Za Mabuda", cat: "Film · Direction", src: "/videos/za-mabuda.mp4", poster: "/videos/za-mabuda-poster.jpg", desc: "Vijana Barubaru ft. Scar Mkadinali — a cinematic period film directed by Andrew Ogonji.", date: "2026-02-01" },
+  { title: "Kwanini", cat: "Music Video · Direction", src: "/videos/kwanini-teaser.mp4", poster: "/videos/kwanini-teaser-poster.jpg", desc: "Ssaru x Fathermoh — the official music video, concept to final cut in Nairobi.", date: "2026-01-15" },
+  { title: "Save Her", cat: "Music Video", src: "/videos/save-her.mp4", poster: "/videos/save-her-poster.jpg", desc: "High-energy, cinematic music video production — bold visual storytelling.", date: "2026-01-20" },
+  { title: "Cool in School", cat: "Music Video", src: "/videos/cool-in-school.mp4", poster: "/videos/cool-in-school-poster.jpg", desc: "Vibrant, colour-rich music video — Nairobi energy on a vintage film palette.", date: "2026-02-10" },
+  { title: "Sarit — Your City", cat: "Brand · Commercial", src: "/videos/sarit.mp4", poster: "/videos/sarit-poster.jpg", desc: "Brand film for Sarit Centre — premium commercial production for a Nairobi landmark.", date: "2026-02-20" },
+  { title: "Open Auditions", cat: "Brand Film · Promo", src: "/videos/nataka-promo.mp4", poster: "/videos/nataka-promo-poster.jpg", desc: "A Nataka Inc promo — cinematic brand storytelling that captures who we are.", date: "2026-01-05" },
+];
+
+const videoSchema = {
+  "@context": "https://schema.org",
+  "@graph": videos.map((v) => ({
+    "@type": "VideoObject",
+    name: `${v.title} — Nataka Inc`,
+    description: v.desc,
+    thumbnailUrl: `${SITE}${v.poster}`,
+    uploadDate: v.date,
+    contentUrl: `${SITE}${v.src}`,
+    publisher: { "@type": "Organization", name: "Nataka Inc", url: SITE },
+  })),
+};
+
 const aiStills = Array.from({ length: 31 }, (_, i) => `/stills/ai/1/${i + 1}.jpg`);
 const filmStills = ["/stills/1/1.jpg", "/stills/1/2.jpg", "/stills/1/4.jpg", "/stills/1/5.jpg", "/stills/1/6.jpg", "/stills/1/7.jpg", "/stills/1/8.jpg", "/stills/1/27.jpg", "/stills/1/43.jpg", "/stills/1/46.jpg", "/stills/1/a.jpg", "/stills/1/b.jpg"];
 const musicStills = ["/stills/4/1.jpg", "/stills/4/2.jpg", "/stills/4/4.jpg", "/stills/4/5.jpg", "/stills/4/6.jpg", "/stills/4/7.jpg", "/stills/4/p1.jpg", "/stills/4/p2.jpg", "/stills/4/p4.jpg", "/stills/4/p5.jpg"];
@@ -20,6 +44,8 @@ const groups = [
 export default function GalleryGrid() {
   return (
     <div className="min-h-screen bg-ink text-cream px-6 md:px-12 pt-24 md:pt-28 pb-24">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
+
       <div className="max-w-7xl mx-auto">
         <Link href="/" className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-teal transition-colors">
           ← Nataka Inc
@@ -33,6 +59,33 @@ export default function GalleryGrid() {
           Selected film, music video, campaign and studio work by Nataka Inc — a media, marketing and
           creative production company in Nairobi, Kenya.
         </p>
+
+        {/* Videos */}
+        <section className="mb-16 md:mb-24">
+          <h2 className="font-geist font-black text-lg md:text-xl text-white uppercase mb-6">Films &amp; Music Videos</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {videos.map((v) => (
+              <figure key={v.src} className="group">
+                <div className="relative aspect-video overflow-hidden bg-ink-50 border border-white/8">
+                  <video
+                    controls
+                    preload="none"
+                    poster={v.poster}
+                    className="w-full h-full object-cover"
+                    aria-label={`${v.title} — ${v.cat} by Nataka Inc, Nairobi Kenya`}
+                  >
+                    <source src={v.src} type="video/mp4" />
+                  </video>
+                </div>
+                <figcaption className="mt-3">
+                  <span className="font-sans text-[10px] text-teal tracking-widest uppercase block mb-1">{v.cat}</span>
+                  <h3 className="font-geist font-black text-base text-white uppercase leading-tight">{v.title}</h3>
+                  <p className="font-sans text-cream/55 text-sm leading-relaxed mt-1">{v.desc}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
 
         {groups.map((g) => (
           <section key={g.heading} className="mb-14 md:mb-20">
