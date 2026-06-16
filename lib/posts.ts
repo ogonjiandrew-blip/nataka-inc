@@ -11,6 +11,102 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "how-to-make-a-music-video-in-kenya",
+    title: "How to Make a Music Video in Kenya: The Complete 2026 Guide",
+    excerpt:
+      "From budget planning and location scouting in Nairobi to working with a director — everything Kenyan artists need to know before shooting their first music video.",
+    category: "Production",
+    date: "2026-06-16",
+    readTime: "8 min read",
+    coverImage: "/stills/ssaru/1.jpg",
+    content: `
+<p>Kenya's music scene has never been louder. Afro-fusion, gengetone, drill, amapiano — Kenyan artists are competing globally, and the music video has become the single most powerful tool for breaking through. A great video turns a streamed song into a shared moment. A weak one can bury a great track before it gets a chance.</p>
+
+<p>If you're an artist preparing to shoot your first music video — or your fifth but wondering why your previous ones didn't connect — this guide covers everything from budget to brief to the day you walk on set.</p>
+
+<h2>Step 1: Know What the Video Needs to Do</h2>
+
+<p>Before you hire anyone or scout a single location, answer this question: what do you need this video to do for your career right now?</p>
+
+<p>A music video that's designed to go viral on TikTok is a different video from one designed to get you booked at corporate events. A video that positions you as a serious artiste ready for Coke Studio is different from one that keeps you authentic to a gengetone fanbase in Kayole.</p>
+
+<p>This isn't a creative question — it's a strategy question. The visual world, the locations, the colour palette, the energy of the edit — all of these serve the goal. Get the goal clear first, and everything else becomes easier to decide.</p>
+
+<h2>Step 2: Budget Realistically for Kenyan Music Video Production</h2>
+
+<p>Music video costs in Kenya vary widely depending on the level of production. Here's an honest breakdown of what to expect in 2026:</p>
+
+<ul>
+  <li><strong>Entry-level (Ksh 50,000 – 150,000):</strong> One-day shoot, minimal crew, smartphone or basic DSLR, limited locations. Suitable for viral social content rather than an official release.</li>
+  <li><strong>Mid-range (Ksh 200,000 – 600,000):</strong> Professional camera, lighting package, dedicated director, 1–2 days of shooting, 2–4 locations. This is where most serious independent artists in Nairobi should be working.</li>
+  <li><strong>Premium (Ksh 700,000+):</strong> Cinematic production — full crew, multiple shoot days, wardrobe, hair and makeup, choreography, colour grade. Standard for label-backed projects and artists with significant streaming numbers.</li>
+</ul>
+
+<p>The biggest mistake artists make: underbudgeting and then overspending on the day. Fix a budget before you fix a concept. Spend the largest share of it on crew and camera — those are the things the audience actually sees.</p>
+
+<h2>Step 3: Choose the Right Director, Not Just a Cheap Shoot</h2>
+
+<p>The music video director is your most important hire. They will determine not just how the video looks, but whether it makes the listener feel something. Ask to see a full portfolio — not a highlight reel, but full videos — and pay attention to two things:</p>
+
+<ol>
+  <li><strong>Does their visual language match your music?</strong> A director who excels at quiet, cinematic narrative may not be right for a high-energy afrobeats track. Find someone whose style has overlap with your genre and your energy.</li>
+  <li><strong>Can they direct performance?</strong> Many videographers in Kenya are technically competent but weak on directing artists. Watch how the artists in their videos carry themselves. Stiff, awkward performance in front of the camera is almost always a directing problem, not an artist problem.</li>
+</ol>
+
+<p>A good director will challenge your brief, bring ideas you haven't thought of, and protect the integrity of the concept on the day. That's worth paying for.</p>
+
+<h2>Step 4: Location Scouting in Nairobi — Where to Shoot</h2>
+
+<p>Nairobi is one of the most visually rich cities in Africa. The city offers everything from gritty urban texture to clean minimalist architecture to open green landscapes — within 30 minutes of each other.</p>
+
+<p>Some of the locations Nairobi-based productions return to again and again:</p>
+
+<ul>
+  <li><strong>Industrial areas (Baba Dogo, Mombasa Road corridor):</strong> Raw, textured, photogenic without trying to be. Works for dark, edgy aesthetics.</li>
+  <li><strong>Westlands rooftops and architecture:</strong> Clean lines, city skyline, modern energy. Works for afropop, Afro-R&amp;B, and aspirational brand imagery.</li>
+  <li><strong>Ngong Hills and Karura Forest:</strong> Open sky, green depth, natural light. Works for emotional, stripped-back visual direction.</li>
+  <li><strong>Studio spaces:</strong> Full control of light and background. Essential for high-fashion looks or conceptual colour-driven videos.</li>
+</ul>
+
+<p>One location explored fully beats five locations rushed through. Give your key locations at least 2–3 hours, and schedule your most important exterior setups during golden hour — 30 to 45 minutes before sunset in Nairobi gives you warm, directional light that no artificial rig on a mid-range budget can replicate.</p>
+
+<h2>Step 5: Prepare Your Artist for Camera</h2>
+
+<p>The single most underrated element of a great music video is performance. Technical excellence means nothing if the artist looks uncomfortable or disconnected from the song on screen.</p>
+
+<p>Preparation before the shoot matters enormously:</p>
+
+<ul>
+  <li>Know the lyrics cold. Lip-syncing while thinking about words is visible.</li>
+  <li>Practice performing to the track without looking at yourself. Self-consciousness kills natural movement.</li>
+  <li>If choreography is involved, rehearse in the actual costumes you'll wear on the day — shoes especially change how you move.</li>
+  <li>Talk through the creative intention with your director before the shoot, not on it. You want to be executing on the day, not still figuring out what the video is trying to say.</li>
+</ul>
+
+<h2>Step 6: Wardrobe, Grooming, and Art Direction</h2>
+
+<p>In music video production, what you wear is part of the visual story. Strong art direction — wardrobe, hair, makeup, and set design — is the difference between a music video that looks like a music video and one that looks like a cinematic statement.</p>
+
+<p>Plan wardrobe for each location separately. What works against an industrial concrete wall will be invisible in a green outdoor space. Consider colour in relation to the palette your director is grading toward — a red fit in a warm orange grade disappears; the same fit in a cooler, teal-shifted grade becomes the most powerful element in the frame.</p>
+
+<h2>Step 7: Post-Production — Editing and Colour Grade</h2>
+
+<p>The edit is where the music video actually comes to life. Everything shot on the day is raw material; the editor is the one who finds the rhythm, cuts to the energy of the track, and builds the emotional arc of the video.</p>
+
+<p>In Kenya, post-production is often the most rushed phase of a production — and the most regretted. Budget time for at least two rounds of edit revisions. The first cut is a draft; the second cut is a music video.</p>
+
+<p>Colour grading gives the video its final look — the mood, the tone, the cinematic texture that makes it feel intentional rather than raw. Push the grade to 100% of what you think it should be, then pull back to 70%. That's almost always where the grade should live: present enough to feel, subtle enough to not announce itself.</p>
+
+<h2>Work with a Production Team That Understands Kenyan Music</h2>
+
+<p>The best music video productions in Kenya are collaborations — between artist and director, between creative vision and technical execution. If you're looking for a production partner who has shot for Ssaru, Fathermoh, Mulamwah, and some of East Africa's most recognised brands, <a href="/#contact">we'd love to hear what you're working on</a>.</p>
+
+<p>At Nataka Inc, we don't just shoot music videos. We build visual worlds for artists who take their craft seriously — and we bring the same intentionality to a debut single as we do to a major label release.</p>
+
+<p>Tell us about your track. <a href="/#contact">Get in touch here.</a></p>
+    `,
+  },
+  {
     slug: "filmmaking-techniques-better-videos",
     title: "Filmmaking Techniques That Will Instantly Improve Your Videos — From a Nairobi Production Company",
     excerpt:
