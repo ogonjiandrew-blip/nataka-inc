@@ -21,11 +21,11 @@ const PROJECT_TYPES = [
 ];
 
 const BUDGETS = [
-  "Under 50K",
-  "50K – 150K",
-  "150K – 500K",
+  "150K – 300K",
+  "300K – 500K",
   "500K – 1M",
-  "1M+",
+  "1M – 2M",
+  "2M+",
   "Not sure yet",
 ];
 

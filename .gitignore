@@ -2,7 +2,6 @@
 node_modules/
 
 # Videos — too large for GitHub (host on Cloudinary/Vimeo instead)
-public/videos/
 _raw-videos/
 
 # Next.js build output
