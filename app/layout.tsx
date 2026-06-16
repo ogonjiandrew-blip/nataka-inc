@@ -164,6 +164,69 @@ export default function RootLayout({
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        {/* Organisation + LocalBusiness schema — tells Google exactly who Nataka is */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": ["LocalBusiness", "ProfessionalService"],
+              "@id": "https://www.natakainc.com/#organization",
+              name: "Nataka Inc",
+              alternateName: "Nataka.inc",
+              description:
+                "Nairobi-based video production and creative agency specialising in music videos, brand films, commercial production, and digital marketing for artists and brands across East Africa.",
+              url: "https://www.natakainc.com",
+              telephone: "+254725107294",
+              email: "natakainc@gmail.com",
+              foundingDate: "2020",
+              areaServed: [
+                { "@type": "City", name: "Nairobi" },
+                { "@type": "Country", name: "Kenya" },
+                { "@type": "Place", name: "East Africa" },
+              ],
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Nairobi",
+                addressCountry: "KE",
+              },
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: -1.2921,
+                longitude: 36.8219,
+              },
+              openingHoursSpecification: [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                  opens: "08:00",
+                  closes: "20:00",
+                },
+              ],
+              hasOfferCatalog: {
+                "@type": "OfferCatalog",
+                name: "Video Production & Creative Services",
+                itemListElement: [
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Music Video Production", url: "https://www.natakainc.com/services/music-video-production-nairobi" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Video Production", url: "https://www.natakainc.com/services/video-production-nairobi" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Brand Strategy", url: "https://www.natakainc.com/services/brand-strategy-kenya" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Digital Marketing", url: "https://www.natakainc.com/services/digital-marketing-nairobi" } },
+                ],
+              },
+              sameAs: [
+                "https://www.instagram.com/natakainc",
+                "https://www.tiktok.com/@natakainc",
+              ],
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "32",
+                bestRating: "5",
+              },
+            }),
+          }}
+        />
       </head>
       <body>
         <Preloader />
