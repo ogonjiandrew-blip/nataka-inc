@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://www.nataka.inc/sitemap.xml",
-    host: "https://www.nataka.inc",
+    sitemap: "https://www.natakainc.com/sitemap.xml",
+    host: "https://www.natakainc.com",
   };
 }
