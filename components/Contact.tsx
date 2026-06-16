@@ -9,26 +9,9 @@ const socialLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/128374044" },
 ];
 
-const INDUSTRIES = [
-  "Automotive", "Retail", "Fashion", "Real Estate", "Food & Beverage", "Events",
-  "Music", "Corporate", "Tech", "Hospitality", "Education", "Other",
-];
-
 const PROJECT_TYPES = [
   "Music Video", "Brand Film / Commercial", "Corporate Video", "Event Coverage",
-  "Brand Strategy", "Digital Marketing", "PR & Communications", "Something Else",
-];
-
-const MAIN_GOALS = [
-  "More inquiries", "More sales", "More foot traffic", "More followers",
-  "Better brand trust", "Product launch awareness", "Event attendance",
-  "Investor/corporate credibility", "Stronger social media presence", "Other",
-];
-
-const DELIVERABLES = [
-  "Hero video", "Short-form videos", "Photography", "Social media campaign",
-  "Music video", "Event coverage", "Brand strategy", "Influencer/creator distribution",
-  "Not sure yet",
+  "Social Content", "Brand Strategy", "Something Else",
 ];
 
 const BUDGETS = [
@@ -42,12 +25,10 @@ const EMAIL = "niajekoki@gmail.com";
 
 type FormState = {
   name: string; company: string; phone: string; email: string;
-  industry: string; projectType: string; mainGoal: string;
-  deliverables: string[]; budget: string; timeline: string; message: string;
+  projectType: string; budget: string; timeline: string; message: string;
 };
 
 function buildBrief(form: FormState) {
-  const deliv = form.deliverables.length ? form.deliverables.join(", ") : "Not specified";
   return [
     "New Nataka Project Brief",
     "",
@@ -55,10 +36,7 @@ function buildBrief(form: FormState) {
     `Company/Brand: ${form.company || "—"}`,
     `Phone/WhatsApp: ${form.phone || "—"}`,
     `Email: ${form.email || "—"}`,
-    `Industry: ${form.industry || "—"}`,
     `Project Type: ${form.projectType || "—"}`,
-    `Main Business Goal: ${form.mainGoal || "—"}`,
-    `Preferred Deliverables: ${deliv}`,
     `Budget Range: ${form.budget || "—"}`,
     `Timeline: ${form.timeline || "—"}`,
     "",
@@ -72,8 +50,7 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormState>({
     name: "", company: "", phone: "", email: "",
-    industry: "", projectType: "", mainGoal: "",
-    deliverables: [], budget: "", timeline: "", message: "",
+    projectType: "", budget: "", timeline: "", message: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -81,13 +58,6 @@ export default function Contact() {
   };
   const setField = (key: keyof FormState, v: string) =>
     setForm((f) => ({ ...f, [key]: f[key] === v ? "" : v }));
-  const toggleDeliverable = (v: string) =>
-    setForm((f) => ({
-      ...f,
-      deliverables: f.deliverables.includes(v)
-        ? f.deliverables.filter((x) => x !== v)
-        : [...f.deliverables, v],
-    }));
 
   const brief = buildBrief(form);
   const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(brief)}`;
@@ -135,8 +105,8 @@ export default function Contact() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="hidden sm:block font-sans text-cream/75 text-sm leading-relaxed mb-8 md:mb-12 max-w-sm"
             >
-              Tell us about your project — your brief lands directly on our phone
-              and we reply within 24 hours. No forms disappearing into the void.
+              Tell us the basics — your brief lands straight on our phone and we reply
+              within 24 hours. We&apos;ll work out the details together.
             </motion.p>
 
             <motion.div
@@ -184,7 +154,7 @@ export default function Contact() {
             </motion.div>
           </div>
 
-          {/* Right — qualified brief form */}
+          {/* Right — short brief form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -201,7 +171,7 @@ export default function Contact() {
                   <span className="text-teal text-5xl mb-6">◈</span>
                   <h3 className="font-geist font-black text-3xl text-white uppercase mb-3">Brief Ready</h3>
                   <p className="font-sans text-cream/70 text-sm max-w-xs mb-8">
-                    WhatsApp should have opened with your full brief — just press send.
+                    WhatsApp should have opened with your brief — just press send.
                     We reply within 24 hours.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3">
@@ -219,17 +189,14 @@ export default function Contact() {
                 <motion.form key="form" onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <FormField label="Full Name" name="name" type="text" value={form.name} onChange={handleChange} required />
-                    <FormField label="Email Address" name="email" type="email" value={form.email} onChange={handleChange} />
+                    <FormField label="Phone / WhatsApp" name="phone" type="tel" value={form.phone} onChange={handleChange} />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <FormField label="Phone / WhatsApp" name="phone" type="tel" value={form.phone} onChange={handleChange} />
+                    <FormField label="Email Address" name="email" type="email" value={form.email} onChange={handleChange} />
                     <FormField label="Company / Artist Name" name="company" type="text" value={form.company} onChange={handleChange} />
                   </div>
 
-                  <ChipGroup label="Industry" options={INDUSTRIES} value={form.industry} onSelect={(v) => setField("industry", v)} />
                   <ChipGroup label="What are we making?" options={PROJECT_TYPES} value={form.projectType} onSelect={(v) => setField("projectType", v)} />
-                  <ChipGroup label="Main business goal" options={MAIN_GOALS} value={form.mainGoal} onSelect={(v) => setField("mainGoal", v)} />
-                  <MultiChipGroup label="Preferred deliverables" hint="(select all that apply)" options={DELIVERABLES} selected={form.deliverables} onToggle={toggleDeliverable} />
                   <ChipGroup label="Budget range (KES)" options={BUDGETS} value={form.budget} onSelect={(v) => setField("budget", v)} />
                   <ChipGroup label="When do you need it?" options={TIMELINES} value={form.timeline} onSelect={(v) => setField("timeline", v)} />
 
@@ -283,28 +250,6 @@ function ChipGroup({ label, options, value, onSelect }: {
           <button key={opt} type="button" onClick={() => onSelect(opt)}
             className={`font-sans text-xs px-4 py-2.5 border transition-colors duration-200 ${
               value === opt ? "bg-teal text-ink border-teal font-semibold" : "text-white/70 border-white/15 hover:border-teal/60 hover:text-white"
-            }`}>
-            {opt}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MultiChipGroup({ label, hint, options, selected, onToggle }: {
-  label: string; hint?: string; options: string[]; selected: string[]; onToggle: (v: string) => void;
-}) {
-  return (
-    <div>
-      <label className="block font-sans text-[10px] text-teal tracking-widest uppercase mb-3 font-medium">
-        {label}{hint && <span className="text-white/30 normal-case tracking-normal font-normal"> {hint}</span>}
-      </label>
-      <div className="flex flex-wrap gap-2">
-        {options.map((opt) => (
-          <button key={opt} type="button" onClick={() => onToggle(opt)}
-            className={`font-sans text-xs px-4 py-2.5 border transition-colors duration-200 ${
-              selected.includes(opt) ? "bg-teal text-ink border-teal font-semibold" : "text-white/70 border-white/15 hover:border-teal/60 hover:text-white"
             }`}>
             {opt}
           </button>
