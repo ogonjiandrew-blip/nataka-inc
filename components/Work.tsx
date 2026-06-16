@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import LetterReveal from "@/components/LetterReveal";
 import { setCursorLabel, clearCursorLabel } from "@/hooks/useCursorLabel";
 
@@ -57,6 +58,7 @@ type Project = {
   aspect: string;
   sizes: string;
   metric?: string;
+  href?: string;
 };
 
 // TODO: Replace metric strings with real performance numbers from your analytics
@@ -69,7 +71,6 @@ const projects: Project[] = [
     description: "Cinematic campaign film — bold, purposeful, made in Nairobi.",
     alt: "Cinematic film production still by Nataka Inc — video production company Nairobi Kenya",
     image: "/stills/1/1.jpg",
-    metric: "15M+ combined reach",
     span: "md:col-span-2",
     aspect: "aspect-[16/9]",
     sizes: "(max-width: 768px) 100vw, 66vw",
@@ -83,7 +84,8 @@ const projects: Project[] = [
     alt: "Music video production by Nataka Inc — media company Kenya",
     image: "/stills/4/p5.jpg",
     gallery: musicVideoGallery,
-    metric: "Kwanini · 500K+ streams first month",
+    metric: "Ssaru x Fathermoh · official video",
+    href: "/work/ssaru-fathermoh-kwanini",
     span: "md:col-span-1",
     aspect: "aspect-[4/5]",
     sizes: "(max-width: 768px) 100vw, 33vw",
@@ -96,7 +98,6 @@ const projects: Project[] = [
     description: "Visual campaign for Kenya's rising music artist — raw, vibrant, undeniable.",
     alt: "Ssaru artist campaign by Nataka Inc — PR and music marketing agency Kenya",
     image: "/stills/ssaru/2.jpg",
-    metric: "2M+ views · sold-out shows",
     span: "md:col-span-1",
     aspect: "aspect-[16/9]",
     sizes: "(max-width: 768px) 100vw, 33vw",
@@ -109,7 +110,6 @@ const projects: Project[] = [
     description: "Studio portrait and editorial photography — intimate, powerful, studio-grade.",
     alt: "Studio photography by Nataka Inc — creative production company Nairobi",
     image: "/stills/ai/studio.png",
-    metric: "Editorial · commissioned by 3 labels",
     span: "md:col-span-1",
     aspect: "aspect-[4/5]",
     sizes: "(max-width: 768px) 100vw, 33vw",
@@ -123,7 +123,6 @@ const projects: Project[] = [
     alt: "Fashion editorial photography by Nataka Inc — creative agency Kenya",
     image: "/stills/fashion/6.jpg",
     gallery: fashionGallery,
-    metric: "8 looks · 4 media placements",
     span: "md:col-span-1",
     aspect: "aspect-[4/5]",
     sizes: "(max-width: 768px) 100vw, 33vw",
@@ -137,7 +136,6 @@ const projects: Project[] = [
     alt: "Film production stills by Nataka Inc — production company Kenya",
     image: "/stills/1/1.jpg",
     gallery: filmGallery,
-    metric: "3 award nominations",
     span: "md:col-span-3",
     aspect: "aspect-[21/9]",
     sizes: "(max-width: 768px) 100vw, 1280px",
@@ -217,10 +215,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.65, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
       className={`relative overflow-hidden group cursor-default ${project.span}`}
-      onMouseEnter={() => { setHovered(true);  setCursorLabel("VIEW"); }}
+      onMouseEnter={() => { setHovered(true); if (project.href) setCursorLabel("VIEW"); }}
       onMouseLeave={() => { setHovered(false); clearCursorLabel(); }}
     >
       <div className={`relative ${project.aspect} overflow-hidden bg-ink-50`}>
+
+        {project.href && (
+          <Link href={project.href} aria-label={`View ${project.title} case study`} className="absolute inset-0 z-30" />
+        )}
 
         {/* All frames stay in DOM — opacity crossfade + per-frame Ken-Burns drift */}
         {gallery.map((src, i) => (
@@ -301,6 +303,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 {project.metric}
               </p>
             )}
+            {project.href && (
+              <span className="inline-block font-sans text-white/85 text-[10px] tracking-widest uppercase border-b border-white/40 pb-0.5 mb-2">
+                View Case Study →
+              </span>
+            )}
             <motion.p
               animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 8 }}
               transition={{ duration: 0.3 }}
@@ -333,6 +340,10 @@ function MobileProjectCard({ project, index }: { project: Project; index: number
       className="relative overflow-hidden"
     >
       <div className={`relative ${aspect} overflow-hidden bg-ink`}>
+
+        {project.href && (
+          <Link href={project.href} aria-label={`View ${project.title} case study`} className="absolute inset-0 z-30" />
+        )}
         <Image
           src={project.image}
           alt={project.alt}
