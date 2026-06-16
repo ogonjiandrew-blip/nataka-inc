@@ -2,9 +2,14 @@
 
 const services = [
   { label: "Video Production", href: "/services/video-production-nairobi" },
+  { label: "Corporate Video", href: "/services/corporate-video-production-kenya" },
   { label: "Music Videos", href: "/services/music-video-production-nairobi" },
   { label: "Brand Strategy", href: "/services/brand-strategy-kenya" },
+  { label: "Social Media Marketing", href: "/services/social-media-marketing-kenya" },
   { label: "Digital Marketing", href: "/services/digital-marketing-nairobi" },
+  { label: "Event Video", href: "/services/event-video-production-kenya" },
+  { label: "Automotive Marketing", href: "/services/automotive-marketing-kenya" },
+  { label: "All Services →", href: "/services" },
 ];
 
 const company = [

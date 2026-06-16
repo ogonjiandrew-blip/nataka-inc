@@ -93,6 +93,21 @@ export default function Services() {
             isOpen={openIndex === i} onToggle={() => setOpenIndex(openIndex === i ? null : i)} inView={inView} />
         ))}
       </div>
+
+      {/* View all services */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        className="mt-14 md:mt-20"
+      >
+        <a
+          href="/services"
+          className="inline-flex items-center justify-center gap-2 font-geist font-black text-xs text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors duration-300"
+        >
+          View All Services →
+        </a>
+      </motion.div>
     </section>
   );
 }
