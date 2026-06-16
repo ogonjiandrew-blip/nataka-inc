@@ -77,7 +77,7 @@ export default function Navbar() {
             {/* Fill sweep on hover */}
             <span className="absolute inset-0 bg-teal translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             <span className="relative z-10 group-hover:text-ink transition-colors duration-300">
-              Book a Call
+              Start a Project
             </span>
           </a>
         </nav>
@@ -125,7 +125,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
               className="mt-2 px-10 py-3 border border-teal text-teal text-sm tracking-widest uppercase font-sans font-medium"
             >
-              Book a Call
+              Start a Project
             </motion.a>
             <motion.div
               initial={{ opacity: 0 }}
