@@ -21,12 +21,23 @@ const PROJECT_TYPES = [
 ];
 
 const BUDGETS = [
-  "Under 100K",
-  "100K – 300K",
-  "300K – 500K",
+  "Under 50K",
+  "50K – 150K",
+  "150K – 500K",
   "500K – 1M",
   "1M+",
   "Not sure yet",
+];
+
+const MAIN_GOALS = [
+  "Get more customers",
+  "Launch a product",
+  "Build brand awareness",
+  "Promote an event",
+  "Create social media content",
+  "Build trust",
+  "Sell a high-ticket product",
+  "Other",
 ];
 
 const TIMELINES = ["ASAP", "Within a month", "1–3 months", "Flexible"];
@@ -36,7 +47,7 @@ const EMAIL = "niajekoki@gmail.com";
 
 function buildBrief(form: {
   name: string; email: string; company: string;
-  projectType: string; budget: string; timeline: string; message: string;
+  projectType: string; mainGoal: string; budget: string; timeline: string; message: string;
 }) {
   return [
     "PROJECT BRIEF — via natakainc.com",
@@ -44,6 +55,7 @@ function buildBrief(form: {
     `Name: ${form.name}`,
     form.company ? `Company/Artist: ${form.company}` : null,
     `Project: ${form.projectType || "Not specified"}`,
+    `Main goal: ${form.mainGoal || "Not specified"}`,
     `Budget (KES): ${form.budget || "Not specified"}`,
     `Timeline: ${form.timeline || "Not specified"}`,
     "",
@@ -61,7 +73,7 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     name: "", email: "", company: "",
-    projectType: "", budget: "", timeline: "", message: "",
+    projectType: "", mainGoal: "", budget: "", timeline: "", message: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -224,6 +236,14 @@ export default function Contact() {
                     options={PROJECT_TYPES}
                     value={form.projectType}
                     onSelect={(v) => setForm((f) => ({ ...f, projectType: v }))}
+                  />
+
+                  {/* Main goal chips */}
+                  <ChipGroup
+                    label="What's the main goal?"
+                    options={MAIN_GOALS}
+                    value={form.mainGoal}
+                    onSelect={(v) => setForm((f) => ({ ...f, mainGoal: v }))}
                   />
 
                   {/* Budget chips */}

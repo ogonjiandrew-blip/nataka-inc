@@ -7,9 +7,12 @@ import MagneticButton from "@/components/MagneticButton";
 import LetterReveal from "@/components/LetterReveal";
 
 function useCountUp(target: number, trigger: boolean, duration = 1800) {
-  const [val, setVal] = useState(0);
+  // Seed with the real target so SSR, no-JS, crawlers and the pre-animation
+  // frame all show the correct number — never a frozen "0+".
+  const [val, setVal] = useState(target);
   useEffect(() => {
     if (!trigger) return;
+    setVal(0);
     const start = performance.now();
     const tick = (now: number) => {
       const p    = Math.min((now - start) / duration, 1);

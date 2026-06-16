@@ -34,16 +34,6 @@ export default function Home() {
         <Testimonials />
         <FAQ />
 
-        {/* Hidden SEO block — visible to crawlers, invisible to visitors */}
-        <section aria-hidden className="sr-only">
-          <h2>Media and Marketing Agency in Nairobi, Kenya — Nataka Inc</h2>
-          <p>Nataka Inc is a leading media and marketing company based in Nairobi, Kenya. Full-service creative and production agency — brand strategy, digital marketing, video production, photography, motion graphics, public relations, influencer marketing, and campaign management.</p>
-          <h3>Video Production Company in Kenya</h3>
-          <p>As one of Kenya's top video production companies, Nataka Inc produces high-quality corporate videos, campaign films, TV commercials, music videos, and social media content for brands in Nairobi and across East Africa.</p>
-          <h3>Contact Nataka Inc — Marketing Agency Nairobi</h3>
-          <p>Email: niajekoki@gmail.com. Phone: +254 725 107 294. Nairobi, Kenya.</p>
-        </section>
-
         <Contact />
         <Footer />
       </main>
