@@ -2,41 +2,46 @@ import Link from "next/link";
 
 const packages = [
   {
-    name: "Launch Campaign",
-    who: "Brands launching a product, store, service, event or campaign.",
+    name: "Launch Campaign Package",
+    who: "Brands launching a product, store, service, event or new campaign.",
     range: "KES 500K – 2M+",
     includes: ["Campaign concept", "Hero video", "Short-form cutdowns", "Photo assets", "Distribution plan", "Optional influencer push"],
+    cta: "Plan My Launch",
   },
   {
     name: "Social Content Engine",
     who: "Brands that need consistent, high-quality monthly content.",
     range: "KES 150K – 700K / month",
     includes: ["Monthly shoot day", "8–20 short videos", "Captions & content direction", "Content calendar", "Performance review"],
+    cta: "Build My Content Engine",
   },
   {
     name: "Premium Brand Film",
     who: "Companies that need credibility, trust and a polished public image.",
     range: "KES 300K – 1.5M+",
     includes: ["Concept development", "Cinematic production", "Interviews / story structure", "Brand messaging", "Master film + cutdowns"],
+    cta: "Create My Brand Film",
   },
   {
     name: "Music Video / Artist Campaign",
     who: "Artists who need high-quality visuals and rollout content.",
     range: "KES 150K – 1M+",
-    includes: ["Concept & direction", "Production", "Music video", "Teaser edits", "Social rollout assets"],
+    includes: ["Concept & direction", "Shoot", "Music video", "Teaser edits", "Social rollout assets"],
+    cta: "Plan My Music Video",
   },
   {
     name: "Event Content Package",
     who: "Events that need promotion before, during and after.",
     range: "KES 100K – 700K+",
     includes: ["Promo video", "Event coverage", "Highlight film", "Sponsor clips", "Social recap edits"],
+    cta: "Promote My Event",
   },
 ];
 
 export default function Packages() {
   return (
     <section id="packages" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-      <p className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium mb-5">How We Work</p>
+      <p className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium mb-5">Nataka Packages</p>
       <h2 className="leading-none mb-5">
         <span className="font-geist font-black text-[clamp(1.8rem,6vw,5rem)] text-white uppercase block">Ways To</span>
         <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,5rem)] text-teal block">Work With Us.</span>
@@ -62,7 +67,7 @@ export default function Packages() {
               ))}
             </ul>
             <Link href="/#contact" className="inline-block font-geist font-black text-xs text-teal border border-teal/40 px-6 py-3.5 uppercase tracking-widest hover:bg-teal hover:text-ink transition-colors duration-200 self-start">
-              Request a Proposal →
+              {p.cta} →
             </Link>
           </div>
         ))}

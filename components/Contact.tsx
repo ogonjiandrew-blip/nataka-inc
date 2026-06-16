@@ -9,35 +9,30 @@ const socialLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/128374044" },
 ];
 
-const PROJECT_TYPES = [
-  "Music Video",
-  "Brand Film / Commercial",
-  "Corporate Video",
-  "Event Coverage",
-  "Brand Strategy",
-  "Digital Marketing",
-  "PR & Communications",
-  "Something Else",
+const INDUSTRIES = [
+  "Automotive", "Retail", "Fashion", "Real Estate", "Food & Beverage", "Events",
+  "Music", "Corporate", "Tech", "Hospitality", "Education", "Other",
 ];
 
-const BUDGETS = [
-  "150K – 300K",
-  "300K – 500K",
-  "500K – 1M",
-  "1M – 2M",
-  "2M+",
-  "Not sure yet",
+const PROJECT_TYPES = [
+  "Music Video", "Brand Film / Commercial", "Corporate Video", "Event Coverage",
+  "Brand Strategy", "Digital Marketing", "PR & Communications", "Something Else",
 ];
 
 const MAIN_GOALS = [
-  "Get more customers",
-  "Launch a product",
-  "Build brand awareness",
-  "Promote an event",
-  "Create social media content",
-  "Build trust",
-  "Sell a high-ticket product",
-  "Other",
+  "More inquiries", "More sales", "More foot traffic", "More followers",
+  "Better brand trust", "Product launch awareness", "Event attendance",
+  "Investor/corporate credibility", "Stronger social media presence", "Other",
+];
+
+const DELIVERABLES = [
+  "Hero video", "Short-form videos", "Photography", "Social media campaign",
+  "Music video", "Event coverage", "Brand strategy", "Influencer/creator distribution",
+  "Not sure yet",
+];
+
+const BUDGETS = [
+  "150K – 300K", "300K – 500K", "500K – 1M", "1M – 2M", "2M+", "Not sure yet",
 ];
 
 const TIMELINES = ["ASAP", "Within a month", "1–3 months", "Flexible"];
@@ -45,40 +40,54 @@ const TIMELINES = ["ASAP", "Within a month", "1–3 months", "Flexible"];
 const WHATSAPP_NUMBER = "254725107294";
 const EMAIL = "niajekoki@gmail.com";
 
-function buildBrief(form: {
-  name: string; email: string; company: string;
-  projectType: string; mainGoal: string; budget: string; timeline: string; message: string;
-}) {
+type FormState = {
+  name: string; company: string; phone: string; email: string;
+  industry: string; projectType: string; mainGoal: string;
+  deliverables: string[]; budget: string; timeline: string; message: string;
+};
+
+function buildBrief(form: FormState) {
+  const deliv = form.deliverables.length ? form.deliverables.join(", ") : "Not specified";
   return [
-    "PROJECT BRIEF — via natakainc.com",
+    "New Nataka Project Brief",
     "",
-    `Name: ${form.name}`,
-    form.company ? `Company/Artist: ${form.company}` : null,
-    `Project: ${form.projectType || "Not specified"}`,
-    `Main goal: ${form.mainGoal || "Not specified"}`,
-    `Budget (KES): ${form.budget || "Not specified"}`,
-    `Timeline: ${form.timeline || "Not specified"}`,
+    `Name: ${form.name || "—"}`,
+    `Company/Brand: ${form.company || "—"}`,
+    `Phone/WhatsApp: ${form.phone || "—"}`,
+    `Email: ${form.email || "—"}`,
+    `Industry: ${form.industry || "—"}`,
+    `Project Type: ${form.projectType || "—"}`,
+    `Main Business Goal: ${form.mainGoal || "—"}`,
+    `Preferred Deliverables: ${deliv}`,
+    `Budget Range: ${form.budget || "—"}`,
+    `Timeline: ${form.timeline || "—"}`,
     "",
-    `Details: ${form.message}`,
-    "",
-    form.email ? `Reply to: ${form.email}` : null,
-  ]
-    .filter((l) => l !== null)
-    .join("\n");
+    `Project Description: ${form.message || "—"}`,
+  ].join("\n");
 }
 
 export default function Contact() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({
-    name: "", email: "", company: "",
-    projectType: "", mainGoal: "", budget: "", timeline: "", message: "",
+  const [form, setForm] = useState<FormState>({
+    name: "", company: "", phone: "", email: "",
+    industry: "", projectType: "", mainGoal: "",
+    deliverables: [], budget: "", timeline: "", message: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
+  const setField = (key: keyof FormState, v: string) =>
+    setForm((f) => ({ ...f, [key]: f[key] === v ? "" : v }));
+  const toggleDeliverable = (v: string) =>
+    setForm((f) => ({
+      ...f,
+      deliverables: f.deliverables.includes(v)
+        ? f.deliverables.filter((x) => x !== v)
+        : [...f.deliverables, v],
+    }));
 
   const brief = buildBrief(form);
   const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(brief)}`;
@@ -88,7 +97,6 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Hand the full brief to WhatsApp — instant delivery, no backend required
     window.open(waUrl, "_blank", "noopener,noreferrer");
     setSubmitted(true);
   };
@@ -131,7 +139,6 @@ export default function Contact() {
               and we reply within 24 hours. No forms disappearing into the void.
             </motion.p>
 
-            {/* Contact details */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -160,7 +167,6 @@ export default function Contact() {
               ))}
             </motion.div>
 
-            {/* Social links */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -169,13 +175,8 @@ export default function Contact() {
               <p className="font-sans text-[10px] text-cream/60 tracking-widest uppercase mb-4">Follow Us</p>
               <div className="flex gap-4">
                 {socialLinks.map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-sans text-xs text-white/70 tracking-widest uppercase hover:text-teal transition-colors border border-white/15 hover:border-teal/50 px-4 py-2"
-                  >
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+                    className="font-sans text-xs text-white/70 tracking-widest uppercase hover:text-teal transition-colors border border-white/15 hover:border-teal/50 px-4 py-2">
                     {s.label}
                   </a>
                 ))}
@@ -198,26 +199,18 @@ export default function Contact() {
                   className="h-full flex flex-col items-center justify-center text-center py-20 px-8 border border-teal/20 bg-ink-50"
                 >
                   <span className="text-teal text-5xl mb-6">◈</span>
-                  <h3 className="font-geist font-black text-3xl text-white uppercase mb-3">
-                    Brief Ready
-                  </h3>
+                  <h3 className="font-geist font-black text-3xl text-white uppercase mb-3">Brief Ready</h3>
                   <p className="font-sans text-cream/70 text-sm max-w-xs mb-8">
                     WhatsApp should have opened with your full brief — just press send.
                     We reply within 24 hours.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <a
-                      href={waUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-geist font-black text-xs text-ink bg-[#25D366] px-6 py-3.5 uppercase tracking-widest"
-                    >
+                    <a href={waUrl} target="_blank" rel="noopener noreferrer"
+                      className="font-geist font-black text-xs text-ink bg-[#25D366] px-6 py-3.5 uppercase tracking-widest">
                       Reopen WhatsApp
                     </a>
-                    <a
-                      href={mailUrl}
-                      className="font-geist font-black text-xs text-white border border-white/25 px-6 py-3.5 uppercase tracking-widest hover:border-teal hover:text-teal transition-colors"
-                    >
+                    <a href={mailUrl}
+                      className="font-geist font-black text-xs text-white border border-white/25 px-6 py-3.5 uppercase tracking-widest hover:border-teal hover:text-teal transition-colors">
                       Email It Instead
                     </a>
                   </div>
@@ -228,39 +221,17 @@ export default function Contact() {
                     <FormField label="Full Name" name="name" type="text" value={form.name} onChange={handleChange} required />
                     <FormField label="Email Address" name="email" type="email" value={form.email} onChange={handleChange} />
                   </div>
-                  <FormField label="Company / Artist Name" name="company" type="text" value={form.company} onChange={handleChange} />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <FormField label="Phone / WhatsApp" name="phone" type="tel" value={form.phone} onChange={handleChange} />
+                    <FormField label="Company / Artist Name" name="company" type="text" value={form.company} onChange={handleChange} />
+                  </div>
 
-                  {/* Project type chips */}
-                  <ChipGroup
-                    label="What are we making?"
-                    options={PROJECT_TYPES}
-                    value={form.projectType}
-                    onSelect={(v) => setForm((f) => ({ ...f, projectType: v }))}
-                  />
-
-                  {/* Main goal chips */}
-                  <ChipGroup
-                    label="What's the main goal?"
-                    options={MAIN_GOALS}
-                    value={form.mainGoal}
-                    onSelect={(v) => setForm((f) => ({ ...f, mainGoal: v }))}
-                  />
-
-                  {/* Budget chips */}
-                  <ChipGroup
-                    label="Budget range (KES)"
-                    options={BUDGETS}
-                    value={form.budget}
-                    onSelect={(v) => setForm((f) => ({ ...f, budget: v }))}
-                  />
-
-                  {/* Timeline chips */}
-                  <ChipGroup
-                    label="When do you need it?"
-                    options={TIMELINES}
-                    value={form.timeline}
-                    onSelect={(v) => setForm((f) => ({ ...f, timeline: v }))}
-                  />
+                  <ChipGroup label="Industry" options={INDUSTRIES} value={form.industry} onSelect={(v) => setField("industry", v)} />
+                  <ChipGroup label="What are we making?" options={PROJECT_TYPES} value={form.projectType} onSelect={(v) => setField("projectType", v)} />
+                  <ChipGroup label="Main business goal" options={MAIN_GOALS} value={form.mainGoal} onSelect={(v) => setField("mainGoal", v)} />
+                  <MultiChipGroup label="Preferred deliverables" hint="(select all that apply)" options={DELIVERABLES} selected={form.deliverables} onToggle={toggleDeliverable} />
+                  <ChipGroup label="Budget range (KES)" options={BUDGETS} value={form.budget} onSelect={(v) => setField("budget", v)} />
+                  <ChipGroup label="When do you need it?" options={TIMELINES} value={form.timeline} onSelect={(v) => setField("timeline", v)} />
 
                   <div>
                     <label className="block font-sans text-[10px] text-teal tracking-widest uppercase mb-2 font-medium">
@@ -268,33 +239,24 @@ export default function Contact() {
                       <span className="text-white/30 normal-case tracking-normal font-normal">(optional)</span>
                     </label>
                     <textarea
-                      name="message"
-                      value={form.message}
-                      onChange={handleChange}
-                      rows={4}
+                      name="message" value={form.message} onChange={handleChange} rows={4}
                       placeholder="The idea, the song, the brand — share whatever you have. We'll ask the rest on the call."
                       className="w-full bg-ink border border-white/15 text-white/85 font-sans text-sm px-4 py-3 focus:outline-none focus:border-teal transition-colors resize-none placeholder:text-white/45"
                     />
                   </div>
 
-                  {/* Trust signal above CTA */}
                   <p className="font-sans text-white/40 text-[10px] text-center tracking-wide -mb-2">
                     Trusted by 80+ brands across East Africa
                   </p>
 
-                  <button
-                    type="submit"
-                    className="w-full py-4 bg-teal text-ink font-geist font-black text-sm tracking-widest uppercase hover:bg-teal-light transition-all duration-300 flex items-center justify-center gap-3"
-                  >
+                  <button type="submit"
+                    className="w-full py-4 bg-teal text-ink font-geist font-black text-sm tracking-widest uppercase hover:bg-teal-light transition-all duration-300 flex items-center justify-center gap-3">
                     Send Brief via WhatsApp
                   </button>
                   <div className="flex flex-col items-center gap-2 -mt-2">
                     <p className="font-sans text-white/50 text-[11px] text-center">
                       Opens WhatsApp with your brief pre-written — or{" "}
-                      <a href={mailUrl} className="text-teal hover:text-teal-light underline underline-offset-2">
-                        send it by email
-                      </a>{" "}
-                      instead.
+                      <a href={mailUrl} className="text-teal hover:text-teal-light underline underline-offset-2">send it by email</a>{" "}instead.
                     </p>
                     <p className="font-sans text-white/35 text-[10px] text-center">
                       We reply within 24 hours · Mon – Sat, 8am – 8pm EAT
@@ -310,28 +272,18 @@ export default function Contact() {
   );
 }
 
-function ChipGroup({
-  label, options, value, onSelect,
-}: {
+function ChipGroup({ label, options, value, onSelect }: {
   label: string; options: string[]; value: string; onSelect: (v: string) => void;
 }) {
   return (
     <div>
-      <label className="block font-sans text-[10px] text-teal tracking-widest uppercase mb-3 font-medium">
-        {label}
-      </label>
+      <label className="block font-sans text-[10px] text-teal tracking-widest uppercase mb-3 font-medium">{label}</label>
       <div className="flex flex-wrap gap-2">
         {options.map((opt) => (
-          <button
-            key={opt}
-            type="button"
-            onClick={() => onSelect(value === opt ? "" : opt)}
+          <button key={opt} type="button" onClick={() => onSelect(opt)}
             className={`font-sans text-xs px-4 py-2.5 border transition-colors duration-200 ${
-              value === opt
-                ? "bg-teal text-ink border-teal font-semibold"
-                : "text-white/70 border-white/15 hover:border-teal/60 hover:text-white"
-            }`}
-          >
+              value === opt ? "bg-teal text-ink border-teal font-semibold" : "text-white/70 border-white/15 hover:border-teal/60 hover:text-white"
+            }`}>
             {opt}
           </button>
         ))}
@@ -340,19 +292,37 @@ function ChipGroup({
   );
 }
 
-function FormField({
-  label, name, type, value, onChange, required,
-}: {
+function MultiChipGroup({ label, hint, options, selected, onToggle }: {
+  label: string; hint?: string; options: string[]; selected: string[]; onToggle: (v: string) => void;
+}) {
+  return (
+    <div>
+      <label className="block font-sans text-[10px] text-teal tracking-widest uppercase mb-3 font-medium">
+        {label}{hint && <span className="text-white/30 normal-case tracking-normal font-normal"> {hint}</span>}
+      </label>
+      <div className="flex flex-wrap gap-2">
+        {options.map((opt) => (
+          <button key={opt} type="button" onClick={() => onToggle(opt)}
+            className={`font-sans text-xs px-4 py-2.5 border transition-colors duration-200 ${
+              selected.includes(opt) ? "bg-teal text-ink border-teal font-semibold" : "text-white/70 border-white/15 hover:border-teal/60 hover:text-white"
+            }`}>
+            {opt}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FormField({ label, name, type, value, onChange, required }: {
   label: string; name: string; type: string; value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; required?: boolean;
 }) {
   return (
     <div>
       <label className="block font-sans text-[10px] text-teal tracking-widest uppercase mb-2 font-medium">{label}</label>
-      <input
-        type={type} name={name} value={value} onChange={onChange} required={required}
-        className="w-full bg-ink border border-white/15 text-white/85 font-sans text-sm px-4 py-3.5 md:py-3 focus:outline-none focus:border-teal transition-colors placeholder:text-white/45"
-      />
+      <input type={type} name={name} value={value} onChange={onChange} required={required}
+        className="w-full bg-ink border border-white/15 text-white/85 font-sans text-sm px-4 py-3.5 md:py-3 focus:outline-none focus:border-teal transition-colors placeholder:text-white/45" />
     </div>
   );
 }

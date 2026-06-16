@@ -51,7 +51,7 @@ export const servicePages: ServicePage[] = [
       { step: "01", title: "Discovery", description: "We learn your brand, your audience, and what this video needs to achieve." },
       { step: "02", title: "Concept & Script", description: "Creative concepts, scripts, and storyboards — presented for your approval before any camera rolls." },
       { step: "03", title: "Production", description: "Shoot days planned to the minute. Director, DP, lighting, sound, art direction — full crew, no compromises." },
-      { step: "04", title: "Post-Production", description: "Edit, colour grade, sound design, and motion graphics. Review rounds included until it's right." },
+      { step: "04", title: "Post-Production", description: "Edit, colour grade, sound design, and motion graphics. Structured review rounds are included, with clear approval stages to keep the project moving." },
       { step: "05", title: "Delivery", description: "Final files in every format you need — TV, YouTube, Instagram, TikTok, your website." },
     ],
     faqs: [
@@ -98,7 +98,7 @@ export const servicePages: ServicePage[] = [
       { step: "01", title: "The Listen", description: "Send us the track. We listen until we hear the video inside it." },
       { step: "02", title: "Concept", description: "Treatment with visual references, locations, and styling direction — built around you as an artist." },
       { step: "03", title: "The Shoot", description: "One to three shoot days depending on scope. Planned tight, executed loose enough to catch magic." },
-      { step: "04", title: "The Cut", description: "Edit and grade timed to the emotional arc of the track. Review rounds until you love it." },
+      { step: "04", title: "The Cut", description: "Edit and grade timed to the emotional arc of the track. Structured review rounds with clear approval stages keep things moving." },
     ],
     faqs: [
       { question: "How much does a music video cost in Kenya?", answer: "Music video budgets in Kenya range from Ksh 80,000 for a single-location performance video to Ksh 1,500,000+ for full cinematic productions. Most artists releasing a lead single invest Ksh 200,000–500,000. We work across every tier." },
@@ -322,7 +322,7 @@ export const servicePages: ServicePage[] = [
     whyUs: [
       "Crews experienced in live, one-take-only environments — we don't get a second chance and we know it.",
       "Fast turnaround without sacrificing the cinematic look that makes your event feel premium.",
-      "We cover the full range — corporate conferences to sold-out concerts — and adapt to each.",
+      "We cover the full range — corporate conferences to major concerts — and adapt to each.",
       "Content planned around your marketing goals, not just documentation for its own sake.",
     ],
     process: [
