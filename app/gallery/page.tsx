@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SphereGallery from "@/components/SphereGallery";
+import GalleryClient from "@/components/GalleryClient";
 
 export const metadata: Metadata = {
   title: "Gallery | Nataka Inc — Film & Music Video Production Nairobi",
@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function GalleryPage() {
-  return <SphereGallery />;
+  return <GalleryClient />;
 }

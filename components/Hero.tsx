@@ -37,8 +37,8 @@ export default function Hero() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setReady(true), 300);
-    return () => clearTimeout(t);
+    // Trigger entrance immediately on mount — faster hero paint / better LCP
+    setReady(true);
   }, []);
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });

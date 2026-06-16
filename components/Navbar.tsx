@@ -35,8 +35,8 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-        className={`fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 transition-all duration-500 ${
-          scrolled ? "bg-ink/92 backdrop-blur-md border-b border-white/8" : "bg-transparent"
+        className={`fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 transition-all duration-500 backdrop-blur-md ${
+          scrolled ? "bg-ink/92 border-b border-white/8" : "bg-gradient-to-b from-ink/85 via-ink/45 to-transparent"
         }`}
       >
         {/* Logo */}
