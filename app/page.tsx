@@ -3,7 +3,9 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import MarqueeBanner from "@/components/MarqueeBanner";
 import Services from "@/components/Services";
+import BuyerPaths from "@/components/BuyerPaths";
 import Work from "@/components/Work";
+import Packages from "@/components/Packages";
 import VideoReel from "@/components/VideoReel";
 import About from "@/components/About";
 import Testimonials from "@/components/Testimonials";
@@ -28,12 +30,13 @@ export default function Home() {
         <Hero />
         <MarqueeBanner />
         <Services />
+        <BuyerPaths />
         <Work />
+        <Packages />
         <VideoReel />
         <About />
         <Testimonials />
         <FAQ />
-
         <Contact />
         <Footer />
       </main>

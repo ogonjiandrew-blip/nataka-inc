@@ -139,8 +139,8 @@ export default function Hero() {
           className="font-sans text-white/85 text-sm md:text-lg max-w-md leading-relaxed mb-8 md:mb-10 font-light"
           style={{ textShadow: "0 1px 20px rgba(0,0,0,0.6)" }}
         >
-          Full-service media &amp; marketing for brands that refuse to be ignored.
-          Strategy. Production. Culture.
+          Premium video production and campaign strategy for brands, artists and events
+          that need attention, trust, and sales — cinematic work made in Nairobi.
         </motion.p>
 
         {/* CTAs — white primary, teal outline secondary */}
