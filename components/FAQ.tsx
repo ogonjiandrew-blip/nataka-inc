@@ -36,7 +36,7 @@ const faqSchema = {
       name: "How do I hire Nataka Inc for a video production project?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "You can get in touch with Nataka Inc by emailing niajekoki@gmail.com or calling +254 725 107 294. We'll discuss your project, provide a tailored quote, and walk you through our production process.",
+        text: "You can get in touch with Nataka Inc by emailing andrew@natakainc.com or calling +254 725 107 294. We'll discuss your project, provide a tailored quote, and walk you through our production process.",
       },
     },
   ],
@@ -61,7 +61,7 @@ const faqs = [
   {
     question: "How do I hire Nataka Inc for a video production project?",
     answer:
-      "You can get in touch with Nataka Inc by emailing niajekoki@gmail.com or calling +254 725 107 294. We'll discuss your project, provide a tailored quote, and walk you through our production process.",
+      "You can get in touch with Nataka Inc by emailing andrew@natakainc.com or calling +254 725 107 294. We'll discuss your project, provide a tailored quote, and walk you through our production process.",
   },
 ];
 

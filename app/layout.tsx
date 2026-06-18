@@ -142,7 +142,7 @@ export default function RootLayout({
                 "Nairobi-based video production and creative agency specialising in music videos, brand films, commercial production, and digital marketing for artists and brands across East Africa.",
               url: "https://www.natakainc.com",
               telephone: "+254725107294",
-              email: "niajekoki@gmail.com",
+              email: "andrew@natakainc.com",
               foundingDate: "2020",
               areaServed: [
                 { "@type": "City", name: "Nairobi" },

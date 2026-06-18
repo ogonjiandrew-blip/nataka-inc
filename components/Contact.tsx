@@ -21,7 +21,7 @@ const BUDGETS = [
 const TIMELINES = ["ASAP", "Within a month", "1–3 months", "Flexible"];
 
 const WHATSAPP_NUMBER = "254725107294";
-const EMAIL = "niajekoki@gmail.com";
+const EMAIL = "andrew@natakainc.com";
 
 type FormState = {
   name: string; company: string; phone: string; email: string;

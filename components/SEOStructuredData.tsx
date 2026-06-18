@@ -21,7 +21,7 @@ const localBusiness = {
   description:
     "Nataka Inc is a leading media and marketing agency based in Nairobi, Kenya, offering brand strategy, video production, digital marketing, creative production, and PR & communications services to brands across East Africa.",
   url: siteUrl,
-  email: "niajekoki@gmail.com",
+  email: "andrew@natakainc.com",
   telephone: "+254725107294",
   foundingDate: "2020",
   numberOfEmployees: { "@type": "QuantitativeValue", minValue: 5, maxValue: 30 },
@@ -133,7 +133,7 @@ const organization = {
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+254725107294",
-    email: "niajekoki@gmail.com",
+    email: "andrew@natakainc.com",
     contactType: "customer service",
     availableLanguage: ["English", "Swahili"],
     areaServed: "KE",

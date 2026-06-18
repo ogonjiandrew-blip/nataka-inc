@@ -73,8 +73,8 @@ export default function Footer() {
             <h3 className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">Contact</h3>
             <ul className="space-y-2.5 font-sans text-xs text-white/50">
               <li>
-                <a href="mailto:niajekoki@gmail.com" className="hover:text-teal transition-colors">
-                  niajekoki@gmail.com
+                <a href="mailto:andrew@natakainc.com" className="hover:text-teal transition-colors">
+                  andrew@natakainc.com
                 </a>
               </li>
               <li>
