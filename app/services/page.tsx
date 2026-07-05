@@ -61,12 +61,12 @@ export default function ServicesIndex() {
 
       {/* Grid */}
       <section className="px-6 md:px-12 pb-20 md:pb-24 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {services.map((s) => (
             <Link
               key={s.slug}
               href={`/services/${s.slug}`}
-              className="group bg-ink p-8 hover:bg-white/[0.02] transition-colors duration-300 flex flex-col"
+              className="group border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 flex flex-col transition-all duration-300 hover:border-teal/40 hover:from-white/[0.07] hover:-translate-y-1"
             >
               <h2 className="font-geist font-black text-xl text-white uppercase mb-3 group-hover:text-teal transition-colors duration-300">
                 {s.label}

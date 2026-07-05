@@ -55,9 +55,9 @@ export default function BuyerPaths() {
         <span className="font-geist font-black text-[clamp(1.8rem,6vw,5rem)] text-white uppercase block">Find Your</span>
         <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,5rem)] text-teal block">Starting Point.</span>
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/8 border border-white/8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
         {paths.map((p) => (
-          <div key={p.tag} className="bg-ink p-8 md:p-10 flex flex-col">
+          <div key={p.tag} className="border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 md:p-10 flex flex-col transition-all duration-300 hover:border-teal/40 hover:from-white/[0.07] hover:-translate-y-1">
             <span className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">{p.tag}</span>
             <h3 className="font-geist font-black text-2xl text-white uppercase mb-4">{p.title}</h3>
             <p className="font-sans text-cream/65 text-sm leading-relaxed mb-6 flex-1">{p.desc}</p>

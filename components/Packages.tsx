@@ -50,9 +50,9 @@ export default function Packages() {
         Starting points, not fixed quotes. Every engagement is scoped to your brief, goals and budget — these ranges help you see where you fit before we talk.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/8 border border-white/8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
         {packages.map((p) => (
-          <div key={p.name} className="bg-ink p-8 flex flex-col">
+          <div key={p.name} className="border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 flex flex-col transition-all duration-300 hover:border-teal/40 hover:from-white/[0.07] hover:-translate-y-1">
             <h3 className="font-geist font-black text-xl text-white uppercase mb-2 leading-tight">{p.name}</h3>
             <p className="font-sans text-cream/55 text-xs leading-relaxed mb-5">{p.who}</p>
             <p className="font-geist font-black text-teal text-lg mb-6 tabular-nums" style={{ textShadow: "0 0 20px rgba(10,191,191,0.25)" }}>
