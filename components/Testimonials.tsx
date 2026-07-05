@@ -101,7 +101,7 @@ export default function Testimonials() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {testimonials.map((t, i) => (
             <motion.div
-              key={t.company}
+              key={t.name}
               initial={{ opacity: 0, y: 28 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.65, delay: 0.2 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}

@@ -91,15 +91,15 @@ export const caseStudies: CaseStudy[] = [
     slug: "otamatsuri-promo-film",
     client: "Otamatsuri",
     title: "Otamatsuri",
-    metaTitle: "Otamatsuri Promo Film — Nataka Inc Case Study",
+    metaTitle: "Otamatsuri Festival Promo — Nataka Inc Case Study",
     metaDescription:
-      "Nataka Inc directed and produced Otamatsuri — a cinematic, anime-inspired promo film shot on location in Kenya. Story-driven promo production in Nairobi.",
-    category: "Promo Film · Direction",
+      "Nataka Inc directed and produced the promo film for Otamatsuri, an anime/otaku festival — cinematic, character-driven and shot on location in Kenya.",
+    category: "Festival Promo · Direction",
     year: "2026",
     heroImage: "/stills/otamatsuri/cover.jpg",
     gallery: ["/stills/otamatsuri/1.jpg", "/stills/otamatsuri/4.jpg", "/stills/otamatsuri/3.jpg", "/stills/otamatsuri/2.jpg", "/stills/otamatsuri/6.jpg", "/stills/otamatsuri/8.jpg"],
     summary:
-      "A cinematic promo film that brings an anime-inspired world to life on Kenyan locations — costume, character and sweeping golden-hour frames built into a story-driven piece.",
+      "A cinematic promo for Otamatsuri — an anime/otaku festival — bringing its characters to life on Kenyan locations, from lakeside hero frames to golden-hour silhouettes.",
     facts: [
       { label: "Client", value: "Otamatsuri" },
       { label: "Service", value: "Promo Film Production" },
