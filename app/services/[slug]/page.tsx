@@ -131,9 +131,9 @@ export default function ServicePage({ params }: Props) {
         <h2 className="font-geist font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
           What We <span className="text-teal">Deliver</span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
           {service.deliverables.map((d) => (
-            <div key={d.title} className="bg-ink p-8 hover:bg-white/[0.02] transition-colors duration-300">
+            <div key={d.title} className="border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 transition-all duration-300 hover:border-teal/40 hover:from-white/[0.07] hover:-translate-y-1">
               <h3 className="font-geist font-black text-lg text-white uppercase mb-3">
                 {d.title}
               </h3>
