@@ -31,7 +31,7 @@ export const servicePages: ServicePage[] = [
     label: "Video Production",
     headline: "Video Production",
     headlineAccent: "In Nairobi.",
-    heroImage: "/stills/1/1.jpg",
+    heroImage: "/stills/otamatsuri/1.jpg",
     intro:
       "Nataka Inc is a full-service video production company based in Nairobi, Kenya. We produce cinematic brand films, television commercials, corporate videos, and campaign content for brands that refuse to be ignored. From concept development to final delivery, every frame is crafted with intention — by a Kenyan team that meets global standards.",
     deliverables: [
@@ -79,7 +79,7 @@ export const servicePages: ServicePage[] = [
     label: "Music Video Production",
     headline: "Music Videos",
     headlineAccent: "That Travel.",
-    heroImage: "/stills/4/1.jpg",
+    heroImage: "/stills/teslah/6.jpg",
     intro:
       "Nataka Inc is one of Nairobi's leading music video production companies. We've directed videos for artists including Ssaru and Fathermoh — work that matches the ambition of the music. From concept development and creative direction to filming and post-production, we build visual worlds around your sound.",
     deliverables: [
@@ -497,7 +497,7 @@ export const servicePages: ServicePage[] = [
     label: "Creative Agency",
     headline: "A Creative Agency",
     headlineAccent: "Built Different.",
-    heroImage: "/stills/1/27.jpg",
+    heroImage: "/stills/otamatsuri/4.jpg",
     intro:
       "A creative agency should give you ideas and the ability to make them real. Most in Nairobi do one or the other. Nataka Inc does both — strategy, film, design and distribution under one roof, so the big idea doesn't get watered down on its way to the screen. We partner with brands across Kenya and East Africa that would rather be unmistakable than safe.",
     deliverables: [
@@ -544,7 +544,7 @@ export const servicePages: ServicePage[] = [
     label: "Brand Video",
     headline: "Brand Films That",
     headlineAccent: "Make You Feel.",
-    heroImage: "/stills/1/8.jpg",
+    heroImage: "/stills/otamatsuri/cover.jpg",
     intro:
       "A brand video isn't a product demo — it's the film that makes someone feel who you are before they ever buy. Nataka Inc produces cinematic brand films for Kenyan companies and challengers across East Africa: emotive, story-led films built for your homepage, your launch, your pitch and your socials. Functionality is for the spec sheet; brand films are for the heart.",
     deliverables: [
@@ -591,7 +591,7 @@ export const servicePages: ServicePage[] = [
     label: "Video Production Kenya",
     headline: "Video Production",
     headlineAccent: "Across Kenya.",
-    heroImage: "/stills/1/6.jpg",
+    heroImage: "/stills/otamatsuri/2.jpg",
     intro:
       "Great video shouldn't require a Nairobi address. Nataka Inc is a full-service video production company that works across all of Kenya — from the capital to the coast, the Rift Valley to the lakeside counties. Brand films, commercials, corporate video and music videos, produced to a cinematic standard wherever your story lives. One national team, one consistent quality, on location anywhere in the country.",
     deliverables: [

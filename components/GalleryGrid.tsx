@@ -31,8 +31,12 @@ const musicStills = ["/stills/4/1.jpg", "/stills/4/2.jpg", "/stills/4/4.jpg", "/
 const ssaruStills = ["/stills/ssaru/1.jpg", "/stills/ssaru/2.jpg"];
 const perfStills = ["/stills/2/1.jpg", "/stills/2/2.jpg", "/stills/2/3.jpg"];
 const fashionStills = ["/stills/fashion/1.jpg", "/stills/fashion/2.jpg", "/stills/fashion/3.jpg", "/stills/fashion/6.jpg", "/stills/fashion/7.jpg", "/stills/fashion/8.jpg", "/stills/fashion/9.jpg", "/stills/fashion/12.jpg"];
+const teslahStills = ["/stills/teslah/1.jpg", "/stills/teslah/2.jpg", "/stills/teslah/3.jpg", "/stills/teslah/4.jpg", "/stills/teslah/5.jpg", "/stills/teslah/6.jpg", "/stills/teslah/7.jpg", "/stills/teslah/8.jpg", "/stills/teslah/9.jpg"];
+const otamatsuriStills = ["/stills/otamatsuri/1.jpg", "/stills/otamatsuri/2.jpg", "/stills/otamatsuri/3.jpg", "/stills/otamatsuri/4.jpg", "/stills/otamatsuri/5.jpg", "/stills/otamatsuri/6.jpg", "/stills/otamatsuri/7.jpg", "/stills/otamatsuri/8.jpg"];
 
 const groups = [
+  { heading: "Teslah — Music Video", alt: "Teslah music video still by Nataka Inc — music video production in Nairobi, Kenya", imgs: teslahStills },
+  { heading: "Otamatsuri — Cinematic Film", alt: "Otamatsuri cinematic film still by Nataka Inc — film and video production in Nairobi, Kenya", imgs: otamatsuriStills },
   { heading: "Studio & Visual Stills", alt: "Nataka Inc studio visual still — media and creative production in Nairobi, Kenya", imgs: aiStills },
   { heading: "Film & Campaign", alt: "Nataka Inc film and campaign still — video production company in Nairobi, Kenya", imgs: filmStills },
   { heading: "Music Videos", alt: "Nataka Inc music video still — music video production in Nairobi, Kenya", imgs: musicStills },
