@@ -45,6 +45,22 @@ const fashionGallery = [
   "/stills/fashion/9.jpg",
 ];
 
+// Otamatsuri — cinematic promo film (16:9-friendly frames for the wide card)
+const otamatsuriGallery = [
+  "/stills/otamatsuri/cover.jpg",
+  "/stills/otamatsuri/1.jpg",
+  "/stills/otamatsuri/2.jpg",
+  "/stills/otamatsuri/8.jpg",
+];
+
+// Teslah — studio music video (centre-weighted frames for the 4:5 card)
+const teslahGallery = [
+  "/stills/teslah/6.jpg",
+  "/stills/teslah/5.jpg",
+  "/stills/teslah/1.jpg",
+  "/stills/teslah/4.jpg",
+];
+
 type Project = {
   id: number;
   title: string;
@@ -65,12 +81,15 @@ type Project = {
 const projects: Project[] = [
   {
     id: 1,
-    title: "Campaign Film",
-    category: "Creative Production",
-    year: "2024",
-    description: "Cinematic campaign film — bold, purposeful, made in Nairobi.",
-    alt: "Cinematic film production still by Nataka Inc — video production company Nairobi Kenya",
-    image: "/stills/1/1.jpg",
+    title: "Otamatsuri",
+    category: "Promo Film · Direction",
+    year: "2026",
+    description: "A cinematic, anime-inspired promo film — directed and produced by Nataka Inc on location in Kenya.",
+    alt: "Otamatsuri cinematic promo film still by Nataka Inc — film and video production in Kenya",
+    image: "/stills/otamatsuri/cover.jpg",
+    gallery: otamatsuriGallery,
+    metric: "Cinematic promo · Direction & Production",
+    href: "/work/otamatsuri-promo-film",
     span: "md:col-span-2",
     aspect: "aspect-[16/9]",
     sizes: "(max-width: 768px) 100vw, 66vw",
@@ -104,12 +123,15 @@ const projects: Project[] = [
   },
   {
     id: 4,
-    title: "Studio Sessions",
-    category: "Photography",
-    year: "2024",
-    description: "Studio portrait and editorial photography — intimate, powerful, studio-grade.",
-    alt: "Studio photography by Nataka Inc — creative production company Nairobi",
-    image: "/stills/ai/studio.png",
+    title: "Teslah",
+    category: "Music Video · Direction",
+    year: "2026",
+    description: "A studio-built music video for Teslah — directed and produced by Nataka Inc in Nairobi.",
+    alt: "Teslah music video still by Nataka Inc — music video production in Nairobi Kenya",
+    image: "/stills/teslah/6.jpg",
+    gallery: teslahGallery,
+    metric: "Studio music video · Nairobi",
+    href: "/work/teslah-music-video",
     span: "md:col-span-1",
     aspect: "aspect-[4/5]",
     sizes: "(max-width: 768px) 100vw, 33vw",

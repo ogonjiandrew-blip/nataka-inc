@@ -56,6 +56,68 @@ export const caseStudies: CaseStudy[] = [
     watchUrl: "https://www.youtube.com/watch?v=4oXe4H8vxbI",
     watchLabel: "Watch Kwanini on YouTube",
   },
+  {
+    slug: "teslah-music-video",
+    client: "Teslah",
+    title: "Teslah",
+    metaTitle: "Teslah Music Video — Nataka Inc Case Study",
+    metaDescription:
+      "Nataka Inc directed and produced the Teslah music video — a studio-built visual world shot in Nairobi. Cinematic music video production in Kenya.",
+    category: "Music Video · Direction",
+    year: "2026",
+    heroImage: "/stills/teslah/cover.jpg",
+    gallery: ["/stills/teslah/1.jpg", "/stills/teslah/6.jpg", "/stills/teslah/4.jpg", "/stills/teslah/2.jpg", "/stills/teslah/7.jpg", "/stills/teslah/9.jpg"],
+    summary:
+      "A studio-built music video for Teslah — a controlled, high-contrast visual world engineered frame by frame, from clean performance to a darker narrative undercurrent.",
+    facts: [
+      { label: "Client", value: "Teslah" },
+      { label: "Service", value: "Music Video Production" },
+      { label: "Role", value: "Direction · Production" },
+      { label: "Location", value: "Nairobi, Kenya" },
+      { label: "Year", value: "2026" },
+    ],
+    challenge:
+      "Make a music video that lives or dies on craft rather than budget spectacle — a controlled studio environment that still feels cinematic, gives the artist a commanding stage, and carries a narrative charge without leaning on location or scale.",
+    approach: [
+      "Designed the whole film around a studio cyclorama and hard, motivated lighting — treating colour and shadow as the set, so every frame reads deliberate rather than incidental.",
+      "Directed the performance for presence: full-body confidence, tight close-ups, and framing that makes the artist the undisputed centre of the world.",
+      "Threaded a darker, surreal narrative undercurrent through the performance beats — imagery that gives the video something to say beyond the song.",
+      "Graded for contrast and mood — deep blues against clean skin tones — to hold a consistent, ownable look from first frame to last.",
+    ],
+    result:
+      "A film Nataka directed and produced end to end in Nairobi, built to sit alongside international music video work. Ahead of release — get in touch to see the full cut.",
+  },
+  {
+    slug: "otamatsuri-promo-film",
+    client: "Otamatsuri",
+    title: "Otamatsuri",
+    metaTitle: "Otamatsuri Promo Film — Nataka Inc Case Study",
+    metaDescription:
+      "Nataka Inc directed and produced Otamatsuri — a cinematic, anime-inspired promo film shot on location in Kenya. Story-driven promo production in Nairobi.",
+    category: "Promo Film · Direction",
+    year: "2026",
+    heroImage: "/stills/otamatsuri/cover.jpg",
+    gallery: ["/stills/otamatsuri/1.jpg", "/stills/otamatsuri/4.jpg", "/stills/otamatsuri/3.jpg", "/stills/otamatsuri/2.jpg", "/stills/otamatsuri/6.jpg", "/stills/otamatsuri/8.jpg"],
+    summary:
+      "A cinematic promo film that brings an anime-inspired world to life on Kenyan locations — costume, character and sweeping golden-hour frames built into a story-driven piece.",
+    facts: [
+      { label: "Client", value: "Otamatsuri" },
+      { label: "Service", value: "Promo Film Production" },
+      { label: "Role", value: "Direction · Production" },
+      { label: "Location", value: "Kenya" },
+      { label: "Year", value: "2026" },
+    ],
+    challenge:
+      "Translate a beloved anime aesthetic into live action without it feeling like cosplay — real costume and character work, real locations, and a cinematic grade that earns the fantasy rather than winking at it.",
+    approach: [
+      "Built the world on real Kenyan locations — lakeside, open country, golden-hour light — grounding a fantastical concept in a tangible, filmable place.",
+      "Committed fully to costume, character and prop detail so the world reads as designed, not improvised.",
+      "Shot for scale and silhouette — sweeping hero frames and backlit sunset compositions that give the piece its poster moments.",
+      "Graded warm and filmic to bind the whole promo into one cohesive, cinematic look.",
+    ],
+    result:
+      "A bold promo film Nataka directed and produced from concept to final cut — proof the studio can build a fully realised cinematic world in Kenya. Ahead of release.",
+  },
 ];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
