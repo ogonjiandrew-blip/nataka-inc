@@ -43,8 +43,22 @@ export default function Preloader() {
       setShow(false);
       return;
     }
+    // Respect reduced-motion: skip the cinematic preloader entirely.
+    if (
+      !force &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setShow(false);
+      sessionStorage.setItem("nataka-loaded", "1");
+      return;
+    }
     setShow(true);
     sessionStorage.setItem("nataka-loaded", "1");
+
+    // Hard escape hatch: never leave the visitor stuck behind the curtain if
+    // requestAnimationFrame is throttled (background tab, some headless/crawler
+    // contexts). Independent of the rAF counter below.
+    const failsafe = hold ? null : setTimeout(() => setDone(true), 3200);
 
     // counter — fast start, slow landing
     const start = performance.now();
@@ -90,6 +104,7 @@ export default function Preloader() {
       cancelAnimationFrame(raf);
       clearInterval(flicker);
       clearInterval(wordTimer);
+      if (failsafe) clearTimeout(failsafe);
     };
   }, []);
 

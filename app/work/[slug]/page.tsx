@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const study = getCaseStudyBySlug(params.slug);
   if (!study) return {};
   return {
-    title: study.metaTitle,
+    title: { absolute: study.metaTitle },
     description: study.metaDescription,
     alternates: { canonical: `${siteUrl}/work/${study.slug}` },
     openGraph: {
@@ -26,7 +26,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [{ url: `${siteUrl}${study.heroImage}` }],
       type: "article",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: study.metaTitle,
+      description: study.metaDescription,
+      images: [`${siteUrl}${study.heroImage}`],
+    },
   };
+}
+
+/** Extract a YouTube video id from a watch/share URL, if present. */
+function youTubeId(url?: string): string | null {
+  if (!url) return null;
+  const m = url.match(/(?:v=|youtu\.be\/|\/embed\/)([\w-]{11})/);
+  return m ? m[1] : null;
 }
 
 export default function CaseStudyPage({ params }: Props) {
@@ -35,16 +48,53 @@ export default function CaseStudyPage({ params }: Props) {
 
   const others = getAllCaseStudies().filter((c) => c.slug !== study.slug);
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    name: `${study.title} — ${study.client}`,
-    description: study.metaDescription,
-    creator: { "@type": "Organization", name: "Nataka Inc", "@id": `${siteUrl}/#business` },
-    url: `${siteUrl}/work/${study.slug}`,
-    image: `${siteUrl}${study.heroImage}`,
-    dateCreated: study.year,
-  };
+  const ytId = youTubeId(study.watchUrl);
+
+  const graph: Record<string, unknown>[] = [
+    {
+      "@type": "CreativeWork",
+      "@id": `${siteUrl}/work/${study.slug}#work`,
+      name: `${study.title} — ${study.client}`,
+      description: study.metaDescription,
+      // references the single site-wide org entity from app/layout.tsx
+      creator: { "@id": `${siteUrl}/#org` },
+      url: `${siteUrl}/work/${study.slug}`,
+      image: `${siteUrl}${study.heroImage}`,
+      dateCreated: study.year,
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+        { "@type": "ListItem", position: 2, name: "Gallery", item: `${siteUrl}/gallery` },
+        { "@type": "ListItem", position: 3, name: study.title, item: `${siteUrl}/work/${study.slug}` },
+      ],
+    },
+  ];
+
+  // Register the film with Google Video search when it's on YouTube.
+  if (ytId) {
+    graph.push({
+      "@type": "VideoObject",
+      name: `${study.title} — ${study.client} (Official Music Video)`,
+      description: study.metaDescription,
+      thumbnailUrl: [
+        `${siteUrl}${study.heroImage}`,
+        `https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg`,
+      ],
+      uploadDate: `${study.year}-01-01T00:00:00+03:00`,
+      embedUrl: `https://www.youtube.com/embed/${ytId}`,
+      contentUrl: study.watchUrl,
+      publisher: {
+        "@type": "Organization",
+        name: "Nataka Inc",
+        logo: { "@type": "ImageObject", url: `${siteUrl}/logo.png` },
+      },
+      author: { "@id": `${siteUrl}/#org` },
+    });
+  }
+
+  const schema = { "@context": "https://schema.org", "@graph": graph };
 
   return (
     <main className="min-h-screen bg-ink text-cream">

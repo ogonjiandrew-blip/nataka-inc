@@ -3,10 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { getAllPosts } from "@/lib/posts";
 
+const siteUrl = "https://www.natakainc.com";
+
 export const metadata: Metadata = {
-  title: "Insights | Nataka Inc — Media & Marketing Agency Nairobi",
+  title: { absolute: "Insights | Nataka Inc — Media & Marketing Agency Nairobi" },
   description:
     "Industry insights, pricing guides, and creative thinking from Nataka Inc — Nairobi's leading video production and marketing agency.",
+  alternates: { canonical: `${siteUrl}/blog` },
 };
 
 export default function BlogPage() {

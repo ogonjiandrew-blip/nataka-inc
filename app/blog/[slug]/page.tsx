@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { getPostBySlug, getAllPosts } from "@/lib/posts";
 
+const siteUrl = "https://www.natakainc.com";
+
 type Props = { params: { slug: string } };
 
 export async function generateStaticParams() {
@@ -13,14 +15,29 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPostBySlug(params.slug);
   if (!post) return {};
+  const url = `${siteUrl}/blog/${post.slug}`;
   return {
-    title: `${post.title} | Nataka Inc`,
+    // absolute avoids the root template appending a second brand suffix, and
+    // metaTitle already carries the brand.
+    title: { absolute: `${post.title} | Nataka Inc` },
     description: post.excerpt,
+    // Was inheriting the root layout's homepage canonical → post looked like a
+    // duplicate of "/" and got de-indexed. Self-canonical fixes it.
+    alternates: { canonical: url },
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      images: [{ url: post.coverImage }],
+      url,
+      images: [{ url: `${siteUrl}${post.coverImage}` }],
       type: "article",
+      publishedTime: post.date,
+      modifiedTime: post.date,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [`${siteUrl}${post.coverImage}`],
     },
   };
 }
@@ -31,8 +48,41 @@ export default function PostPage({ params }: Props) {
 
   const allPosts = getAllPosts().filter((p) => p.slug !== post.slug).slice(0, 3);
 
+  const url = `${siteUrl}/blog/${post.slug}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#post`,
+        headline: post.title,
+        description: post.excerpt,
+        image: `${siteUrl}${post.coverImage}`,
+        datePublished: post.date,
+        dateModified: post.date,
+        author: { "@id": `${siteUrl}/#org` },
+        publisher: { "@id": `${siteUrl}/#org` },
+        mainEntityOfPage: url,
+        url,
+        articleSection: post.category,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "Insights", item: `${siteUrl}/blog` },
+          { "@type": "ListItem", position: 3, name: post.title, item: url },
+        ],
+      },
+    ],
+  };
+
   return (
     <main className="min-h-screen bg-ink">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
 
       {/* Hero image */}
       <div className="relative h-[55vh] md:h-[65vh] overflow-hidden">

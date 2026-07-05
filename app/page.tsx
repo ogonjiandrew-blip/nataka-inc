@@ -14,6 +14,18 @@ import Contact from "@/components/Contact";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import SEOStructuredData from "@/components/SEOStructuredData";
+import type { Metadata } from "next";
+
+const siteUrl = "https://www.natakainc.com";
+
+// The homepage is the only page that should canonicalise to the site root.
+// (Root layout no longer sets a canonical — see the note there.)
+export const metadata: Metadata = {
+  alternates: {
+    canonical: siteUrl,
+    languages: { "en-KE": siteUrl },
+  },
+};
 
 export default function Home() {
   return (

@@ -17,7 +17,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = getServiceBySlug(params.slug);
   if (!service) return {};
   return {
-    title: service.metaTitle,
+    // absolute bypasses the root "%s | Nataka.inc — …" template; metaTitle
+    // already ends in "| Nataka Inc", so the template was double-branding it.
+    title: { absolute: service.metaTitle },
     description: service.metaDescription,
     keywords: service.keywords,
     alternates: { canonical: `${siteUrl}/services/${service.slug}` },
@@ -27,6 +29,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `${siteUrl}/services/${service.slug}`,
       images: [{ url: `${siteUrl}${service.heroImage}` }],
       type: "website",
+    },
+    // Per-page Twitter card (otherwise it inherits the homepage's wrong title
+    // + the old 404 image from the root layout).
+    twitter: {
+      card: "summary_large_image",
+      title: service.metaTitle,
+      description: service.metaDescription,
+      images: [`${siteUrl}${service.heroImage}`],
     },
   };
 }
@@ -47,14 +57,15 @@ export default function ServicePage({ params }: Props) {
     "@graph": [
       {
         "@type": "Service",
+        "@id": `${siteUrl}/services/${service.slug}#service`,
         name: service.label,
         description: service.metaDescription,
-        provider: {
-          "@type": "LocalBusiness",
-          name: "Nataka Inc",
-          "@id": `${siteUrl}/#business`,
-        },
-        areaServed: { "@type": "Country", name: "Kenya" },
+        // references the single site-wide org entity from app/layout.tsx
+        provider: { "@id": `${siteUrl}/#org` },
+        areaServed: [
+          { "@type": "City", name: "Nairobi" },
+          { "@type": "Country", name: "Kenya" },
+        ],
         url: `${siteUrl}/services/${service.slug}`,
       },
       {
@@ -69,7 +80,8 @@ export default function ServicePage({ params }: Props) {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-          { "@type": "ListItem", position: 2, name: service.label, item: `${siteUrl}/services/${service.slug}` },
+          { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` },
+          { "@type": "ListItem", position: 3, name: service.label, item: `${siteUrl}/services/${service.slug}` },
         ],
       },
     ],
@@ -110,7 +122,7 @@ export default function ServicePage({ params }: Props) {
           </p>
           <h1 className="leading-none">
             <span className="font-geist font-black text-[clamp(2.2rem,7vw,5.5rem)] text-white uppercase block">
-              {service.headline}
+              {service.headline}{" "}
             </span>
             <span className="font-display font-semibold italic text-[clamp(2.2rem,7vw,5.5rem)] text-teal block">
               {service.headlineAccent}
@@ -202,12 +214,28 @@ export default function ServicePage({ params }: Props) {
           <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
             Tell us about your project. We&apos;ll come back with a clear plan and an honest quote.
           </p>
-          <Link
-            href="/#contact"
-            className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
-          >
-            Get in Touch
-          </Link>
+          {/* Server-rendered contact actions (crawlable + tappable on slow
+              connections, unlike the client-only WhatsApp FAB). */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/#contact"
+              className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+            >
+              Get in Touch
+            </Link>
+            <a
+              href="https://wa.me/254725107294"
+              className="inline-block font-geist font-black text-sm text-teal border border-teal/40 px-8 py-5 uppercase tracking-widest hover:bg-teal hover:text-ink transition-colors duration-200"
+            >
+              WhatsApp Us
+            </a>
+            <a
+              href="tel:+254725107294"
+              className="inline-block font-sans text-sm text-white/60 px-4 py-5 tracking-widest uppercase hover:text-teal transition-colors"
+            >
+              +254 725 107 294
+            </a>
+          </div>
         </div>
       </div>
 

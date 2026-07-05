@@ -84,8 +84,13 @@ export default function Hero() {
           />
         </div>
 
-        {/* Scramble headline — with text-shadow for depth */}
-        <div className="mb-5 md:mb-8" aria-label="We Create What Moves People.">
+        {/* Scramble headline — this is the page's H1.
+            An sr-only prefix carries the target keywords (the visible tagline
+            is brand voice, not keyword text). */}
+        <h1 className="mb-5 md:mb-8">
+          <span className="sr-only">
+            Nataka Inc — Media &amp; Marketing Agency in Nairobi, Kenya.{" "}
+          </span>
           <div
             className="font-geist font-black leading-[0.92] uppercase"
             style={{ fontSize: "clamp(1.9rem, 9vw, 8.5rem)" }}
@@ -129,7 +134,7 @@ export default function Hero() {
               {line3}
             </motion.div>
           </div>
-        </div>
+        </h1>
 
         {/* Subline */}
         <motion.p

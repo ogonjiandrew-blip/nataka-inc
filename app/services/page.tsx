@@ -5,7 +5,7 @@ import { getAllServices } from "@/lib/services";
 const siteUrl = "https://www.natakainc.com";
 
 export const metadata: Metadata = {
-  title: "Services — Video, Film & Marketing in Kenya",
+  title: { absolute: "Services — Video, Film & Marketing in Kenya | Nataka Inc" },
   description:
     "Explore Nataka Inc's full range of services — video production, music videos, corporate film, brand strategy, social media, influencer and event marketing across Nairobi and Kenya.",
   alternates: { canonical: `${siteUrl}/services` },
