@@ -1,4 +1,3 @@
-import Cursor from "@/components/Cursor";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import MarqueeBanner from "@/components/MarqueeBanner";
@@ -38,7 +37,6 @@ export default function Home() {
       </a>
 
       <main id="main-content" className="bg-ink text-cream min-h-screen">
-        <Cursor />
         <Navbar />
         <Hero />
         <MarqueeBanner />

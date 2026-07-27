@@ -23,9 +23,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Custom cursor — mouse only, not keyboard ── */
+/* ── Custom cursor — mouse only, not keyboard ──
+   The native cursor is only hidden once <Cursor /> has actually mounted and
+   set .custom-cursor on <html>. Without that guard, any page missing the
+   component (or with JS disabled) ends up with no visible cursor at all. */
 @media (pointer: fine) {
-  body { cursor: none; }
+  html.custom-cursor body { cursor: none; }
 
   .cursor-dot {
     width: 6px;

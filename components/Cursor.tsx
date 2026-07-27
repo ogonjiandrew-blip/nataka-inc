@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+const HOVER_TARGETS = "a, button, [data-cursor-hover]";
+
 export default function Cursor() {
   const dotRef   = useRef<HTMLDivElement>(null);
   const ringRef  = useRef<HTMLDivElement>(null);
@@ -14,7 +16,12 @@ export default function Cursor() {
     const label = labelRef.current;
     if (!dot || !ring || !label) return;
 
-    let mx = 0, my = 0, rx = 0, ry = 0;
+    // Only hide the native cursor once we're actually here to replace it,
+    // and only for real pointers — touch devices keep their default behaviour.
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    if (fine) document.documentElement.classList.add("custom-cursor");
+
+    let mx = 0, my = 0, rx = 0, ry = 0, frame = 0;
 
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
@@ -33,11 +40,16 @@ export default function Cursor() {
       ry += (my - ry) * 0.1;
       ring.style.left = `${rx}px`;
       ring.style.top  = `${ry}px`;
-      requestAnimationFrame(raf);
+      frame = requestAnimationFrame(raf);
     };
 
-    const onHoverIn  = () => setHovered(true);
-    const onHoverOut = () => setHovered(false);
+    // Delegated so it keeps working for content rendered after mount — this
+    // component now lives in the root layout and survives page navigations.
+    const isTarget = (t: EventTarget | null) =>
+      t instanceof Element && !!t.closest(HOVER_TARGETS);
+
+    const onOver = (e: MouseEvent) => { if (isTarget(e.target)) setHovered(true); };
+    const onOut  = (e: MouseEvent) => { if (isTarget(e.target)) setHovered(false); };
 
     const onLabel = (e: Event) => {
       const val = (e as CustomEvent).detail as string;
@@ -47,18 +59,18 @@ export default function Cursor() {
     };
 
     document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseover", onOver);
+    document.addEventListener("mouseout", onOut);
     document.addEventListener("cursorlabel", onLabel);
-    requestAnimationFrame(raf);
-
-    const els = document.querySelectorAll("a, button, [data-cursor-hover]");
-    els.forEach(el => {
-      el.addEventListener("mouseenter", onHoverIn);
-      el.addEventListener("mouseleave", onHoverOut);
-    });
+    frame = requestAnimationFrame(raf);
 
     return () => {
       document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseover", onOver);
+      document.removeEventListener("mouseout", onOut);
       document.removeEventListener("cursorlabel", onLabel);
+      cancelAnimationFrame(frame);
+      document.documentElement.classList.remove("custom-cursor");
     };
   }, []);
 

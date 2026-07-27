@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import Preloader from "@/components/Preloader";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import FloatingCountdown from "@/components/community/FloatingCountdown";
+import Cursor from "@/components/Cursor";
 import SoundToggle from "@/components/SoundToggle";
 import "./globals.css";
 
@@ -242,6 +243,7 @@ export default function RootLayout({
       </head>
       <body>
         <Preloader />
+        <Cursor />
         {children}
         <FloatingCountdown />
         <WhatsAppButton />
