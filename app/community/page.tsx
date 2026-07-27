@@ -3,8 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Countdown from "@/components/community/Countdown";
 import DropLog from "@/components/community/DropLog";
 import Wallpapers from "@/components/community/Wallpapers";
+import PhotocardMaker from "@/components/community/PhotocardMaker";
 import FanWall from "@/components/community/FanWall";
 import SceneRadar from "@/components/community/SceneRadar";
 
@@ -115,8 +117,10 @@ export default function CommunityPage() {
           </div>
         </section>
 
+        <Countdown />
         <DropLog />
         <Wallpapers />
+        <PhotocardMaker />
         <FanWall />
         <SceneRadar />
 

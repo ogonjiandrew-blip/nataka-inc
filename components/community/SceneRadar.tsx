@@ -123,6 +123,17 @@ export default function SceneRadar() {
                   ◈ {e.nataka}
                 </p>
               )}
+
+              {e.link && (
+                <a
+                  href={e.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-4 font-geist font-black text-[11px] text-white border border-white/25 px-5 py-2.5 uppercase tracking-widest hover:border-kpop hover:text-kpop-light transition-colors duration-200"
+                >
+                  {e.link.label} →
+                </a>
+              )}
             </motion.div>
           ))}
         </div>

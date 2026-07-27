@@ -130,8 +130,9 @@ export default function OtamatsuriCommunity() {
             Otamatsuri is an anime and otaku festival — and Nataka directed and produced
             its promo film. We shot it in Kenya with Kenyan cosplayers, prop-makers and
             creatives, treating the characters they grew up on like they belong in a
-            feature film. The stills and wallpapers are already yours. The film lands when
-            the festival says it does.
+            feature film. Otamatsuri 2026 lands{" "}
+            <span className="text-white font-semibold">Sat 22 Aug at The Carnivore Grounds, Nairobi</span>{" "}
+            — the countdown is running on the community page.
           </motion.p>
 
           <motion.div
