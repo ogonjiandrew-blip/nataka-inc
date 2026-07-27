@@ -6,12 +6,16 @@ import { motion, AnimatePresence } from "framer-motion";
 const navLinks = [
   { label: "Services", href: "/#services" },
   { label: "Work",     href: "/#work"     },
+  { label: "Community", href: "/community" },
   { label: "Reel",     href: "/#reel"     },
   { label: "Gallery",  href: "/gallery"   },
   { label: "About",    href: "/#about"    },
   { label: "Insights", href: "/blog"      },
   { label: "Contact",  href: "/#contact"  },
 ];
+
+// The full-screen mobile menu has room for K-Wave; the desktop bar does not.
+const mobileNavLinks = [...navLinks, { label: "K-Wave", href: "/kwave" }];
 
 const socialLinks = [
   { label: "Instagram", href: "https://www.instagram.com/natakainc/" },
@@ -48,7 +52,7 @@ export default function Navbar() {
 
         {/* Desktop nav — shared sliding underline via layoutId */}
         <nav
-          className="hidden md:flex items-center gap-8"
+          className="hidden lg:flex items-center gap-6 xl:gap-8"
           onMouseLeave={() => setHoveredLink(null)}
         >
           {navLinks.map((link) => (
@@ -85,7 +89,7 @@ export default function Navbar() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden flex flex-col gap-1.5 p-2"
+          className="lg:hidden flex flex-col gap-1.5 p-2"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           <motion.span animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 8 : 0 }}   className="block w-6 h-px bg-white origin-center" />
@@ -102,17 +106,17 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22 }}
-            className="fixed inset-0 z-40 bg-ink flex flex-col items-center justify-center gap-8 md:hidden"
+            className="fixed inset-0 z-40 bg-ink flex flex-col items-center justify-center gap-5 py-24 overflow-y-auto lg:hidden"
           >
-            {navLinks.map((link, i) => (
+            {mobileNavLinks.map((link, i) => (
               <motion.a
                 key={link.label}
                 href={link.href}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 + 0.1 }}
+                transition={{ delay: i * 0.06 + 0.1 }}
                 onClick={() => setMenuOpen(false)}
-                className="font-geist font-black text-5xl text-white hover:text-teal transition-colors uppercase"
+                className="font-geist font-black text-[2rem] sm:text-4xl text-white hover:text-teal transition-colors uppercase shrink-0"
               >
                 {link.label}
               </motion.a>

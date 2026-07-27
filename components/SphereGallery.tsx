@@ -23,7 +23,6 @@ type Project = {
 
 const PROJECTS: Project[] = [
   { client: "SSARU X FATHERMOH", title: "KWANINI", tags: ["MUSIC VIDEO", "DIRECTION"], year: "2026", image: "/stills/4/1.jpg" },
-  { client: "SSARU X FATHERMOH", title: "KWANINI", tags: ["FILM", "GRADE"], year: "2026", image: "/stills/4/2.jpg" },
   { client: "SSARU X FATHERMOH", title: "KWANINI", tags: ["MUSIC VIDEO", "EDIT"], year: "2026", image: "/stills/4/4.jpg" },
   { client: "SSARU X FATHERMOH", title: "KWANINI", tags: ["PORTRAIT", "STILL"], year: "2026", image: "/stills/4/5.jpg" },
   { client: "SSARU X FATHERMOH", title: "KWANINI", tags: ["CAMPAIGN", "CONTENT"], year: "2026", image: "/stills/4/6.jpg" },

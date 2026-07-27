@@ -72,6 +72,8 @@ export default function About() {
             >
               From startup to enterprise, we partner with brands at every stage —
               injecting strategy, soul, and cinematic quality into everything we touch.
+              And when the cameras stop, we build with our community: Otamatsuri, cosplay
+              shoots, and the fans who make Kenyan pop culture worth filming.
             </motion.p>
           </div>
 

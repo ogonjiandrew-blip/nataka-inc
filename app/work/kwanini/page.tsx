@@ -34,7 +34,6 @@ const stills = [
   "/stills/4/5.jpg",
   "/stills/4/6.jpg",
   "/stills/4/7.jpg",
-  "/stills/4/2.jpg",
 ];
 
 export default function KwaniniCaseStudy() {

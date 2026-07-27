@@ -6,7 +6,7 @@ import Services from "@/components/Services";
 import BuyerPaths from "@/components/BuyerPaths";
 import ServiceFinder from "@/components/ServiceFinder";
 import Work from "@/components/Work";
-import Packages from "@/components/Packages";
+import OtamatsuriCommunity from "@/components/OtamatsuriCommunity";
 import VideoReel from "@/components/VideoReel";
 import About from "@/components/About";
 import Testimonials from "@/components/Testimonials";
@@ -46,7 +46,7 @@ export default function Home() {
         <BuyerPaths />
         <ServiceFinder />
         <Work />
-        <Packages />
+        <OtamatsuriCommunity />
         <VideoReel />
         <About />
         <Testimonials />

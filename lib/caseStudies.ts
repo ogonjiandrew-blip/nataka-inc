@@ -32,7 +32,7 @@ export const caseStudies: CaseStudy[] = [
     category: "Music Video · Direction",
     year: "2026",
     heroImage: "/stills/4/5.jpg",
-    gallery: ["/stills/4/1.jpg", "/stills/4/2.jpg", "/stills/4/4.jpg", "/stills/4/6.jpg", "/stills/4/7.jpg"],
+    gallery: ["/stills/4/1.jpg", "/stills/4/4.jpg", "/stills/4/6.jpg", "/stills/4/7.jpg"],
     summary:
       "An official music video for two of Kenya's most distinctive voices — built to match the emotional weight of the track and travel as far as the sound.",
     facts: [

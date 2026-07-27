@@ -28,7 +28,6 @@ const filmGallery = [
 // Music video gallery — 4:5 portrait crops matched to the card's aspect ratio
 const musicVideoGallery = [
   "/stills/4/p5.jpg",
-  "/stills/4/p2.jpg",
   "/stills/4/p1.jpg",
   "/stills/4/p4.jpg",
 ];

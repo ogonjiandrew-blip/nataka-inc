@@ -19,5 +19,9 @@ out/
 .DS_Store
 *.pem
 npm-debug.log*
+*.tsbuildinfo
+
+# Local scratch folder, not part of the deployed site
+/NATAKA WEBSITE/
 
 .vercel

@@ -27,7 +27,6 @@ const videoSchema = {
 
 const aiStills = Array.from({ length: 31 }, (_, i) => `/stills/ai/1/${i + 1}.jpg`);
 const filmStills = ["/stills/1/1.jpg", "/stills/1/2.jpg", "/stills/1/4.jpg", "/stills/1/5.jpg", "/stills/1/6.jpg", "/stills/1/7.jpg", "/stills/1/8.jpg", "/stills/1/27.jpg", "/stills/1/43.jpg", "/stills/1/46.jpg", "/stills/1/a.jpg", "/stills/1/b.jpg"];
-const musicStills = ["/stills/4/1.jpg", "/stills/4/2.jpg", "/stills/4/4.jpg", "/stills/4/5.jpg", "/stills/4/6.jpg", "/stills/4/7.jpg", "/stills/4/p1.jpg", "/stills/4/p2.jpg", "/stills/4/p4.jpg", "/stills/4/p5.jpg"];
 const ssaruStills = ["/stills/ssaru/1.jpg", "/stills/ssaru/2.jpg"];
 const perfStills = ["/stills/2/1.jpg", "/stills/2/2.jpg", "/stills/2/3.jpg"];
 const fashionStills = ["/stills/fashion/1.jpg", "/stills/fashion/2.jpg", "/stills/fashion/3.jpg", "/stills/fashion/6.jpg", "/stills/fashion/7.jpg", "/stills/fashion/8.jpg", "/stills/fashion/9.jpg", "/stills/fashion/12.jpg"];
@@ -39,7 +38,6 @@ const groups = [
   { heading: "Otamatsuri — Cinematic Film", alt: "Otamatsuri cinematic film still by Nataka Inc — film and video production in Nairobi, Kenya", imgs: otamatsuriStills },
   { heading: "Studio & Visual Stills", alt: "Nataka Inc studio visual still — media and creative production in Nairobi, Kenya", imgs: aiStills },
   { heading: "Film & Campaign", alt: "Nataka Inc film and campaign still — video production company in Nairobi, Kenya", imgs: filmStills },
-  { heading: "Music Videos", alt: "Nataka Inc music video still — music video production in Nairobi, Kenya", imgs: musicStills },
   { heading: "Artist Campaigns", alt: "Nataka Inc artist campaign still — Nairobi, Kenya", imgs: ssaruStills },
   { heading: "Performance", alt: "Nataka Inc performance still — Nairobi, Kenya", imgs: perfStills },
   { heading: "Fashion Editorial", alt: "Nataka Inc fashion editorial still — creative agency in Nairobi, Kenya", imgs: fashionStills },

@@ -55,7 +55,6 @@ export default function ServiceFinder() {
               <h3 className="font-geist font-black text-2xl md:text-3xl text-white uppercase mb-6 leading-tight">{sel.recommend}</h3>
               <div className="space-y-5">
                 <Row label="Deliverables" value={sel.deliverables} />
-                <Row label="Budget range" value={sel.budget} accent />
                 <Row label="Timeline" value={sel.timeline} />
               </div>
               <Link href="/#contact" className="inline-block mt-8 font-geist font-black text-sm text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200">
@@ -65,7 +64,7 @@ export default function ServiceFinder() {
           ) : (
             <div className="border border-white/10 bg-white/[0.015] p-8 md:p-10 min-h-[260px] flex items-center justify-center text-center">
               <p className="font-sans text-cream/45 text-sm max-w-xs leading-relaxed">
-                Pick a goal and we&apos;ll recommend the right package, deliverables, budget range and timeline — then send it straight to us.
+                Pick a goal and we&apos;ll recommend the right service, deliverables and timeline — then send it straight to us.
               </p>
             </div>
           )}

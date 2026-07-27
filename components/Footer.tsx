@@ -14,6 +14,9 @@ const services = [
 
 const company = [
   { label: "Work", href: "/#work" },
+  { label: "Community", href: "/community" },
+  { label: "K-Wave Kenya", href: "/kwave" },
+  { label: "Wallpapers", href: "/community#wallpapers" },
   { label: "About", href: "/#about" },
   { label: "Insights", href: "/blog" },
   { label: "Contact", href: "/#contact" },
@@ -39,7 +42,8 @@ export default function Footer() {
             </span>
             <p className="font-sans text-white/60 text-xs leading-relaxed max-w-[220px]">
               Media &amp; marketing agency in Nairobi, Kenya. Film, music videos, brand
-              strategy and campaigns for brands that refuse to be ignored.
+              strategy and campaigns for brands that refuse to be ignored. Home of
+              Otamatsuri and Kenya&apos;s anime &amp; cosplay community.
             </p>
           </div>
 

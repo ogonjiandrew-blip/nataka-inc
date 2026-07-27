@@ -24,6 +24,20 @@ const config: Config = {
           DEFAULT: "#F0EDE6",
           dark: "#D4CFC6",
         },
+        // Otamatsuri / anime — festival red
+        otaku: {
+          DEFAULT: "#E8442E",
+          light: "#FF6B54",
+          deep: "#B22E1D",
+        },
+        // K-Wave / K-pop — the pink carried over from the K-Wave briefing
+        kpop: {
+          DEFAULT: "#FF3D7F",
+          light: "#FF8FB8",
+          mid: "#F7549A",
+          deep: "#C81B63",
+          ink: "#7A0E3F",
+        },
       },
       fontFamily: {
         display: ["var(--font-cormorant)", "Georgia", "serif"],
