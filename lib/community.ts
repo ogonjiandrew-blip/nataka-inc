@@ -102,14 +102,16 @@ export const countdowns: CountdownTarget[] = [
     cta: { label: "Get Tickets", href: "https://events.gig.co.ke/event/gev_1171/ticket", external: true },
   },
   {
-    id: "kpop-festa-next",
-    title: "K-pop Festa",
-    subtitle: "Kenyan K-pop Fan Club · Nairobi",
-    target: null,
+    id: "kpop-meets-thai-2026",
+    title: "Kpop Meets Thai",
+    subtitle: "Summer Festival · Kijito Gardens, Nairobi",
+    // Sat 12 Dec 2026, 11:00 EAT — from the organiser's own ticket listing.
+    // 12 Dec falls on a Saturday only in 2026, which pins the year.
+    target: "2026-12-12T11:00:00+03:00",
     theme: "kpop",
     detail:
-      "The last Festa filled KALRO Garden with around 1,000 fans. The next date is the fan club's to announce — the moment it drops, this becomes a countdown.",
-    cta: { label: "Hear It First", href: "https://wa.me/254725107294?text=" + encodeURIComponent("I want in on the First 100\n\nName:\nInstagram / TikTok handle:\nBias group:") , external: true },
+      "Music, culture, connection — one day, 11am till 11pm. K-pop and Thai sounds in one lineup. Tickets Ksh 1,000.",
+    cta: { label: "Going? Join the Crew", href: "https://wa.me/254725107294?text=" + encodeURIComponent("I'm going to Kpop Meets Thai\n\nName:\nInstagram / TikTok handle:\nBias group:"), external: true },
   },
 ];
 
@@ -146,6 +148,15 @@ export const sceneEvents: SceneEvent[] = [
       "Kenya's anime and manga convention goes fully outdoor — cosplay competitions, anime vendors, community meetups, and an 18+ afterparty after 7PM.",
     nataka: "Nataka directed and produced the promo film.",
     link: { label: "Tickets", href: "https://events.gig.co.ke/event/gev_1171/ticket" },
+  },
+  {
+    name: "Kpop Meets Thai Festival",
+    kind: "kpop",
+    venue: "Kijito Gardens, Nairobi",
+    status: "confirmed",
+    date: "Sat 12 Dec 2026 · 11AM–11PM",
+    note:
+      "A one-day K-pop and Thai summer festival — music, culture and connection, running 11am to 11pm. Tickets Ksh 1,000.",
   },
   {
     name: "K-pop Festa",
