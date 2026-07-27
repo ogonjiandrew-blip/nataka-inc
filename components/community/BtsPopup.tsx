@@ -27,6 +27,7 @@ export default function BtsPopup() {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(true); // hidden until storage is checked
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [userStarted, setUserStarted] = useState(false);
   const [clip, setClip] = useState(0);
 
   useEffect(() => {
@@ -44,14 +45,25 @@ export default function BtsPopup() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Autoplay whenever the clip changes while shown. Muted + playsInline keeps
-  // this within every browser's autoplay policy; if a browser still refuses,
-  // the poster frame shows and the card quietly behaves like a still image.
-  // Reduced-motion visitors get the poster card without autoplay.
+  /*
+   * Keep it playing. A single play() call is not enough: Chrome pauses muted
+   * media "to save power" (AbortError: video-only background media was paused)
+   * — especially mid entrance-animation, when the card is still near opacity 0.
+   * The clips now carry a silent audio track so they aren't classed as
+   * video-only, and this poll re-starts anything that gets paused out from
+   * under us. It stops as soon as the card is hidden or dismissed.
+   */
   useEffect(() => {
-    if (!visible || dismissed || reducedMotion) return;
-    videoRef.current?.play().catch(() => {});
-  }, [visible, dismissed, reducedMotion, clip]);
+    if (!visible || dismissed || (reducedMotion && !userStarted)) return;
+
+    const tryPlay = () => {
+      const v = videoRef.current;
+      if (v && v.paused) v.play().catch(() => {});
+    };
+    tryPlay();
+    const id = setInterval(tryPlay, 1000);
+    return () => clearInterval(id);
+  }, [visible, dismissed, reducedMotion, userStarted, clip]);
 
   const hide = () => {
     setDismissed(true);
@@ -88,8 +100,11 @@ export default function BtsPopup() {
                   poster={CLIPS[clip].poster}
                   muted
                   playsInline
-                  autoPlay={!reducedMotion}
+                  autoPlay={!reducedMotion || userStarted}
                   preload="auto"
+                  onCanPlay={(e) => {
+                    if (!reducedMotion || userStarted) e.currentTarget.play().catch(() => {});
+                  }}
                   onEnded={() => setClip((c) => (c + 1) % CLIPS.length)}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -123,6 +138,24 @@ export default function BtsPopup() {
                 </div>
               </div>
             </Link>
+
+            {/* Visitors who asked for reduced motion get a still with an opt-in
+                play control rather than video starting at them unannounced. */}
+            {reducedMotion && !userStarted && (
+              <button
+                type="button"
+                onClick={() => {
+                  setUserStarted(true);
+                  videoRef.current?.play().catch(() => {});
+                }}
+                aria-label="Play the behind-the-scenes clips"
+                className="absolute inset-0 z-10 flex items-center justify-center bg-ink/45 rounded-xl hover:bg-ink/30 transition-colors"
+              >
+                <span className="w-9 h-9 rounded-full bg-otaku text-ink flex items-center justify-center text-[11px] pl-0.5">
+                  ▶
+                </span>
+              </button>
+            )}
 
             <button
               type="button"
