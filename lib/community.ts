@@ -74,11 +74,11 @@ export const drops: Drop[] = [
   },
   {
     chapter: "04",
-    title: "Untitled",
-    kind: "—",
-    status: "tba",
+    title: "Film Two",
+    kind: "Film · In production",
+    status: "soon",
     blurb:
-      "The next chapter isn't announced yet. The community hears about it before the algorithm does.",
+      "A new Otamatsuri film is being shot right now — the behind-the-scenes clips floating around this site are from that set. The community sees the full cut first.",
   },
 ];
 
