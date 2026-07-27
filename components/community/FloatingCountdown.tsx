@@ -72,12 +72,18 @@ export default function FloatingCountdown() {
             </span>
 
             <span className="flex flex-col leading-none">
-              <span className="font-sans text-[8px] md:text-[9px] tracking-widest2 uppercase text-otaku-light font-medium mb-1">
+              <span className="font-sans text-[8px] md:text-[9px] tracking-widest2 uppercase text-otaku-light font-medium mb-1.5">
                 Otamatsuri 2026
               </span>
-              <span className="font-geist font-black text-white text-sm md:text-base tabular-nums tracking-tight">
-                {d}d <span className="text-white/70">{pad(h)}:{pad(m)}</span>
-                <span className="hidden md:inline text-white/70">:{pad(s)}</span>
+              {/* Days sit apart from the clock — at a glance the day count is
+                  the number that matters, and the digits need room to read. */}
+              <span className="flex items-baseline gap-4 font-geist font-black text-sm md:text-base tabular-nums">
+                <span className="text-white">
+                  {d}<span className="text-white/55 ml-px">d</span>
+                </span>
+                <span className="text-white/75 tracking-wider">
+                  {pad(h)}:{pad(m)}<span className="hidden md:inline">:{pad(s)}</span>
+                </span>
               </span>
             </span>
 
