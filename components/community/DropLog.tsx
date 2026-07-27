@@ -83,7 +83,9 @@ export default function DropLog() {
               transition={{ duration: 0.5, delay: Math.min(i * 0.09, 0.4) }}
             >
               {d.href ? (
-                d.href.startsWith("#") ? (
+                d.external ? (
+                  <a href={d.href} target="_blank" rel="noopener noreferrer" className={cls}>{Row}</a>
+                ) : d.href.startsWith("#") ? (
                   <a href={d.href} className={cls}>{Row}</a>
                 ) : (
                   <Link href={d.href} className={cls}>{Row}</Link>

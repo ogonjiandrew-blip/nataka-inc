@@ -33,6 +33,8 @@ export type Drop = {
   status: DropStatus;
   blurb: string;
   href?: string;
+  /** Opens in a new tab — used for links off-site (e.g. the organiser's post) */
+  external?: boolean;
 };
 
 export const dropStatusLabel: Record<DropStatus, string> = {
@@ -64,9 +66,11 @@ export const drops: Drop[] = [
     chapter: "03",
     title: "The Promo Film",
     kind: "Film",
-    status: "soon",
+    status: "live",
     blurb:
-      "The full cinematic promo Nataka directed and produced for the festival. Finished and waiting on the festival's release date.",
+      "The full cinematic promo Nataka directed and produced for the festival — out now on Movie Jabber's channel. Watch it there and send them the love.",
+    href: "https://www.instagram.com/p/DbGb8UVum-c/",
+    external: true,
   },
   {
     chapter: "04",

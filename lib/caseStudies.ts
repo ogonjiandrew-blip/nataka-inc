@@ -116,7 +116,9 @@ export const caseStudies: CaseStudy[] = [
       "Graded warm and filmic to bind the whole promo into one cohesive, cinematic look.",
     ],
     result:
-      "A bold promo film Nataka directed and produced from concept to final cut — proof the studio can build a fully realised cinematic world in Kenya. Ahead of release.",
+      "A bold promo film Nataka directed and produced from concept to final cut — proof the studio can build a fully realised cinematic world in Kenya. Released by Movie Jabber ahead of Otamatsuri 2026.",
+    watchUrl: "https://www.instagram.com/p/DbGb8UVum-c/",
+    watchLabel: "Watch the Otamatsuri promo on Instagram",
   },
 ];
 

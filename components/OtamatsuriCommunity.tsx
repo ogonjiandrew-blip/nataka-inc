@@ -32,7 +32,7 @@ const pillars = [
   {
     jp: "続く",
     title: "Released in Chapters",
-    desc: "Stills and wallpapers are out now; the full film follows on the festival's date. Every chapter is announced to the community before anyone else.",
+    desc: "The promo film is out now on Movie Jabber's channel, and the stills and wallpapers are yours. Every new chapter is announced to the community first.",
   },
 ];
 

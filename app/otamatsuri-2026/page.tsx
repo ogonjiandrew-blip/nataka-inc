@@ -16,6 +16,8 @@ import Countdown from "@/components/community/Countdown";
 const siteUrl = "https://www.natakainc.com";
 const TICKETS = "https://events.gig.co.ke/event/gev_1171/ticket";
 const ORGANISER = "https://moviejabber.world/otamatsuri-2026-tickets-event-details/";
+// The promo film, released by the organisers on their own channel.
+const FILM = "https://www.instagram.com/p/DbGb8UVum-c/";
 
 export const metadata: Metadata = {
   title: { absolute: "Otamatsuri 2026 — Kenya's Anime Festival | Date, Venue & Tickets" },
@@ -232,10 +234,10 @@ export default function Otamatsuri2026Page() {
                 className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
                 Get Tickets →
               </a>
-              <Link href="/community#wallpapers"
+              <a href={FILM} target="_blank" rel="noopener noreferrer"
                 className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200">
-                Free Wallpapers
-              </Link>
+                Watch the Promo Film
+              </a>
             </div>
           </div>
         </section>
@@ -316,11 +318,14 @@ export default function Otamatsuri2026Page() {
               </h2>
               <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed mb-7">
                 Nataka Inc directed and produced Otamatsuri&apos;s cinematic promo film in Kenya,
-                with Kenyan cosplayers and prop-makers. The film itself is Movie Jabber&apos;s to
-                release — these are frames from the shoot.
+                with Kenyan cosplayers and prop-makers. It&apos;s out now on Movie Jabber&apos;s
+                channel — watch it there, then take the frames.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Link href="/community#wallpapers" className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
+                <a href={FILM} target="_blank" rel="noopener noreferrer" className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
+                  Watch the Film →
+                </a>
+                <Link href="/community#wallpapers" className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200">
                   Free Wallpapers ↓
                 </Link>
                 <Link href="/community#photocard" className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200">
