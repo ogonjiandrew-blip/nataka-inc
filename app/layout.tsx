@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import Preloader from "@/components/Preloader";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import FloatingCountdown from "@/components/community/FloatingCountdown";
 import SoundToggle from "@/components/SoundToggle";
 import "./globals.css";
 
@@ -242,6 +243,7 @@ export default function RootLayout({
       <body>
         <Preloader />
         {children}
+        <FloatingCountdown />
         <WhatsAppButton />
         <SoundToggle />
       </body>

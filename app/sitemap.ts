@@ -36,6 +36,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.85,
     })),
     {
+      url: `${siteUrl}/otamatsuri-2026`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.95,
+    },
+    {
       url: `${siteUrl}/community`,
       lastModified: new Date(),
       changeFrequency: "weekly",
