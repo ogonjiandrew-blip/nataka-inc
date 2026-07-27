@@ -61,6 +61,25 @@ export default function DropLog() {
                 <p className={`font-sans text-sm leading-relaxed max-w-2xl ${d.status === "tba" ? "text-white/35" : "text-white/65"}`}>
                   {d.blurb}
                 </p>
+
+                {d.video && (
+                  <div className="mt-6">
+                    <div className="relative inline-block">
+                      {/* Sound stays in the visitor's hands — poster + controls, no forced audio */}
+                      <video
+                        src={d.video.src}
+                        poster={d.video.poster}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="w-48 md:w-60 aspect-[9/16] object-cover rounded-xl border border-otaku/40 bg-ink-50 shadow-lg shadow-black/50"
+                      />
+                      <span className="absolute top-2 left-2 font-sans text-[8px] tracking-widest2 uppercase text-white/90 bg-ink/75 backdrop-blur-sm px-2 py-1 rounded border-l-2 border-otaku pointer-events-none">
+                        {d.video.label}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {d.href && (

@@ -35,6 +35,8 @@ export type Drop = {
   href?: string;
   /** Opens in a new tab — used for links off-site (e.g. the organiser's post) */
   external?: boolean;
+  /** Inline vertical video — the drop IS the content, played right in the log */
+  video?: { src: string; poster: string; label: string };
 };
 
 export const dropStatusLabel: Record<DropStatus, string> = {
@@ -74,11 +76,16 @@ export const drops: Drop[] = [
   },
   {
     chapter: "04",
-    title: "Film Two",
-    kind: "Film · In production",
-    status: "soon",
+    title: "Film Two — Day 1 on Set",
+    kind: "Production diary",
+    status: "live",
     blurb:
-      "A new Otamatsuri film is being shot right now — the behind-the-scenes clips floating around this site are from that set. The community sees the full cut first.",
+      "A new Otamatsuri film is in production, and this is day one — full Scout rig, smoke, and the first frames coming together. The community sees every day of this before the algorithm does. Full cut lands here first.",
+    video: {
+      src: "/bts/day1-diary.mp4",
+      poster: "/bts/day1-diary-poster.jpg",
+      label: "Day 1 · 30 sec",
+    },
   },
 ];
 
