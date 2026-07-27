@@ -27,7 +27,6 @@ export default function BtsPopup() {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(true); // hidden until storage is checked
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [userStarted, setUserStarted] = useState(false);
   const [clip, setClip] = useState(0);
 
   useEffect(() => {
@@ -54,16 +53,19 @@ export default function BtsPopup() {
    * under us. It stops as soon as the card is hidden or dismissed.
    */
   useEffect(() => {
-    if (!visible || dismissed || (reducedMotion && !userStarted)) return;
+    if (!visible || dismissed) return;
 
     const tryPlay = () => {
       const v = videoRef.current;
       if (v && v.paused) v.play().catch(() => {});
     };
     tryPlay();
-    const id = setInterval(tryPlay, 1000);
-    return () => clearInterval(id);
-  }, [visible, dismissed, reducedMotion, userStarted, clip]);
+    // Retry fast at first so it starts the instant it can, then settle down.
+    const quick = setInterval(tryPlay, 150);
+    const settle = setTimeout(() => clearInterval(quick), 3000);
+    const slow = setInterval(tryPlay, 1000);
+    return () => { clearInterval(quick); clearTimeout(settle); clearInterval(slow); };
+  }, [visible, dismissed, clip]);
 
   const hide = () => {
     setDismissed(true);
@@ -80,17 +82,17 @@ export default function BtsPopup() {
     <AnimatePresence>
       {show && (
         <motion.div
-          initial={{ opacity: 0, y: 24, scale: 0.92 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 24, scale: 0.92 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.92 }}
+          animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+          exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.92 }}
+          transition={{ duration: reducedMotion ? 0.2 : 0.45, ease: [0.22, 1, 0.36, 1] }}
           className="fixed bottom-40 right-4 md:bottom-[11.5rem] md:right-8 z-[9974]"
         >
           <div className="relative">
             <Link
               href="/community#drops"
               aria-label="Behind the scenes of the new Otamatsuri film — see the drop log"
-              className="group block w-32 md:w-40 overflow-hidden rounded-xl border border-otaku/50 hover:border-otaku bg-ink shadow-lg shadow-black/60 transition-colors"
+              className="group block w-40 md:w-52 overflow-hidden rounded-xl border border-otaku/50 hover:border-otaku bg-ink shadow-lg shadow-black/60 transition-colors"
             >
               <div className="relative aspect-[9/16]">
                 <video
@@ -100,11 +102,10 @@ export default function BtsPopup() {
                   poster={CLIPS[clip].poster}
                   muted
                   playsInline
-                  autoPlay={!reducedMotion || userStarted}
+                  autoPlay
                   preload="auto"
-                  onCanPlay={(e) => {
-                    if (!reducedMotion || userStarted) e.currentTarget.play().catch(() => {});
-                  }}
+                  onLoadedData={(e) => e.currentTarget.play().catch(() => {})}
+                  onCanPlay={(e) => e.currentTarget.play().catch(() => {})}
                   onEnded={() => setClip((c) => (c + 1) % CLIPS.length)}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -138,24 +139,6 @@ export default function BtsPopup() {
                 </div>
               </div>
             </Link>
-
-            {/* Visitors who asked for reduced motion get a still with an opt-in
-                play control rather than video starting at them unannounced. */}
-            {reducedMotion && !userStarted && (
-              <button
-                type="button"
-                onClick={() => {
-                  setUserStarted(true);
-                  videoRef.current?.play().catch(() => {});
-                }}
-                aria-label="Play the behind-the-scenes clips"
-                className="absolute inset-0 z-10 flex items-center justify-center bg-ink/45 rounded-xl hover:bg-ink/30 transition-colors"
-              >
-                <span className="w-9 h-9 rounded-full bg-otaku text-ink flex items-center justify-center text-[11px] pl-0.5">
-                  ▶
-                </span>
-              </button>
-            )}
 
             <button
               type="button"
