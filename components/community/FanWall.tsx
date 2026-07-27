@@ -19,11 +19,13 @@ const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(submit
 
 // Real frames from the Otamatsuri shoot — the wall opens with the people who
 // actually showed up, then leaves the rest of the slots for the community.
+// These are frames from our own shoot, not fan submissions — labelled as such so
+// nobody reads them as cosplayers who opted in. Credits go on as we confirm names.
 const seeded = [
-  { src: "/stills/otamatsuri/community/1.jpg",  label: "From the Otamatsuri shoot" },
-  { src: "/stills/otamatsuri/community/19.jpg", label: "From the Otamatsuri shoot" },
-  { src: "/stills/otamatsuri/community/5.jpg",  label: "From the Otamatsuri shoot" },
-  { src: "/stills/otamatsuri/community/17.jpg", label: "From the Otamatsuri shoot" },
+  { src: "/stills/otamatsuri/community/1.jpg",  label: "Otamatsuri shoot · credit pending" },
+  { src: "/stills/otamatsuri/community/19.jpg", label: "Otamatsuri shoot · credit pending" },
+  { src: "/stills/otamatsuri/community/5.jpg",  label: "Otamatsuri shoot · credit pending" },
+  { src: "/stills/otamatsuri/community/17.jpg", label: "Otamatsuri shoot · credit pending" },
 ];
 
 const OPEN_SLOTS = 4;
@@ -89,7 +91,7 @@ export default function FanWall() {
           >
             <Image
               src={s.src}
-              alt="Cosplayer featured on the Nataka Inc fan wall, from the Otamatsuri shoot in Kenya"
+              alt="Still from the Otamatsuri promo film shoot in Kenya, produced by Nataka Inc"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               sizes="(max-width: 768px) 50vw, 25vw"

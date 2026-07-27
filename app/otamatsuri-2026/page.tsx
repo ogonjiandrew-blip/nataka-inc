@@ -15,6 +15,7 @@ import Countdown from "@/components/community/Countdown";
 
 const siteUrl = "https://www.natakainc.com";
 const TICKETS = "https://events.gig.co.ke/event/gev_1171/ticket";
+const ORGANISER = "https://moviejabber.world/otamatsuri-2026-tickets-event-details/";
 
 export const metadata: Metadata = {
   title: { absolute: "Otamatsuri 2026 — Kenya's Anime Festival | Date, Venue & Tickets" },
@@ -74,15 +75,21 @@ const eventSchema = {
       addressCountry: "KE",
     },
   },
-  organizer: { "@type": "Organization", name: "Movie Jabber" },
+  organizer: {
+    "@type": "Organization",
+    name: "Movie Jabber",
+    url: ORGANISER,
+    sameAs: ["https://moviejabber.world/"],
+  },
+  // Deliberately no price in the markup. Ticket prices move in phases and the
+  // live checkout has already diverged from the organiser's published schedule
+  // — publishing a stale price for someone else's event is worse than omitting
+  // it. The offer points at the official seller, which is the source of truth.
   offers: {
-    "@type": "AggregateOffer",
-    priceCurrency: "KES",
-    lowPrice: "3000",
-    highPrice: "4000",
-    offerCount: "3",
-    availability: "https://schema.org/InStock",
+    "@type": "Offer",
     url: TICKETS,
+    availability: "https://schema.org/InStock",
+    priceCurrency: "KES",
   },
   isAccessibleForFree: false,
   inLanguage: "en",
@@ -99,7 +106,7 @@ const faqs = [
   },
   {
     q: "How much are Otamatsuri 2026 tickets?",
-    a: "Ticket prices rise in phases. Through 31 July 2026 tickets are Ksh 3,000; from 1 to 21 August they are Ksh 3,500; and tickets bought at the gate on the day are Ksh 4,000. Buying earlier is meaningfully cheaper.",
+    a: "Tickets are sold in phases and the price rises the closer you get to the day, so earlier is cheaper. Movie Jabber sets and sells them — check the official ticket page for the current price rather than relying on figures quoted elsewhere.",
   },
   {
     q: "What happens at Otamatsuri?",
@@ -139,7 +146,7 @@ const facts = [
   { label: "Date", value: "Saturday 22 August 2026" },
   { label: "Time", value: "10:00am – 7:00pm, then after-party until 8:00am Sunday" },
   { label: "Venue", value: "The Carnivore Grounds, Langata, Nairobi" },
-  { label: "Tickets", value: "From Ksh 3,000 (rises to Ksh 4,000 at the gate)" },
+  { label: "Tickets", value: "Sold by Movie Jabber — see the official ticket page for current pricing" },
   { label: "Organiser", value: "Movie Jabber" },
   { label: "Promo film", value: "Directed & produced by Nataka Inc" },
 ];
@@ -187,12 +194,22 @@ export default function Otamatsuri2026Page() {
               ← The Community
             </Link>
 
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-4">
               <span className="h-px w-10 bg-otaku" />
               <p className="font-sans text-otaku-light text-[10px] tracking-widest2 uppercase font-medium">
                 Sat 22 Aug 2026 · The Carnivore Grounds, Nairobi
               </p>
             </div>
+
+            {/* Deference above the fold: this is not the official event site. */}
+            <p className="font-sans text-white/60 text-[11px] md:text-xs leading-relaxed mb-6 max-w-2xl">
+              Organised by{" "}
+              <a href={ORGANISER} target="_blank" rel="noopener noreferrer" className="text-white underline decoration-otaku decoration-2 underline-offset-4 hover:text-otaku-light transition-colors">
+                Movie Jabber
+              </a>
+              . This is a fan guide by Nataka Inc, the studio that made the promo film — not the
+              official Otamatsuri site. Tickets and announcements come from the organisers.
+            </p>
 
             <h1 className="leading-none mb-6">
               <span className="font-geist font-black text-[clamp(2.4rem,10vw,8rem)] text-white uppercase block">
@@ -244,8 +261,12 @@ export default function Otamatsuri2026Page() {
           <div className="mt-8 border border-otaku/30 bg-otaku/[0.05] p-6">
             <p className="font-sans text-white/80 text-sm leading-relaxed">
               <span className="font-geist font-black text-otaku-light uppercase text-xs tracking-widest">Heads up · </span>
-              Ticket prices step up on <strong className="text-white">1 August</strong> (Ksh 3,000 → Ksh 3,500) and again
-              at the gate (Ksh 4,000). If you&apos;re going, buying early is the cheapest it will be.
+              Ticket prices rise in phases as the day gets closer, so going early is the cheapest it will be.
+              Prices are set by the organisers —{" "}
+              <a href={TICKETS} target="_blank" rel="noopener noreferrer" className="text-otaku-light underline underline-offset-2 hover:text-white transition-colors">
+                check the official ticket page
+              </a>{" "}
+              for what it costs today.
             </p>
           </div>
         </section>
@@ -291,12 +312,12 @@ export default function Otamatsuri2026Page() {
                 <p className="font-sans text-otaku-light text-[10px] tracking-widest2 uppercase font-medium">The Promo Film</p>
               </div>
               <h2 className="font-geist font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase leading-none mb-5">
-                We shot it.<br /><span className="font-display font-semibold italic normal-case text-otaku">You can have it.</span>
+                We shot it.<br /><span className="font-display font-semibold italic normal-case text-otaku">See the frames.</span>
               </h2>
               <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed mb-7">
                 Nataka Inc directed and produced Otamatsuri&apos;s cinematic promo film in Kenya,
-                with Kenyan cosplayers and prop-makers. The stills are free to take — six phone
-                wallpapers, and a photocard maker that puts your own name on a frame from the shoot.
+                with Kenyan cosplayers and prop-makers. The film itself is Movie Jabber&apos;s to
+                release — these are frames from the shoot.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link href="/community#wallpapers" className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
@@ -339,8 +360,13 @@ export default function Otamatsuri2026Page() {
               See you at <span className="text-otaku">The Carnivore.</span>
             </h2>
             <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed max-w-2xl mb-8">
-              Tickets are sold by the organisers, Movie Jabber. If you&apos;re cosplaying, send us
-              your shots afterwards — the fan wall is open and Kenyan cosplayers get the credit.
+              Otamatsuri is organised and ticketed by{" "}
+              <a href={ORGANISER} target="_blank" rel="noopener noreferrer" className="text-white underline decoration-otaku decoration-2 underline-offset-4 hover:text-otaku-light transition-colors">
+                Movie Jabber
+              </a>
+              {" "}— head to their page for the full line-up and official announcements. If
+              you&apos;re cosplaying, send us your shots afterwards; the fan wall is open and
+              Kenyan cosplayers get the credit.
             </p>
             <div className="flex flex-wrap gap-3">
               <a href={TICKETS} target="_blank" rel="noopener noreferrer" className="font-geist font-black text-xs text-ink bg-otaku px-8 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
