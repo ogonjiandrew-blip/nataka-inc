@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CosplayScroll from "@/components/community/CosplayScroll";
+import HeroSlideshow from "@/components/community/HeroSlideshow";
 import { cosplayFrames } from "@/lib/otamatsuriCosplay";
 import { waLink } from "@/lib/whatsapp";
 
@@ -23,7 +23,8 @@ import { waLink } from "@/lib/whatsapp";
 
 const siteUrl = "https://www.natakainc.com";
 const pageUrl = `${siteUrl}/community/otamatsuri-cosplay-nairobi`;
-const heroImage = "/stills/otamatsuri/vol001/red-light.jpg";
+// The frame the hero reel opens on, and therefore the social card image.
+const heroImage = "/stills/otamatsuri/vol001/arrival.jpg";
 
 export const metadata: Metadata = {
   title: {
@@ -165,16 +166,14 @@ export default function OtamatsuriCosplayPage() {
 
           {/* ══════════ HERO ══════════ */}
           <section className="relative min-h-[74vh] md:min-h-[82vh] flex items-end overflow-hidden">
-            <Image
-              src={heroImage}
-              alt="Otamatsuri cosplay in Nairobi: a Kenyan cosplayer in a Survey Corps jacket holding a blade over the shoulder under red light"
-              fill
-              priority
-              className="object-cover opacity-60"
-              sizes="100vw"
-              quality={85}
-            />
+            <HeroSlideshow />
+
+            {/* Two scrims, not one. The vertical scrim was enough when the hero
+                was a single chosen frame; now that ten very different frames
+                rotate through it, the left hand scrim is what keeps the
+                headline readable over all of them. */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0B0907] via-[#0B0907]/70 to-[#0B0907]/40" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0B0907]/85 via-[#0B0907]/35 to-transparent" />
 
             {/* Huge 祭 watermark */}
             <span
