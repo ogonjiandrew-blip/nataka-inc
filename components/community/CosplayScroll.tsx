@@ -28,11 +28,8 @@ function Seal({ n }: { n: number }) {
 
 export default function CosplayScroll({
   frames = cosplayFrames,
-  /** Shown on the reading cord only for the first scroll on the page */
-  showCord = true,
 }: {
   frames?: CosplayFrame[];
-  showCord?: boolean;
 } = {}) {
   const railRef = useRef<HTMLDivElement>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -81,21 +78,18 @@ export default function CosplayScroll({
   // between server and client, which a useReducedMotion() gate would not.
   return (
     <MotionConfig reducedMotion="user">
-      {/* 巻緒 — the reading cord, with a bead that slides as the scroll unrolls.
-          Only the first scroll on a page draws it, otherwise two beads fight
-          over the same rail. Purely decorative, so it is hidden from a11y. */}
-      {showCord && (
-        <div
-          aria-hidden
-          className="pointer-events-none fixed right-5 top-1/4 bottom-1/4 hidden xl:block z-30"
-        >
-          <div className="emaki-cord w-px h-full mx-auto" />
-          <motion.span
-            style={{ top: beadTop }}
-            className="absolute left-0 -ml-[5px] -mt-[5px] w-2.5 h-2.5 rounded-full bg-kin-light shadow-[0_0_14px_rgba(214,183,127,0.7)]"
-          />
-        </div>
-      )}
+      {/* 巻緒 — the reading cord, with a bead that slides as the scroll
+          unrolls. Purely decorative, so it is hidden from assistive tech. */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed right-5 top-1/4 bottom-1/4 hidden xl:block z-30"
+      >
+        <div className="emaki-cord w-px h-full mx-auto" />
+        <motion.span
+          style={{ top: beadTop }}
+          className="absolute left-0 -ml-[5px] -mt-[5px] w-2.5 h-2.5 rounded-full bg-kin-light shadow-[0_0_14px_rgba(214,183,127,0.7)]"
+        />
+      </div>
 
       <div ref={railRef} className="space-y-20 md:space-y-32">
         {frames.map((frame, i) => {
@@ -161,7 +155,7 @@ export default function CosplayScroll({
                           className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 85vw, 1000px"
                           quality={80}
-                          priority={showCord && i === 0}
+                          priority={i === 0}
                         />
                         {/* 撮影 corner mark, revealed on hover. Decorative, and
                             the button already announces the frame, so it stays

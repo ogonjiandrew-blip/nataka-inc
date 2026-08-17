@@ -4,7 +4,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CosplayScroll from "@/components/community/CosplayScroll";
-import { cosplayFrames, vol001Frames } from "@/lib/otamatsuriCosplay";
+import { cosplayFrames } from "@/lib/otamatsuriCosplay";
 import { waLink } from "@/lib/whatsapp";
 
 /*
@@ -23,14 +23,14 @@ import { waLink } from "@/lib/whatsapp";
 
 const siteUrl = "https://www.natakainc.com";
 const pageUrl = `${siteUrl}/community/otamatsuri-cosplay-nairobi`;
-const heroImage = "/stills/otamatsuri/community/16.jpg";
+const heroImage = "/stills/otamatsuri/vol001/red-light.jpg";
 
 export const metadata: Metadata = {
   title: {
     absolute: "Otamatsuri Cosplay in Nairobi | Photos from Kenya's Anime Festival Film",
   },
   description:
-    "Twenty nine cinematic Otamatsuri cosplay photos shot in Nairobi, Kenya by Nataka Inc. Kenyan cosplayers, handmade armour and props, and the story behind every single frame.",
+    "Ten cinematic Otamatsuri cosplay photos shot in Nairobi, Kenya by Nataka Inc. Kenyan cosplayers, handmade armour and props, and the story behind every single frame.",
   keywords: [
     "Otamatsuri cosplay",
     "Otamatsuri cosplay Nairobi",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Otamatsuri Cosplay in Nairobi | Nataka Inc",
     description:
-      "Twenty nine cinematic frames of Otamatsuri cosplay, shot in Nairobi with Kenyan cosplayers. Read it like a scroll.",
+      "Ten cinematic frames of Otamatsuri cosplay, shot in Nairobi with Kenyan cosplayers. Read it like a scroll.",
     url: pageUrl,
     type: "article",
     images: [{ url: `${siteUrl}${heroImage}`, width: 1920, height: 1080 }],
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Otamatsuri Cosplay in Nairobi | Nataka Inc",
     description:
-      "Twenty nine cinematic frames of Otamatsuri cosplay, shot in Nairobi with Kenyan cosplayers.",
+      "Ten cinematic frames of Otamatsuri cosplay, shot in Nairobi with Kenyan cosplayers.",
     images: [`${siteUrl}${heroImage}`],
   },
 };
@@ -63,19 +63,19 @@ export const metadata: Metadata = {
 const faqs = [
   {
     q: "Where can I see Otamatsuri cosplay from Nairobi?",
-    a: "Right here. This page holds the cosplay frames from the two Otamatsuri films Nataka Inc directed and produced in and around Nairobi. Otamatsuri itself is Kenya's anime and manga festival, organised by Movie Jabber, and the 2026 edition runs on Saturday 22 August 2026 at The Carnivore Grounds in Nairobi.",
+    a: "Right here. This page holds the cosplay frames from the Otamatsuri film Nataka Inc directed and produced in and around Nairobi. Otamatsuri itself is Kenya's anime and manga festival, organised by Movie Jabber, and the 2026 edition runs on Saturday 22 August 2026 at The Carnivore Grounds in Nairobi.",
   },
   {
     q: "Were these photos taken at the Otamatsuri convention?",
-    a: "No, and that is worth saying. These are frames from the films, shot on location around Nairobi with Kenyan cosplayers rather than on the convention floor. That is why the light, the framing and the depth of field read the way they do. The festival floor is its own kind of brilliant, and this simply is not it.",
+    a: "No, and that is worth saying. These are frames from the film, shot on location around Nairobi with Kenyan cosplayers rather than on the convention floor. That is why the light, the framing and the depth of field read the way they do. The festival floor is its own kind of brilliant, and this simply is not it.",
   },
   {
     q: "Who made the costumes and the props?",
-    a: "The cosplayers did. The armour, the horned headdress, the greatsword and the ODM gear in these frames were all cut, layered, painted and fitted by hand by Kenyan cosplayers and prop makers from the local anime community.",
+    a: "The cosplayers did. The Survey Corps uniforms, the ODM gear, the horned helmet and the axe in these frames were all cut, layered, painted and fitted by hand by Kenyan cosplayers and prop makers from the local anime community.",
   },
   {
     q: "Can I repost these Otamatsuri cosplay pictures?",
-    a: "Yes, for personal use. Repost them anywhere you like, just keep the credit to Nataka Inc on them. Six frames from the first shoot are also cut to 1080 by 1920 as free phone wallpapers on the community page.",
+    a: "Yes, for personal use. Repost them anywhere you like, just keep the credit to Nataka Inc on them. Six frames from an earlier Otamatsuri shoot are also cut to 1080 by 1920 as free phone wallpapers on the community page.",
   },
   {
     q: "Can Nataka shoot my cosplay in Nairobi?",
@@ -99,13 +99,13 @@ const gallerySchema = {
   "@id": `${pageUrl}#gallery`,
   name: "Otamatsuri Cosplay in Nairobi",
   description:
-    "Twenty nine cinematic frames of Otamatsuri cosplay, shot on location in and around Nairobi, Kenya with Kenyan cosplayers for the Otamatsuri films.",
+    "Ten cinematic frames of Otamatsuri cosplay, shot on location in and around Nairobi, Kenya with Kenyan cosplayers for the Otamatsuri film.",
   url: pageUrl,
   inLanguage: "en-KE",
   isPartOf: { "@id": `${siteUrl}/#website` },
   publisher: { "@id": `${siteUrl}/#org` },
   about: { "@type": "Event", name: "Otamatsuri", location: { "@type": "Place", name: "Nairobi, Kenya" } },
-  associatedMedia: [...cosplayFrames, ...vol001Frames].map((frame) => ({
+  associatedMedia: cosplayFrames.map((frame) => ({
     "@type": "ImageObject",
     contentUrl: `${siteUrl}${frame.src}`,
     url: `${pageUrl}#${frame.slug}`,
@@ -167,7 +167,7 @@ export default function OtamatsuriCosplayPage() {
           <section className="relative min-h-[74vh] md:min-h-[82vh] flex items-end overflow-hidden">
             <Image
               src={heroImage}
-              alt="Otamatsuri cosplay in Nairobi: a Kenyan cosplayer in handmade armour backlit by the sunset, holding a scratch built blade"
+              alt="Otamatsuri cosplay in Nairobi: a Kenyan cosplayer in a Survey Corps jacket holding a blade over the shoulder under red light"
               fill
               priority
               className="object-cover opacity-60"
@@ -224,8 +224,8 @@ export default function OtamatsuriCosplayPage() {
               </p>
 
               <p className="font-sans text-white/75 text-sm md:text-base leading-relaxed max-w-2xl">
-                Twenty nine frames of Otamatsuri cosplay, shot in and around Nairobi by
-                Nataka Inc across two Otamatsuri films. Kenyan cosplayers, armour and blades
+                Ten frames of Otamatsuri cosplay, shot in and around Nairobi by
+                Nataka Inc for the Otamatsuri film. Kenyan cosplayers, armour and blades
                 built by hand, real Kenyan locations, lit and graded like a film.
                 Read it top to bottom like a scroll. Every frame has its name in kanji
                 and the story of how it was made written underneath it.
@@ -276,11 +276,11 @@ export default function OtamatsuriCosplayPage() {
 
                 <div className="grid md:grid-cols-2 gap-6 md:gap-10 max-w-4xl">
                   <p className="font-sans text-white/70 text-sm md:text-[15px] leading-relaxed">
-                    Look at what this scene builds. Plate armour shaped from scratch, a
-                    greatsword layered and painted by hand, a headdress built rib by rib,
-                    ODM gear rigged to be worn for a whole day. People here put months
-                    into one costume, and work like that has earned a camera that can
-                    keep up with it.
+                    Look at what this scene builds. A full ODM harness with canisters
+                    and grips, a horned helmet cut panel by panel, an axe shaped and
+                    painted by hand, uniforms patched and stitched to match the source
+                    frame for frame. People here put months into one costume, and work
+                    like that has earned a camera that can keep up with it.
                   </p>
                   <p className="font-sans text-white/70 text-sm md:text-[15px] leading-relaxed">
                     Nataka Inc directed and produced the promo film for Otamatsuri, the
@@ -292,7 +292,7 @@ export default function OtamatsuriCosplayPage() {
 
                 <div className="flex flex-wrap gap-x-8 gap-y-3 mt-8 pt-6 border-t border-white/10">
                   {[
-                    { jp: "廿九", label: "Frames in the scroll" },
+                    { jp: "十", label: "Frames in the scroll" },
                     { jp: "ナイロビ", label: "Shot around Nairobi" },
                     { jp: "手作り", label: "Every prop handmade" },
                   ].map((stat) => (
@@ -319,47 +319,6 @@ export default function OtamatsuriCosplayPage() {
             </div>
 
             <CosplayScroll />
-          </section>
-
-          {/* ══════════ SCROLL TWO — the newer film ══════════ */}
-          <section id="scroll-two" className="px-6 md:px-14 max-w-7xl mx-auto pb-16 md:pb-24 scroll-mt-20">
-            <div className="flex items-center gap-4 mb-10 md:mb-14">
-              <span className="font-jp font-bold text-kin text-2xl md:text-3xl shrink-0">巻の二</span>
-              <span className="brush-rule flex-1" aria-hidden />
-              <span className="font-sans text-white/45 text-[10px] tracking-widest2 uppercase shrink-0">
-                Maki no Ni · Scroll two
-              </span>
-            </div>
-
-            <div className="grid md:grid-cols-[auto_1fr] gap-6 md:gap-10 mb-14 md:mb-20">
-              <div className="hidden md:flex flex-col items-center gap-4 w-16 shrink-0">
-                <span className="hanko font-jp font-bold w-12 h-16 text-[15px] leading-tight">
-                  <span className="tate">新作</span>
-                </span>
-                <span className="emaki-cord flex-1 w-px min-h-[40px]" />
-              </div>
-
-              <div>
-                <h2 className="font-geist font-black text-white uppercase text-[clamp(1.3rem,4vw,2.6rem)] leading-none mb-5">
-                  A second film.
-                  <br />
-                  <span className="text-shu-light">New night, new cosplayers.</span>
-                </h2>
-
-                <div className="brush-rule shu max-w-lg mb-6" aria-hidden />
-
-                <p className="font-sans text-white/70 text-sm md:text-[15px] leading-relaxed max-w-3xl">
-                  These ten frames come from the newer Otamatsuri film, shot around
-                  Nairobi with a different group of cosplayers. A shopping centre
-                  staircase standing in for a city street, a rooftop in daylight, and
-                  builds that range from a full Survey Corps rig to a horned helmet and
-                  a hand painted axe. Each one carries the festival date in the corner,
-                  because that is what they were cut for.
-                </p>
-              </div>
-            </div>
-
-            <CosplayScroll frames={vol001Frames} showCord={false} />
           </section>
 
           {/* ══════════ ABOUT OTAMATSURI ══════════ */}

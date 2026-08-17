@@ -137,8 +137,8 @@ export default function CommunityPage() {
             <div className="grid md:grid-cols-2">
               <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[340px] overflow-hidden bg-ink-50">
                 <Image
-                  src="/stills/otamatsuri/community/16.jpg"
-                  alt="Otamatsuri cosplay in Nairobi: a Kenyan cosplayer in handmade armour backlit by the sunset"
+                  src="/stills/otamatsuri/vol001/arrival.jpg"
+                  alt="Otamatsuri cosplay in Nairobi: a Kenyan cosplayer in a Survey Corps uniform and handmade ODM gear on a lit staircase at night"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -165,8 +165,8 @@ export default function CommunityPage() {
                 </h2>
 
                 <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed mb-7">
-                  Nineteen frames from the shoot, laid out as a Japanese scroll with the
-                  story behind every one of them. Kenyan cosplayers, handmade armour,
+                  Ten frames from the shoot, laid out as a Japanese scroll with the
+                  story behind every one of them. Kenyan cosplayers, handmade gear,
                   real locations.
                 </p>
 
