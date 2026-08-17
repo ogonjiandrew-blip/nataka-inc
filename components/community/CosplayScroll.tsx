@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { MotionConfig, motion, useScroll, useSpring, useTransform } from "framer-motion";
+import type { CosplayFrame } from "@/lib/otamatsuriCosplay";
 import { cosplayFrames, kanjiNumeral, watermarkKanji } from "@/lib/otamatsuriCosplay";
 
 /*
- * The scroll itself: nineteen mounted frames read top to bottom like a
+ * A scroll: mounted frames read top to bottom like a
  * kakejiku. Every panel carries a hanko seal (第◯), a vertical kanji title
  * and the English description underneath. Clicking a frame opens it full size.
  *
@@ -25,7 +26,14 @@ function Seal({ n }: { n: number }) {
   );
 }
 
-export default function CosplayScroll() {
+export default function CosplayScroll({
+  frames = cosplayFrames,
+  /** Shown on the reading cord only for the first scroll on the page */
+  showCord = true,
+}: {
+  frames?: CosplayFrame[];
+  showCord?: boolean;
+} = {}) {
   const railRef = useRef<HTMLDivElement>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -37,11 +45,14 @@ export default function CosplayScroll() {
   const beadTop = useTransform(beadY, [0, 1], ["0%", "100%"]);
 
   const close = useCallback(() => setOpenIndex(null), []);
-  const step = useCallback((dir: number) => {
-    setOpenIndex((i) =>
-      i === null ? null : (i + dir + cosplayFrames.length) % cosplayFrames.length
-    );
-  }, []);
+  const step = useCallback(
+    (dir: number) => {
+      setOpenIndex((i) =>
+        i === null ? null : (i + dir + frames.length) % frames.length
+      );
+    },
+    [frames.length]
+  );
 
   // Keyboard control + scroll lock while the lightbox is open
   useEffect(() => {
@@ -63,7 +74,7 @@ export default function CosplayScroll() {
     };
   }, [openIndex, close, step]);
 
-  const open = openIndex === null ? null : cosplayFrames[openIndex];
+  const open = openIndex === null ? null : frames[openIndex];
 
   // MotionConfig reducedMotion="user" drops the travel and keeps the fade for
   // anyone who asks the OS for less motion. It also keeps `initial` constant
@@ -71,20 +82,23 @@ export default function CosplayScroll() {
   return (
     <MotionConfig reducedMotion="user">
       {/* 巻緒 — the reading cord, with a bead that slides as the scroll unrolls.
-          Purely decorative, so it is hidden from assistive tech. */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed right-5 top-1/4 bottom-1/4 hidden xl:block z-30"
-      >
-        <div className="emaki-cord w-px h-full mx-auto" />
-        <motion.span
-          style={{ top: beadTop }}
-          className="absolute left-0 -ml-[5px] -mt-[5px] w-2.5 h-2.5 rounded-full bg-kin-light shadow-[0_0_14px_rgba(214,183,127,0.7)]"
-        />
-      </div>
+          Only the first scroll on a page draws it, otherwise two beads fight
+          over the same rail. Purely decorative, so it is hidden from a11y. */}
+      {showCord && (
+        <div
+          aria-hidden
+          className="pointer-events-none fixed right-5 top-1/4 bottom-1/4 hidden xl:block z-30"
+        >
+          <div className="emaki-cord w-px h-full mx-auto" />
+          <motion.span
+            style={{ top: beadTop }}
+            className="absolute left-0 -ml-[5px] -mt-[5px] w-2.5 h-2.5 rounded-full bg-kin-light shadow-[0_0_14px_rgba(214,183,127,0.7)]"
+          />
+        </div>
+      )}
 
       <div ref={railRef} className="space-y-20 md:space-y-32">
-        {cosplayFrames.map((frame, i) => {
+        {frames.map((frame, i) => {
           const n = i + 1;
           const flip = n % 2 === 0;
 
@@ -136,7 +150,7 @@ export default function CosplayScroll() {
                     type="button"
                     onClick={() => setOpenIndex(i)}
                     className="group block w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-kin"
-                    aria-label={`Open frame ${n} of ${cosplayFrames.length}, ${frame.title}, full size`}
+                    aria-label={`Open frame ${n} of ${frames.length}, ${frame.title}, full size`}
                   >
                     <div className="emaki-mount">
                       <div className="relative aspect-video overflow-hidden bg-black">
@@ -147,7 +161,7 @@ export default function CosplayScroll() {
                           className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 85vw, 1000px"
                           quality={80}
-                          priority={i === 0}
+                          priority={showCord && i === 0}
                         />
                         {/* 撮影 corner mark, revealed on hover. Decorative, and
                             the button already announces the frame, so it stays
@@ -166,7 +180,7 @@ export default function CosplayScroll() {
                     <div className="flex items-baseline gap-3 mb-2 flex-wrap">
                       <span className="font-geist font-black text-kin text-xs tracking-widest">
                         {String(n).padStart(2, "0")}
-                        <span className="text-white/35"> / {cosplayFrames.length}</span>
+                        <span className="text-white/35"> / {frames.length}</span>
                       </span>
                       <h3 className="font-geist font-black text-white uppercase text-lg md:text-2xl leading-none">
                         {frame.title}
@@ -194,7 +208,7 @@ export default function CosplayScroll() {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={`${open.title}. Frame ${(openIndex ?? 0) + 1} of ${cosplayFrames.length}`}
+          aria-label={`${open.title}. Frame ${(openIndex ?? 0) + 1} of ${frames.length}`}
           className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex flex-col"
           onClick={close}
         >
@@ -210,7 +224,7 @@ export default function CosplayScroll() {
                 {open.title}
               </span>
               <span className="font-geist font-black text-kin text-[11px] tracking-widest shrink-0">
-                {String((openIndex ?? 0) + 1).padStart(2, "0")} / {cosplayFrames.length}
+                {String((openIndex ?? 0) + 1).padStart(2, "0")} / {frames.length}
               </span>
             </div>
 

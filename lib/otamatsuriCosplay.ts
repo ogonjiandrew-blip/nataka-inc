@@ -52,7 +52,7 @@ export const cosplayFrames: CosplayFrame[] = [
     romaji: "Ten wo Sasu",
     title: "Sword to the Sky",
     description:
-      "Pulled all the way back, the same cosplayer becomes one small figure against a washed out sky, forest and water behind her. Cosplay photography in Nairobi almost always happens in a crowd. Here the crowd is gone and the costume has to hold an entire widescreen frame on its own, which it does.",
+      "Pulled all the way back, the same cosplayer becomes one small figure against a washed out sky, forest and water behind her. A costume has to be built well to carry an entire widescreen frame from that far out with nothing else in it. This one carries it easily.",
     alt: "Wide shot of a Kenyan knight cosplayer holding a sword to the sky above a forest and lake outside Nairobi",
   },
   {
@@ -62,7 +62,7 @@ export const cosplayFrames: CosplayFrame[] = [
     romaji: "Aogu",
     title: "Looking Up",
     description:
-      "Close on the knight, wig pulled loose, eyes up at something outside the frame. Nothing here is a pose held for a phone camera. The performance runs while the camera rolls, which is why the expression lands first and the costume second.",
+      "Close on the knight, wig pulled loose, eyes up at something outside the frame. The performance runs for as long as the camera does, and holding a character that steadily is a skill of its own. It is why the expression lands first here and the costume second.",
     alt: "Close up of a Kenyan cosplayer in a pale wig and blue cloak looking upward, from the Otamatsuri film shot in Nairobi",
   },
   {
@@ -72,7 +72,7 @@ export const cosplayFrames: CosplayFrame[] = [
     romaji: "Kaze",
     title: "Wind",
     description:
-      "Wind takes the wig across her face and the frame goes cold and quiet. Most cosplay shoots fight the wind. On this one we let it win, because a strand of hair across one eye does more for a character than a clean, tidy portrait ever will.",
+      "Wind takes the wig across her face and the frame goes cold and quiet. We could have waited it out and reset the hair. We let it win instead, because a strand across one eye does more for a character than a perfectly tidy portrait ever will.",
     alt: "Cosplay portrait with pale wig hair blown across the face, shot on location near Nairobi for Otamatsuri",
   },
   {
@@ -82,7 +82,7 @@ export const cosplayFrames: CosplayFrame[] = [
     romaji: "Kami to Hikari",
     title: "Hair and Light",
     description:
-      "A macro frame: lash line, nose ring, pale strands crossing blown out highlights. Shot close enough that the makeup, the skin and the wig fibre all read separately. This is the detail layer of a cosplay shoot, and it is usually the first thing that gets skipped.",
+      "A macro frame: lash line, nose ring, pale strands crossing blown out highlights. Shot close enough that the makeup, the skin and the wig fibre all read separately. Detail like this is worth going in for, because the work holds up at every distance you point a lens from.",
     alt: "Extreme close up of a cosplayer's eye and nose ring with wig strands across the frame, Otamatsuri cosplay Nairobi",
   },
   {
@@ -92,7 +92,7 @@ export const cosplayFrames: CosplayFrame[] = [
     romaji: "Kurenai no Yaiba",
     title: "The Crimson Blade",
     description:
-      "Red hair, a horned headdress and a scratch built greatsword, all of it cut, layered and painted by the cosplayer. Look at the taped edges on the blade and the ribbing on the helm. That is Kenyan prop making done with a craft knife and patience, photographed properly for once.",
+      "Red hair, a horned headdress and a scratch built greatsword, all of it cut, layered and painted by the cosplayer. Look at the taped edges on the blade and the ribbing on the helm. That is Kenyan prop making at its best, a craft knife and a lot of patience, and it earns every inch of this frame.",
     alt: "Kenyan cosplayer in a handmade horned headdress holding a scratch built greatsword, Otamatsuri cosplay in Nairobi",
   },
   {
@@ -142,7 +142,7 @@ export const cosplayFrames: CosplayFrame[] = [
     romaji: "Megane-goshi",
     title: "Through the Glass",
     description:
-      "Closer still: the bridge of the frames, the pitting on the metal, the skin behind the lens. Costume work has to survive a camera this close, and cheap props never do. Here it holds.",
+      "Closer still: the bridge of the frames, the pitting on the metal, the skin behind the lens. A macro lens is the honest test of any costume piece, and this one passes it without a flinch.",
     alt: "Macro shot of round wire rimmed glasses on a character's face, detail frame from the Otamatsuri film in Kenya",
   },
   {
@@ -227,7 +227,116 @@ export const cosplayFrames: CosplayFrame[] = [
   },
 ];
 
-/** 1 to 19 in kanji numerals, for the 其の◯ seal on each panel. */
+/*
+ * Scroll two: frames from the newer Otamatsuri film, shot around Nairobi and
+ * carrying the 22.08.2026 festival date in the corner of every frame. Kept as
+ * a separate set because it is a separate shoot with different cosplayers, and
+ * the page should never blur the two together.
+ */
+export const vol001Frames: CosplayFrame[] = [
+  {
+    slug: "arrival",
+    src: "/stills/otamatsuri/vol001/arrival.jpg",
+    jp: "参上",
+    romaji: "Sanjo",
+    title: "Arrival",
+    description:
+      "A Survey Corps cosplayer at the top of a shopping centre staircase in Nairobi, ODM gear strapped down both thighs, the whole centre lit and empty behind him. The rig is handmade, canisters, grips and holsters included, and it is worn standing for hours at a time.",
+    alt: "Otamatsuri cosplay in Nairobi: a Kenyan cosplayer in Attack on Titan Survey Corps uniform and handmade ODM gear on a lit shopping centre staircase at night",
+  },
+  {
+    slug: "red-light",
+    src: "/stills/otamatsuri/vol001/red-light.jpg",
+    jp: "紅灯",
+    romaji: "Koto",
+    title: "Red Light",
+    description:
+      "Blade over the shoulder, red light raking across the jacket, warm lanterns thrown out of focus behind. The wings of freedom sit on both shoulders and the sleeve, cut and applied by hand like the rest of the uniform.",
+    alt: "Kenyan cosplayer in a Survey Corps jacket holding a blade over the shoulder under red light, Otamatsuri film shot in Nairobi",
+  },
+  {
+    slug: "showdown",
+    src: "/stills/otamatsuri/vol001/showdown.jpg",
+    jp: "対決",
+    romaji: "Taiketsu",
+    title: "Showdown",
+    description:
+      "Two characters nose to nose, one in a Survey Corps jacket, one in an orange and black jacket with a wrapped blade across the back. Both of them shouting. Cosplay is performance as much as it is construction, and this frame is all performance.",
+    alt: "Two cosplayers shouting face to face in costume, an Otamatsuri film frame shot in Nairobi Kenya",
+  },
+  {
+    slug: "rooftop",
+    src: "/stills/otamatsuri/vol001/rooftop.jpg",
+    jp: "屋上",
+    romaji: "Okujo",
+    title: "Rooftop",
+    description:
+      "Daylight on a Nairobi rooftop, and two builds that could not be less alike: a teal horned helmet and a large blue and coral axe on the left, a grey coat and a respirator on the right. Both weapons shaped and painted by hand.",
+    alt: "Two Kenyan cosplayers on a Nairobi rooftop with a handmade axe and a respirator mask costume, Otamatsuri cosplay",
+  },
+  {
+    slug: "the-mask",
+    src: "/stills/otamatsuri/vol001/the-mask.jpg",
+    jp: "面",
+    romaji: "Men",
+    title: "The Mask",
+    description:
+      "A green horned helmet, a respirator and a grey hood, shot from below against a blank sky. Every panel, strap and buckle on that helmet was cut, shaped and fitted by hand, and it reads cleanly even this close to the lens.",
+    alt: "Close up of a handmade green horned helmet and respirator cosplay mask against a pale sky, Otamatsuri cosplay Nairobi",
+  },
+  {
+    slug: "crimson-clouds",
+    src: "/stills/otamatsuri/vol001/crimson-clouds.jpg",
+    jp: "紅の雲",
+    romaji: "Kurenai no Kumo",
+    title: "Crimson Clouds",
+    description:
+      "Red clouds on a black robe, chin lifted, shot from below into a white sky. High key and almost weightless, sitting completely apart from the night frames on either side of it.",
+    alt: "Kenyan cosplayer in a black robe with red cloud pattern shot from below against a bright sky, Otamatsuri cosplay in Nairobi",
+  },
+  {
+    slug: "night-fight",
+    src: "/stills/otamatsuri/vol001/night-fight.jpg",
+    jp: "夜戦",
+    romaji: "Yasen",
+    title: "Night Fight",
+    description:
+      "Two cosplayers mid move under shopfront light, ODM gear on one and an orange jacket on the other. A Nairobi shopping centre standing in for a city street, which is exactly the kind of substitution that makes a small production look large.",
+    alt: "Two cosplayers in an action pose under shopfront lights at night in Nairobi, Otamatsuri film frame",
+  },
+  {
+    slug: "the-rig",
+    src: "/stills/otamatsuri/vol001/the-rig.jpg",
+    jp: "装",
+    romaji: "Yosooi",
+    title: "The Rig",
+    description:
+      "Close on the uniform: wings of freedom on the chest and the shoulder, the belt rig cinched, gas canisters and grips sitting on the hip. This is the part of a costume that takes the longest to build, and it is worth a frame entirely to itself.",
+    alt: "Detail of a handmade Attack on Titan Survey Corps uniform and ODM gear belt rig, Otamatsuri cosplay Kenya",
+  },
+  {
+    slug: "flare",
+    src: "/stills/otamatsuri/vol001/flare.jpg",
+    jp: "閃光",
+    romaji: "Senko",
+    title: "Flare",
+    description:
+      "A hard backlight blows out behind him and the whole figure drops to an outline with a rim of light around the head. Ordinary Nairobi lighting doing the job of a film lamp, which happens more often than people expect.",
+    alt: "Cosplayer silhouetted against a bright backlight with lens flare, Otamatsuri film frame shot in Nairobi",
+  },
+  {
+    slug: "the-distance",
+    src: "/stills/otamatsuri/vol001/the-distance.jpg",
+    jp: "間合い",
+    romaji: "Maai",
+    title: "The Distance",
+    description:
+      "Close on a face in red light with the costume collar just inside the frame. Held tight and held quiet, the way an anime cuts to a face a beat before it cuts to the fight.",
+    alt: "Extreme close up of a cosplayer's face lit red, a held beat from the Otamatsuri film shot in Nairobi",
+  },
+];
+
+/** 1 to 19 in kanji numerals, for the 第◯ seal on each panel. */
 const KANJI_DIGITS = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
 
 export function kanjiNumeral(n: number): string {
