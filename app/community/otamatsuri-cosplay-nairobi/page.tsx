@@ -28,10 +28,10 @@ const heroImage = "/stills/otamatsuri/vol001/arrival.jpg";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Otamatsuri Cosplay in Nairobi | Photos from Kenya's Anime Festival Film",
+    absolute: "Otamatsuri Cosplay in Nairobi, Kenya | Nataka Inc",
   },
   description:
-    "Ten cinematic Otamatsuri cosplay photos shot in Nairobi, Kenya by Nataka Inc. Kenyan cosplayers, handmade armour and props, and the story behind every single frame.",
+    "Ten cinematic Otamatsuri cosplay photos shot in Nairobi by Nataka Inc. Kenyan cosplayers, handmade armour and props, and the story behind every frame.",
   keywords: [
     "Otamatsuri cosplay",
     "Otamatsuri cosplay Nairobi",
