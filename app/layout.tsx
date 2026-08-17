@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans, Shippori_Mincho } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import Preloader from "@/components/Preloader";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -20,6 +20,22 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
   variable: "--font-dm-sans",
+  display: "swap",
+});
+
+// Japanese mincho, used only by the Otamatsuri scroll page. Same face as the
+// printed Otamatsuri Vol. 001 scroll, so the page and the poster read as one
+// identity.
+//
+// `subsets` only controls which files get preloaded; next/font self-hosts every
+// @font-face Google returns, kanji chunks included. Latin is the only subset
+// Google names for this family, and preloading the CJK chunks would be wrong
+// anyway: they are unicode-range split, so a visitor downloads just the few
+// chunks holding the characters actually on the page.
+const shippori = Shippori_Mincho({
+  subsets: ["latin"],
+  weight: ["500", "700"],
+  variable: "--font-jp",
   display: "swap",
 });
 
@@ -114,7 +130,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-KE" className={`${cormorant.variable} ${dmSans.variable} ${GeistSans.variable}`}>
+    <html lang="en-KE" className={`${cormorant.variable} ${dmSans.variable} ${GeistSans.variable} ${shippori.variable}`}>
       <head>
         {/* Preconnect to Google Fonts for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

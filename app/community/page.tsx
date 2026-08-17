@@ -101,9 +101,15 @@ export default function CommunityPage() {
             </p>
 
             <div className="flex flex-wrap gap-3 mt-8">
+              <Link
+                href="/community/otamatsuri-cosplay-nairobi"
+                className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200"
+              >
+                See the Cosplay →
+              </Link>
               <a
                 href="#wallpapers"
-                className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200"
+                className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200"
               >
                 Get the Wallpapers ↓
               </a>
@@ -119,6 +125,59 @@ export default function CommunityPage() {
 
         <Countdown />
         <DropLog />
+
+        {/* Entry point to the cosplay scroll. It sits above the wallpapers on
+            purpose: the gallery is the deepest thing on this page and the one
+            people actually come looking for. */}
+        <section className="px-6 md:px-12 max-w-7xl mx-auto pt-16 md:pt-24">
+          <Link
+            href="/community/otamatsuri-cosplay-nairobi"
+            className="group relative block overflow-hidden border border-white/12 hover:border-otaku/60 transition-colors duration-300"
+          >
+            <div className="grid md:grid-cols-2">
+              <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[340px] overflow-hidden bg-ink-50">
+                <Image
+                  src="/stills/otamatsuri/community/16.jpg"
+                  alt="Otamatsuri cosplay in Nairobi: a Kenyan cosplayer in handmade armour backlit by the sunset"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  quality={78}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-ink/60 via-transparent to-ink md:to-ink" />
+              </div>
+
+              <div className="p-8 md:p-12 flex flex-col justify-center">
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="h-px w-10 bg-otaku" />
+                  <p className="font-sans text-otaku-light text-[10px] tracking-widest2 uppercase font-medium">
+                    <span className="font-jp text-xs">絵巻</span> · The cosplay scroll
+                  </p>
+                </div>
+
+                <h2 className="leading-none mb-5">
+                  <span className="font-geist font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase block">
+                    Otamatsuri Cosplay
+                  </span>
+                  <span className="font-display font-semibold italic text-[clamp(1.5rem,4.5vw,3rem)] text-otaku block">
+                    in Nairobi.
+                  </span>
+                </h2>
+
+                <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed mb-7">
+                  Nineteen frames from the shoot, laid out as a Japanese scroll with the
+                  story behind every one of them. Kenyan cosplayers, handmade armour,
+                  real locations.
+                </p>
+
+                <span className="inline-block self-start font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest group-hover:bg-otaku-light transition-colors duration-200">
+                  Open the scroll →
+                </span>
+              </div>
+            </div>
+          </Link>
+        </section>
+
         <Wallpapers />
         <PhotocardMaker />
         <FanWall />

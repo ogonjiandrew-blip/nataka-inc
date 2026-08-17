@@ -38,12 +38,25 @@ const config: Config = {
           deep: "#C81B63",
           ink: "#7A0E3F",
         },
+        // Japanese scroll palette — shared with the printed Otamatsuri Vol. 001
+        // scroll so the page and the poster read as one identity.
+        shu: { DEFAULT: "#C1272D", light: "#E8442E" }, // 朱 vermilion
+        kin: { DEFAULT: "#A8853C", light: "#D6B77F" }, // 金 gold
+        ai: "#25344B",                                  // 藍 indigo
       },
       fontFamily: {
         display: ["var(--font-cormorant)", "Georgia", "serif"],
         sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
         geist: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
         nataka: ['"Helvetica Neue"', '"Helvetica"', '"Arial Black"', "Arial", "sans-serif"],
+        jp: [
+          "var(--font-jp)",
+          '"Hiragino Mincho ProN"',
+          '"Yu Mincho"',
+          '"Noto Serif JP"',
+          '"Noto Serif CJK JP"',
+          "serif",
+        ],
       },
       letterSpacing: {
         widest2: "0.25em",

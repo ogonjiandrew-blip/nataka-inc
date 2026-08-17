@@ -206,3 +206,168 @@ a:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   EMAKI — the Japanese hanging-scroll skin.
+   Scoped entirely under .emaki so it cannot leak into the rest of the site.
+   Same idiom as the printed Otamatsuri Vol. 001 scroll (sumi ink, vermilion
+   朱, indigo silk, gold, wooden rods) but inverted for the dark theme:
+   near-black warm washi instead of cream.
+   ══════════════════════════════════════════════════════════════════════ */
+.emaki {
+  --sumi: #0B0907;        /* the dark washi ground */
+  --sumi-2: #14100B;
+  --shu: #C1272D;         /* 朱 vermilion, for solids */
+  --shu-light: #E8442E;   /* readable vermilion, for text on dark */
+  --ai: #25344B;          /* 藍 indigo silk */
+  --kin: #A8853C;         /* 金 gold */
+  --kin-light: #D6B77F;
+  --rod-a: #3B2C1D;
+  --rod-b: #150E07;
+  position: relative;
+  background: var(--sumi);
+}
+
+/* Warm paper ground: a slow radial wash, fibre streaks, and a soft edge burn.
+   The fibre layer is stretched horizontally so the grain reads as pressed
+   paper rather than as photographic noise. */
+.emaki-paper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(130% 70% at 50% 0%, #191309 0%, #100C08 45%, #0A0806 100%);
+}
+.emaki-fibre {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.13;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.008 0.6' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='400' height='400' filter='url(%23f)' opacity='0.55'/></svg>");
+}
+.emaki-burn {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 140px rgba(0, 0, 0, 0.75), inset 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+/* 軸 — the wooden roller at the head and foot of the scroll */
+.emaki-rod {
+  position: relative;
+  height: 26px;
+  background: linear-gradient(180deg, #55401F 0%, var(--rod-a) 24%, var(--rod-b) 64%, #0D0904 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+.emaki-rod::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 6px;
+  height: 1px;
+  background: rgba(214, 183, 127, 0.28);
+}
+.emaki-rod .cap {
+  position: absolute;
+  top: -4px;
+  width: 20px;
+  height: 34px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #7A5A32, #241708);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+.emaki-rod .cap.l { left: 0; }
+.emaki-rod .cap.r { right: 0; }
+
+/* 一文字 — the indigo silk mounting band just inside each rod */
+.emaki-silk {
+  position: relative;
+  height: 11px;
+  background: var(--ai);
+  opacity: 0.9;
+}
+.emaki-silk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, rgba(214, 183, 127, 0.13) 0 2px, transparent 2px 7px);
+}
+
+/* The brocade strips running the full height down both edges of the scroll */
+.emaki-edge {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 10px;
+  background:
+    linear-gradient(180deg, rgba(37, 52, 75, 0.9), rgba(37, 52, 75, 0.55)),
+    repeating-linear-gradient(180deg, rgba(214, 183, 127, 0.12) 0 2px, transparent 2px 8px);
+  pointer-events: none;
+}
+.emaki-edge.l { left: 0; }
+.emaki-edge.r { right: 0; }
+
+/* 縦書き — vertical Japanese text */
+.tate {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.28em;
+}
+/* Romaji reading under a vertical kanji title: reads across on phones, turns
+   and runs down the mount strip from md up. Written as its own class because
+   Tailwind cannot apply a `md:` prefix to a hand-written class. */
+.tate-romaji {
+  letter-spacing: 0.25em;
+}
+@media (min-width: 768px) {
+  .tate-romaji {
+    writing-mode: vertical-rl;
+    letter-spacing: 0.3em;
+  }
+}
+
+/* 印 — the hanko seal. Rotated a couple of degrees so it reads as stamped
+   rather than as a UI badge. */
+.hanko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--shu);
+  border-radius: 3px;
+  color: var(--shu-light);
+  transform: rotate(-3deg);
+  box-shadow: inset 0 0 0 1px rgba(193, 39, 45, 0.25);
+}
+
+/* 筆 — a hand-drawn brush rule instead of a 1px border */
+.brush-rule {
+  height: 9px;
+  width: 100%;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='660' height='9' viewBox='0 0 660 9'><path d='M2 6 C 90 2, 150 8, 240 4 S 420 7, 520 3 S 620 6, 658 4' stroke='%23A8853C' stroke-width='2.2' fill='none' stroke-linecap='round' opacity='0.75'/></svg>") no-repeat left center;
+  background-size: 100% 100%;
+}
+.brush-rule.shu {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='660' height='9' viewBox='0 0 660 9'><path d='M2 5 C 80 8, 170 2, 250 6 S 430 3, 540 6 S 630 4, 658 5' stroke='%23C1272D' stroke-width='2.6' fill='none' stroke-linecap='round' opacity='0.8'/></svg>");
+}
+
+/* Each frame sits in its own paper mount, the way a painting is mounted
+   into a scroll. The inset ring is the mount, the outer ring is the silk. */
+.emaki-mount {
+  position: relative;
+  padding: 10px;
+  background: linear-gradient(140deg, rgba(168, 133, 60, 0.16), rgba(37, 52, 75, 0.14) 55%, rgba(193, 39, 45, 0.1));
+  box-shadow:
+    inset 0 0 0 1px rgba(214, 183, 127, 0.22),
+    0 18px 40px -22px rgba(0, 0, 0, 0.9);
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.emaki-mount:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 0 0 1px rgba(214, 183, 127, 0.5),
+    0 26px 55px -22px rgba(0, 0, 0, 1);
+}
+
+/* 巻緒 — the hanging cord and bead that tracks reading progress */
+.emaki-cord {
+  width: 1px;
+  background: linear-gradient(180deg, rgba(214, 183, 127, 0.05), rgba(214, 183, 127, 0.4), rgba(214, 183, 127, 0.05));
+}
