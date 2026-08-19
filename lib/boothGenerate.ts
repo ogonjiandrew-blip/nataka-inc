@@ -2,23 +2,26 @@ import { put, list } from "@vercel/blob";
 import { moveJob, readJob, type Job } from "./boothQueue";
 
 /**
- * Generation — Higgsfield for both halves, no machine required.
+ * Generation — two providers, split by what each is actually good at.
  *
- * Everything runs on one provider, one key and one prepaid balance. Google is
- * gone: it needed its own billing account, its own key, and Veo cost roughly
- * five times per clip what Higgsfield does.
+ * The rule the whole file exists to enforce: IT HAS TO BE THEM. A clip of a
+ * stranger in an anime world is worth nothing to someone who just paid to see
+ * themselves in one, so every path here is anchored to the customer's own
+ * photo and none of them is free to invent a face.
  *
- * The design point that removes the need for a laptop: every Higgsfield call
- * is asynchronous. Submitting returns a status URL in about a second and the
- * render continues on their side whether or not anyone is connected. So no
- * request here ever waits for a render — a job moves one step per request,
- * driven by whichever screen polls next, and if every screen is closed the
- * work still finishes and the next person to look collects it.
+ *   Google (Gemini image)  makes the anime frame and keeps the face. It is the
+ *                          only identity-preserving image model we can reach.
+ *   Higgsfield             animates that frame, at roughly a fifth of Veo's
+ *                          price — and if there is no frame, its
+ *                          reference-to-video takes the customer's photo as an
+ *                          identity reference instead.
  *
- * Three steps, each of them quick:
- *   1. submit the still           → store its status URL
- *   2. collect it, submit the video → store the video's status URL
- *   3. collect the video          → done
+ * The design point that removes the need for a laptop: every render call is
+ * asynchronous. Submitting returns a status URL in about a second and the work
+ * continues on their side whether or not anyone is connected. So no request
+ * here ever waits for a render — a job moves one step per request, driven by
+ * whichever screen polls next, and if every screen is closed the work still
+ * finishes and the next person to look collects it.
  */
 
 const HF = "https://platform.higgsfield.ai";
@@ -55,7 +58,27 @@ export function videoReady() {
 }
 
 const IMAGE_MODEL = process.env.BOOTH_IMAGE_MODEL || "gemini-3-pro-image-preview";
-const VIDEO_MODEL = process.env.HIGGSFIELD_VIDEO_MODEL || "higgsfield-ai/dop/standard";
+
+/**
+ * Video is image2video, and that is precisely why the face survives.
+ *
+ * Checked against the live account (GET /models, 13 models): every video model
+ * Higgsfield exposes to us is image2video — dop lite/turbo/standard and their
+ * first-last-frame variants. There is no Veo, no Seedance, and no
+ * reference-to-video on this API. The only identity model, soul-id, is not
+ * reachable: its type_ field rejects every value, and each guess would cost 40
+ * credits.
+ *
+ * That constraint turns out to be the guarantee. image2video does not generate
+ * a person — it moves the one in the frame it is handed. So whoever is in the
+ * still is who comes out of the clip, and the entire identity question is
+ * settled one stage earlier, by the image model.
+ *
+ * Which is exactly how the stranger got through last time: soul/reference made
+ * a frame of someone else, and dop animated that someone else faithfully. The
+ * video model was never the bug.
+ */
+const ANIMATE_MODEL = process.env.HIGGSFIELD_VIDEO_MODEL || "higgsfield-ai/dop/standard";
 
 /** A claim stops two concurrent requests submitting the same job twice. */
 const CLAIM_MS = 120_000;
@@ -127,6 +150,18 @@ async function generateStill(job: Job, refUrl: string | null): Promise<Buffer> {
   if (!found) throw new Error(`no image returned: ${JSON.stringify(j).slice(0, 200)}`);
   const d = (found.inline_data || found.inlineData) as { data: string };
   return Buffer.from(d.data, "base64");
+}
+
+/**
+ * Start the clip from a finished anime frame. There is deliberately no path
+ * that starts a video without one: a frame is what holds the customer's face,
+ * so no frame means no clip rather than a clip of a stranger.
+ */
+async function submitVideo(job: Job, frameUrl: string) {
+  return submit(ANIMATE_MODEL, {
+    image_url: frameUrl,
+    prompt: job.motionPrompt || job.prompt,
+  });
 }
 
 async function submit(modelPath: string, body: Record<string, unknown>): Promise<string> {
@@ -205,7 +240,9 @@ async function photoUrl(code: string | null): Promise<string | null> {
  * you like.
  */
 export async function advance(job: Job): Promise<Job> {
-  if (!generationReady()) return job;
+  // Either engine alone is enough to produce something, so only stop if both
+  // are missing.
+  if (!generationReady() && !videoReady()) return job;
   if (job.status !== "approved" && job.status !== "working") return job;
 
   // ---- step 3: the video is rendering — is it ready? ----
@@ -234,10 +271,7 @@ export async function advance(job: Job): Promise<Job> {
     const stamped = await takeClaim(job);
     if (!stamped) return job;
     try {
-      const videoOp = await submit(VIDEO_MODEL, {
-        image_url: stamped.stillUrl!,
-        prompt: stamped.motionPrompt || stamped.prompt,
-      });
+      const videoOp = await submitVideo(stamped, stamped.stillUrl!);
       return (await moveJob(job.id, "working", { videoOp, claimedAt: null })) || stamped;
     } catch (e) {
       const msg = String(e);
@@ -263,10 +297,22 @@ export async function advance(job: Job): Promise<Job> {
     // retry should not keep reading the error from the last one.
     const stamped = await takeClaim(job);
     if (!stamped) return job; // someone else owns this tick
+    const ref = await photoUrl(stamped.photoCode);
+
+    // Without the image engine there is no way to make a frame that is them,
+    // and Higgsfield alone cannot supply one. Hold the job where an operator
+    // can see why rather than generating somebody else — a refund is cheap,
+    // handing a customer a stranger is not.
+    if (!generationReady()) {
+      return (
+        (await moveJob(job.id, "approved", {
+          claimedAt: null,
+          note: "Held: the image engine is not configured, so we cannot keep your face. Ask the crew.",
+        })) || stamped
+      );
+    }
+
     try {
-      // No reference means the world still gets built, it just will not be
-      // them — the booth camera covers that case.
-      const ref = await photoUrl(stamped.photoCode);
       const bytes = await generateStill(stamped, ref);
       const url = await store(job.id, "still", bytes);
 
@@ -285,10 +331,7 @@ export async function advance(job: Job): Promise<Job> {
       // Higgsfield pulls the frame from the public URL we just wrote, so
       // nothing is re-encoded or re-uploaded between the two stages.
       try {
-        const videoOp = await submit(VIDEO_MODEL, {
-          image_url: url,
-          prompt: stamped.motionPrompt || stamped.prompt,
-        });
+        const videoOp = await submitVideo(stamped, url);
         return (
           (await moveJob(job.id, "working", { stillUrl: url, videoOp, claimedAt: null })) ||
           stamped

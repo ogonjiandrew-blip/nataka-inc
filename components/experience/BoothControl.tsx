@@ -196,9 +196,9 @@ export default function BoothControl() {
       {queue && !queue.generationReady && (
         <div className="border border-otaku/50 bg-otaku/10 p-3 mb-5">
           <p className="font-sans text-otaku-light text-xs leading-relaxed">
-            <strong>GOOGLE_API_KEY is not set in Vercel.</strong> Approving will queue a job but
-            no picture can be made until it is added — Google is the half that keeps the
-            customer&apos;s face.
+            <strong>Do not sell yet — GOOGLE_API_KEY is not set in Vercel.</strong> It is the only
+            engine that keeps the customer&apos;s face, and the video is built from the picture it
+            makes. Nothing will generate until it is added. Jobs approved now will simply wait.
           </p>
         </div>
       )}

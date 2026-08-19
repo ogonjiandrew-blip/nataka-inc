@@ -511,23 +511,15 @@ export function buildPrompt(
   power: Power,
   variant: Variant = "epic"
 ): string {
+  // The identity clause leads every prompt. It is the one requirement a
+  // customer will reject the entire order over: it has to be them.
+  const IDENTITY =
+    "Keep the exact person from the reference photo: their exact face, facial structure, skin tone, hair and gender stay completely unchanged and instantly recognisable as the same real person. Do not substitute a different person. Do not beautify, slim, lighten or darken them. Change only the costume and the world around them.";
+
   if (variant === "kawaii") {
-    return [
-      "The person from the input photo, exact same face and hair.",
-      world.signature,
-      KAWAII_LAYER,
-      power.scene,
-      WORLD_LOCK,
-      KAWAII_TAIL,
-    ].join(" ");
+    return [IDENTITY, world.signature, KAWAII_LAYER, power.scene, WORLD_LOCK, KAWAII_TAIL].join(" ");
   }
-  return [
-    "The person from the input photo, exact same face and hair.",
-    world.signature,
-    power.scene,
-    WORLD_LOCK,
-    REALISM_TAIL,
-  ].join(" ");
+  return [IDENTITY, world.signature, power.scene, WORLD_LOCK, REALISM_TAIL].join(" ");
 }
 
 /**
@@ -543,8 +535,11 @@ export function buildPrompt(
  */
 export function buildMotionPrompt(power: Power): string {
   return [
+    // The face is the product. Stated first, in the strongest terms, because
+    // it is the one thing a customer will reject the whole order over.
+    "Keep the person from the reference image exactly as they are: the same face, the same facial structure, the same skin tone, the same hair. This must be unmistakably the same person from the first frame to the last. Never substitute a different person, never change their face, never change their gender.",
     power.scene,
-    "The person's face stays exactly the same throughout, no warping, no morphing, and keep their gender exactly as it is.",
+    "Only the world around them changes.",
     "Handheld camera with subtle micro-shake, organic film grain.",
     "No text, no subtitles, no watermark.",
   ].join(" ");
