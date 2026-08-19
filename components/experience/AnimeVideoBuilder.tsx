@@ -1,18 +1,26 @@
 ﻿"use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   animeWorlds,
-  buildMessage,
-  buildWhatsAppUrl,
+  buildPrompt,
   episodeNumber,
   type AnimeWorld,
   type Format,
   type Power,
   type Variant,
 } from "@/lib/otamatsuriExperience";
+
+/**
+ * What the customer's tab knows about their one approved run.
+ *
+ * Deliberately React state and nothing else — no localStorage, no cookie. Close
+ * the tab and this is gone, which is exactly the rule: one approval buys one
+ * session, and a new session means coming back to the booth.
+ */
+type Phase = "building" | "submitting" | "waiting" | "generating" | "ready" | "rejected" | "error";
 
 const KAWAII_PINK = "#F45C9E";
 
@@ -36,11 +44,16 @@ export default function AnimeVideoBuilder() {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [photoCode, setPhotoCode] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [phase, setPhase] = useState<Phase>("building");
+  const [job, setJob] = useState<{ id: string; token: string } | null>(null);
+  const [stillUrl, setStillUrl] = useState<string | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [note, setNote] = useState<string | null>(null);
 
   const powerRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const nameOk = name.trim().length >= 2;
   const ready = nameOk && world !== null && power !== null;
@@ -49,13 +62,78 @@ export default function AnimeVideoBuilder() {
   // render exists.
   const accent = variant === "kawaii" ? KAWAII_PINK : world?.accent ?? "#E8442E";
 
-  const waUrl = useMemo(
-    () =>
-      ready && world && power
-        ? buildWhatsAppUrl(name, world, power, variant, format, photoCode)
-        : undefined,
-    [ready, name, world, power, variant, format, photoCode]
-  );
+  /**
+   * Submit for approval. The prompt is built here and posted once — the
+   * customer's screen never renders it, so the prompt library stays ours and
+   * only Booth Control ever reads it.
+   */
+  const submit = async () => {
+    if (!ready || !world || !power) return;
+    setPhase("submitting");
+    setNote(null);
+    try {
+      const res = await fetch("/api/booth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          world: world.label,
+          power: power.label,
+          variant,
+          format,
+          photoCode,
+          prompt: buildPrompt(world, power, variant),
+        }),
+      });
+      const j = await res.json();
+      if (!res.ok || !j.id) {
+        setNote(
+          j.error === "store-not-configured"
+            ? "The booth system isn't switched on yet. Ask the crew."
+            : "Could not reach the booth. Try again."
+        );
+        setPhase("error");
+        return;
+      }
+      setJob({ id: j.id, token: j.token });
+      setPhase("waiting");
+      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 150);
+    } catch {
+      setNote("No connection. Try again.");
+      setPhase("error");
+    }
+  };
+
+  /** Poll our own job until it is delivered. Stops as soon as it is done. */
+  const poll = useCallback(async () => {
+    if (!job) return;
+    try {
+      const res = await fetch(
+        `/api/booth?id=${encodeURIComponent(job.id)}&token=${encodeURIComponent(job.token)}`,
+        { cache: "no-store" }
+      );
+      if (!res.ok) return;
+      const j = await res.json();
+      if (j.stillUrl) setStillUrl(j.stillUrl);
+      if (j.videoUrl) setVideoUrl(j.videoUrl);
+      if (j.note) setNote(j.note);
+      if (j.status === "rejected") setPhase("rejected");
+      else if (j.status === "done") setPhase("ready");
+      else if (j.status === "approved" || j.status === "working") setPhase("generating");
+    } catch {
+      /* transient — the next tick retries */
+    }
+  }, [job]);
+
+  useEffect(() => {
+    if (!job) return;
+    if (phase === "ready" || phase === "rejected") return;
+    const t = setInterval(poll, 2500);
+    poll();
+    return () => clearInterval(t);
+  }, [job, phase, poll]);
+
+  const locked = phase !== "building" && phase !== "error";
 
   const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
     setTimeout(() => ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 130);
@@ -495,9 +573,167 @@ export default function AnimeVideoBuilder() {
         </AnimatePresence>
       </div>
 
-      {/* Sticky send bar — always in thumb reach once a pick exists */}
+      {/* The run: submitted, waiting on the booth, generating, delivered. It
+          all happens on this page, in this tab, and dies with it. */}
+      <div ref={resultRef} className="scroll-mt-6">
+        <AnimatePresence>
+          {locked && (
+            <motion.section
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.32 }}
+            >
+              <StepLabel
+                n="06"
+                jp="現"
+                text={phase === "ready" ? "Yours" : "At the booth"}
+                id="step-run"
+                accent={accent}
+              />
+
+              <div className="border p-5 sm:p-7" style={{ borderColor: accent }}>
+                {phase === "submitting" && (
+                  <p className="font-sans text-white/70 text-sm">Sending to the booth…</p>
+                )}
+
+                {phase === "waiting" && job && (
+                  <>
+                    <p className="font-sans text-white/50 text-[10px] tracking-widest2 uppercase mb-3">
+                      Show this at the booth
+                    </p>
+                    <p
+                      className="font-geist font-black text-5xl sm:text-6xl leading-none mb-4 tracking-widest"
+                      style={{ color: accent }}
+                    >
+                      {job.id}
+                    </p>
+                    <p className="font-sans text-white/75 text-sm leading-relaxed">
+                      Pay at the booth and the crew will release it. This screen updates by
+                      itself — keep it open.
+                    </p>
+                    <div className="flex gap-1.5 mt-5" aria-hidden>
+                      {[0, 1, 2].map((i) => (
+                        <motion.span
+                          key={i}
+                          className="h-1 flex-1"
+                          style={{ background: accent }}
+                          animate={{ opacity: [0.2, 1, 0.2] }}
+                          transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.25 }}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {phase === "generating" && (
+                  <>
+                    <p className="font-sans text-white/50 text-[10px] tracking-widest2 uppercase mb-2">
+                      Approved · generating
+                    </p>
+                    <p className="font-geist font-black text-2xl text-white uppercase mb-3">
+                      {stillUrl ? "Your video is rendering" : "Building your world"}
+                    </p>
+                    <p className="font-sans text-white/70 text-sm leading-relaxed">
+                      {format === "photo"
+                        ? "About a minute. Keep this page open."
+                        : "Your picture lands first, then the video. Keep this page open."}
+                    </p>
+                    {stillUrl && (
+                      /* eslint-disable-next-line @next/next/no-img-element -- blob URL */
+                      <img
+                        src={stillUrl}
+                        alt="Your anime frame"
+                        className="w-full mt-5 border"
+                        style={{ borderColor: accent }}
+                      />
+                    )}
+                    <div className="flex gap-1.5 mt-5" aria-hidden>
+                      {[0, 1, 2].map((i) => (
+                        <motion.span
+                          key={i}
+                          className="h-1 flex-1"
+                          style={{ background: accent }}
+                          animate={{ opacity: [0.2, 1, 0.2] }}
+                          transition={{ duration: 1.1, repeat: Infinity, delay: i * 0.2 }}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {phase === "ready" && (
+                  <>
+                    <p className="font-sans text-[10px] tracking-widest2 uppercase mb-4" style={{ color: accent }}>
+                      Done · save it now
+                    </p>
+                    {stillUrl && (
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element -- blob URL */}
+                        <img
+                          src={stillUrl}
+                          alt="Your anime frame"
+                          className="w-full border mb-3"
+                          style={{ borderColor: accent }}
+                        />
+                        <a
+                          href={stillUrl}
+                          download="otamatsuri.jpg"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-center font-geist font-black text-xs text-ink px-6 py-4 uppercase tracking-widest mb-6"
+                          style={{ background: accent }}
+                        >
+                          Save the picture
+                        </a>
+                      </>
+                    )}
+                    {videoUrl && (
+                      <>
+                        <video
+                          src={videoUrl}
+                          controls
+                          playsInline
+                          className="w-full border mb-3"
+                          style={{ borderColor: accent }}
+                        />
+                        <a
+                          href={videoUrl}
+                          download="otamatsuri.mp4"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-center font-geist font-black text-xs text-ink px-6 py-4 uppercase tracking-widest"
+                          style={{ background: accent }}
+                        >
+                          Save the video
+                        </a>
+                      </>
+                    )}
+                    <p className="font-sans text-white/50 text-xs mt-6 leading-relaxed">
+                      Save it before you close this page — it is not stored anywhere for you, and
+                      a new session needs a new go-ahead from the booth.
+                    </p>
+                  </>
+                )}
+
+                {phase === "rejected" && (
+                  <>
+                    <p className="font-geist font-black text-xl text-white uppercase mb-2">
+                      Not released
+                    </p>
+                    <p className="font-sans text-white/70 text-sm leading-relaxed">
+                      {note || "Talk to the crew at the booth."}
+                    </p>
+                  </>
+                )}
+              </div>
+            </motion.section>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Sticky submit bar — always in thumb reach once a pick exists */}
       <AnimatePresence>
-        {world && power && (
+        {world && power && !locked && (
           <motion.div
             initial={{ y: 90 }}
             animate={{ y: 0 }}
@@ -509,48 +745,34 @@ export default function AnimeVideoBuilder() {
             }}
           >
             <div className="max-w-lg mx-auto pointer-events-auto">
-              {/* ONE button, always. It is a plain wa.me link, so it opens the
-                  booth's own chat directly — no OS share sheet, no contact
-                  picker, no hunting. The photo has already uploaded in the
-                  background and rides along as a code in the text. */}
-              {!ready || !waUrl ? (
-                <button
-                  type="button"
-                  disabled
-                  className="w-full text-center font-geist font-black text-sm text-white/35 border border-white/15 bg-ink px-6 py-5 uppercase tracking-widest cursor-not-allowed"
-                >
-                  {power ? "Add your name ↑" : "Choose your power ↑"}
-                </button>
-              ) : (
-                <a
-                  href={waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setSent(true)}
-                  className="flex items-center justify-center gap-2.5 w-full text-center font-geist font-black text-sm text-ink px-6 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform"
-                  style={{ background: accent }}
-                >
-                  <WhatsAppMark />
-                  {uploading ? "Send my summon" : "Send my summon"}
-                </a>
-              )}
+              <button
+                type="button"
+                disabled={!ready || uploading}
+                onClick={submit}
+                className="w-full text-center font-geist font-black text-sm px-6 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform disabled:cursor-not-allowed"
+                style={
+                  ready && !uploading
+                    ? { background: accent, color: "#0A0A0A" }
+                    : {
+                        background: "#080808",
+                        color: "rgba(255,255,255,0.35)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                      }
+                }
+              >
+                {uploading
+                  ? "Sending your photo…"
+                  : !power
+                    ? "Choose your power ↑"
+                    : !nameOk
+                      ? "Add your name ↑"
+                      : "Send to the booth"}
+              </button>
 
               <p className="font-sans text-white/45 text-[10px] text-center mt-2.5 leading-relaxed">
-                {sent ? (
-                  <>
-                    Sent. Your {format === "photo" ? "photo" : "photo and video"} lands in that
-                    chat.{" "}
-                    <a href={waUrl} target="_blank" rel="noopener noreferrer" className="underline">
-                      Didn&apos;t open? Tap here.
-                    </a>
-                  </>
-                ) : uploading ? (
-                  "Sending your photo to the booth…"
-                ) : photoCode ? (
-                  `Photo ${photoCode} is with the booth. One tap sends your summon.`
-                ) : (
-                  "Opens the booth chat with everything typed. Just press send."
-                )}
+                {note && phase === "error"
+                  ? note
+                  : "The crew release it once you have paid. Your picture appears right here."}
               </p>
             </div>
           </motion.div>
@@ -558,7 +780,7 @@ export default function AnimeVideoBuilder() {
       </AnimatePresence>
 
       {/* Spacer so the sticky bar never covers the last card */}
-      {world && power && <div aria-hidden className="h-24" />}
+      {world && power && !locked && <div aria-hidden className="h-24" />}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { waLink } from "@/lib/whatsapp";
 
 const paths = [
   {
@@ -12,6 +13,7 @@ const paths = [
       { label: "Product Launch", href: "/services/product-launch-video-kenya" },
     ],
     cta: "Build a Brand Campaign",
+    wa: "Hi Nataka! I'm a brand looking to build a campaign — commercial, social content or a launch. My business is: ",
   },
   {
     tag: "For Artists",
@@ -23,6 +25,7 @@ const paths = [
       { label: "Creator Distribution", href: "/services/influencer-marketing-kenya" },
     ],
     cta: "Create Artist Visuals",
+    wa: "Hi Nataka! I'm an artist and I want to talk visuals — music video, teasers or a rollout. My name and track: ",
   },
   {
     tag: "For Events",
@@ -33,6 +36,7 @@ const paths = [
       { label: "Social Recaps", href: "/services/social-media-marketing-kenya" },
     ],
     cta: "Promote My Event",
+    wa: "Hi Nataka! I'm running an event and need promo and coverage. The event and date: ",
   },
   {
     tag: "For High-Ticket",
@@ -44,6 +48,7 @@ const paths = [
       { label: "Showroom Content", href: "/services/corporate-video-production-kenya" },
     ],
     cta: "Build Trust & Demand",
+    wa: "Hi Nataka! I sell high-ticket (automotive / property / luxury) and want content that moves serious buyers. My business is: ",
   },
 ];
 
@@ -68,9 +73,14 @@ export default function BuyerPaths() {
                 </Link>
               ))}
             </div>
-            <Link href="/#contact" className="inline-block font-geist font-black text-xs text-ink bg-teal px-6 py-3.5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200 self-start">
+            <a
+              href={waLink(p.wa)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block font-geist font-black text-xs text-ink bg-teal px-6 py-3.5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200 self-start"
+            >
               {p.cta} →
-            </Link>
+            </a>
           </div>
         ))}
       </div>

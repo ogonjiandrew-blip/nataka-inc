@@ -652,6 +652,118 @@ export const posts: Post[] = [
 <p>If you're building a brand in Nairobi and you want it to be genuinely distinctive, <a href="/#contact">let's start a conversation.</a></p>
     `,
   },
+  {
+    slug: "otamatsuri-2026-guide-kenya-anime-festival",
+    title: "Otamatsuri 2026: The Complete Guide to Kenya's Anime Festival",
+    excerpt:
+      "Date, venue, tickets, cosplay competitions and what actually happens at Otamatsuri 2026 — Kenya's anime and manga convention at The Carnivore Grounds, Nairobi, on 22 August. A guide from the studio that shot the promo film.",
+    category: "Community",
+    date: "2026-08-04",
+    readTime: "7 min read",
+    coverImage: "/stills/otamatsuri/community/19.jpg",
+    content: `
+<p>On Saturday 22 August 2026, Kenya's anime community takes over The Carnivore Grounds in Langata, Nairobi — and for the first time, Otamatsuri goes fully outdoor. If you've been searching for anime events in Nairobi, wondering what an anime convention in Kenya actually looks like, or trying to work out whether Otamatsuri is worth your Saturday: this guide covers all of it.</p>
+
+<p>One thing first, so the credits are clear: Otamatsuri is organised by <a href="https://moviejabber.world/otamatsuri-2026-tickets-event-details/" target="_blank" rel="noopener noreferrer">Movie Jabber</a>. Nataka Inc is the studio that directed and produced the festival's <a href="/work/otamatsuri-promo-film">cinematic promo film</a> — shot in Kenya, with Kenyan cosplayers and prop-makers. We're writing this as the people who spent golden hours filming this community, not as the event organisers.</p>
+
+<h2>When and Where Is Otamatsuri 2026?</h2>
+
+<p>The essentials:</p>
+
+<ul>
+  <li><strong>Date:</strong> Saturday 22 August 2026</li>
+  <li><strong>Time:</strong> 10:00am to about 7:00pm for the main convention day — then an 18+ after-party and an overnight LAN party running to 8:00am Sunday</li>
+  <li><strong>Venue:</strong> The Carnivore Grounds, Langata Road, Nairobi</li>
+  <li><strong>Format:</strong> Fully outdoor for the first time in the festival's history</li>
+</ul>
+
+<p>For the countdown, the full facts and a running FAQ, we keep a dedicated page updated: <a href="/otamatsuri-2026">Otamatsuri 2026 — date, venue and tickets</a>.</p>
+
+<h2>How Much Are Otamatsuri 2026 Tickets?</h2>
+
+<p>Tickets are sold in phases, and the price rises the closer you get to the day — so the cheapest ticket you will ever get is the one you buy now. Prices are set and sold by Movie Jabber; check the <a href="https://events.gig.co.ke/event/gev_1171/ticket" target="_blank" rel="noopener noreferrer">official ticket page</a> for what it costs today rather than trusting figures quoted anywhere else (including old posts — phase pricing means yesterday's number may already be wrong).</p>
+
+<h2>What Actually Happens at an Anime Festival in Kenya?</h2>
+
+<p>If you've never been to an anime convention in Nairobi, here's what the day holds:</p>
+
+<ul>
+  <li><strong>Cosplay competitions:</strong> the main event for Kenya's cosplay scene — months of costume and prop work walks on stage. Expect armour, wigs, full character commitment and a crowd that knows every reference.</li>
+  <li><strong>Webtoon competitions:</strong> Kenya's comic artists compete alongside the cosplayers.</li>
+  <li><strong>Japanese music performances:</strong> live sets on an outdoor stage.</li>
+  <li><strong>Vendors and Japanese food:</strong> anime merchandise stalls and Japanese cuisine across the grounds.</li>
+  <li><strong>Gaming and an overnight LAN party:</strong> gaming stations that run through the night into Sunday morning.</li>
+  <li><strong>Kids' zone and parents' lounge:</strong> jumping castles, face painting, and somewhere for parents to sit — the daytime is genuinely family-friendly.</li>
+  <li><strong>18+ after-party:</strong> from the evening onwards, strictly adults.</li>
+</ul>
+
+<h2>Going in Cosplay? Read This</h2>
+
+<p>Kenya's cosplay community is the reason the Otamatsuri promo film exists — we shot it with real Kenyan cosplayers and prop-makers, on real Kenyan locations, treating the characters this community grew up on like they belong in a feature film. If you're competing or just dressing up:</p>
+
+<ul>
+  <li><strong>Plan for outdoors.</strong> This year is fully open-air — think sun, dust and wind when you choose materials, makeup and wig fixings. Bring repair basics: glue, tape, safety pins.</li>
+  <li><strong>Arrive early for photos.</strong> Morning light at the grounds is kinder than midday, and photographers are freshest before the crowds peak.</li>
+  <li><strong>Send us your shots afterwards.</strong> Our <a href="/community">community hub</a> runs a fan wall — Kenyan cosplayers get the credit, always.</li>
+</ul>
+
+<p>And if you want your phone wallpaper to match your costume energy: the official stills from the promo film are free to download on our <a href="/community#wallpapers">wallpapers page</a>.</p>
+
+<h2>Why Otamatsuri Matters Beyond One Saturday</h2>
+
+<p>Anime fandom in Kenya isn't a niche anymore — it's a generation. The cosplayers, prop-makers, artists and fans who make Otamatsuri happen are the same creative energy driving Kenya's pop culture forward, and events like this are where that energy becomes visible to everyone else. That's why we filmed it the way we did: no cheap fan-service, full cinematic production, Kenyan soil.</p>
+
+<p>Watch the <a href="/work/otamatsuri-promo-film">promo film case study</a> to see how it was made — and if you run a festival, a brand or a community that deserves to be filmed like it matters, <a href="/#contact">talk to us</a>.</p>
+
+<p>See you at The Carnivore. <a href="/otamatsuri-2026">Date, tickets and countdown here.</a></p>
+    `,
+  },
+  {
+    slug: "kpop-in-kenya-nairobi-fandom-kwave",
+    title: "K-Pop in Kenya: Inside Nairobi's Fast-Growing Fandom (and Why It Matters)",
+    excerpt:
+      "Around 1,000 fans at K-pop Festa, embassy-backed events, full choreography learned in Nairobi bedrooms — Kenya's K-pop scene is real and growing. What's happening, where to find it, and why Nataka is filming it.",
+    category: "Community",
+    date: "2026-08-03",
+    readTime: "6 min read",
+    coverImage: "/kwave/nataka-kwave.png",
+    content: `
+<p>If you think K-pop in Kenya is a handful of teenagers on TikTok, you haven't been to a Nairobi K-pop event. The fandom here fills venues, learns full choreographies to performance standard, organises itself into dance crews and fan clubs, and shows up in numbers that would surprise most event promoters in the city.</p>
+
+<h2>How Big Is K-Pop in Kenya, Really?</h2>
+
+<p>Two markers tell the story:</p>
+
+<ul>
+  <li><strong>K-pop Festa</strong> drew around a thousand fans to KALRO Garden — hosted by the Kenyan K-pop Fan Club, with prizes presented by the Korean Ambassador. When an embassy shows up to a fan event, the scene has crossed a line from hobby to cultural force.</li>
+  <li><strong>K-Pop Fest KE</strong> — Kenya's first — proved the demand wasn't a one-off. Dance covers, random-play-dance, vendors, fan-made everything.</li>
+</ul>
+
+<p>This is the Kenyan chapter of the global Hallyu wave — the same Korean cultural export that reshaped music consumption across Asia, the Americas and Europe is now visibly reshaping youth culture in Nairobi. Fan clubs organise like professional street teams. Dance crews rehearse weekly. And everything gets filmed — on phones.</p>
+
+<h2>The Phone-Footage Problem</h2>
+
+<p>That last part is the gap. Kenya's K-pop scene generates moments every month that deserve real cameras: a crowd of hundreds hitting a chorus in unison, a dance crew nailing a formation change, the face of a fan seeing their bias group's lightstick ocean for the first time. Almost all of it survives only as shaky vertical phone clips.</p>
+
+<p>Compare that with how the scene's equivalents in Manila, Jakarta or São Paulo get documented — proper fancams, cinematic recap films, crowd footage that looks like a music video — and the difference isn't the fans. It's the filmmaking.</p>
+
+<h2>What Nataka Is Building: K-Wave Kenya</h2>
+
+<p>Nataka Inc is a Nairobi film and marketing studio, and our community work (we directed and produced the <a href="/work/otamatsuri-promo-film">Otamatsuri promo film</a> with Kenya's cosplay community) taught us something simple: when you film a fandom like it matters, the fandom — and everyone watching — starts treating it like it matters.</p>
+
+<p><a href="/kwave">K-Wave Kenya</a> is our commitment to do the same for the K-pop scene: fancams that last, crowds filmed like music videos, backstage and bias shorts, and recap films that outlive the night. Shot properly, edited properly, credited properly.</p>
+
+<h2>If You're a Fan, a Crew, or an Organiser</h2>
+
+<ul>
+  <li><strong>Fans and dance crews:</strong> the archive only works if the scene is in it. Follow the <a href="/kwave">K-Wave Kenya page</a> to see what we're filming next.</li>
+  <li><strong>Event organisers:</strong> a K-pop event with a cinematic recap film sells the next event before the first one ends. If you're planning one in Nairobi, <a href="/#contact">talk to us before the date</a> — the best crowd footage is planned, not lucky.</li>
+  <li><strong>Brands:</strong> this audience is young, organised, loyal and chronically underserved in Kenya. Reaching it takes cultural fluency, not just media spend — which is exactly the intelligence a community-first studio brings.</li>
+</ul>
+
+<p>The wave is already here. We're just making sure Kenya's chapter of it gets filmed like it deserves. <a href="/kwave">See K-Wave Kenya →</a></p>
+    `,
+  },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {

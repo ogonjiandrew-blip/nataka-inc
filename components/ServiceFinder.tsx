@@ -1,17 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { waLink } from "@/lib/whatsapp";
 
 const goals = [
-  { id: "customers", goal: "I need more customers", recommend: "Social Content Engine or Launch Campaign", deliverables: "Short-form videos, offer-focused content, campaign messaging, content calendar, optional creator distribution.", budget: "KES 150K – 700K / month, or KES 500K – 2M+ for a campaign launch", timeline: "2–6 weeks depending on scope", cta: "Build My Campaign" },
-  { id: "launch", goal: "I need to launch a product", recommend: "Launch Campaign Package", deliverables: "Hero video, short-form cutdowns, product photos, launch messaging, rollout plan, optional influencer push.", budget: "KES 500K – 2M+", timeline: "2–6 weeks depending on scope", cta: "Start My Launch Brief" },
-  { id: "social", goal: "I need social media content", recommend: "Social Content Engine", deliverables: "Monthly shoot day, 8–20 short videos, captions & content direction, content calendar, performance review.", budget: "KES 150K – 700K / month", timeline: "Monthly retainer, or 1–2 week batch production", cta: "Build My Content Engine" },
-  { id: "music", goal: "I need a music video", recommend: "Music Video / Artist Campaign", deliverables: "Concept, shoot, music video, teaser edits, vertical clips, rollout assets.", budget: "KES 150K – 1M+", timeline: "1–4 weeks depending on scope", cta: "Plan My Music Video" },
-  { id: "trust", goal: "I need to build trust for a new brand", recommend: "Premium Brand Film / Brand Trust Campaign", deliverables: "Brand film, founder story, product or service explainer, testimonials, social cutdowns, trust messaging.", budget: "KES 300K – 1.5M+", timeline: "2–6 weeks depending on scope", cta: "Build Brand Trust" },
-  { id: "event", goal: "I need event coverage", recommend: "Event Content Package", deliverables: "Promo video, event coverage, highlight film, sponsor clips, social recap edits.", budget: "KES 100K – 700K+", timeline: "1–3 weeks across pre- and post-event", cta: "Promote My Event" },
-  { id: "creator", goal: "I need influencer or creator distribution", recommend: "Creator Distribution Campaign", deliverables: "Campaign strategy, creator concept, video assets, creator posting plan, performance reporting.", budget: "KES 300K – 2M+", timeline: "2–6 weeks depending on creator availability", cta: "Plan Creator Campaign" },
-  { id: "film", goal: "I need a premium brand film", recommend: "Premium Brand Film", deliverables: "Concept development, cinematic production, interviews or narrative structure, master film, short cutdowns.", budget: "KES 300K – 1.5M+", timeline: "2–5 weeks depending on production complexity", cta: "Create My Brand Film" },
+  { id: "customers", goal: "I need more customers", recommend: "Social Content Engine or Launch Campaign", deliverables: "Short-form videos, offer-focused content, campaign messaging, content calendar, optional creator distribution.", budget: "KES 150K – 700K / month, or KES 500K – 2M+ for a campaign launch", timeline: "2–6 weeks depending on scope", cta: "Build My Campaign", wa: "Hi Nataka! I need more customers — the finder recommended the Social Content Engine / a Launch Campaign. My business is: " },
+  { id: "launch", goal: "I need to launch a product", recommend: "Launch Campaign Package", deliverables: "Hero video, short-form cutdowns, product photos, launch messaging, rollout plan, optional influencer push.", budget: "KES 500K – 2M+", timeline: "2–6 weeks depending on scope", cta: "Start My Launch Brief", wa: "Hi Nataka! I'm launching a product and want the Launch Campaign Package. What I'm launching: " },
+  { id: "social", goal: "I need social media content", recommend: "Social Content Engine", deliverables: "Monthly shoot day, 8–20 short videos, captions & content direction, content calendar, performance review.", budget: "KES 150K – 700K / month", timeline: "Monthly retainer, or 1–2 week batch production", cta: "Build My Content Engine", wa: "Hi Nataka! I need consistent social content — interested in the Social Content Engine. My brand is: " },
+  { id: "music", goal: "I need a music video", recommend: "Music Video / Artist Campaign", deliverables: "Concept, shoot, music video, teaser edits, vertical clips, rollout assets.", budget: "KES 150K – 1M+", timeline: "1–4 weeks depending on scope", cta: "Plan My Music Video", wa: "Hi Nataka! I want to plan a music video. My artist name and the track: " },
+  { id: "trust", goal: "I need to build trust for a new brand", recommend: "Premium Brand Film / Brand Trust Campaign", deliverables: "Brand film, founder story, product or service explainer, testimonials, social cutdowns, trust messaging.", budget: "KES 300K – 1.5M+", timeline: "2–6 weeks depending on scope", cta: "Build Brand Trust", wa: "Hi Nataka! I'm building trust for a new brand — interested in a brand film / trust campaign. My brand is: " },
+  { id: "event", goal: "I need event coverage", recommend: "Event Content Package", deliverables: "Promo video, event coverage, highlight film, sponsor clips, social recap edits.", budget: "KES 100K – 700K+", timeline: "1–3 weeks across pre- and post-event", cta: "Promote My Event", wa: "Hi Nataka! I need event coverage — promo, coverage and recaps. The event and date: " },
+  { id: "creator", goal: "I need influencer or creator distribution", recommend: "Creator Distribution Campaign", deliverables: "Campaign strategy, creator concept, video assets, creator posting plan, performance reporting.", budget: "KES 300K – 2M+", timeline: "2–6 weeks depending on creator availability", cta: "Plan Creator Campaign", wa: "Hi Nataka! I want influencer / creator distribution for a campaign. The product or brand: " },
+  { id: "film", goal: "I need a premium brand film", recommend: "Premium Brand Film", deliverables: "Concept development, cinematic production, interviews or narrative structure, master film, short cutdowns.", budget: "KES 300K – 1.5M+", timeline: "2–5 weeks depending on production complexity", cta: "Create My Brand Film", wa: "Hi Nataka! I want a premium brand film. My company is: " },
 ];
 
 export default function ServiceFinder() {
@@ -55,11 +55,20 @@ export default function ServiceFinder() {
               <h3 className="font-geist font-black text-2xl md:text-3xl text-white uppercase mb-6 leading-tight">{sel.recommend}</h3>
               <div className="space-y-5">
                 <Row label="Deliverables" value={sel.deliverables} />
+                <Row label="Typical Range" value={sel.budget} accent />
                 <Row label="Timeline" value={sel.timeline} />
               </div>
-              <Link href="/#contact" className="inline-block mt-8 font-geist font-black text-sm text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200">
+              <a
+                href={waLink(sel.wa)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-8 font-geist font-black text-sm text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+              >
                 {sel.cta} →
-              </Link>
+              </a>
+              <p className="font-sans text-cream/40 text-xs mt-4">
+                Opens WhatsApp with your goal already written in — just add your details and send.
+              </p>
             </div>
           ) : (
             <div className="border border-white/10 bg-white/[0.015] p-8 md:p-10 min-h-[260px] flex items-center justify-center text-center">

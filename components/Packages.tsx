@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { waLink } from "@/lib/whatsapp";
 
 const packages = [
   {
@@ -7,6 +7,7 @@ const packages = [
     range: "KES 500K – 2M+",
     includes: ["Campaign concept", "Hero video", "Short-form cutdowns", "Photo assets", "Distribution plan", "Optional influencer push"],
     cta: "Plan My Launch",
+    wa: "Hi Nataka! I want the Launch Campaign Package. What I'm launching: ",
   },
   {
     name: "Social Content Engine",
@@ -14,6 +15,7 @@ const packages = [
     range: "KES 150K – 700K / month",
     includes: ["Monthly shoot day", "8–20 short videos", "Captions & content direction", "Content calendar", "Performance review"],
     cta: "Build My Content Engine",
+    wa: "Hi Nataka! I want the Social Content Engine. My brand is: ",
   },
   {
     name: "Premium Brand Film",
@@ -21,6 +23,7 @@ const packages = [
     range: "KES 300K – 1.5M+",
     includes: ["Concept development", "Cinematic production", "Interviews / story structure", "Brand messaging", "Master film + cutdowns"],
     cta: "Create My Brand Film",
+    wa: "Hi Nataka! I want a Premium Brand Film. My company is: ",
   },
   {
     name: "Music Video / Artist Campaign",
@@ -28,6 +31,7 @@ const packages = [
     range: "KES 150K – 1M+",
     includes: ["Concept & direction", "Shoot", "Music video", "Teaser edits", "Social rollout assets"],
     cta: "Plan My Music Video",
+    wa: "Hi Nataka! I want the Music Video / Artist Campaign. My artist name and the track: ",
   },
   {
     name: "Event Content Package",
@@ -35,6 +39,22 @@ const packages = [
     range: "KES 100K – 700K+",
     includes: ["Promo video", "Event coverage", "Highlight film", "Sponsor clips", "Social recap edits"],
     cta: "Promote My Event",
+    wa: "Hi Nataka! I want the Event Content Package. The event and date: ",
+  },
+];
+
+const standard = [
+  {
+    title: "The recut promise",
+    desc: "If the first cut misses the agreed brief, we recut it at our cost until it doesn't. You approve the brief; we carry the risk of the execution.",
+  },
+  {
+    title: "A locked delivery date",
+    desc: "Every engagement gets a delivery date in writing before we shoot — not \"when it's ready.\"",
+  },
+  {
+    title: "The director answers",
+    desc: "No account-manager wall. The person who directed your work is the person on your WhatsApp.",
   },
 ];
 
@@ -66,11 +86,36 @@ export default function Packages() {
                 </li>
               ))}
             </ul>
-            <Link href="/#contact" className="inline-block font-geist font-black text-xs text-teal border border-teal/40 px-6 py-3.5 uppercase tracking-widest hover:bg-teal hover:text-ink transition-colors duration-200 self-start">
+            <a
+              href={waLink(p.wa)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block font-geist font-black text-xs text-teal border border-teal/40 px-6 py-3.5 uppercase tracking-widest hover:bg-teal hover:text-ink transition-colors duration-200 self-start"
+            >
               {p.cta} →
-            </Link>
+            </a>
           </div>
         ))}
+      </div>
+
+      {/* The Nataka Standard — risk reversal on every engagement */}
+      <div className="mt-14 md:mt-16 border border-teal/25 bg-teal/[0.04] p-8 md:p-12">
+        <p className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium mb-3">The Nataka Standard</p>
+        <h3 className="font-geist font-black text-2xl md:text-3xl text-white uppercase leading-tight mb-8">
+          Every package carries <span className="text-teal">the same three promises.</span>
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          {standard.map((s) => (
+            <div key={s.title}>
+              <h4 className="font-geist font-black text-white text-sm uppercase mb-2">{s.title}</h4>
+              <p className="font-sans text-cream/65 text-sm leading-relaxed">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p className="font-sans text-cream/50 text-xs leading-relaxed mt-8 max-w-2xl">
+          We&apos;re a small senior team and take on a limited number of productions each
+          month — if your dates matter, ask about availability early.
+        </p>
       </div>
     </section>
   );

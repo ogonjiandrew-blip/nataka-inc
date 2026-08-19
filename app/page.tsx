@@ -5,6 +5,7 @@ import Services from "@/components/Services";
 import BuyerPaths from "@/components/BuyerPaths";
 import ServiceFinder from "@/components/ServiceFinder";
 import Work from "@/components/Work";
+import Packages from "@/components/Packages";
 import OtamatsuriCommunity from "@/components/OtamatsuriCommunity";
 import VideoReel from "@/components/VideoReel";
 import About from "@/components/About";
@@ -40,11 +41,14 @@ export default function Home() {
         <Navbar />
         <Hero />
         <MarqueeBanner />
+        {/* August 2026: Otamatsuri (22 Aug) is the month's focus — community
+            section leads the page while the event window is open. */}
+        <OtamatsuriCommunity />
         <Services />
         <BuyerPaths />
         <ServiceFinder />
         <Work />
-        <OtamatsuriCommunity />
+        <Packages />
         <VideoReel />
         <About />
         <Testimonials />

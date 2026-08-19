@@ -11,17 +11,21 @@ function useCountUp(target: number, trigger: boolean, duration = 1800) {
   // frame all show the correct number — never a frozen "0+".
   const [val, setVal] = useState(target);
   useEffect(() => {
-    if (!trigger) return;
-    setVal(0);
-    const start = performance.now();
+    // In a hidden tab rAF is frozen — an eager reset would leave "0+" on
+    // screen until the tab is focused. Only ever write values from inside a
+    // running frame, so the number drops below target strictly while animating.
+    if (!trigger || document.visibilityState === "hidden") return;
+    let raf = 0;
+    let start: number | null = null;
     const tick = (now: number) => {
+      if (start === null) start = now;
       const p    = Math.min((now - start) / duration, 1);
       const ease = 1 - Math.pow(1 - p, 3);
-      setVal(Math.floor(ease * target));
-      if (p < 1) requestAnimationFrame(tick);
-      else setVal(target);
+      setVal(p < 1 ? Math.floor(ease * target) : target);
+      if (p < 1) raf = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [trigger, target, duration]);
   return val;
 }

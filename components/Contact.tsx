@@ -63,8 +63,9 @@ export default function Contact() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="font-sans text-cream/75 text-sm leading-relaxed max-w-sm"
             >
-              Tell us the basics — your message lands straight on our phone and we reply
-              within 24 hours. We&apos;ll work out the details together.
+              Tell us the basics — your message lands straight on our phone. During
+              business hours we typically reply within minutes, never more than 24.
+              We&apos;ll work out the details together.
             </motion.p>
           </div>
 

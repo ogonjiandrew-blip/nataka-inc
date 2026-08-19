@@ -52,7 +52,7 @@ export const caseStudies: CaseStudy[] = [
       "Graded warm and saturated where the song is intimate, cool and cinematic where it opens up — breaking from the desaturated look that became a cliché in Kenyan music videos.",
     ],
     result:
-      "A music video that represents what's possible when Kenyan artists and a Kenyan production team build something without compromise — conceived, shot, and finished entirely in Nairobi, at a standard that sits alongside the best work coming out of London, Lagos, or Johannesburg. It's one of the projects we're most proud of, and a clear statement of where Nataka Inc — and Nairobi's creative scene — is heading.",
+      "The official video is live on YouTube with 77,000+ views and climbing — conceived, shot, and finished entirely in Nairobi, at a standard that sits alongside the best work coming out of London, Lagos, or Johannesburg. Two of Kenya's most distinctive voices trusted us with their release, and the finished film is the reason the next artists call. Watch it below and judge the craft for yourself.",
     watchUrl: "https://www.youtube.com/watch?v=4oXe4H8vxbI",
     watchLabel: "Watch Kwanini on YouTube",
   },
@@ -116,7 +116,7 @@ export const caseStudies: CaseStudy[] = [
       "Graded warm and filmic to bind the whole promo into one cohesive, cinematic look.",
     ],
     result:
-      "A bold promo film Nataka directed and produced from concept to final cut — proof the studio can build a fully realised cinematic world in Kenya. Released by Movie Jabber ahead of Otamatsuri 2026.",
+      "The film became the official face of Otamatsuri 2026 — released on the organiser Movie Jabber's channel as the festival's anchor promo ahead of the 22 August event at The Carnivore Grounds, Nairobi. Every frame was shot in Kenya with Kenyan cosplayers and prop-makers, and the stills now power the festival's wallpapers, countdown and community hub on this site — proof the studio can build a fully realised cinematic world, end to end, on Kenyan soil.",
     watchUrl: "https://www.instagram.com/p/DbGb8UVum-c/",
     watchLabel: "Watch the Otamatsuri promo on Instagram",
   },
