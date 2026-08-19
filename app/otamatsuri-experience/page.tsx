@@ -55,7 +55,7 @@ export default function OtamatsuriExperiencePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
 
-      <main className="bg-ink text-cream min-h-screen relative">
+      <main className="booth-surface bg-ink text-cream min-h-screen relative">
         {/* Hero — the product, playing, before a single question */}
         <section className="relative min-h-[86svh] flex flex-col overflow-hidden">
           <video

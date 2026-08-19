@@ -118,6 +118,48 @@ body::before {
   background-size: 200px;
 }
 
+/* ── Booth funnel surface (/otamatsuri-experience) ──
+   Flat #080808 reads as empty in the long stretches between sections. The
+   whole product is sold as 35mm film, so the page ground is built the way an
+   exposed frame behaves rather than as a black rectangle with noise dropped
+   on top: an ember wash bleeding down out of the hero, a cool counter-tone
+   low and left so the warmth has something to sit against, and an edge burn
+   pulling the corners down. Four layers, none of them individually visible. */
+.booth-surface {
+  background:
+    radial-gradient(125% 52% at 50% 0%, rgba(232, 68, 46, 0.11) 0%, transparent 62%),
+    radial-gradient(70% 34% at 88% 30%, rgba(232, 68, 46, 0.05), transparent 72%),
+    radial-gradient(85% 42% at 6% 64%, rgba(37, 52, 75, 0.17), transparent 74%),
+    radial-gradient(150% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(180deg, #0B0A09 0%, #080808 42%, #0A0908 100%);
+}
+
+/* Emulsion grain, a little heavier than the site default because here it is
+   part of the product's look, not a background nicety. Sits above the page so
+   the stills pick it up too, which is what ties a generated frame to the page
+   it is printed on. */
+.booth-surface::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.042;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='bn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23bn)'/%3E%3C/svg%3E");
+  background-size: 190px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Real emulsion never sits perfectly still. One pixel of drift, slow enough
+     to read as film rather than as an animation. */
+  .booth-surface::after { animation: booth-grain 6s steps(3) infinite; }
+}
+@keyframes booth-grain {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  33%      { transform: translate3d(-1px, 1px, 0); }
+  66%      { transform: translate3d(1px, -1px, 0); }
+}
+
 /* ── Selection ── */
 ::selection { background: #0ABFBF; color: #080808; }
 
