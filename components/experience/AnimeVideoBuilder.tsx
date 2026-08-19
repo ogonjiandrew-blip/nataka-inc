@@ -126,12 +126,16 @@ export default function AnimeVideoBuilder() {
                 className="group relative overflow-hidden text-left transition-transform duration-200 active:scale-[0.97] aspect-[3/4]"
               >
                 <Image
-                  src={w.poster}
+                  src={variant === "kawaii" ? w.posterKawaii : w.poster}
                   alt={`${w.label} — a real frame from the Otamatsuri anime video booth`}
                   fill
                   sizes="(max-width: 768px) 50vw, 280px"
                   className={`object-cover transition-all duration-500 ${
-                    active ? "scale-105" : "grayscale-[0.55] group-hover:grayscale-0"
+                    active
+                      ? "scale-105"
+                      : variant === "kawaii"
+                        ? "saturate-[0.9] group-hover:saturate-100"
+                        : "grayscale-[0.55] group-hover:grayscale-0"
                   }`}
                 />
                 <span
@@ -265,7 +269,7 @@ export default function AnimeVideoBuilder() {
                   >
                     <div className="relative aspect-[4/5] sm:aspect-[16/10]">
                       <Image
-                        src={world.poster}
+                        src={variant === "kawaii" ? world.posterKawaii : world.poster}
                         alt=""
                         fill
                         sizes="(max-width: 768px) 100vw, 640px"

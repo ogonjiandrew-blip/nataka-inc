@@ -31,6 +31,12 @@ export interface AnimeWorld {
   /** Poster frame in /public/otamatsuri-experience — a real render, not stock. */
   poster: string;
   /**
+   * The kawaii picker gets its own art. Tinting the epic photo pink was the
+   * lazy version: someone who chooses cute should see a cute picker, not dark
+   * shonen frames behind a pink border.
+   */
+  posterKawaii: string;
+  /**
    * The invented series title printed on the customer's episode card.
    *
    * Original inventions, deliberately not real anime names: the booth sells
@@ -86,6 +92,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "The deck of a pirate ship on the open sea",
     accent: "#E8442E",
     poster: "/otamatsuri-experience/world-one-piece.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-one-piece.jpg",
     title: { jp: "大海ノ王", romaji: "TAIKAI NO Ō", en: "King of the Open Sea" },
     signature:
       "They wear a pirate crew outfit: an open sleeveless red coat over a bare chest or plain shirt, a wide yellow sash knotted at the waist, cropped trousers and a wide-brimmed straw hat with a red band, worn or slung on the back. They stand on the sunlit wooden deck of a huge wooden sailing galleon in the open tropical sea — thick mast and rigging ropes, canvas sails overhead, stacked barrels and coiled rope, a carved figurehead at the bow, endless blue water and a big sky all around.",
@@ -131,6 +138,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "A cracked wasteland built for battle",
     accent: "#F5C542",
     poster: "/otamatsuri-experience/world-dragon-ball.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-dragon-ball.jpg",
     title: { jp: "閃光ノ拳", romaji: "SENKŌ NO KEN", en: "Fist of Radiance" },
     signature:
       "They wear a torn martial arts gi: a bright orange sleeveless top and orange trousers over a blue undershirt, a blue sash tied at the waist, blue wristbands and dark boots, the fabric ripped and dust-stained from fighting. They stand on a vast cracked dry lakebed under a huge open sky, jagged rock spires and a blast crater behind them, loose gravel and dust across the ground.",
@@ -168,6 +176,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "Walls, wires and steam",
     accent: "#A3B18A",
     poster: "/otamatsuri-experience/world-attack-on-titan.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-attack-on-titan.jpg",
     title: { jp: "壁ノ咆哮", romaji: "KABE NO HŌKŌ", en: "Roar of the Wall" },
     signature:
       "They wear the full leather harness of a scouting corps soldier: thick brown straps crossing the chest and over both shoulders and down both thighs, heavy buckles, a white shirt and dark jacket underneath, steel gas canisters and twin blade grips at the hips, and a short hooded cloak snapping in the wind. Behind them stands a colossal grey stone defensive wall running out of frame, a town of red-tiled roofs far below half-drowned in cold morning fog.",
@@ -213,6 +222,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "Clap, and the world obeys",
     accent: "#D6B77F",
     poster: "/otamatsuri-experience/world-fullmetal.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-fullmetal.jpg",
     title: { jp: "鋼ノ代償", romaji: "HAGANE NO DAISHŌ", en: "The Price of Steel" },
     signature:
       "They wear a long crimson hooded coat over a black jacket and black trousers, white gloves marked with a red circular sigil, and heavy boots; one forearm is plated in dull articulated steel. They stand in the stone plaza of an early-1900s European industrial town — soot-stained brick buildings, iron lamp posts, cobbles underfoot, chalk transmutation circles drawn on the flagstones, overcast grey daylight.",
@@ -250,6 +260,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "A hidden village of rooftops and forest",
     accent: "#FF8A3D",
     poster: "/otamatsuri-experience/world-naruto.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-naruto.jpg",
     title: { jp: "影ノ螺旋", romaji: "KAGE NO RASEN", en: "Spiral of Shadows" },
     signature:
       "They wear a ninja village outfit: a dark green sleeveless flak vest with front pouches over a long-sleeved orange and black jacket, bandaged forearms, a weapons pouch strapped to one thigh, open-toed sandals, and a metal forehead plate on a dark cloth band tied across the brow. They stand in a hidden village at the edge of dense forest — tall straight cedar trunks, wooden training posts, tiled village rooftops visible through the trees.",
@@ -287,6 +298,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "Lanterns, snow and wisteria",
     accent: "#4FA88B",
     poster: "/otamatsuri-experience/world-demon-slayer.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-demon-slayer.jpg",
     title: { jp: "鬼灯ノ夜", romaji: "ONIBI NO YORU", en: "Night of the Demon Lantern" },
     signature:
       "They wear a dark haori with a bold geometric checkered pattern over a black uniform jacket and hakama trousers, straw sandals, and hold a drawn slender katana with a glow along the blade edge. They stand in a Taisho-era Japanese mountain village at night — steep tiled roofs and dark timber walls, stone steps climbing between them, rows of paper lanterns burning along the path, heavy snow falling, and a huge wisteria tree in bloom hanging pale purple over the rooftops behind.",
@@ -324,6 +336,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "Cursed energy under a Tokyo underpass",
     accent: "#8B6BD9",
     poster: "/otamatsuri-experience/world-jujutsu-kaisen.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-jujutsu-kaisen.jpg",
     title: { jp: "呪縛ノ檻", romaji: "JUBAKU NO ORI", en: "Cage of the Curse" },
     signature:
       "They wear a dark navy high-collared school uniform jacket, collar turned up and fastened, over dark trousers and boots. They stand in a derelict concrete Tokyo underpass at night — cracked pillars and buckled tarmac, tangled cables overhead, a torn-open chain-link fence, wet ground reflecting sodium street lamps, and the neon signage of a modern Tokyo street glowing cold in the distance behind.",
@@ -361,6 +374,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "A city that needs saving",
     accent: "#5BC46B",
     poster: "/otamatsuri-experience/world-my-hero.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-my-hero.jpg",
     title: { jp: "英雄ノ卵", romaji: "EIYU NO TAMAGO", en: "Egg of the Hero" },
     signature:
       "They wear a fitted dark green and black armoured hero bodysuit with a utility belt, reinforced gauntlets and red boots, scuffed and torn from combat. They stand in a wide modern Japanese city intersection in daylight after a fight — glass office towers on all sides, a crushed and overturned bus, buckled tarmac and a torn-up crater in the road, broken glass and dust hanging in the air, and the arched gate of a large hero academy campus visible up the hill behind.",
@@ -398,6 +412,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "A Tokyo street under a full moon",
     accent: "#F45C9E",
     poster: "/otamatsuri-experience/world-sailor-moon.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-sailor-moon.jpg",
     title: { jp: "月光ノ誓", romaji: "GEKKO NO CHIKAI", en: "Vow of the Moonlight" },
     signature:
       "They wear a magical-girl sailor uniform: a white bodice with a wide navy sailor collar and a large red chest bow, a short pleated navy skirt, white elbow gloves with coloured trim, red knee-high boots, and a gold tiara with a single gemstone at the brow. They stand on a Tokyo residential street at night under a huge low full moon — quiet shopfronts and vending machines glowing, telephone wires overhead, cherry blossom trees along the pavement shedding petals, wet asphalt reflecting streetlight, and the city skyline beyond.",
@@ -435,6 +450,7 @@ export const animeWorlds: AnimeWorld[] = [
     sub: "A park in full cherry blossom",
     accent: "#F7A8C4",
     poster: "/otamatsuri-experience/world-cardcaptor.jpg",
+    posterKawaii: "/otamatsuri-experience/kawaii-cardcaptor.jpg",
     title: { jp: "桜花ノ封", romaji: "OUKA NO FU", en: "Seal of the Cherry Blossom" },
     signature:
       "They wear a handmade magical-girl outfit in pale pink and white: a short pleated skirt with frilled layers, a fitted bodice with a large ribbon bow at the chest, puffed short sleeves, white thigh-high socks, pink ankle boots, a small winged hat, and they hold a slender pink wand with a star at its tip. They stand in a Japanese suburban park at golden hour in full cherry blossom — a wide avenue of blossom trees dropping petals in drifts, a small painted bandstand, an empty swing set, warm low sun through the branches, and tiled house roofs beyond the treeline.",
@@ -474,6 +490,15 @@ export const animeWorlds: AnimeWorld[] = [
  * their wardrobe land before the effect. That is what makes a viewer name the
  * anime inside the first second instead of just seeing "someone with powers".
  */
+/**
+ * World lock, restated at the end of every prompt where the model weights it
+ * last. The scenes already sit inside their worlds; this stops the most common
+ * drift on a busy render — a great costume and a great action floating in a
+ * grey nowhere.
+ */
+const WORLD_LOCK =
+  "The setting stays unmistakably this world for the entire duration: the location's landmarks remain clearly visible behind and around the person. Never replace the location with a plain studio, a blank wall or a neutral background.";
+
 export function buildPrompt(
   world: AnimeWorld,
   power: Power,
@@ -485,6 +510,7 @@ export function buildPrompt(
       world.signature,
       KAWAII_LAYER,
       power.scene,
+      WORLD_LOCK,
       KAWAII_TAIL,
     ].join(" ");
   }
@@ -492,6 +518,7 @@ export function buildPrompt(
     "The person from the input photo, exact same face and hair.",
     world.signature,
     power.scene,
+    WORLD_LOCK,
     REALISM_TAIL,
   ].join(" ");
 }
