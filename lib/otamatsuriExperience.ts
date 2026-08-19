@@ -28,6 +28,16 @@ export interface AnimeWorld {
   jp: string;
   sub: string;
   accent: string;
+  /**
+   * Costume and set signature, prepended to every power in this world.
+   *
+   * This is the single strongest lever on "which anime is this?" — a viewer
+   * reads the outfit and the landmarks before they read the action. Written
+   * as genre wardrobe a costume department would build (pirate coat, scouting
+   * harness, flak jacket), never as a replica of a specific character, which
+   * keeps a paid product clear of any franchise's trademarked designs.
+   */
+  signature: string;
   powers: Power[];
 }
 
@@ -44,6 +54,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "海賊",
     sub: "The deck of a pirate ship on the open sea",
     accent: "#E8442E",
+    signature:
+      "They wear a pirate crew outfit: an open sleeveless red coat over a bare chest or plain shirt, a wide yellow sash knotted at the waist, cropped trousers and a wide-brimmed straw hat with a red band, worn or slung on the back. They stand on the sunlit wooden deck of a huge wooden sailing galleon in the open tropical sea — thick mast and rigging ropes, canvas sails overhead, stacked barrels and coiled rope, a carved figurehead at the bow, endless blue water and a big sky all around.",
     powers: [
       {
         id: "fire",
@@ -51,7 +63,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "炎",
         tagline: "A wall of flame taller than the sails",
         scene:
-          "The person from the input photo, exact same face and hair, stands on the wooden deck of a huge pirate sailing ship at sea, wearing an open dark coat. They swing one arm and a towering wall of real orange fire erupts across the deck, taller than the sails behind them, embers and ash drifting past the lens, heat ripple bending the air. Fire is the only light source. Camera pushes in slowly from slightly below eye level so they tower in frame.",
+          "They swing one arm and a towering wall of real orange fire erupts across the deck, taller than the sails behind them, embers and ash drifting past the lens, heat ripple bending the air. Fire is the only light source. Camera pushes in slowly from slightly below eye level so they tower in frame.",
       },
       {
         id: "lightning",
@@ -59,7 +71,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "雷",
         tagline: "Storm king of the open sea",
         scene:
-          "The person from the input photo, exact same face and hair, stands at the bow of a wooden pirate ship under a black storm sky. They raise one arm and forked lightning strikes the mast behind them in rapid flashes, each strike lighting the whole deck white, rain hammering the boards and streaking the lens, their soaked coat whipping in the wind. They stare down the lens, jaw set. One slow push-in from slightly below eye level.",
+          "The sky above the ship turns to black storm. They stand at the bow, raise one arm, and forked lightning strikes the mast behind them in rapid flashes, each strike lighting the whole deck white, rain hammering the boards and streaking the lens, their soaked coat whipping in the wind. They stare down the lens, jaw set. One slow push-in from slightly below eye level.",
       },
       {
         id: "darkness",
@@ -67,7 +79,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "闇",
         tagline: "The dark that swallows the deck",
         scene:
-          "The person from the input photo, exact same face and hair, stands on a pirate ship deck at dusk as thick black smoke pours up out of the boards around them and is pulled inward toward their open hand. Barrels and coiled rope drag across the deck toward the darkness, the daylight visibly dimming until only their face is lit by a single swinging lantern. Camera pushes in slowly toward their lit face.",
+          "Dusk falls over the ship. Thick black smoke pours up out of the deck boards around them and is pulled inward toward their open hand. Barrels and coiled rope drag across the deck toward the darkness, the daylight visibly dimming until only their face is lit by a single swinging lantern. Camera pushes in slowly toward their lit face.",
       },
       {
         id: "gum-gum",
@@ -75,7 +87,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "ゴム",
         tagline: "The punch that crosses the whole ship",
         scene:
-          "Wide shot of the person from the input photo, exact same face and hair, standing on a pirate ship deck with their whole body in frame on the left side, a stack of wooden barrels on the right side of the same frame. They wind up and throw a punch, and their arm stretches impossibly long like rubber, shooting across the deck from left to right and smashing through the barrels in a burst of splinters, then snapping back to normal length with a whip-crack that rocks their shoulder. The camera never moves and never follows the arm: the person stays fully visible in frame the entire time, with both the person and the barrels in the same shot throughout. Only the arm stretches, the rest of their body stays exactly normal. Low camera angle.",
+          "Wide shot with their whole body in frame on the left side and the stack of barrels on the right side of the same frame. They wind up and throw a punch, and their arm stretches impossibly long like rubber, shooting across the deck from left to right and smashing through the barrels in a burst of splinters, then snapping back to normal length with a whip-crack that rocks their shoulder. The camera never moves and never follows the arm: the person stays fully visible in frame the entire time, with both the person and the barrels in the same shot throughout. Only the arm stretches, the rest of their body stays exactly normal. Low camera angle.",
       },
     ],
   },
@@ -85,6 +97,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "戦",
     sub: "A cracked wasteland built for battle",
     accent: "#F5C542",
+    signature:
+      "They wear a torn martial arts gi: a bright orange sleeveless top and orange trousers over a blue undershirt, a blue sash tied at the waist, blue wristbands and dark boots, the fabric ripped and dust-stained from fighting. They stand on a vast cracked dry lakebed under a huge open sky, jagged rock spires and a blast crater behind them, loose gravel and dust across the ground.",
     powers: [
       {
         id: "kamehameha",
@@ -92,7 +106,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "波",
         tagline: "The beam that splits the wasteland",
         scene:
-          "Three-quarter side view of the person from the input photo, exact same face and hair, in a wide low stance on cracked rocky ground, their whole body clearly visible on the left of frame. For the first two seconds: hands cupped together at their hip, a blue-white sphere charging between the two joined palms. Then for the whole remaining eight seconds: they thrust both arms straight out sideways across the frame, hands still pressed palm against palm, and one single thick column of white-blue light fires out of the joined palms and keeps firing continuously, travelling low and level parallel to the ground, straight across the frame from left to right and out to the horizon. Dust kicks up along the ground under the beam. The person stays clearly visible and correctly exposed the entire time, never blown out, never hidden behind the light, never silhouetted. The air behind their back stays clear, nothing explodes behind them. The camera is locked off and does not move.",
+          "Three-quarter side view, in a wide low stance, their whole body clearly visible on the left of frame. For the first two seconds: hands cupped together at their hip, a blue-white sphere charging between the two joined palms. Then for the whole remaining eight seconds: they thrust both arms straight out sideways across the frame, hands still pressed palm against palm, and one single thick column of white-blue light fires out of the joined palms and keeps firing continuously, travelling low and level parallel to the ground, straight across the frame from left to right and out to the horizon. Dust kicks up along the ground under the beam. The person stays clearly visible and correctly exposed the entire time, never blown out, never hidden behind the light, never silhouetted. The air behind their back stays clear, nothing explodes behind them. The camera is locked off and does not move.",
       },
       {
         id: "super-saiyan-2",
@@ -100,7 +114,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "超",
         tagline: "Gold hair, lightning, a crater underfoot",
         scene:
-          "The person from the input photo, exact same face, screams up at the sky in a rocky wasteland as their hair whips upward and flashes to spiked gold, sharp arcs of blue lightning strobing around their body, wind pressure blasting dust away from their feet in a widening crater ring, small stones lifting off the ground and floating around them. Jaw clenched, neck straining. One slow quarter orbit around them.",
+          "They scream up at the sky as their hair whips upward and flashes to spiked gold, sharp arcs of blue lightning strobing around their body, wind pressure blasting dust away from their feet in a widening crater ring, small stones lifting off the ground and floating around them. Jaw clenched, neck straining. One slow quarter orbit around them.",
       },
       {
         id: "kaioken",
@@ -108,7 +122,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "界",
         tagline: "Crimson heat that cracks the ground",
         scene:
-          "The person from the input photo, exact same face and hair, crouches into a fighting stance in a rocky wasteland as a roaring crimson glow like road-flare light wraps their whole body, steam pouring off their shoulders, the ground under their feet cracking outward, rings of dust pulsing away with each surge of the red light. Muscles tensed, teeth gritted, eyes locked on the lens. Camera pushes in slow and low.",
+          "They crouch into a fighting stance as a roaring crimson glow like road-flare light wraps their whole body, steam pouring off their shoulders, the ground under their feet cracking outward, rings of dust pulsing away with each surge of the red light. Muscles tensed, teeth gritted, eyes locked on the lens. Camera pushes in slow and low.",
       },
     ],
   },
@@ -118,6 +132,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "壁",
     sub: "Walls, wires and steam",
     accent: "#A3B18A",
+    signature:
+      "They wear the full leather harness of a scouting corps soldier: thick brown straps crossing the chest and over both shoulders and down both thighs, heavy buckles, a white shirt and dark jacket underneath, steel gas canisters and twin blade grips at the hips, and a short hooded cloak snapping in the wind. Behind them stands a colossal grey stone defensive wall running out of frame, a town of red-tiled roofs far below half-drowned in cold morning fog.",
     powers: [
       {
         id: "titan",
@@ -125,7 +141,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "巨",
         tagline: "The lightning strike and what rises after",
         scene:
-          "The person from the input photo, exact same face, raises one hand to their mouth in a green hooded scouting cloak, and a bolt of lightning strikes down on them with an explosion of white steam, leaving them standing unharmed in the foreground with the cloak whipping. Through the rolling steam behind them a colossal skeletal giant rises into frame, steaming muscle knitting over its ribs as it towers out of the top of frame. Camera tilts up slowly from the person to the giant.",
+          "They raise one hand to their mouth and bite down, and a bolt of lightning strikes on them with an explosion of white steam, leaving them standing unharmed in the foreground with the cloak whipping. Through the rolling steam behind them a colossal skeletal giant rises into frame, steaming muscle knitting over its ribs as it towers out of the top of frame. Camera tilts up slowly from the person to the giant.",
       },
       {
         id: "scouts",
@@ -133,7 +149,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "翼",
         tagline: "Wires out, blades drawn, rooftops below",
         scene:
-          "The person from the input photo, exact same face, stands on a clay-tile rooftop in a green hooded cloak over a leather harness, twin steel blades drawn, morning fog in the streets below. They fire two anchor wires into a stone tower ahead and launch off the roof, swinging fast and low through the fog between old stone buildings, cloak snapping, gas thrusters hissing white jets at their hips. Camera follows behind them in one continuous tracking move.",
+          "They stand on a clay-tile rooftop below the wall with twin steel blades drawn, morning fog in the streets. They fire two anchor wires into a stone tower ahead and launch off the roof, swinging low through the fog between old stone buildings, cloak snapping, gas thrusters hissing white jets at their hips. Camera follows behind them in one continuous tracking move.",
       },
       {
         id: "garrison",
@@ -141,7 +157,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "砲",
         tagline: "Cannon fire from the top of the wall",
         scene:
-          "The person from the input photo, exact same face, stands on top of a massive fifty-meter stone wall at dawn in a military jacket with a rose crest, fog rolling far below. Down the wall line behind them a row of iron cannons fires in sequence, each blast throwing white smoke and shaking the stone underfoot. They hold position calmly at the very edge, coat flaring in the wind, staring down the lens. Slow push-in from slightly below eye level.",
+          "They stand on top of the wall itself at dawn, fog rolling far below. Down the wall line behind them a row of heavy iron cannons fires in sequence, each blast throwing white smoke and shaking the stone underfoot. They hold position calmly at the very edge, cloak flaring in the wind, staring down the lens. Slow push-in from slightly below eye level.",
       },
       {
         id: "military-police",
@@ -149,7 +165,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "憲",
         tagline: "The interior city bows when you walk",
         scene:
-          "The person from the input photo, exact same face, walks slowly toward camera down a cobbled old-city street in a crisp white-and-green military uniform with a green unicorn crest, flanked by two riders on horseback and tall hanging banners, morning light cutting through stone arches. They draw a polished blade and level it straight at the lens without breaking stride, boots echoing on the cobbles. One steady backward-tracking shot at chest height.",
+          "They walk slowly toward camera down a cobbled interior-city street inside the walls, the harness worn over a crisp pale dress uniform jacket, flanked by two riders on horseback and tall hanging banners, morning light cutting through stone arches. They draw a polished blade and level it straight at the lens without breaking stride, boots echoing on the cobbles. One steady backward-tracking shot at chest height.",
       },
     ],
   },
@@ -159,6 +175,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "錬",
     sub: "Clap, and the world obeys",
     accent: "#D6B77F",
+    signature:
+      "They wear a long crimson hooded coat over a black jacket and black trousers, white gloves marked with a red circular sigil, and heavy boots; one forearm is plated in dull articulated steel. They stand in the stone plaza of an early-1900s European industrial town — soot-stained brick buildings, iron lamp posts, cobbles underfoot, chalk transmutation circles drawn on the flagstones, overcast grey daylight.",
     powers: [
       {
         id: "earth",
@@ -166,7 +184,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "地",
         tagline: "Stone spears erupt where your palms land",
         scene:
-          "The person from the input photo, exact same face and hair, claps both hands together with a crack and slams their palms onto a stone plaza floor. Blue-white sparks jump from the contact point and the ground answers: stone ripples outward like liquid, then a ring of jagged rock spears erupts from the ground around them, dust and grit blasting past the lens, pebbles raining back down. They rise slowly from the crouch, palms still smoking. Camera pushes in low through the dust.",
+          "They clap both hands together with a crack and slam their palms onto the flagstones. Blue-white sparks jump from the contact point and the ground answers: stone ripples outward like liquid, then a ring of jagged rock spears erupts from the ground around them, dust and grit blasting past the lens, pebbles raining back down. They rise slowly from the crouch, palms still smoking. Camera pushes in low through the dust.",
       },
       {
         id: "flame",
@@ -174,7 +192,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "焔",
         tagline: "One snap of the fingers, the air ignites",
         scene:
-          "The person from the input photo, exact same face and hair, stands in a scorched stone courtyard wearing white gloves marked with a red sigil, raises one hand, and snaps their fingers. The air itself ignites: a whip of real fire tears across the courtyard in a line and detonates into a rolling orange fireball behind them, ash and embers drifting past the lens. Fire is the only light source, flickering across their face. They lower the hand slowly, unflinching. One slow push-in.",
+          "Night falls on the plaza. They raise one gloved hand and snap their fingers. The air itself ignites: a whip of real fire tears across the plaza in a line away from them and detonates into a rolling orange fireball against the far brick wall, ash and embers drifting past the lens. Fire is the only light source, flickering across their face. They lower the hand slowly, unflinching. One slow push-in.",
       },
       {
         id: "metal-body",
@@ -182,7 +200,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "鋼",
         tagline: "Living steel, human eyes",
         scene:
-          "The person from the input photo, exact same face, stands in a workshop full of grinding sparks as dark chrome metal flows up over their arms and chest like liquid, hardening into plated steel armor with riveted seams, while their face stays completely human and unchanged above it. They clench a newly plated fist and steam vents from the joints, stray sparks bouncing off the plating. Camera orbits a quarter turn around them.",
+          "Inside a machine workshop off the plaza, grinding sparks in the background, dark chrome metal flows up over their arms and chest like liquid and hardens into plated steel armour with riveted seams, while their face stays completely human, bare and unchanged above it. They clench a newly plated fist and steam vents from the joints, stray sparks bouncing off the plating. Camera orbits a quarter turn around them.",
       },
     ],
   },
@@ -192,6 +210,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "忍",
     sub: "A hidden village of rooftops and forest",
     accent: "#FF8A3D",
+    signature:
+      "They wear a ninja village outfit: a dark green sleeveless flak vest with front pouches over a long-sleeved orange and black jacket, bandaged forearms, a weapons pouch strapped to one thigh, open-toed sandals, and a metal forehead plate on a dark cloth band tied across the brow. They stand in a hidden village at the edge of dense forest — tall straight cedar trunks, wooden training posts, tiled village rooftops visible through the trees.",
     powers: [
       {
         id: "rasengan",
@@ -199,7 +219,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "螺",
         tagline: "A sphere of wind spinning in your palm",
         scene:
-          "The person from the input photo, exact same face and hair, stands in a forest clearing at dusk in a ninja flak jacket, holding one palm up as a churning sphere of compressed wind and water spins to life in their hand, whipping their sleeve and hair upward, leaves and dust spiraling around their arm, the sphere glowing pale blue and lighting their face from below. They drop into a sprint and drive the sphere into a tree trunk, which bursts into a spiral of splinters. One fast push-in on the strike.",
+          "At dusk in the clearing they hold one palm up as a churning sphere of compressed wind and water spins to life in their hand, whipping their sleeve and hair upward, leaves and dust spiralling around their arm, the sphere glowing pale blue and lighting their face from below. They drop into a sprint and drive the sphere into a cedar trunk, which bursts into a spiral of splinters. One fast push-in on the strike.",
       },
       {
         id: "chidori",
@@ -207,7 +227,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "雷",
         tagline: "Lightning screaming in your fist",
         scene:
-          "The person from the input photo, exact same face and hair, crouches on a village rooftop at night gripping one wrist as their hand erupts in crackling white lightning, arcs snapping down to the tin roof and fizzing out, the strobing light flickering hard across their face. They break into a sprint along the rooftop ridge, dragging the lightning hand low behind them, roof tiles sparking in their wake. Camera tracks alongside them at speed.",
+          "Night over the village. They crouch on a tiled rooftop gripping one wrist as their hand erupts in crackling white lightning, arcs snapping down to the tiles and fizzing out, the strobing light flickering hard across their face. They break into a sprint along the rooftop ridge, dragging the lightning hand low behind them, tiles sparking in their wake. Camera tracks alongside them at speed.",
       },
       {
         id: "shadow-clone",
@@ -215,14 +235,26 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "影",
         tagline: "Three more of you step out of the smoke",
         scene:
-          "The person from the input photo, exact same face and hair, stands in a forest clearing and makes a cross-shaped hand seal. A burst of white theatrical smoke erupts beside them and three identical copies of the exact same person step out of the smoke and land in fighting stances around them, all four sharing the same face, hair and outfit, each moving independently. The smoke drifts off through the trees. One slow pull-back to fit all four in frame.",
+          "They make a cross-shaped hand seal. A burst of white theatrical smoke erupts beside them and three identical copies of the exact same person step out of the smoke and land in fighting stances around them, all four sharing the same face, hair and outfit, each moving independently. The smoke drifts off through the cedars. One slow pull-back to fit all four in frame.",
       },
     ],
   },
 ];
 
-export function buildPrompt(power: Power): string {
-  return `${power.scene} ${REALISM_TAIL}`;
+/**
+ * Identity + costume/set signature + the power action + texture rules.
+ *
+ * Order matters: the model weights what it reads first, so the person and
+ * their wardrobe land before the effect. That is what makes a viewer name the
+ * anime inside the first second instead of just seeing "someone with powers".
+ */
+export function buildPrompt(world: AnimeWorld, power: Power): string {
+  return [
+    "The person from the input photo, exact same face and hair.",
+    world.signature,
+    power.scene,
+    REALISM_TAIL,
+  ].join(" ");
 }
 
 export function buildWhatsAppUrl(name: string, world: AnimeWorld, power: Power): string {
@@ -232,7 +264,7 @@ export function buildWhatsAppUrl(name: string, world: AnimeWorld, power: Power):
     `World: ${world.label} · Power: ${power.label}`,
     "",
     "— PROMPT (Seedance fast · 480p · 9:16 · up to 15s) —",
-    buildPrompt(power),
+    buildPrompt(world, power),
   ].join("\n");
   return `https://wa.me/${BOOTH_WHATSAPP}?text=${encodeURIComponent(message)}`;
 }
