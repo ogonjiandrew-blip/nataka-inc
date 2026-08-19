@@ -2,30 +2,36 @@ import { put, list } from "@vercel/blob";
 import { moveJob, readJob, type Job } from "./boothQueue";
 
 /**
- * Generation — two providers, split by what each is actually good at.
+ * Generation — one provider, one wallet, both stages on Higgsfield.
  *
  * The rule the whole file exists to enforce: IT HAS TO BE THEM. A clip of a
  * stranger in an anime world is worth nothing to someone who just paid to see
  * themselves in one, so every path here is anchored to the customer's own
  * photo and none of them is free to invent a face.
  *
- *   Google (Gemini image)  makes the anime frame and keeps the face. It is the
- *                          only identity-preserving image model we can reach.
- *   Higgsfield             animates that frame, at roughly a fifth of Veo's
- *                          price — and if there is no frame, its
- *                          reference-to-video takes the customer's photo as an
- *                          identity reference instead.
+ *   nano-banana-pro  makes the anime frame from the customer's photo. It is
+ *                    Google's Gemini image model resold — the same engine that
+ *                    held likeness on every card we approved this week — but
+ *                    reached through the Higgsfield key, so no Google account,
+ *                    no second billing, no GOOGLE_API_KEY.
+ *   Kling 3.0 Pro    animates that frame. image2video moves the person it is
+ *                    handed rather than generating one, so whoever is in the
+ *                    still is who comes out of the clip.
  *
- * The design point that removes the need for a laptop: every render call is
+ * Neither slug appears in GET /models — that listing is incomplete. Both were
+ * verified live against this account on 2026-08-19 via their validation
+ * errors. soul/reference remains banned: it is a STYLE reference and produces
+ * strangers.
+ *
+ * The design point that removes the need for a laptop: every call here is
  * asynchronous. Submitting returns a status URL in about a second and the work
  * continues on their side whether or not anyone is connected. So no request
- * here ever waits for a render — a job moves one step per request, driven by
+ * ever waits for a render — a job moves one step per request, driven by
  * whichever screen polls next, and if every screen is closed the work still
  * finishes and the next person to look collects it.
  */
 
 const HF = "https://platform.higgsfield.ai";
-const GOOGLE = "https://generativelanguage.googleapis.com/v1beta";
 
 function auth() {
   const id = process.env.HIGGSFIELD_API_KEY_ID;
@@ -33,52 +39,22 @@ function auth() {
   return id && secret ? `Key ${id}:${secret}` : null;
 }
 
-function googleKey() {
-  return process.env.GOOGLE_API_KEY || "";
-}
-
-/**
- * The photo is the product: it has to be THEM. Only Google can do that.
- *
- * Higgsfield's public API has no identity-preserving image model — Soul
- * Reference treats the input as a STYLE reference and returns a stranger,
- * Soul Character needs a per-person trained model, and neither is usable at a
- * booth. The model behind every card approved this week, nano_banana_pro, is
- * Google's Gemini image model resold; going direct is the same model without
- * the middleman.
- *
- * Video stays on Higgsfield: animating an existing frame needs no identity
- * work, and dop is roughly a fifth of Veo's price.
- */
 export function generationReady() {
-  return !!googleKey();
+  return !!auth();
 }
 export function videoReady() {
   return !!auth();
 }
 
-const IMAGE_MODEL = process.env.BOOTH_IMAGE_MODEL || "gemini-3-pro-image-preview";
-
-/**
- * Video is image2video, and that is precisely why the face survives.
- *
- * Checked against the live account (GET /models, 13 models): every video model
- * Higgsfield exposes to us is image2video — dop lite/turbo/standard and their
- * first-last-frame variants. There is no Veo, no Seedance, and no
- * reference-to-video on this API. The only identity model, soul-id, is not
- * reachable: its type_ field rejects every value, and each guess would cost 40
- * credits.
- *
- * That constraint turns out to be the guarantee. image2video does not generate
- * a person — it moves the one in the frame it is handed. So whoever is in the
- * still is who comes out of the clip, and the entire identity question is
- * settled one stage earlier, by the image model.
- *
- * Which is exactly how the stranger got through last time: soul/reference made
- * a frame of someone else, and dop animated that someone else faithfully. The
- * video model was never the bug.
- */
-const ANIMATE_MODEL = process.env.HIGGSFIELD_VIDEO_MODEL || "higgsfield-ai/dop/standard";
+// Fields verified against the live API (wrong-type probes, which error before
+// anything is charged):
+//   nano-banana-pro                          prompt, input_images[], aspect_ratio (9:16 ok)
+//   kling-video/v3.0/pro/image-to-video      prompt, image_url, duration (int, default 5)
+// Kling 3.0 has no turbo tier on this API — pro is the only 3.0. negative_prompt
+// is NOT a known field on it; unknown fields are silently ignored, so do not
+// send anything unverified: it would queue a real, billed generation.
+const IMAGE_MODEL = process.env.BOOTH_IMAGE_MODEL || "nano-banana-pro";
+const ANIMATE_MODEL = process.env.HIGGSFIELD_VIDEO_MODEL || "kling-video/v3.0/pro/image-to-video";
 
 /** A claim stops two concurrent requests submitting the same job twice. */
 const CLAIM_MS = 120_000;
@@ -116,40 +92,16 @@ async function takeClaim(job: Job): Promise<Job | null> {
 }
 
 /**
- * The anime frame, on Google. Synchronous, ~30s, and it holds the customer's
- * face — which is the entire product. Vercel Pro allows 300s functions, so
- * this comfortably completes inside one request.
+ * Start the anime frame. The customer's photo is required, not optional — a
+ * frame without it would be a generated stranger, which is the one output this
+ * booth must never produce.
  */
-async function generateStill(job: Job, refUrl: string | null): Promise<Buffer> {
-  const key = googleKey();
-  if (!key) throw new Error("GOOGLE_API_KEY not configured");
-
-  const parts: unknown[] = [{ text: job.prompt }];
-  if (refUrl) {
-    const img = await fetch(refUrl);
-    if (img.ok) {
-      const b64 = Buffer.from(await img.arrayBuffer()).toString("base64");
-      parts.push({ inline_data: { mime_type: "image/jpeg", data: b64 } });
-    }
-  }
-
-  const res = await fetch(`${GOOGLE}/models/${IMAGE_MODEL}:generateContent`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-    body: JSON.stringify({
-      contents: [{ parts }],
-      generationConfig: { responseModalities: ["IMAGE"] },
-    }),
+async function submitStill(job: Job, refUrl: string) {
+  return submit(IMAGE_MODEL, {
+    prompt: job.prompt,
+    input_images: [refUrl],
+    aspect_ratio: "9:16",
   });
-  const j = await res.json();
-  if (!res.ok) throw new Error(`image ${res.status}: ${JSON.stringify(j).slice(0, 200)}`);
-
-  const found = (j?.candidates?.[0]?.content?.parts || []).find(
-    (p: Record<string, unknown>) => p.inline_data || p.inlineData
-  );
-  if (!found) throw new Error(`no image returned: ${JSON.stringify(j).slice(0, 200)}`);
-  const d = (found.inline_data || found.inlineData) as { data: string };
-  return Buffer.from(d.data, "base64");
 }
 
 /**
@@ -161,6 +113,7 @@ async function submitVideo(job: Job, frameUrl: string) {
   return submit(ANIMATE_MODEL, {
     image_url: frameUrl,
     prompt: job.motionPrompt || job.prompt,
+    duration: 5,
   });
 }
 
@@ -240,12 +193,10 @@ async function photoUrl(code: string | null): Promise<string | null> {
  * you like.
  */
 export async function advance(job: Job): Promise<Job> {
-  // Either engine alone is enough to produce something, so only stop if both
-  // are missing.
-  if (!generationReady() && !videoReady()) return job;
+  if (!generationReady()) return job;
   if (job.status !== "approved" && job.status !== "working") return job;
 
-  // ---- step 3: the video is rendering — is it ready? ----
+  // ---- step 4: the video is rendering — is it ready? ----
   if (job.videoOp && !job.videoUrl) {
     try {
       const bytes = await collect(job.videoOp);
@@ -262,15 +213,48 @@ export async function advance(job: Job): Promise<Job> {
     }
   }
 
+  // ---- step 2: the frame is rendering — is it ready? ----
+  // No claim needed: collecting spends nothing, and two requests storing the
+  // same bytes to the same path is harmless. The spend-guarded transition to
+  // the video happens in step 3 on a later poll.
+  if (job.stillOp && !job.stillUrl) {
+    try {
+      const bytes = await collect(job.stillOp);
+      if (!bytes) return job;
+      const url = await store(job.id, "still", bytes);
+      if (job.format === "photo") {
+        return (
+          (await moveJob(job.id, "done", { stillUrl: url, stillOp: null, claimedAt: null })) ||
+          job
+        );
+      }
+      return (
+        (await moveJob(job.id, "working", { stillUrl: url, stillOp: null, claimedAt: null })) ||
+        job
+      );
+    } catch (e) {
+      // The frame failed. Clearing stillOp sends the job back through step 1,
+      // which resubmits — the claim window spaces retries out.
+      const msg = String(e);
+      return (
+        (await moveJob(job.id, "approved", {
+          stillOp: null,
+          claimedAt: null,
+          note: isTransient(msg) ? null : `Generation failed: ${msg.slice(0, 120)}`,
+        })) || job
+      );
+    }
+  }
+
   if (claimed(job)) return job;
 
-  // ---- step 2b: picture delivered, video not started yet ----
-  // Reached when the video submit was refused (usually the concurrency
-  // ceiling). Without this the job would sit with a photo and never retry.
+  // ---- step 3: frame delivered, video not started yet ----
   if (job.stillUrl && !job.videoOp && job.format !== "photo") {
     const stamped = await takeClaim(job);
     if (!stamped) return job;
     try {
+      // Kling pulls the frame from the public URL we stored, so nothing is
+      // re-encoded between the two stages.
       const videoOp = await submitVideo(stamped, stamped.stillUrl!);
       return (await moveJob(job.id, "working", { videoOp, claimedAt: null })) || stamped;
     } catch (e) {
@@ -288,66 +272,28 @@ export async function advance(job: Job): Promise<Job> {
     }
   }
 
-  // ---- step 1: make the anime frame ----
-  // Runs inline. On Vercel Pro a function gets 300s and this takes about 30,
-  // so there is no submit-then-collect dance for the image and no window in
-  // which two requests can both think it is unstarted.
-  if (!job.stillUrl) {
+  // ---- step 1: start the anime frame ----
+  if (!job.stillUrl && !job.stillOp) {
     // Claiming clears any note from a previous attempt: a customer watching a
     // retry should not keep reading the error from the last one.
     const stamped = await takeClaim(job);
     if (!stamped) return job; // someone else owns this tick
-    const ref = await photoUrl(stamped.photoCode);
 
-    // Without the image engine there is no way to make a frame that is them,
-    // and Higgsfield alone cannot supply one. Hold the job where an operator
-    // can see why rather than generating somebody else — a refund is cheap,
-    // handing a customer a stranger is not.
-    if (!generationReady()) {
+    // No photo means no face to keep, and the face is the product. Hold the
+    // job where the crew can see why instead of generating somebody else.
+    const ref = await photoUrl(stamped.photoCode);
+    if (!ref) {
       return (
         (await moveJob(job.id, "approved", {
           claimedAt: null,
-          note: "Held: the image engine is not configured, so we cannot keep your face. Ask the crew.",
+          note: "Held: no photo attached. Take one at the booth and re-approve.",
         })) || stamped
       );
     }
 
     try {
-      const bytes = await generateStill(stamped, ref);
-      const url = await store(job.id, "still", bytes);
-
-      if (stamped.format === "photo") {
-        return (await moveJob(job.id, "done", { stillUrl: url, claimedAt: null })) || stamped;
-      }
-      if (!videoReady()) {
-        return (
-          (await moveJob(job.id, "done", {
-            stillUrl: url,
-            claimedAt: null,
-            note: "Video is unavailable right now — your picture is above.",
-          })) || stamped
-        );
-      }
-      // Higgsfield pulls the frame from the public URL we just wrote, so
-      // nothing is re-encoded or re-uploaded between the two stages.
-      try {
-        const videoOp = await submitVideo(stamped, url);
-        return (
-          (await moveJob(job.id, "working", { stillUrl: url, videoOp, claimedAt: null })) ||
-          stamped
-        );
-      } catch (e) {
-        // Never lose the picture because the video queue was full — step 2b
-        // retries the video half on the next poll.
-        const msg = String(e);
-        return (
-          (await moveJob(job.id, "working", {
-            stillUrl: url,
-            claimedAt: null,
-            note: isTransient(msg) ? null : `Video didn't start: ${msg.slice(0, 110)}`,
-          })) || stamped
-        );
-      }
+      const stillOp = await submitStill(stamped, ref);
+      return (await moveJob(job.id, "working", { stillOp, claimedAt: null })) || stamped;
     } catch (e) {
       const msg = String(e);
       return (

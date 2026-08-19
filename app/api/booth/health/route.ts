@@ -16,11 +16,9 @@ export async function GET() {
     {
       blob: !!env.BLOB_READ_WRITE_TOKEN,
       boothKey: !!env.BOOTH_KEY,
-      // The anime frame needs Google: it is the only one of the two that
-      // preserves the customer's face.
-      google: !!env.GOOGLE_API_KEY,
-      // Animating that frame needs no identity work, so it runs on Higgsfield
-      // at roughly a fifth of Veo's price.
+      // Both stages run on Higgsfield now — nano-banana-pro for the frame,
+      // Kling 3.0 Pro to animate it — so this one pair of keys is the whole
+      // generation config. Google is no longer used.
       higgsfield: !!(env.HIGGSFIELD_API_KEY_ID && env.HIGGSFIELD_API_KEY_SECRET),
       // Which names ARE set, so a typo is visible immediately instead of
       // looking identical to a missing variable.

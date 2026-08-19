@@ -196,18 +196,8 @@ export default function BoothControl() {
       {queue && !queue.generationReady && (
         <div className="border border-otaku/50 bg-otaku/10 p-3 mb-5">
           <p className="font-sans text-otaku-light text-xs leading-relaxed">
-            <strong>Do not sell yet — GOOGLE_API_KEY is not set in Vercel.</strong> It is the only
-            engine that keeps the customer&apos;s face, and the video is built from the picture it
-            makes. Nothing will generate until it is added. Jobs approved now will simply wait.
-          </p>
-        </div>
-      )}
-
-      {queue && queue.generationReady && !queue.videoReady && (
-        <div className="border border-white/20 bg-white/5 p-3 mb-5">
-          <p className="font-sans text-white/70 text-xs leading-relaxed">
-            <strong>Photos only.</strong> Higgsfield keys missing, so video orders deliver the
-            picture and skip the clip.
+            <strong>Do not sell yet — the Higgsfield API keys are not set in Vercel.</strong>{" "}
+            Nothing can generate until they are added. Jobs approved now will simply wait.
           </p>
         </div>
       )}
@@ -254,7 +244,7 @@ export default function BoothControl() {
               <Card key={job.id} job={job}>
                 <p className="font-sans text-white/45 text-[11px] mt-2">
                   {job.status === "approved"
-                    ? "Approved — waiting for the booth laptop to pick it up."
+                    ? "Approved — starting…"
                     : job.videoUrl
                       ? "Video delivered."
                       : job.stillUrl

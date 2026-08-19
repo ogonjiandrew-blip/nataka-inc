@@ -16,8 +16,8 @@ import { advance } from "@/lib/boothGenerate";
  */
 
 export const runtime = "nodejs";
-// The anime frame is generated inline inside a status poll — about 30s. Pro
-// allows 300, so there is generous headroom and no risk of a mid-render kill.
+// Every generation call is submit-and-poll now, so each request is seconds.
+// Pro's 300s ceiling is pure headroom.
 export const maxDuration = 300;
 
 const MAX_PROMPT = 4000;
