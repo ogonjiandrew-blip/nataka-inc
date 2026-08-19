@@ -75,7 +75,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "ゴム",
         tagline: "The punch that crosses the whole ship",
         scene:
-          "The person from the input photo, exact same face and hair, winds up on a pirate ship deck and throws a punch, and their arm stretches impossibly long like rubber, rocketing across the full length of the deck and smashing through a stack of wooden barrels in a burst of splinters, then snapping back with a whip-crack that rocks their shoulder. Only the arm stretches, the rest of their body stays exactly normal. Low camera angle, one slow push-in.",
+          "Wide shot of the person from the input photo, exact same face and hair, standing on a pirate ship deck with their whole body in frame on the left side, a stack of wooden barrels on the right side of the same frame. They wind up and throw a punch, and their arm stretches impossibly long like rubber, shooting across the deck from left to right and smashing through the barrels in a burst of splinters, then snapping back to normal length with a whip-crack that rocks their shoulder. The camera never moves and never follows the arm: the person stays fully visible in frame the entire time, with both the person and the barrels in the same shot throughout. Only the arm stretches, the rest of their body stays exactly normal. Low camera angle.",
       },
     ],
   },
@@ -92,7 +92,7 @@ export const animeWorlds: AnimeWorld[] = [
         jp: "波",
         tagline: "The beam that splits the wasteland",
         scene:
-          "The person from the input photo, exact same face and hair, stands in a cracked rocky wasteland and drops into a wide stance, cupping both hands at their hip as a blinding blue-white sphere of light charges between their palms, gravel lifting off the ground and spiraling around their feet. They thrust both palms forward and a column of white light blasts out of frame, kicking up a wall of dust and pressure wind that flattens the scrub behind them. Camera low and tilted up, shaking slightly against the blast.",
+          "Three-quarter side view of the person from the input photo, exact same face and hair, in a wide low stance on cracked rocky ground, their whole body clearly visible on the left of frame. For the first two seconds: hands cupped together at their hip, a blue-white sphere charging between the two joined palms. Then for the whole remaining eight seconds: they thrust both arms straight out sideways across the frame, hands still pressed palm against palm, and one single thick column of white-blue light fires out of the joined palms and keeps firing continuously, travelling low and level parallel to the ground, straight across the frame from left to right and out to the horizon. Dust kicks up along the ground under the beam. The person stays clearly visible and correctly exposed the entire time, never blown out, never hidden behind the light, never silhouetted. The air behind their back stays clear, nothing explodes behind them. The camera is locked off and does not move.",
       },
       {
         id: "super-saiyan-2",
