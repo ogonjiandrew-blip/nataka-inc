@@ -32,11 +32,16 @@ import { moveJob, readJob, type Job } from "./boothQueue";
  */
 
 const HF = "https://platform.higgsfield.ai";
+const GOOGLE = "https://generativelanguage.googleapis.com/v1beta";
 
 function auth() {
   const id = process.env.HIGGSFIELD_API_KEY_ID;
   const secret = process.env.HIGGSFIELD_API_KEY_SECRET;
   return id && secret ? `Key ${id}:${secret}` : null;
+}
+
+function googleKey() {
+  return process.env.GOOGLE_API_KEY || "";
 }
 
 export function generationReady() {
@@ -45,28 +50,37 @@ export function generationReady() {
 export function videoReady() {
   return !!auth();
 }
+/** The exact-face engine. Optional — without it stills fall back to popcorn. */
+export function exactFaceReady() {
+  return !!googleKey();
+}
 
 /**
- * popcorn/auto is the ONLY endpoint on this account that does both halves of
- * the job: read the customer's face AND build the anime world around it.
- * Established 2026-08-19 by testing every image endpoint against one photo:
+ * Stills: Google Gemini first, popcorn/auto as the fallback.
  *
- *   nano-banana-pro   silently IGNORES its image input — asked to reproduce a
- *                     photo unchanged, it returned an unrelated stranger. It is
- *                     text-to-image, and it is what shipped the wrong faces.
- *   soul/reference    reads the photo but will not leave it: locks to the
- *                     original background and clothes whatever the prompt says,
- *                     at every style_strength.
- *   soul/character    real identity lock, but needs a per-person Soul ID
- *                     (custom_reference_id) trained first at 40 credits.
- *   reve/edit         a true edit endpoint, but model_blocked on this plan.
- *   popcorn/auto      face held, world built. 1.47 credits.
+ * The renders that nailed the face — the ones this booth is being measured
+ * against — were made by Gemini (sold in Higgsfield's app as "Nano Banana
+ * Pro"). The API's nano-banana-pro endpoint CANNOT be that path: it drops its
+ * image input silently. Proven 2026-08-19 by echo test — "reproduce this photo
+ * unchanged" was sent seven ways (input_images as strings/objects, image_urls,
+ * images, image_url, input_image_urls, and again via their own CDN upload) and
+ * every one returned a hallucinated unrelated photo. It is text-to-image on
+ * this surface, and it is exactly what shipped the wrong faces.
  *
- * The field is `image_urls` (array). Note the trap that caused the original
- * bug: unknown fields are accepted and silently dropped, so a wrong field name
- * does not error — it just quietly generates a stranger at full price.
+ * So the same model is reached the only way it can be reached serverlessly:
+ * Google's own API, GOOGLE_API_KEY. When the key is absent, stills fall back
+ * to popcorn/auto — the one Higgsfield endpoint that both reads the face and
+ * builds the world (strong likeness, tends to flatter). The rest of the sweep,
+ * for the record: soul/reference copies the photo but ignores the prompt at
+ * every style_strength; soul/character needs a 40-credit pre-trained Soul ID;
+ * reve/edit is model_blocked on this plan.
+ *
+ * The trap under all of it: this API accepts unknown fields and silently
+ * drops them, so a wrong field name does not error — it just quietly
+ * generates a stranger at full price.
  */
 const IMAGE_MODEL = process.env.BOOTH_IMAGE_MODEL || "higgsfield-ai/popcorn/auto";
+const GOOGLE_IMAGE_MODEL = process.env.BOOTH_GOOGLE_IMAGE_MODEL || "gemini-3-pro-image-preview";
 
 // prompt, image_url, duration (int). Kling 3.0 has no turbo tier here — pro is
 // the only 3.0. Verified live by wrong-type probe.
@@ -120,6 +134,37 @@ async function submitStill(job: Job, refUrl: string) {
     image_urls: [refUrl, refUrl, refUrl],
     aspect_ratio: "9:16",
   });
+}
+
+/**
+ * The exact-face path: Gemini reads the photo as true multimodal input, so
+ * the face is not "referenced" — it is looked at. Synchronous, ~30s, well
+ * inside Vercel Pro's 300s.
+ */
+async function generateStillExact(job: Job, refUrl: string): Promise<Buffer> {
+  const img = await fetch(refUrl);
+  if (!img.ok) throw new Error(`could not read the photo (${img.status})`);
+  const b64 = Buffer.from(await img.arrayBuffer()).toString("base64");
+
+  const res = await fetch(`${GOOGLE}/models/${GOOGLE_IMAGE_MODEL}:generateContent`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-goog-api-key": googleKey() },
+    body: JSON.stringify({
+      contents: [
+        { parts: [{ text: job.prompt }, { inline_data: { mime_type: "image/jpeg", data: b64 } }] },
+      ],
+      generationConfig: { responseModalities: ["IMAGE"] },
+    }),
+  });
+  const j = await res.json();
+  if (!res.ok) throw new Error(`image ${res.status}: ${JSON.stringify(j).slice(0, 200)}`);
+
+  const found = (j?.candidates?.[0]?.content?.parts || []).find(
+    (p: Record<string, unknown>) => p.inline_data || p.inlineData
+  );
+  if (!found) throw new Error(`no image returned: ${JSON.stringify(j).slice(0, 200)}`);
+  const d = (found.inline_data || found.inlineData) as { data: string };
+  return Buffer.from(d.data, "base64");
 }
 
 /**
@@ -310,6 +355,17 @@ export async function advance(job: Job): Promise<Job> {
     }
 
     try {
+      // Exact-face path when Google is configured: generate inline, store, and
+      // let step 3 start the video on the next poll.
+      if (exactFaceReady()) {
+        const bytes = await generateStillExact(stamped, ref);
+        const url = await store(job.id, "still", bytes);
+        if (stamped.format === "photo") {
+          return (await moveJob(job.id, "done", { stillUrl: url, claimedAt: null })) || stamped;
+        }
+        return (await moveJob(job.id, "working", { stillUrl: url, claimedAt: null })) || stamped;
+      }
+      // Fallback: popcorn, submit-and-collect.
       const stillOp = await submitStill(stamped, ref);
       return (await moveJob(job.id, "working", { stillOp, claimedAt: null })) || stamped;
     } catch (e) {

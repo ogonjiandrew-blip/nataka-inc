@@ -30,6 +30,7 @@ interface Job {
 interface Queue {
   generationReady: boolean;
   videoReady: boolean;
+  exactFaceReady: boolean;
   pending: Job[];
   approved: Job[];
   working: Job[];
@@ -198,6 +199,16 @@ export default function BoothControl() {
           <p className="font-sans text-otaku-light text-xs leading-relaxed">
             <strong>Do not sell yet — the Higgsfield API keys are not set in Vercel.</strong>{" "}
             Nothing can generate until they are added. Jobs approved now will simply wait.
+          </p>
+        </div>
+      )}
+
+      {queue && queue.generationReady && !queue.exactFaceReady && (
+        <div className="border border-white/25 bg-white/5 p-3 mb-5">
+          <p className="font-sans text-white/70 text-xs leading-relaxed">
+            <strong>Backup face engine.</strong> Faces come out as a strong likeness, not exact.
+            Add GOOGLE_API_KEY in Vercel to switch to the exact-face engine — it takes effect on
+            the next order, no redeploy.
           </p>
         </div>
       )}
