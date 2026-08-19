@@ -16,9 +16,7 @@ export async function GET() {
     {
       blob: !!env.BLOB_READ_WRITE_TOKEN,
       boothKey: !!env.BOOTH_KEY,
-      // Photos run on Google.
-      google: !!env.GOOGLE_API_KEY,
-      // Video runs on Higgsfield — roughly a fifth of Veo's price per clip.
+      // Higgsfield now runs both halves. Google is no longer used.
       higgsfield: !!(env.HIGGSFIELD_API_KEY_ID && env.HIGGSFIELD_API_KEY_SECRET),
       // Which names ARE set, so a typo is visible immediately instead of
       // looking identical to a missing variable.

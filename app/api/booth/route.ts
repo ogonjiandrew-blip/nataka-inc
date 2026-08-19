@@ -57,6 +57,7 @@ export async function POST(req: Request) {
     motionPrompt: body.motionPrompt ? String(body.motionPrompt).slice(0, 1200) : null,
     stillUrl: null,
     videoUrl: null,
+    stillOp: null,
     videoOp: null,
     claimedAt: null,
   });

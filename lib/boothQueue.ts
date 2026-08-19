@@ -43,10 +43,11 @@ export interface Job {
   videoUrl?: string | null;
   note?: string | null;
   /**
-   * Google's long-running operation for the video. Its existence is what lets
-   * this run without a machine: the render continues on Google's side and any
-   * later request can collect it.
+   * Higgsfield status URLs for the two renders. Their existence is what lets
+   * this run without a machine: the work continues on Higgsfield's side and
+   * any later request can collect it.
    */
+  stillOp?: string | null;
   videoOp?: string | null;
   /** Set while one request is generating, so a second does not duplicate it. */
   claimedAt?: string | null;
