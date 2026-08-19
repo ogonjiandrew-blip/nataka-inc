@@ -551,7 +551,8 @@ export function buildMessage(
   world: AnimeWorld,
   power: Power,
   variant: Variant = "epic",
-  format: Format = "video"
+  format: Format = "video",
+  photoCode?: string | null
 ): string {
   return [
     "🎌 OTAMATSURI BOOTH — AI ANIME " + (format === "photo" ? "PHOTO" : "VIDEO"),
@@ -559,6 +560,9 @@ export function buildMessage(
     `World: ${world.label} · Power: ${power.label}`,
     `Style: ${variant === "kawaii" ? "Kawaii" : "Epic"}`,
     `Format: ${format === "photo" ? "Photo" : "Photo + Video"}`,
+    // The photo itself cannot ride inside a wa.me link, so it goes to the booth
+    // out of band and this code is how the two halves find each other.
+    photoCode ? `Photo: ${photoCode}` : "Photo: taking at the booth",
     "",
     "— PROMPT —",
     buildPrompt(world, power, variant),
@@ -570,9 +574,10 @@ export function buildWhatsAppUrl(
   world: AnimeWorld,
   power: Power,
   variant: Variant = "epic",
-  format: Format = "video"
+  format: Format = "video",
+  photoCode?: string | null
 ): string {
   return `https://wa.me/${BOOTH_WHATSAPP}?text=${encodeURIComponent(
-    buildMessage(name, world, power, variant, format)
+    buildMessage(name, world, power, variant, format, photoCode)
   )}`;
 }

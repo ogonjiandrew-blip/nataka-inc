@@ -33,10 +33,10 @@ export default function AnimeVideoBuilder() {
   const [power, setPower] = useState<Power | null>(null);
   const [variant, setVariant] = useState<Variant>("epic");
   const [format, setFormat] = useState<Format>("video");
-  const [photo, setPhoto] = useState<File | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoCode, setPhotoCode] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [sent, setSent] = useState(false);
-  const [textSent, setTextSent] = useState(false);
 
   const powerRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLDivElement>(null);
@@ -49,13 +49,12 @@ export default function AnimeVideoBuilder() {
   // render exists.
   const accent = variant === "kawaii" ? KAWAII_PINK : world?.accent ?? "#E8442E";
 
-  const message = useMemo(
-    () => (ready && world && power ? buildMessage(name, world, power, variant, format) : ""),
-    [ready, name, world, power, variant, format]
-  );
   const waUrl = useMemo(
-    () => (ready && world && power ? buildWhatsAppUrl(name, world, power, variant, format) : undefined),
-    [ready, name, world, power, variant, format]
+    () =>
+      ready && world && power
+        ? buildWhatsAppUrl(name, world, power, variant, format, photoCode)
+        : undefined,
+    [ready, name, world, power, variant, format, photoCode]
   );
 
   const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
@@ -74,11 +73,18 @@ export default function AnimeVideoBuilder() {
   };
 
   /**
-   * The customer's photo, taken on their own phone. `capture="user"` opens the
-   * native camera directly — no getUserMedia permission dance, works in every
-   * mobile browser. The frame is downscaled on a canvas before sending so a
-   * 12MP selfie doesn't eat festival data: ~1280px JPEG is more than the
-   * generator needs.
+   * The customer's photo, taken on their own phone.
+   *
+   * `capture="user"` opens the native camera directly — no getUserMedia
+   * permission dance, works in every mobile browser. The frame is downscaled
+   * on a canvas before upload so a 12MP selfie doesn't eat festival data:
+   * ~1280px is already more than the generator needs.
+   *
+   * It uploads straight away, in the background, while they're still typing
+   * their name. By the time they reach the send button the code is already in
+   * the message, so the send itself is instant. If the upload fails the flow
+   * carries on and the message says the booth will take the picture instead —
+   * a broken photo store must never block a summon.
    */
   const onPhotoPicked = (file: File | undefined) => {
     if (!file) return;
@@ -92,60 +98,34 @@ export default function AnimeVideoBuilder() {
       c.height = Math.round(img.height * scale);
       c.getContext("2d")!.drawImage(img, 0, 0, c.width, c.height);
       c.toBlob(
-        (blob) => {
+        async (blob) => {
           URL.revokeObjectURL(raw);
           if (!blob) return;
-          const f = new File([blob], "otamatsuri-photo.jpg", { type: "image/jpeg" });
-          setPhoto(f);
           setPhotoUrl((old) => {
             if (old) URL.revokeObjectURL(old);
-            return URL.createObjectURL(f);
+            return URL.createObjectURL(blob);
           });
+          setPhotoCode(null);
+          setUploading(true);
+          try {
+            const res = await fetch("/api/booth-photo", {
+              method: "POST",
+              headers: { "Content-Type": "image/jpeg" },
+              body: blob,
+            });
+            const j = await res.json();
+            setPhotoCode(res.ok && j.code ? j.code : null);
+          } catch {
+            setPhotoCode(null);
+          } finally {
+            setUploading(false);
+          }
         },
         "image/jpeg",
         0.85
       );
     };
     img.src = raw;
-  };
-
-  /**
-   * Send. Three paths, tried in order of how little the customer has to do:
-   *
-   * 1. Photo + Web Share with files — one share sheet, photo and prompt land
-   *    in WhatsApp together. Most Android phones (most of the festival).
-   * 2. Photo but no file sharing (iOS drops captions, desktop can't share) —
-   *    two taps: the prompt goes via wa.me, then the share sheet carries just
-   *    the photo to the same chat.
-   * 3. No photo — the wa.me text link, exactly as before; the booth camera
-   *    takes their picture instead.
-   *
-   * A wa.me link can never carry an image, which is why the share API does
-   * the lifting wherever it exists.
-   */
-  const canShareFiles = (f: File) =>
-    typeof navigator !== "undefined" &&
-    !!navigator.canShare &&
-    navigator.canShare({ files: [f] });
-
-  const sendWithPhoto = async () => {
-    if (!photo || !message) return;
-    try {
-      await navigator.share({ files: [photo], text: message });
-      setSent(true);
-    } catch {
-      /* user closed the sheet — nothing sent, keep the button live */
-    }
-  };
-
-  const sharePhotoOnly = async () => {
-    if (!photo) return;
-    try {
-      await navigator.share({ files: [photo] });
-      setSent(true);
-    } catch {
-      /* cancelled */
-    }
   };
 
   return (
@@ -393,8 +373,15 @@ export default function AnimeVideoBuilder() {
                       style={{ borderColor: accent }}
                     />
                     <div className="flex-1">
-                      <p className="font-sans text-white/70 text-xs leading-relaxed mb-3">
+                      <p className="font-sans text-white/70 text-xs leading-relaxed mb-2">
                         This is the face that enters the anime. Happy with it?
+                      </p>
+                      <p className="font-sans text-[11px] mb-3" style={{ color: accent }}>
+                        {uploading
+                          ? "Sending to the booth…"
+                          : photoCode
+                            ? `✓ Sent to the booth · code ${photoCode}`
+                            : "Saved — the booth will use this."}
                       </p>
                       <button
                         type="button"
@@ -522,6 +509,10 @@ export default function AnimeVideoBuilder() {
             }}
           >
             <div className="max-w-lg mx-auto pointer-events-auto">
+              {/* ONE button, always. It is a plain wa.me link, so it opens the
+                  booth's own chat directly — no OS share sheet, no contact
+                  picker, no hunting. The photo has already uploaded in the
+                  background and rides along as a code in the text. */}
               {!ready || !waUrl ? (
                 <button
                   type="button"
@@ -530,46 +521,6 @@ export default function AnimeVideoBuilder() {
                 >
                   {power ? "Add your name ↑" : "Choose your power ↑"}
                 </button>
-              ) : photo && canShareFiles(photo) ? (
-                /* One tap: photo + prompt through the native share sheet. */
-                <button
-                  type="button"
-                  onClick={sendWithPhoto}
-                  className="flex items-center justify-center gap-2.5 w-full text-center font-geist font-black text-sm text-ink px-6 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform"
-                  style={{ background: accent }}
-                >
-                  <WhatsAppMark />
-                  Send photo + summon
-                </button>
-              ) : photo ? (
-                /* This phone can't share files from the browser: the prompt
-                   goes by link, then the share sheet carries the photo. */
-                <div className="grid grid-cols-2 gap-2">
-                  <a
-                    href={waUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setTextSent(true)}
-                    className="flex items-center justify-center gap-2 text-center font-geist font-black text-xs text-ink px-3 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform"
-                    style={{ background: accent, opacity: textSent ? 0.55 : 1 }}
-                  >
-                    <WhatsAppMark />
-                    1 · Summon
-                  </a>
-                  <button
-                    type="button"
-                    onClick={sharePhotoOnly}
-                    disabled={!textSent}
-                    className="text-center font-geist font-black text-xs px-3 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform disabled:cursor-not-allowed"
-                    style={{
-                      background: textSent ? accent : "transparent",
-                      color: textSent ? "#0A0A0A" : "rgba(255,255,255,0.35)",
-                      border: textSent ? "none" : "1px solid rgba(255,255,255,0.15)",
-                    }}
-                  >
-                    2 · Photo
-                  </button>
-                </div>
               ) : (
                 <a
                   href={waUrl}
@@ -580,25 +531,25 @@ export default function AnimeVideoBuilder() {
                   style={{ background: accent }}
                 >
                   <WhatsAppMark />
-                  Send my summon
+                  {uploading ? "Send my summon" : "Send my summon"}
                 </a>
               )}
 
               <p className="font-sans text-white/45 text-[10px] text-center mt-2.5 leading-relaxed">
                 {sent ? (
                   <>
-                    Sent. Your {format === "photo" ? "photo" : "photo and video"} will land in
-                    that chat.{" "}
+                    Sent. Your {format === "photo" ? "photo" : "photo and video"} lands in that
+                    chat.{" "}
                     <a href={waUrl} target="_blank" rel="noopener noreferrer" className="underline">
-                      Text missing? Tap here.
+                      Didn&apos;t open? Tap here.
                     </a>
                   </>
-                ) : photo && canShareFiles(photo) ? (
-                  "One tap: your photo and the summon go to WhatsApp together."
-                ) : photo ? (
-                  "Two taps: send the summon first, then your photo to the same chat."
+                ) : uploading ? (
+                  "Sending your photo to the booth…"
+                ) : photoCode ? (
+                  `Photo ${photoCode} is with the booth. One tap sends your summon.`
                 ) : (
-                  "Opens WhatsApp with everything typed. Just press send."
+                  "Opens the booth chat with everything typed. Just press send."
                 )}
               </p>
             </div>
