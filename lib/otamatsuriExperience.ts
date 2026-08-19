@@ -84,6 +84,13 @@ const KAWAII_TAIL =
 
 export type Variant = "epic" | "kawaii";
 
+/**
+ * What the customer is buying. Video includes the photo, because the pipeline
+ * generates the still first and animates it — so "video" is really
+ * "photo + video" and the page says so.
+ */
+export type Format = "photo" | "video";
+
 export const animeWorlds: AnimeWorld[] = [
   {
     id: "one-piece",
@@ -534,20 +541,38 @@ export function episodeNumber(world: AnimeWorld, power: Power): string {
   return String(n + 3).padStart(2, "0");
 }
 
-export function buildWhatsAppUrl(
+/**
+ * The full summon text. Exported on its own because the send path is no
+ * longer only a wa.me link: when the customer attaches their photo, the Web
+ * Share API carries this same text as the image caption.
+ */
+export function buildMessage(
   name: string,
   world: AnimeWorld,
   power: Power,
-  variant: Variant = "epic"
+  variant: Variant = "epic",
+  format: Format = "video"
 ): string {
-  const message = [
-    "🎌 OTAMATSURI BOOTH — AI ANIME VIDEO",
+  return [
+    "🎌 OTAMATSURI BOOTH — AI ANIME " + (format === "photo" ? "PHOTO" : "VIDEO"),
     `Name: ${name.trim()}`,
     `World: ${world.label} · Power: ${power.label}`,
     `Style: ${variant === "kawaii" ? "Kawaii" : "Epic"}`,
+    `Format: ${format === "photo" ? "Photo" : "Photo + Video"}`,
     "",
     "— PROMPT —",
     buildPrompt(world, power, variant),
   ].join("\n");
-  return `https://wa.me/${BOOTH_WHATSAPP}?text=${encodeURIComponent(message)}`;
+}
+
+export function buildWhatsAppUrl(
+  name: string,
+  world: AnimeWorld,
+  power: Power,
+  variant: Variant = "epic",
+  format: Format = "video"
+): string {
+  return `https://wa.me/${BOOTH_WHATSAPP}?text=${encodeURIComponent(
+    buildMessage(name, world, power, variant, format)
+  )}`;
 }

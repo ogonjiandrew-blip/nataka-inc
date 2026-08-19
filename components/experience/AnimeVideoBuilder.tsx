@@ -5,9 +5,11 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   animeWorlds,
+  buildMessage,
   buildWhatsAppUrl,
   episodeNumber,
   type AnimeWorld,
+  type Format,
   type Power,
   type Variant,
 } from "@/lib/otamatsuriExperience";
@@ -30,10 +32,15 @@ export default function AnimeVideoBuilder() {
   const [world, setWorld] = useState<AnimeWorld | null>(null);
   const [power, setPower] = useState<Power | null>(null);
   const [variant, setVariant] = useState<Variant>("epic");
+  const [format, setFormat] = useState<Format>("video");
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  const [textSent, setTextSent] = useState(false);
 
   const powerRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLDivElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
 
   const nameOk = name.trim().length >= 2;
   const ready = nameOk && world !== null && power !== null;
@@ -42,9 +49,13 @@ export default function AnimeVideoBuilder() {
   // render exists.
   const accent = variant === "kawaii" ? KAWAII_PINK : world?.accent ?? "#E8442E";
 
+  const message = useMemo(
+    () => (ready && world && power ? buildMessage(name, world, power, variant, format) : ""),
+    [ready, name, world, power, variant, format]
+  );
   const waUrl = useMemo(
-    () => (ready && world && power ? buildWhatsAppUrl(name, world, power, variant) : undefined),
-    [ready, name, world, power, variant]
+    () => (ready && world && power ? buildWhatsAppUrl(name, world, power, variant, format) : undefined),
+    [ready, name, world, power, variant, format]
   );
 
   const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
@@ -60,6 +71,81 @@ export default function AnimeVideoBuilder() {
   const pickPower = (p: Power) => {
     setPower(p);
     scrollTo(nameRef);
+  };
+
+  /**
+   * The customer's photo, taken on their own phone. `capture="user"` opens the
+   * native camera directly — no getUserMedia permission dance, works in every
+   * mobile browser. The frame is downscaled on a canvas before sending so a
+   * 12MP selfie doesn't eat festival data: ~1280px JPEG is more than the
+   * generator needs.
+   */
+  const onPhotoPicked = (file: File | undefined) => {
+    if (!file) return;
+    const img = document.createElement("img");
+    const raw = URL.createObjectURL(file);
+    img.onload = () => {
+      const MAX = 1280;
+      const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * scale);
+      c.height = Math.round(img.height * scale);
+      c.getContext("2d")!.drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(
+        (blob) => {
+          URL.revokeObjectURL(raw);
+          if (!blob) return;
+          const f = new File([blob], "otamatsuri-photo.jpg", { type: "image/jpeg" });
+          setPhoto(f);
+          setPhotoUrl((old) => {
+            if (old) URL.revokeObjectURL(old);
+            return URL.createObjectURL(f);
+          });
+        },
+        "image/jpeg",
+        0.85
+      );
+    };
+    img.src = raw;
+  };
+
+  /**
+   * Send. Three paths, tried in order of how little the customer has to do:
+   *
+   * 1. Photo + Web Share with files — one share sheet, photo and prompt land
+   *    in WhatsApp together. Most Android phones (most of the festival).
+   * 2. Photo but no file sharing (iOS drops captions, desktop can't share) —
+   *    two taps: the prompt goes via wa.me, then the share sheet carries just
+   *    the photo to the same chat.
+   * 3. No photo — the wa.me text link, exactly as before; the booth camera
+   *    takes their picture instead.
+   *
+   * A wa.me link can never carry an image, which is why the share API does
+   * the lifting wherever it exists.
+   */
+  const canShareFiles = (f: File) =>
+    typeof navigator !== "undefined" &&
+    !!navigator.canShare &&
+    navigator.canShare({ files: [f] });
+
+  const sendWithPhoto = async () => {
+    if (!photo || !message) return;
+    try {
+      await navigator.share({ files: [photo], text: message });
+      setSent(true);
+    } catch {
+      /* user closed the sheet — nothing sent, keep the button live */
+    }
+  };
+
+  const sharePhotoOnly = async () => {
+    if (!photo) return;
+    try {
+      await navigator.share({ files: [photo] });
+      setSent(true);
+    } catch {
+      /* cancelled */
+    }
   };
 
   return (
@@ -232,7 +318,9 @@ export default function AnimeVideoBuilder() {
         </AnimatePresence>
       </div>
 
-      {/* 03 — Name, asked last */}
+      {/* 03 — Photo or video, then their picture, then the name. All three
+          appear together once a power is picked, so it reads as one final
+          stretch rather than three more gates. */}
       <div ref={nameRef} className="scroll-mt-6">
         <AnimatePresence>
           {world && power && (
@@ -240,9 +328,102 @@ export default function AnimeVideoBuilder() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.32 }}
-              aria-labelledby="step-name"
+              aria-labelledby="step-format"
             >
-              <StepLabel n="03" jp="名" text="Your name" id="step-name" accent={accent} />
+              <StepLabel n="03" jp="形" text="Photo or video?" id="step-format" accent={accent} />
+              <div className="grid grid-cols-2 gap-2.5 mb-14">
+                {([
+                  { id: "photo" as Format, label: "Photo", jp: "写", sub: "Your anime frame, ready in about a minute" },
+                  { id: "video" as Format, label: "Photo + Video", jp: "映", sub: "The frame, then it comes alive" },
+                ]).map((f) => {
+                  const active = format === f.id;
+                  return (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setFormat(f.id)}
+                      aria-pressed={active}
+                      className="relative text-left p-4 pl-5 border transition-all duration-200 active:scale-[0.98] overflow-hidden"
+                      style={{
+                        borderColor: active ? accent : "rgba(255,255,255,0.14)",
+                        background: active ? `${accent}16` : "transparent",
+                      }}
+                    >
+                      <span
+                        className="absolute left-0 top-0 bottom-0 w-1 transition-opacity duration-200"
+                        style={{ background: accent, opacity: active ? 1 : 0.25 }}
+                      />
+                      <span
+                        aria-hidden
+                        className="absolute right-2 top-1 font-jp text-3xl select-none leading-none"
+                        style={{ color: accent, opacity: active ? 0.45 : 0.15 }}
+                      >
+                        {f.jp}
+                      </span>
+                      <span className="font-geist font-black text-base text-white uppercase tracking-wide block pr-9">
+                        {f.label}
+                      </span>
+                      <span className="font-sans text-white/55 text-xs block mt-1 pr-9 leading-relaxed">
+                        {f.sub}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* 04 — their picture, taken on their own phone. Optional: the
+                  booth camera covers anyone who skips it. */}
+              <StepLabel n="04" jp="撮" text="Take your picture" id="step-photo" accent={accent} />
+              <input
+                ref={cameraRef}
+                type="file"
+                accept="image/*"
+                capture="user"
+                className="hidden"
+                onChange={(e) => onPhotoPicked(e.target.files?.[0])}
+              />
+              <div className="flex items-start gap-3 mb-14">
+                {photoUrl ? (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element -- blob URL preview */}
+                    <img
+                      src={photoUrl}
+                      alt="Your photo"
+                      className="w-28 aspect-[3/4] object-cover border-2"
+                      style={{ borderColor: accent }}
+                    />
+                    <div className="flex-1">
+                      <p className="font-sans text-white/70 text-xs leading-relaxed mb-3">
+                        This is the face that enters the anime. Happy with it?
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => cameraRef.current?.click()}
+                        className="font-geist font-black text-[11px] text-white border border-white/25 px-4 py-2.5 uppercase tracking-widest active:scale-[0.97] transition-transform"
+                      >
+                        Retake
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex-1">
+                    <button
+                      type="button"
+                      onClick={() => cameraRef.current?.click()}
+                      className="w-full font-geist font-black text-sm text-white border-2 px-6 py-5 uppercase tracking-widest active:scale-[0.98] transition-transform"
+                      style={{ borderColor: accent }}
+                    >
+                      📸 Open camera
+                    </button>
+                    <p className="font-sans text-white/45 text-xs mt-3 leading-relaxed">
+                      Face the light, waist-up, face big in the frame. Or skip it — the booth
+                      camera will shoot you instead.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <StepLabel n="05" jp="名" text="Your name" id="step-name" accent={accent} />
               <input
                 type="text"
                 value={name}
@@ -341,7 +522,55 @@ export default function AnimeVideoBuilder() {
             }}
           >
             <div className="max-w-lg mx-auto pointer-events-auto">
-              {ready && waUrl ? (
+              {!ready || !waUrl ? (
+                <button
+                  type="button"
+                  disabled
+                  className="w-full text-center font-geist font-black text-sm text-white/35 border border-white/15 bg-ink px-6 py-5 uppercase tracking-widest cursor-not-allowed"
+                >
+                  {power ? "Add your name ↑" : "Choose your power ↑"}
+                </button>
+              ) : photo && canShareFiles(photo) ? (
+                /* One tap: photo + prompt through the native share sheet. */
+                <button
+                  type="button"
+                  onClick={sendWithPhoto}
+                  className="flex items-center justify-center gap-2.5 w-full text-center font-geist font-black text-sm text-ink px-6 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform"
+                  style={{ background: accent }}
+                >
+                  <WhatsAppMark />
+                  Send photo + summon
+                </button>
+              ) : photo ? (
+                /* This phone can't share files from the browser: the prompt
+                   goes by link, then the share sheet carries the photo. */
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href={waUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setTextSent(true)}
+                    className="flex items-center justify-center gap-2 text-center font-geist font-black text-xs text-ink px-3 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform"
+                    style={{ background: accent, opacity: textSent ? 0.55 : 1 }}
+                  >
+                    <WhatsAppMark />
+                    1 · Summon
+                  </a>
+                  <button
+                    type="button"
+                    onClick={sharePhotoOnly}
+                    disabled={!textSent}
+                    className="text-center font-geist font-black text-xs px-3 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform disabled:cursor-not-allowed"
+                    style={{
+                      background: textSent ? accent : "transparent",
+                      color: textSent ? "#0A0A0A" : "rgba(255,255,255,0.35)",
+                      border: textSent ? "none" : "1px solid rgba(255,255,255,0.15)",
+                    }}
+                  >
+                    2 · Photo
+                  </button>
+                </div>
+              ) : (
                 <a
                   href={waUrl}
                   target="_blank"
@@ -353,20 +582,24 @@ export default function AnimeVideoBuilder() {
                   <WhatsAppMark />
                   Send my summon
                 </a>
-              ) : (
-                <button
-                  type="button"
-                  disabled
-                  className="w-full text-center font-geist font-black text-sm text-white/35 border border-white/15 bg-ink px-6 py-5 uppercase tracking-widest cursor-not-allowed"
-                >
-                  {power ? "Add your name ↑" : "Choose your power ↑"}
-                </button>
               )}
 
               <p className="font-sans text-white/45 text-[10px] text-center mt-2.5 leading-relaxed">
-                {sent
-                  ? "Sent. Come back to the booth for your photo — the video lands in that chat."
-                  : "Opens WhatsApp with everything typed. Just press send."}
+                {sent ? (
+                  <>
+                    Sent. Your {format === "photo" ? "photo" : "photo and video"} will land in
+                    that chat.{" "}
+                    <a href={waUrl} target="_blank" rel="noopener noreferrer" className="underline">
+                      Text missing? Tap here.
+                    </a>
+                  </>
+                ) : photo && canShareFiles(photo) ? (
+                  "One tap: your photo and the summon go to WhatsApp together."
+                ) : photo ? (
+                  "Two taps: send the summon first, then your photo to the same chat."
+                ) : (
+                  "Opens WhatsApp with everything typed. Just press send."
+                )}
               </p>
             </div>
           </motion.div>
