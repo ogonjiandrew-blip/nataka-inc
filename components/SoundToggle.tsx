@@ -8,8 +8,13 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+
+/** The booth funnel is a single-task screen; nothing else may sit on it. */
+const SUPPRESS_ON = ["/otamatsuri-experience"];
 
 export default function SoundToggle() {
+  const pathname = usePathname();
   const [on, setOn] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
   const lastPlayed = useRef(0);
@@ -84,6 +89,8 @@ export default function SoundToggle() {
       setTimeout(() => blip(1760, 0.12, 0.035), 90);
     }
   };
+
+  if (SUPPRESS_ON.includes(pathname)) return null;
 
   return (
     <button

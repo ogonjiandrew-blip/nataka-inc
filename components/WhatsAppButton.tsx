@@ -6,13 +6,23 @@
  */
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 const WA_URL =
   "https://wa.me/254725107294?text=" +
   encodeURIComponent("Hi Nataka Inc! I'd like to discuss a project.");
 
+/*
+ * Pages that run their own WhatsApp call to action and must not compete with
+ * this one. Two green WhatsApp buttons on a screen is a coin flip, and on
+ * these pages the wrong outcome is a cosplayer wanting their photos landing
+ * in the sales inbox instead of the community.
+ */
+const SUPPRESS_ON = ["/otamatsuri-2026", "/otamatsuri-experience"];
+
 export default function WhatsAppButton() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(false);
 
@@ -23,6 +33,8 @@ export default function WhatsAppButton() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  if (SUPPRESS_ON.includes(pathname)) return null;
 
   return (
     <AnimatePresence>

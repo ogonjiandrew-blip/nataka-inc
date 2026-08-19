@@ -28,6 +28,17 @@ export interface AnimeWorld {
   jp: string;
   sub: string;
   accent: string;
+  /** Poster frame in /public/otamatsuri-experience — a real render, not stock. */
+  poster: string;
+  /**
+   * The invented series title printed on the customer's episode card.
+   *
+   * Original inventions, deliberately not real anime names: the booth sells
+   * these, and putting a real studio's title on a paid product is the one part
+   * that turns a photo booth into a target. Same call as the print booth's
+   * PROMPTING.md.
+   */
+  title: { jp: string; romaji: string; en: string };
   /**
    * Costume and set signature, prepended to every power in this world.
    *
@@ -54,6 +65,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "海賊",
     sub: "The deck of a pirate ship on the open sea",
     accent: "#E8442E",
+    poster: "/otamatsuri-experience/world-one-piece.jpg",
+    title: { jp: "大海ノ王", romaji: "TAIKAI NO Ō", en: "King of the Open Sea" },
     signature:
       "They wear a pirate crew outfit: an open sleeveless red coat over a bare chest or plain shirt, a wide yellow sash knotted at the waist, cropped trousers and a wide-brimmed straw hat with a red band, worn or slung on the back. They stand on the sunlit wooden deck of a huge wooden sailing galleon in the open tropical sea — thick mast and rigging ropes, canvas sails overhead, stacked barrels and coiled rope, a carved figurehead at the bow, endless blue water and a big sky all around.",
     powers: [
@@ -97,6 +110,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "戦",
     sub: "A cracked wasteland built for battle",
     accent: "#F5C542",
+    poster: "/otamatsuri-experience/world-dragon-ball.jpg",
+    title: { jp: "閃光ノ拳", romaji: "SENKŌ NO KEN", en: "Fist of Radiance" },
     signature:
       "They wear a torn martial arts gi: a bright orange sleeveless top and orange trousers over a blue undershirt, a blue sash tied at the waist, blue wristbands and dark boots, the fabric ripped and dust-stained from fighting. They stand on a vast cracked dry lakebed under a huge open sky, jagged rock spires and a blast crater behind them, loose gravel and dust across the ground.",
     powers: [
@@ -132,6 +147,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "壁",
     sub: "Walls, wires and steam",
     accent: "#A3B18A",
+    poster: "/otamatsuri-experience/world-attack-on-titan.jpg",
+    title: { jp: "壁ノ咆哮", romaji: "KABE NO HŌKŌ", en: "Roar of the Wall" },
     signature:
       "They wear the full leather harness of a scouting corps soldier: thick brown straps crossing the chest and over both shoulders and down both thighs, heavy buckles, a white shirt and dark jacket underneath, steel gas canisters and twin blade grips at the hips, and a short hooded cloak snapping in the wind. Behind them stands a colossal grey stone defensive wall running out of frame, a town of red-tiled roofs far below half-drowned in cold morning fog.",
     powers: [
@@ -175,6 +192,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "錬",
     sub: "Clap, and the world obeys",
     accent: "#D6B77F",
+    poster: "/otamatsuri-experience/world-fullmetal.jpg",
+    title: { jp: "鋼ノ代償", romaji: "HAGANE NO DAISHŌ", en: "The Price of Steel" },
     signature:
       "They wear a long crimson hooded coat over a black jacket and black trousers, white gloves marked with a red circular sigil, and heavy boots; one forearm is plated in dull articulated steel. They stand in the stone plaza of an early-1900s European industrial town — soot-stained brick buildings, iron lamp posts, cobbles underfoot, chalk transmutation circles drawn on the flagstones, overcast grey daylight.",
     powers: [
@@ -210,6 +229,8 @@ export const animeWorlds: AnimeWorld[] = [
     jp: "忍",
     sub: "A hidden village of rooftops and forest",
     accent: "#FF8A3D",
+    poster: "/otamatsuri-experience/world-naruto.jpg",
+    title: { jp: "影ノ螺旋", romaji: "KAGE NO RASEN", en: "Spiral of Shadows" },
     signature:
       "They wear a ninja village outfit: a dark green sleeveless flak vest with front pouches over a long-sleeved orange and black jacket, bandaged forearms, a weapons pouch strapped to one thigh, open-toed sandals, and a metal forehead plate on a dark cloth band tied across the brow. They stand in a hidden village at the edge of dense forest — tall straight cedar trunks, wooden training posts, tiled village rooftops visible through the trees.",
     powers: [
@@ -255,6 +276,17 @@ export function buildPrompt(world: AnimeWorld, power: Power): string {
     power.scene,
     REALISM_TAIL,
   ].join(" ");
+}
+
+/**
+ * Episode number for the customer's card. Derived from the combination rather
+ * than randomised so it is stable between server and client render, and so the
+ * same pick always prints the same episode.
+ */
+export function episodeNumber(world: AnimeWorld, power: Power): string {
+  let n = 0;
+  for (const ch of world.id + power.id) n = (n * 31 + ch.charCodeAt(0)) % 96;
+  return String(n + 3).padStart(2, "0");
 }
 
 export function buildWhatsAppUrl(name: string, world: AnimeWorld, power: Power): string {
