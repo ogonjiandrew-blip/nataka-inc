@@ -56,7 +56,27 @@ export const BOOTH_WHATSAPP = "254117386206";
 
 /** Shared tail — texture rules that keep the render photoreal. */
 const REALISM_TAIL =
-  "Handheld camera with subtle micro-shake and a brief autofocus hunt, organic 35mm film grain, lifted milky blacks, restrained saturation. Real skin with visible pores, never smoothed or airbrushed. The person's face stays exactly the same throughout, no warping, no morphing. No text, no subtitles, no watermark.";
+  "Handheld camera with subtle micro-shake and a brief autofocus hunt, organic 35mm film grain, lifted milky blacks, restrained saturation. Real skin with visible pores, never smoothed or airbrushed. The person's face stays exactly the same throughout, no warping, no morphing. Keep their gender exactly as it is in the photo. No text, no subtitles, no watermark.";
+
+/**
+ * KAWAII — a second look over the same worlds.
+ *
+ * The catalogue was all shonen action, which appeals to half a festival. This
+ * is deliberately a variant rather than a separate girls' section, so someone
+ * can choose Attack on Titan and still get something soft and pink.
+ *
+ * It is still a real photograph: what changes is wardrobe, set dressing,
+ * light, lens and performance — never the medium. The performance line is the
+ * one people forget: epic stares down the lens from below, kawaii meets it at
+ * eye level and smiles.
+ */
+const KAWAII_LAYER =
+  "The outfit is restyled cute and girly: this world's clothing reworked in soft pastel pink, lilac, mint and cream, with frilled trim, satin ribbons and bows, puffed sleeves, a short pleated layered skirt, thigh-high socks and a large bow at the collar, plus hair clips and a ribbon choker. The location is dressed pretty and soft: cherry blossom petals drifting through the whole frame, strings of warm fairy lights, pastel paper lanterns, ribbon streamers and a soft pink haze, all physically present in the scene.";
+
+const KAWAII_TAIL =
+  "Camera at eye level, close and intimate. Their expression is bright and warm, a genuine open smile, head tilted, charming and sweet, never stern. Shot on 35mm Kodak Portra 400 through an 85mm portrait lens at f/1.8, soft high-key light, gentle warm halation off the fairy lights, creamy shallow depth of field with round pastel bokeh, fine delicate grain, airy lifted highlights, pastel colour, low contrast. Real textured skin, only softly lit, never airbrushed. The person's face stays exactly the same throughout and keep their gender exactly as it is in the photo. NOT digital art, NOT a 3D render, NOT an illustration, NOT cel-shaded. No text, no subtitles, no watermark.";
+
+export type Variant = "epic" | "kawaii";
 
 export const animeWorlds: AnimeWorld[] = [
   {
@@ -260,6 +280,191 @@ export const animeWorlds: AnimeWorld[] = [
       },
     ],
   },
+  {
+    id: "demon-slayer",
+    label: "Demon Slayer",
+    jp: "刃",
+    sub: "Lanterns, snow and wisteria",
+    accent: "#4FA88B",
+    poster: "/otamatsuri-experience/world-demon-slayer.jpg",
+    title: { jp: "鬼灯ノ夜", romaji: "ONIBI NO YORU", en: "Night of the Demon Lantern" },
+    signature:
+      "They wear a dark haori with a bold geometric checkered pattern over a black uniform jacket and hakama trousers, straw sandals, and hold a drawn slender katana with a glow along the blade edge. They stand in a Taisho-era Japanese mountain village at night — steep tiled roofs and dark timber walls, stone steps climbing between them, rows of paper lanterns burning along the path, heavy snow falling, and a huge wisteria tree in bloom hanging pale purple over the rooftops behind.",
+    powers: [
+      {
+        id: "water",
+        label: "Water Breathing",
+        jp: "水",
+        tagline: "A ribbon of water follows the blade",
+        scene:
+          "They breathe out hard and sweep the glowing blue blade in a wide arc, the cut trailing a long curling ribbon of water that coils around them and throws spray into the falling snow. Breath visible in the freezing air. The lanterns and the blade are the only light sources. One slow push-in.",
+      },
+      {
+        id: "flame",
+        label: "Flame Breathing",
+        jp: "炎",
+        tagline: "Fire runs the length of the blade",
+        scene:
+          "They breathe out and drive the blade forward, real fire roaring along its length and tearing away from them up the stone steps in a rolling wave, snow flashing to steam in the air. Fire is the only light source. One slow push-in.",
+      },
+      {
+        id: "thunder",
+        label: "Thunder Breathing",
+        jp: "雷",
+        tagline: "One blurred lunge, the street goes white",
+        scene:
+          "Coiled low in a sprinter's crouch, electricity screaming along the blade, they explode forward in a single blurred lunge up the steps, the whole street strobing white, snow blasted sideways, lanterns swinging wildly. One fast whip of movement, then stillness.",
+      },
+    ],
+  },
+  {
+    id: "jujutsu-kaisen",
+    label: "Jujutsu Kaisen",
+    jp: "呪",
+    sub: "Cursed energy under a Tokyo underpass",
+    accent: "#8B6BD9",
+    poster: "/otamatsuri-experience/world-jujutsu-kaisen.jpg",
+    title: { jp: "呪縛ノ檻", romaji: "JUBAKU NO ORI", en: "Cage of the Curse" },
+    signature:
+      "They wear a dark navy high-collared school uniform jacket, collar turned up and fastened, over dark trousers and boots. They stand in a derelict concrete Tokyo underpass at night — cracked pillars and buckled tarmac, tangled cables overhead, a torn-open chain-link fence, wet ground reflecting sodium street lamps, and the neon signage of a modern Tokyo street glowing cold in the distance behind.",
+    powers: [
+      {
+        id: "cursed-energy",
+        label: "Cursed Energy",
+        jp: "呪",
+        tagline: "Violet haze wraps the fist",
+        scene:
+          "Thick coils of dark violet smoke churn up out of the ground and wrap around their raised forearm, then they drive the fist forward and the haze blasts away down the underpass, buckling the tarmac in a line. Sodium lamps and the violet haze are the only light sources. Slow push-in.",
+      },
+      {
+        id: "domain",
+        label: "Domain Expansion",
+        jp: "領",
+        tagline: "The dark closes over you like a dome",
+        scene:
+          "They form a single hand seal and the underpass darkens from every edge inward as violet haze floods in and closes over them like a dome, the sodium lamps drowning out until only their face and the haze remain lit. Slow push-in as the dark closes.",
+      },
+      {
+        id: "black-flash",
+        label: "Black Flash",
+        jp: "黒",
+        tagline: "The frame distorts at the impact",
+        scene:
+          "They drive a fist into a concrete pillar and at the moment of contact the frame distorts hard black and violet, the pillar spidering with cracks and shedding chunks, dust blasting outward. One fast push-in on the impact, then stillness.",
+      },
+    ],
+  },
+  {
+    id: "my-hero",
+    label: "My Hero Academia",
+    jp: "英",
+    sub: "A city that needs saving",
+    accent: "#5BC46B",
+    poster: "/otamatsuri-experience/world-my-hero.jpg",
+    title: { jp: "英雄ノ卵", romaji: "EIYU NO TAMAGO", en: "Egg of the Hero" },
+    signature:
+      "They wear a fitted dark green and black armoured hero bodysuit with a utility belt, reinforced gauntlets and red boots, scuffed and torn from combat. They stand in a wide modern Japanese city intersection in daylight after a fight — glass office towers on all sides, a crushed and overturned bus, buckled tarmac and a torn-up crater in the road, broken glass and dust hanging in the air, and the arched gate of a large hero academy campus visible up the hill behind.",
+    powers: [
+      {
+        id: "strength",
+        label: "Super Strength",
+        jp: "力",
+        tagline: "The air itself cracks",
+        scene:
+          "Braced low, they drive a cocked fist forward and the air itself cracks, a shockwave blasting down the intersection, the overturned bus sliding back, concrete chunks flung outward and dust ripping away from them in a ring. Fast push-in on the punch.",
+      },
+      {
+        id: "explosion",
+        label: "Explosion",
+        jp: "爆",
+        tagline: "Blast off the palms, straight up",
+        scene:
+          "Both open palms fire repeated orange blasts down and back and the recoil launches them up out of the crater, smoke and grit blasting out beneath them, scorch marks spreading across the tarmac. Camera tilts up following the launch.",
+      },
+      {
+        id: "ice-fire",
+        label: "Half-Ice Half-Fire",
+        jp: "氷",
+        tagline: "Ice one side, fire the other",
+        scene:
+          "One arm sweeps out and a sheet of real ice races up the tarmac away from them, the other sweeps out and a wall of real fire roars up the opposite side, steam boiling violently along the line where the two meet. Slow push-in on the divide.",
+      },
+    ],
+  },
+  {
+    id: "sailor-moon",
+    label: "Sailor Moon",
+    jp: "月",
+    sub: "A Tokyo street under a full moon",
+    accent: "#F45C9E",
+    poster: "/otamatsuri-experience/world-sailor-moon.jpg",
+    title: { jp: "月光ノ誓", romaji: "GEKKO NO CHIKAI", en: "Vow of the Moonlight" },
+    signature:
+      "They wear a magical-girl sailor uniform: a white bodice with a wide navy sailor collar and a large red chest bow, a short pleated navy skirt, white elbow gloves with coloured trim, red knee-high boots, and a gold tiara with a single gemstone at the brow. They stand on a Tokyo residential street at night under a huge low full moon — quiet shopfronts and vending machines glowing, telephone wires overhead, cherry blossom trees along the pavement shedding petals, wet asphalt reflecting streetlight, and the city skyline beyond.",
+    powers: [
+      {
+        id: "moonlight",
+        label: "Moonlight Beam",
+        jp: "光",
+        tagline: "The moon answers your hand",
+        scene:
+          "They raise one arm overhead and a column of pure white moonlight falls onto them from the full moon, petals lifting and spiralling upward inside the beam, their hair and skirt floating in the rising light, the wet street glowing. Slow push-in.",
+      },
+      {
+        id: "tiara",
+        label: "Tiara Throw",
+        jp: "冠",
+        tagline: "A disc of gold light down the street",
+        scene:
+          "They pull the tiara from their brow, it flares into a spinning disc of gold light, and they hurl it away down the street where it streaks off trailing sparks across the wet asphalt. One quick whip of the arm, then they hold the follow-through pose.",
+      },
+      {
+        id: "transform",
+        label: "Transformation",
+        jp: "変",
+        tagline: "Ribbons of light become the uniform",
+        scene:
+          "They raise a hand and ribbons of white and pink light spiral up around their body from feet to shoulders, wrapping their arms and waist and resolving into the finished uniform, the whole street washing pink and silver, and they land in a final pose. One continuous turn of the camera around them.",
+      },
+    ],
+  },
+  {
+    id: "cardcaptor",
+    label: "Cardcaptor Sakura",
+    jp: "桜",
+    sub: "A park in full cherry blossom",
+    accent: "#F7A8C4",
+    poster: "/otamatsuri-experience/world-cardcaptor.jpg",
+    title: { jp: "桜花ノ封", romaji: "OUKA NO FU", en: "Seal of the Cherry Blossom" },
+    signature:
+      "They wear a handmade magical-girl outfit in pale pink and white: a short pleated skirt with frilled layers, a fitted bodice with a large ribbon bow at the chest, puffed short sleeves, white thigh-high socks, pink ankle boots, a small winged hat, and they hold a slender pink wand with a star at its tip. They stand in a Japanese suburban park at golden hour in full cherry blossom — a wide avenue of blossom trees dropping petals in drifts, a small painted bandstand, an empty swing set, warm low sun through the branches, and tiled house roofs beyond the treeline.",
+    powers: [
+      {
+        id: "cards",
+        label: "Card Release",
+        jp: "札",
+        tagline: "A card lifts off your palm",
+        scene:
+          "A glowing card lifts off their open palm and hovers, a circle of pale pink light draws itself on the ground around their feet, and the card flares bright as petals lift off the path and spiral up around them. Slow push-in.",
+      },
+      {
+        id: "wings",
+        label: "Wings",
+        jp: "翼",
+        tagline: "White wings, feet off the ground",
+        scene:
+          "Large soft white feathered wings unfold and spread wide behind them, and they lift slowly off the path, petals blasting up and outward beneath their feet, wings beating once, low golden sun behind the feathers. Camera tilts up as they rise.",
+      },
+      {
+        id: "seal",
+        label: "Sealing Circle",
+        jp: "封",
+        tagline: "A circle of symbols on the ground",
+        scene:
+          "They raise the wand overhead in both hands and a wide glowing circle of pale pink and gold symbols draws itself across the ground around them, light rising from its lines through the drifting petals. Slow push-in.",
+      },
+    ],
+  },
 ];
 
 /**
@@ -269,7 +474,20 @@ export const animeWorlds: AnimeWorld[] = [
  * their wardrobe land before the effect. That is what makes a viewer name the
  * anime inside the first second instead of just seeing "someone with powers".
  */
-export function buildPrompt(world: AnimeWorld, power: Power): string {
+export function buildPrompt(
+  world: AnimeWorld,
+  power: Power,
+  variant: Variant = "epic"
+): string {
+  if (variant === "kawaii") {
+    return [
+      "The person from the input photo, exact same face and hair.",
+      world.signature,
+      KAWAII_LAYER,
+      power.scene,
+      KAWAII_TAIL,
+    ].join(" ");
+  }
   return [
     "The person from the input photo, exact same face and hair.",
     world.signature,
@@ -289,14 +507,20 @@ export function episodeNumber(world: AnimeWorld, power: Power): string {
   return String(n + 3).padStart(2, "0");
 }
 
-export function buildWhatsAppUrl(name: string, world: AnimeWorld, power: Power): string {
+export function buildWhatsAppUrl(
+  name: string,
+  world: AnimeWorld,
+  power: Power,
+  variant: Variant = "epic"
+): string {
   const message = [
     "🎌 OTAMATSURI BOOTH — AI ANIME VIDEO",
     `Name: ${name.trim()}`,
     `World: ${world.label} · Power: ${power.label}`,
+    `Style: ${variant === "kawaii" ? "Kawaii" : "Epic"}`,
     "",
-    "— PROMPT (Seedance fast · 480p · 9:16 · up to 15s) —",
-    buildPrompt(world, power),
+    "— PROMPT —",
+    buildPrompt(world, power, variant),
   ].join("\n");
   return `https://wa.me/${BOOTH_WHATSAPP}?text=${encodeURIComponent(message)}`;
 }

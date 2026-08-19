@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
@@ -9,7 +9,10 @@ import {
   episodeNumber,
   type AnimeWorld,
   type Power,
+  type Variant,
 } from "@/lib/otamatsuriExperience";
+
+const KAWAII_PINK = "#F45C9E";
 
 /**
  * The booth questionnaire, ordered for a phone held in a queue.
@@ -26,6 +29,7 @@ export default function AnimeVideoBuilder() {
   const [name, setName] = useState("");
   const [world, setWorld] = useState<AnimeWorld | null>(null);
   const [power, setPower] = useState<Power | null>(null);
+  const [variant, setVariant] = useState<Variant>("epic");
   const [sent, setSent] = useState(false);
 
   const powerRef = useRef<HTMLDivElement>(null);
@@ -34,9 +38,13 @@ export default function AnimeVideoBuilder() {
   const nameOk = name.trim().length >= 2;
   const ready = nameOk && world !== null && power !== null;
 
+  // Kawaii repaints the whole page pink, so the choice is felt before a single
+  // render exists.
+  const accent = variant === "kawaii" ? KAWAII_PINK : world?.accent ?? "#E8442E";
+
   const waUrl = useMemo(
-    () => (ready && world && power ? buildWhatsAppUrl(name, world, power) : undefined),
-    [ready, name, world, power]
+    () => (ready && world && power ? buildWhatsAppUrl(name, world, power, variant) : undefined),
+    [ready, name, world, power, variant]
   );
 
   const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
@@ -56,24 +64,66 @@ export default function AnimeVideoBuilder() {
 
   return (
     <div className="space-y-16 md:space-y-24">
+      {/* Style switch. Sits above everything because it changes the look of
+          every card below it, and because a girl arriving at a wall of shonen
+          action needs to see the pink option before she scrolls past. */}
+      <section aria-labelledby="step-style">
+        <StepLabel n="00" jp="姿" text="Choose your style" id="step-style" accent={accent} />
+        <div className="grid grid-cols-2 gap-2.5">
+          {([
+            { id: "epic" as Variant, label: "Epic", jp: "豪", sub: "Dark, cinematic, powerful", color: "#E8442E" },
+            { id: "kawaii" as Variant, label: "Kawaii", jp: "可愛", sub: "Soft, pastel, cute", color: KAWAII_PINK },
+          ]).map((v) => {
+            const active = variant === v.id;
+            return (
+              <button
+                key={v.id}
+                type="button"
+                onClick={() => setVariant(v.id)}
+                aria-pressed={active}
+                className="relative text-left p-4 pl-5 border transition-all duration-200 active:scale-[0.98] overflow-hidden"
+                style={{
+                  borderColor: active ? v.color : "rgba(255,255,255,0.14)",
+                  background: active ? `${v.color}18` : "transparent",
+                }}
+              >
+                <span
+                  className="absolute left-0 top-0 bottom-0 w-1 transition-opacity duration-200"
+                  style={{ background: v.color, opacity: active ? 1 : 0.25 }}
+                />
+                <span
+                  aria-hidden
+                  className="absolute right-2 top-1 font-jp text-3xl select-none leading-none"
+                  style={{ color: v.color, opacity: active ? 0.45 : 0.15 }}
+                >
+                  {v.jp}
+                </span>
+                <span className="font-geist font-black text-base text-white uppercase tracking-wide block pr-10">
+                  {v.label}
+                </span>
+                <span className="font-sans text-white/55 text-xs block mt-1 pr-10 leading-relaxed">
+                  {v.sub}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
       {/* 01 — World, chosen from real frames */}
       <section aria-labelledby="step-world">
-        <StepLabel n="01" jp="界" text="Choose your world" id="step-world" />
+        <StepLabel n="01" jp="界" text="Choose your world" id="step-world" accent={accent} />
         <div className="grid grid-cols-2 gap-2.5">
-          {animeWorlds.map((w, i) => {
+          {animeWorlds.map((w) => {
             const active = world?.id === w.id;
-            // Five worlds in a two-column grid leaves an orphan, so the last
-            // one runs full width as a banner instead of a lopsided gap.
-            const wide = i === animeWorlds.length - 1;
+            const wAccent = variant === "kawaii" ? KAWAII_PINK : w.accent;
             return (
               <button
                 key={w.id}
                 type="button"
                 onClick={() => pickWorld(w)}
                 aria-pressed={active}
-                className={`group relative overflow-hidden text-left transition-transform duration-200 active:scale-[0.97] ${
-                  wide ? "col-span-2 aspect-[2/1]" : "aspect-[3/4]"
-                }`}
+                className="group relative overflow-hidden text-left transition-transform duration-200 active:scale-[0.97] aspect-[3/4]"
               >
                 <Image
                   src={w.poster}
@@ -88,19 +138,19 @@ export default function AnimeVideoBuilder() {
                   className="absolute inset-0 transition-opacity duration-300"
                   style={{
                     background: active
-                      ? `linear-gradient(to top, ${w.accent}dd 0%, ${w.accent}22 45%, transparent 75%)`
+                      ? `linear-gradient(to top, ${wAccent}dd 0%, ${wAccent}22 45%, transparent 75%)`
                       : "linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.35) 50%, rgba(8,8,8,0.15) 100%)",
                   }}
                 />
                 <span
                   className="absolute inset-0 border-2 transition-colors duration-200"
-                  style={{ borderColor: active ? w.accent : "transparent" }}
+                  style={{ borderColor: active ? wAccent : "transparent" }}
                 />
 
                 <span className="absolute left-3 right-3 bottom-3">
                   <span
                     className="font-jp text-lg block leading-none mb-1"
-                    style={{ color: active ? "#0A0A0A" : w.accent }}
+                    style={{ color: active ? "#0A0A0A" : wAccent }}
                   >
                     {w.jp}
                   </span>
@@ -136,7 +186,7 @@ export default function AnimeVideoBuilder() {
               transition={{ duration: 0.32 }}
               aria-labelledby="step-power"
             >
-              <StepLabel n="02" jp="力" text="Choose your power" id="step-power" accent={world.accent} />
+              <StepLabel n="02" jp="力" text="Choose your power" id="step-power" accent={accent} />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {world.powers.map((p) => {
                   const active = power?.id === p.id;
@@ -148,18 +198,18 @@ export default function AnimeVideoBuilder() {
                       aria-pressed={active}
                       className="relative text-left p-4 pl-5 border transition-all duration-200 active:scale-[0.98] overflow-hidden"
                       style={{
-                        borderColor: active ? world.accent : "rgba(255,255,255,0.14)",
-                        background: active ? `${world.accent}16` : "transparent",
+                        borderColor: active ? accent : "rgba(255,255,255,0.14)",
+                        background: active ? `${accent}16` : "transparent",
                       }}
                     >
                       <span
                         className="absolute left-0 top-0 bottom-0 w-1 transition-opacity duration-200"
-                        style={{ background: world.accent, opacity: active ? 1 : 0.28 }}
+                        style={{ background: accent, opacity: active ? 1 : 0.28 }}
                       />
                       <span
                         aria-hidden
                         className="absolute right-2 top-1 font-jp text-3xl select-none leading-none"
-                        style={{ color: world.accent, opacity: active ? 0.42 : 0.15 }}
+                        style={{ color: accent, opacity: active ? 0.42 : 0.15 }}
                       >
                         {p.jp}
                       </span>
@@ -188,7 +238,7 @@ export default function AnimeVideoBuilder() {
               transition={{ duration: 0.32 }}
               aria-labelledby="step-name"
             >
-              <StepLabel n="03" jp="名" text="Your name" id="step-name" accent={world.accent} />
+              <StepLabel n="03" jp="名" text="Your name" id="step-name" accent={accent} />
               <input
                 type="text"
                 value={name}
@@ -198,7 +248,7 @@ export default function AnimeVideoBuilder() {
                 maxLength={24}
                 enterKeyHint="done"
                 className="w-full bg-transparent border-b-2 border-white/20 focus:border-white outline-none font-geist font-black text-3xl md:text-4xl text-white placeholder:text-white/20 uppercase tracking-wide py-3 transition-colors"
-                style={{ caretColor: world.accent }}
+                style={{ caretColor: accent }}
               />
               <p className="font-sans text-white/45 text-xs mt-3">
                 Goes on your episode card, and helps the crew match your photo to your video.
@@ -224,13 +274,13 @@ export default function AnimeVideoBuilder() {
                       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/25" />
                       <div
                         className="absolute inset-0 border-2"
-                        style={{ borderColor: world.accent }}
+                        style={{ borderColor: accent }}
                       />
 
                       <div className="absolute inset-0 p-5 sm:p-7 flex flex-col justify-end">
                         <p
                           className="font-sans text-[10px] tracking-widest2 uppercase mb-3"
-                          style={{ color: world.accent }}
+                          style={{ color: accent }}
                         >
                           第{episodeNumber(world, power)}話 · Episode {episodeNumber(world, power)}
                         </p>
@@ -240,7 +290,7 @@ export default function AnimeVideoBuilder() {
                         </p>
                         <p
                           className="font-display italic font-semibold text-xl sm:text-2xl leading-none mb-5"
-                          style={{ color: world.accent }}
+                          style={{ color: accent }}
                         >
                           {world.title.en}
                         </p>
@@ -294,7 +344,7 @@ export default function AnimeVideoBuilder() {
                   rel="noopener noreferrer"
                   onClick={() => setSent(true)}
                   className="flex items-center justify-center gap-2.5 w-full text-center font-geist font-black text-sm text-ink px-6 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform"
-                  style={{ background: world.accent }}
+                  style={{ background: accent }}
                 >
                   <WhatsAppMark />
                   Send my summon
