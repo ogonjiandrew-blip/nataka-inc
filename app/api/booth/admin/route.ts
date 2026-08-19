@@ -11,7 +11,7 @@ import { advance, generationReady, videoReady } from "@/lib/boothGenerate";
  */
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 function guard(req: Request) {
   const supplied =

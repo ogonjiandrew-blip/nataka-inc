@@ -16,9 +16,9 @@ import { advance } from "@/lib/boothGenerate";
  */
 
 export const runtime = "nodejs";
-// A still takes ~30s and is generated inside a status poll, so this route
-// needs room. Vercel caps Hobby at 60.
-export const maxDuration = 60;
+// The anime frame is generated inline inside a status poll — about 30s. Pro
+// allows 300, so there is generous headroom and no risk of a mid-render kill.
+export const maxDuration = 300;
 
 const MAX_PROMPT = 4000;
 

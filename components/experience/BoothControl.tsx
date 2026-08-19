@@ -196,8 +196,18 @@ export default function BoothControl() {
       {queue && !queue.generationReady && (
         <div className="border border-otaku/50 bg-otaku/10 p-3 mb-5">
           <p className="font-sans text-otaku-light text-xs leading-relaxed">
-            <strong>Higgsfield keys are not set in Vercel.</strong> Approving will queue a job but
-            nothing generates until HIGGSFIELD_API_KEY_ID and HIGGSFIELD_API_KEY_SECRET are added.
+            <strong>GOOGLE_API_KEY is not set in Vercel.</strong> Approving will queue a job but
+            no picture can be made until it is added — Google is the half that keeps the
+            customer&apos;s face.
+          </p>
+        </div>
+      )}
+
+      {queue && queue.generationReady && !queue.videoReady && (
+        <div className="border border-white/20 bg-white/5 p-3 mb-5">
+          <p className="font-sans text-white/70 text-xs leading-relaxed">
+            <strong>Photos only.</strong> Higgsfield keys missing, so video orders deliver the
+            picture and skip the clip.
           </p>
         </div>
       )}
