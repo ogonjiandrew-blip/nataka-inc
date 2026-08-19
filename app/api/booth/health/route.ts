@@ -9,6 +9,9 @@
  */
 
 export const runtime = "nodejs";
+// Without this Next prerenders the route at build time and the "live" health
+// report is actually a fossil from the last deploy.
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const env = process.env;

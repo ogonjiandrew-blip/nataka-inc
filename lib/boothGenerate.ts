@@ -46,14 +46,30 @@ export function videoReady() {
   return !!auth();
 }
 
-// Fields verified against the live API (wrong-type probes, which error before
-// anything is charged):
-//   nano-banana-pro                          prompt, input_images[], aspect_ratio (9:16 ok)
-//   kling-video/v3.0/pro/image-to-video      prompt, image_url, duration (int, default 5)
-// Kling 3.0 has no turbo tier on this API — pro is the only 3.0. negative_prompt
-// is NOT a known field on it; unknown fields are silently ignored, so do not
-// send anything unverified: it would queue a real, billed generation.
-const IMAGE_MODEL = process.env.BOOTH_IMAGE_MODEL || "nano-banana-pro";
+/**
+ * popcorn/auto is the ONLY endpoint on this account that does both halves of
+ * the job: read the customer's face AND build the anime world around it.
+ * Established 2026-08-19 by testing every image endpoint against one photo:
+ *
+ *   nano-banana-pro   silently IGNORES its image input — asked to reproduce a
+ *                     photo unchanged, it returned an unrelated stranger. It is
+ *                     text-to-image, and it is what shipped the wrong faces.
+ *   soul/reference    reads the photo but will not leave it: locks to the
+ *                     original background and clothes whatever the prompt says,
+ *                     at every style_strength.
+ *   soul/character    real identity lock, but needs a per-person Soul ID
+ *                     (custom_reference_id) trained first at 40 credits.
+ *   reve/edit         a true edit endpoint, but model_blocked on this plan.
+ *   popcorn/auto      face held, world built. 1.47 credits.
+ *
+ * The field is `image_urls` (array). Note the trap that caused the original
+ * bug: unknown fields are accepted and silently dropped, so a wrong field name
+ * does not error — it just quietly generates a stranger at full price.
+ */
+const IMAGE_MODEL = process.env.BOOTH_IMAGE_MODEL || "higgsfield-ai/popcorn/auto";
+
+// prompt, image_url, duration (int). Kling 3.0 has no turbo tier here — pro is
+// the only 3.0. Verified live by wrong-type probe.
 const ANIMATE_MODEL = process.env.HIGGSFIELD_VIDEO_MODEL || "kling-video/v3.0/pro/image-to-video";
 
 /** A claim stops two concurrent requests submitting the same job twice. */
@@ -99,7 +115,9 @@ async function takeClaim(job: Job): Promise<Job | null> {
 async function submitStill(job: Job, refUrl: string) {
   return submit(IMAGE_MODEL, {
     prompt: job.prompt,
-    input_images: [refUrl],
+    // The field takes up to 8 references. Repeating the one photo we have
+    // weights identity harder than a single copy does, and costs nothing extra.
+    image_urls: [refUrl, refUrl, refUrl],
     aspect_ratio: "9:16",
   });
 }

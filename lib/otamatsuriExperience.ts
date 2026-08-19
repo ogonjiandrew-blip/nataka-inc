@@ -513,8 +513,16 @@ export function buildPrompt(
 ): string {
   // The identity clause leads every prompt. It is the one requirement a
   // customer will reject the entire order over: it has to be them.
+  //
+  // The negative list is not boilerplate — each line is a failure seen in
+  // testing. Left to itself the model flatters: it returns the customer older,
+  // broader and better-looking, which reads as a different person just as
+  // surely as swapping the face does. And naming a costume too precisely
+  // summons the character who wears it (a straw hat and red coat produced the
+  // live-action One Piece actor every time), so the reference has to be
+  // asserted over the top of that pull.
   const IDENTITY =
-    "Keep the exact person from the reference photo: their exact face, facial structure, skin tone, hair and gender stay completely unchanged and instantly recognisable as the same real person. Do not substitute a different person. Do not beautify, slim, lighten or darken them. Change only the costume and the world around them.";
+    "The person in the reference image, keeping their face exactly as it is: same facial structure, same eyes, same nose, same mouth, same jawline, same skin tone, same hair, same ethnicity, same age, same build. It must be recognisably the same individual. Do not substitute a different person and never use a known actor's face. Do not beautify, slim, broaden, age, lighten or darken them. Change only the costume and the world around them.";
 
   if (variant === "kawaii") {
     return [IDENTITY, world.signature, KAWAII_LAYER, power.scene, WORLD_LOCK, KAWAII_TAIL].join(" ");
