@@ -16,11 +16,14 @@ export async function GET() {
     {
       blob: !!env.BLOB_READ_WRITE_TOKEN,
       boothKey: !!env.BOOTH_KEY,
+      // Photos run on Google.
       google: !!env.GOOGLE_API_KEY,
-      // Which names ARE set, so a typo like GOOGLE_API_KEY_ or GEMINI_API_KEY
-      // is visible immediately instead of looking like a missing variable.
+      // Video runs on Higgsfield — roughly a fifth of Veo's price per clip.
+      higgsfield: !!(env.HIGGSFIELD_API_KEY_ID && env.HIGGSFIELD_API_KEY_SECRET),
+      // Which names ARE set, so a typo is visible immediately instead of
+      // looking identical to a missing variable.
       sawBoothRelatedNames: Object.keys(env)
-        .filter((k) => /GOOGLE|GEMINI|BOOTH|BLOB/i.test(k))
+        .filter((k) => /GOOGLE|GEMINI|BOOTH|BLOB|HIGGS/i.test(k))
         .sort(),
       deployedAt: env.VERCEL_DEPLOYMENT_ID ? "vercel" : "local",
     },

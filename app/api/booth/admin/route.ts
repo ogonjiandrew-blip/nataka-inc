@@ -1,5 +1,5 @@
 import { keyOk, listByStatus, moveJob, publicJob, storeReady } from "@/lib/boothQueue";
-import { advance, generationReady } from "@/lib/boothGenerate";
+import { advance, generationReady, videoReady } from "@/lib/boothGenerate";
 
 /**
  * The operator's end. Everything here is behind BOOTH_KEY, because this is
@@ -49,6 +49,7 @@ export async function GET(req: Request) {
 
   return Response.json({
     generationReady: generationReady(),
+    videoReady: videoReady(),
     pending: pending.map(publicJob),
     approved: approved.map(publicJob),
     working: working.map(publicJob),

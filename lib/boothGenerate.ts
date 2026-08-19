@@ -94,45 +94,81 @@ async function generateStill(job: Job): Promise<Buffer> {
   return Buffer.from(d.data, "base64");
 }
 
-/** Kick off the video and return the operation name. Does not wait. */
-async function submitVideo(job: Job, startImage: Buffer): Promise<string> {
-  const model = process.env.BOOTH_VIDEO_MODEL || "veo-3.1-fast-generate-preview";
-  const res = await fetch(`${API}/models/${model}:predictLongRunning`, {
+/* ------------------------------------------------------------- video --------
+   Video runs on Higgsfield, not Google. Veo 3.1 Fast is about KES 95 a clip
+   and standard is KES 310; Higgsfield is roughly KES 20 for the same six
+   seconds, and those credits are already bought. Over a festival that is the
+   difference between video being a loss-leader and being the margin.
+
+   Higgsfield is asynchronous in the same way Veo is — submit, get a status
+   URL, poll it — so nothing here has to wait either, and the no-machine
+   design is unchanged.
+
+   It also takes its input image as a public URL rather than base64, and our
+   still is already sitting in Blob at a public URL. So the still we just made
+   is handed straight over with nothing re-encoded or re-uploaded. */
+
+function hfAuth() {
+  const id = process.env.HIGGSFIELD_API_KEY_ID;
+  const secret = process.env.HIGGSFIELD_API_KEY_SECRET;
+  return id && secret ? `Key ${id}:${secret}` : null;
+}
+
+export function videoReady() {
+  return !!hfAuth();
+}
+
+/** Submit the video. Returns the status URL to poll; does not wait. */
+async function submitVideo(job: Job, stillUrl: string): Promise<string> {
+  const auth = hfAuth();
+  if (!auth) throw new Error("Higgsfield API key not configured");
+
+  const model = process.env.HIGGSFIELD_VIDEO_MODEL || "higgsfield-ai/dop/standard";
+  const res = await fetch(`https://platform.higgsfield.ai/${model}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": key() },
+    headers: {
+      Authorization: auth,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
     body: JSON.stringify({
-      instances: [
-        {
-          prompt: job.motionPrompt || job.prompt,
-          image: { bytesBase64Encoded: startImage.toString("base64"), mimeType: "image/jpeg" },
-        },
-      ],
-      parameters: { aspectRatio: "9:16", durationSeconds: 6 },
+      image_url: stillUrl,
+      prompt: job.motionPrompt || job.prompt,
     }),
   });
   const j = await res.json();
-  if (!res.ok || !j.name) {
-    throw new Error(`video submit ${res.status}: ${JSON.stringify(j).slice(0, 160)}`);
-  }
-  return j.name as string;
+  if (!res.ok) throw new Error(`video submit ${res.status}: ${JSON.stringify(j).slice(0, 160)}`);
+
+  // Their docs are explicit: use the returned URL, never build it yourself.
+  const statusUrl =
+    j.status_url ||
+    (j.request_id ? `https://platform.higgsfield.ai/requests/${j.request_id}/status` : null);
+  if (!statusUrl) throw new Error(`no status url: ${JSON.stringify(j).slice(0, 160)}`);
+  return statusUrl as string;
 }
 
 /** Check a submitted video. Returns bytes when finished, null while running. */
-async function collectVideo(op: string): Promise<Buffer | null> {
-  const res = await fetch(`${API}/${op}`, { headers: { "x-goog-api-key": key() } });
+async function collectVideo(statusUrl: string): Promise<Buffer | null> {
+  const auth = hfAuth();
+  if (!auth) throw new Error("Higgsfield API key not configured");
+
+  const res = await fetch(statusUrl, { headers: { Authorization: auth } });
   const j = await res.json();
-  if (j.error) throw new Error(`video failed: ${JSON.stringify(j.error).slice(0, 160)}`);
-  if (!j.done) return null;
+  const status = String(j.status || "").toLowerCase();
 
-  const r = j.response || {};
-  const sample =
-    r.generateVideoResponse?.generatedSamples?.[0] || r.generatedSamples?.[0] || r.videos?.[0];
-  const inline = sample?.video?.bytesBase64Encoded || sample?.bytesBase64Encoded;
-  if (inline) return Buffer.from(inline, "base64");
+  if (status === "failed" || status === "canceled") {
+    throw new Error(`Higgsfield returned ${status}`);
+  }
+  if (status === "nsfw") {
+    // Their moderation, not a fault the customer can fix by waiting.
+    throw new Error("the render was blocked by content moderation");
+  }
+  if (status !== "completed") return null;
 
-  const uri = sample?.video?.uri || sample?.uri;
-  if (!uri) throw new Error("finished but no video payload");
-  const dl = await fetch(uri.includes("key=") ? uri : `${uri}${uri.includes("?") ? "&" : "?"}key=${key()}`);
+  const url = j.video?.url || j.result?.url || j.output?.url;
+  if (!url) throw new Error(`completed but no video url: ${JSON.stringify(j).slice(0, 160)}`);
+
+  const dl = await fetch(url);
   if (!dl.ok) throw new Error(`video download ${dl.status}`);
   return Buffer.from(await dl.arrayBuffer());
 }
@@ -174,11 +210,25 @@ export async function advance(job: Job): Promise<Job> {
       if (stamped.format === "photo") {
         return (await moveJob(job.id, "done", { stillUrl: url, claimedAt: null })) || stamped;
       }
-      // Hand the finished frame straight to the video model and let go.
-      const op = await submitVideo(stamped, bytes);
+      if (!videoReady()) {
+        // Photo still delivered; only the video half is unavailable.
+        return (
+          (await moveJob(job.id, "done", {
+            stillUrl: url,
+            claimedAt: null,
+            note: "Video is unavailable right now — your picture is above.",
+          })) || stamped
+        );
+      }
+      // Hand the finished frame straight over. Higgsfield pulls it from the
+      // public Blob URL we just wrote, so nothing is re-uploaded.
+      const statusUrl = await submitVideo(stamped, url);
       return (
-        (await moveJob(job.id, "working", { stillUrl: url, videoOp: op, claimedAt: null })) ||
-        stamped
+        (await moveJob(job.id, "working", {
+          stillUrl: url,
+          videoOp: statusUrl,
+          claimedAt: null,
+        })) || stamped
       );
     } catch (e) {
       return (
