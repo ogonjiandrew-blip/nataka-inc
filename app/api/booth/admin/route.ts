@@ -1,4 +1,5 @@
 import { keyOk, listByStatus, moveJob, publicJob, storeReady } from "@/lib/boothQueue";
+import { advance, generationReady } from "@/lib/boothGenerate";
 
 /**
  * The operator's end. Everything here is behind BOOTH_KEY, because this is
@@ -10,6 +11,7 @@ import { keyOk, listByStatus, moveJob, publicJob, storeReady } from "@/lib/booth
  */
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 function guard(req: Request) {
   const supplied =
@@ -34,7 +36,19 @@ export async function GET(req: Request) {
     listByStatus("done", 12),
   ]);
 
+  // This screen also pushes work along, so a job still finishes when the
+  // customer has closed their page. One job per poll keeps the request short.
+  const next = [...approved, ...working][0];
+  if (next) {
+    try {
+      await advance(next);
+    } catch {
+      /* the next poll retries */
+    }
+  }
+
   return Response.json({
+    generationReady: generationReady(),
     pending: pending.map(publicJob),
     approved: approved.map(publicJob),
     working: working.map(publicJob),

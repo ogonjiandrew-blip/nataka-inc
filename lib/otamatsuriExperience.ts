@@ -535,6 +535,21 @@ export function buildPrompt(
  * than randomised so it is stable between server and client render, and so the
  * same pick always prints the same episode.
  */
+/**
+ * The video brief. Deliberately short: the still it animates already carries
+ * the costume, the world and the framing, so the model only has to move what
+ * is already correct. Re-describing the scene here fights the frame and drifts
+ * the face.
+ */
+export function buildMotionPrompt(power: Power): string {
+  return [
+    power.scene,
+    "The person's face stays exactly the same throughout, no warping, no morphing, and keep their gender exactly as it is.",
+    "Handheld camera with subtle micro-shake, organic film grain.",
+    "No text, no subtitles, no watermark.",
+  ].join(" ");
+}
+
 export function episodeNumber(world: AnimeWorld, power: Power): string {
   let n = 0;
   for (const ch of world.id + power.id) n = (n * 31 + ch.charCodeAt(0)) % 96;

@@ -35,11 +35,21 @@ export interface Job {
   /** Code from /api/booth-photo, if they took a picture on their phone. */
   photoCode: string | null;
   prompt: string;
+  /** Short motion brief for the video stage — the still already holds the world. */
+  motionPrompt?: string | null;
   status: JobStatus;
-  /** Filled by the booth worker as each deliverable lands. */
+  /** Filled as each deliverable lands. */
   stillUrl?: string | null;
   videoUrl?: string | null;
   note?: string | null;
+  /**
+   * Google's long-running operation for the video. Its existence is what lets
+   * this run without a machine: the render continues on Google's side and any
+   * later request can collect it.
+   */
+  videoOp?: string | null;
+  /** Set while one request is generating, so a second does not duplicate it. */
+  claimedAt?: string | null;
 }
 
 const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";

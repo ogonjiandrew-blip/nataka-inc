@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   animeWorlds,
+  buildMotionPrompt,
   buildPrompt,
   episodeNumber,
   type AnimeWorld,
@@ -83,6 +84,7 @@ export default function AnimeVideoBuilder() {
           format,
           photoCode,
           prompt: buildPrompt(world, power, variant),
+          motionPrompt: buildMotionPrompt(power),
         }),
       });
       const j = await res.json();

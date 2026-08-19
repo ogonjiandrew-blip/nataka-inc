@@ -28,6 +28,7 @@ interface Job {
 }
 
 interface Queue {
+  generationReady: boolean;
   pending: Job[];
   approved: Job[];
   working: Job[];
@@ -190,6 +191,15 @@ export default function BoothControl() {
       </p>
 
       {err && <p className="font-sans text-otaku-light text-xs mb-4">{err}</p>}
+
+      {queue && !queue.generationReady && (
+        <div className="border border-otaku/50 bg-otaku/10 p-3 mb-5">
+          <p className="font-sans text-otaku-light text-xs leading-relaxed">
+            <strong>GOOGLE_API_KEY is not set in Vercel.</strong> Approving will queue a job but
+            nothing will generate until it is added.
+          </p>
+        </div>
+      )}
 
       <h2 className="font-sans text-[10px] tracking-widest2 uppercase text-otaku mb-3">
         Waiting for approval {count > 0 && `· ${count}`}

@@ -6,6 +6,7 @@ import {
   storeReady,
   type Job,
 } from "@/lib/boothQueue";
+import { advance } from "@/lib/boothGenerate";
 
 /**
  * The customer's end of the queue. Two operations, both unauthenticated
@@ -15,6 +16,9 @@ import {
  */
 
 export const runtime = "nodejs";
+// A still takes ~30s and is generated inside a status poll, so this route
+// needs room. Vercel caps Hobby at 60.
+export const maxDuration = 60;
 
 const MAX_PROMPT = 4000;
 
@@ -50,8 +54,11 @@ export async function POST(req: Request) {
     format: body.format === "photo" ? "photo" : "video",
     photoCode: body.photoCode ? String(body.photoCode).toUpperCase().slice(0, 4) : null,
     prompt,
+    motionPrompt: body.motionPrompt ? String(body.motionPrompt).slice(0, 1200) : null,
     stillUrl: null,
     videoUrl: null,
+    videoOp: null,
+    claimedAt: null,
   });
 
   // The id is shown to the customer so they can read it out at the booth; the
@@ -67,11 +74,15 @@ export async function GET(req: Request) {
   if (!id || !token) return Response.json({ error: "missing id or token" }, { status: 400 });
   if (!storeReady()) return Response.json({ error: "store-not-configured" }, { status: 503 });
 
-  const job = await readJob(id);
-  if (!job || job.token !== token) {
+  const found = await readJob(id);
+  if (!found || found.token !== token) {
     // Same answer for "no such job" and "wrong token" — do not confirm ids.
     return Response.json({ error: "not found" }, { status: 404 });
   }
+
+  // The customer's own polling is what drives their generation forward. No
+  // machine has to be awake anywhere for this to complete.
+  const job = await advance(found);
 
   return Response.json({
     id: job.id,
