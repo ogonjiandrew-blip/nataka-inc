@@ -52,7 +52,7 @@ export interface AnimeWorld {
   powers: Power[];
 }
 
-export const BOOTH_WHATSAPP = "254798868047";
+export const BOOTH_WHATSAPP = "254117386206";
 
 /** Shared tail — texture rules that keep the render photoreal. */
 const REALISM_TAIL =
