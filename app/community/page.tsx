@@ -119,6 +119,12 @@ export default function CommunityPage() {
               >
                 What&apos;s Happening
               </a>
+              <Link
+                href="/otamatsuri-experience"
+                className="font-geist font-black text-xs text-white border border-otaku/50 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200"
+              >
+                Anime Video Booth
+              </Link>
             </div>
           </div>
         </section>

@@ -74,7 +74,7 @@ export default function BtsPopup() {
 
   // The event page already tells the full story, and the countdown pill this
   // anchors to is hidden there.
-  if (pathname === "/otamatsuri-2026") return null;
+  if (pathname === "/otamatsuri-2026" || pathname === "/otamatsuri-experience") return null;
 
   const show = visible && !dismissed;
 

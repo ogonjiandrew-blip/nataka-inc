@@ -16,6 +16,7 @@ const company = [
   { label: "Work", href: "/#work" },
   { label: "Community", href: "/community" },
   { label: "Otamatsuri 2026", href: "/otamatsuri-2026" },
+  { label: "Anime Video Booth", href: "/otamatsuri-experience" },
   { label: "K-Wave Kenya", href: "/kwave" },
   { label: "Wallpapers", href: "/community#wallpapers" },
   { label: "About", href: "/#about" },
