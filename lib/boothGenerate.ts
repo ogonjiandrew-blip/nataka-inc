@@ -86,8 +86,14 @@ const GOOGLE_IMAGE_MODEL = process.env.BOOTH_GOOGLE_IMAGE_MODEL || "gemini-3-pro
 // the only 3.0. Verified live by wrong-type probe.
 const ANIMATE_MODEL = process.env.HIGGSFIELD_VIDEO_MODEL || "kling-video/v3.0/pro/image-to-video";
 
-/** A claim stops two concurrent requests submitting the same job twice. */
-const CLAIM_MS = 120_000;
+/**
+ * A claim stops two concurrent requests submitting the same job twice, so it
+ * has to outlive the longest work it guards — the inline image render, capped
+ * at 90s by its own timeout. At the old 120s the two were close enough that a
+ * slow render would lose its claim mid-flight and a second request would start
+ * a duplicate at full price.
+ */
+const CLAIM_MS = 180_000;
 function claimed(job: Job) {
   const at = job.claimedAt ? new Date(job.claimedAt).getTime() : 0;
   return Date.now() - at < CLAIM_MS;
@@ -148,13 +154,21 @@ async function submitStill(job: Job, refUrl: string) {
  * inside Vercel Pro's 300s.
  */
 async function generateStillExact(job: Job, refUrl: string): Promise<Buffer> {
-  const img = await fetch(refUrl);
+  const img = await fetch(refUrl, { signal: AbortSignal.timeout(20_000) });
   if (!img.ok) throw new Error(`could not read the photo (${img.status})`);
   const b64 = Buffer.from(await img.arrayBuffer()).toString("base64");
 
+  // A hanging call is worse than a failing one. Without this, a request that
+  // Google never answers holds the job's claim until Vercel kills it at 300s,
+  // the claim expires at 120s, the next poll re-claims, and the job loops
+  // forever showing "generating…" — which is exactly what a stuck video order
+  // did. Ninety seconds is far past the ~25s a real render takes, so this only
+  // ever fires on a call that was never coming back. Timing out throws, which
+  // drops the order to popcorn instead of stranding it.
   const res = await fetch(`${GOOGLE}/models/${GOOGLE_IMAGE_MODEL}:generateContent`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-goog-api-key": googleKey() },
+    signal: AbortSignal.timeout(90_000),
     body: JSON.stringify({
       contents: [
         { parts: [{ text: job.prompt }, { inline_data: { mime_type: "image/jpeg", data: b64 } }] },
