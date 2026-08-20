@@ -363,15 +363,23 @@ export async function advance(job: Job): Promise<Job> {
     try {
       // Exact-face path when Google is configured: generate inline, store, and
       // let step 3 start the video on the next poll.
+      //
+      // A configured key is not a working key — a quota-zero project answers
+      // 429 to every request. Falling through to popcorn rather than failing
+      // means a dead Google account costs likeness, never the sale.
       if (exactFaceReady()) {
-        const bytes = await generateStillExact(stamped, ref);
-        const url = await store(job.id, "still", bytes);
-        if (stamped.format === "photo") {
-          return (await moveJob(job.id, "done", { stillUrl: url, claimedAt: null })) || stamped;
+        try {
+          const bytes = await generateStillExact(stamped, ref);
+          const url = await store(job.id, "still", bytes);
+          if (stamped.format === "photo") {
+            return (await moveJob(job.id, "done", { stillUrl: url, claimedAt: null })) || stamped;
+          }
+          return (await moveJob(job.id, "working", { stillUrl: url, claimedAt: null })) || stamped;
+        } catch (googleErr) {
+          console.error(`[booth ${job.id}] exact-face engine failed, using backup:`, googleErr);
         }
-        return (await moveJob(job.id, "working", { stillUrl: url, claimedAt: null })) || stamped;
       }
-      // Fallback: popcorn, submit-and-collect.
+      // Backup: popcorn, submit-and-collect.
       const stillOp = await submitStill(stamped, ref);
       return (await moveJob(job.id, "working", { stillOp, claimedAt: null })) || stamped;
     } catch (e) {
