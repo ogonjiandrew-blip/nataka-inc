@@ -13,8 +13,54 @@ export const runtime = "nodejs";
 // report is actually a fossil from the last deploy.
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+/**
+ * Ask Google to make one tiny image and report exactly what it says.
+ *
+ * Presence of a key is not the same as a key that works: the wrong project,
+ * a disabled API and an exhausted quota all look identical from outside, and
+ * generation catches its own errors, so nothing reaches the logs. This spends
+ * one small render to turn that silence into a sentence.
+ */
+async function probeGoogle(key: string, model: string) {
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: "A plain red circle on white." }] }],
+          generationConfig: { responseModalities: ["IMAGE"] },
+        }),
+      }
+    );
+    const body = await res.text();
+    if (res.ok) {
+      const hasImage = /inline_?[Dd]ata/.test(body);
+      return { ok: hasImage, status: res.status, detail: hasImage ? "image returned" : body.slice(0, 400) };
+    }
+    return { ok: false, status: res.status, detail: body.slice(0, 500) };
+  } catch (e) {
+    return { ok: false, status: 0, detail: String(e).slice(0, 300) };
+  }
+}
+
+export async function GET(req: Request) {
   const env = process.env;
+
+  // ?probe=1 costs a render, so it is opt-in rather than part of every check.
+  if (new URL(req.url).searchParams.get("probe") && env.GOOGLE_API_KEY) {
+    const model = env.BOOTH_GOOGLE_IMAGE_MODEL || "gemini-3-pro-image-preview";
+    const [primary, fallback] = await Promise.all([
+      probeGoogle(env.GOOGLE_API_KEY, model),
+      probeGoogle(env.GOOGLE_API_KEY, "gemini-2.5-flash-image"),
+    ]);
+    return Response.json(
+      { model, primary, fallbackModel: "gemini-2.5-flash-image", fallback },
+      { headers: { "Cache-Control": "no-store" } }
+    );
+  }
+
   return Response.json(
     {
       blob: !!env.BLOB_READ_WRITE_TOKEN,

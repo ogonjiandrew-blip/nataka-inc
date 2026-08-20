@@ -100,6 +100,12 @@ function claimed(job: Job) {
  * customer a scary message about a queue position they cannot influence.
  */
 function isTransient(message: string) {
+  // Quota exhaustion also arrives as 429, and that one never clears on its
+  // own. Retrying it silently is how a dead booth looks identical to a busy
+  // one — the operator sees "generating…" forever and no error anywhere.
+  if (/quota|billing|exceeded|exhausted|PERMISSION_DENIED|API key|disabled/i.test(message)) {
+    return false;
+  }
   return /concurrent request|rate.?limit|429|too many/i.test(message);
 }
 
