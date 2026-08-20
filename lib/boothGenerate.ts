@@ -265,6 +265,23 @@ export async function advance(job: Job): Promise<Job> {
   if (!generationReady()) return job;
   if (job.status !== "approved" && job.status !== "working") return job;
 
+  // Every failure this pipeline has had looked the same from outside — a job
+  // sitting at "working" forever — because the transient path deliberately
+  // clears the note. One line per tick makes the actual step visible.
+  const step = job.videoOp
+    ? "4-collect-video"
+    : job.stillOp
+      ? "2-collect-still"
+      : claimed(job)
+        ? "claimed-waiting"
+        : job.stillUrl
+          ? "3-submit-video"
+          : "1-submit-still";
+  console.log(
+    `[booth ${job.id}] tick step=${step} status=${job.status} fmt=${job.format} ` +
+      `still=${!!job.stillUrl} stillOp=${!!job.stillOp} videoOp=${!!job.videoOp} claimedAt=${job.claimedAt || "-"}`
+  );
+
   // ---- step 4: the video is rendering — is it ready? ----
   if (job.videoOp && !job.videoUrl) {
     try {
@@ -325,9 +342,11 @@ export async function advance(job: Job): Promise<Job> {
       // Kling pulls the frame from the public URL we stored, so nothing is
       // re-encoded between the two stages.
       const videoOp = await submitVideo(stamped, stamped.stillUrl!);
+      console.log(`[booth ${job.id}] video submitted`);
       return (await moveJob(job.id, "working", { videoOp, claimedAt: null })) || stamped;
     } catch (e) {
       const msg = String(e);
+      console.error(`[booth ${job.id}] video submit failed (transient=${isTransient(msg)}):`, msg);
       if (isTransient(msg)) {
         return (await moveJob(job.id, "working", { claimedAt: null, note: null })) || stamped;
       }
@@ -384,6 +403,7 @@ export async function advance(job: Job): Promise<Job> {
       return (await moveJob(job.id, "working", { stillOp, claimedAt: null })) || stamped;
     } catch (e) {
       const msg = String(e);
+      console.error(`[booth ${job.id}] step 1 failed (transient=${isTransient(msg)}):`, msg);
       return (
         (await moveJob(job.id, "approved", {
           claimedAt: null,
