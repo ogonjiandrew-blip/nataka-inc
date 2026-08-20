@@ -44,6 +44,9 @@ export default function BoothControl() {
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
+  const [q, setQ] = useState("");
+  const [found, setFound] = useState<Job | null>(null);
+  const [findState, setFindState] = useState<"idle" | "looking" | "missing">("idle");
   const keyRef = useRef("");
 
   const load = useCallback(async () => {
@@ -178,6 +181,83 @@ export default function BoothControl() {
 
   const count = queue?.pending.length ?? 0;
 
+  // Search is over everything on screen at once — a lost customer knows their
+  // name or their code, not which list their order is in.
+  const norm = q.trim().toUpperCase();
+  const everything = queue
+    ? [...queue.pending, ...queue.approved, ...queue.working, ...queue.done]
+    : [];
+  const hits = norm
+    ? everything.filter((j) => j.id.includes(norm) || j.name.toUpperCase().includes(norm))
+    : [];
+
+  const lookup = async () => {
+    setFindState("looking");
+    setFound(null);
+    try {
+      const res = await fetch(`/api/booth/admin?find=${encodeURIComponent(norm)}`, {
+        headers: { "x-booth-key": keyRef.current },
+        cache: "no-store",
+      });
+      if (res.ok) {
+        setFound(await res.json());
+        setFindState("idle");
+      } else {
+        setFindState("missing");
+      }
+    } catch {
+      setFindState("missing");
+    }
+  };
+
+  const StatusChip = ({ s }: { s: string }) => (
+    <span
+      className="font-sans text-[9px] tracking-widest uppercase px-2 py-1 shrink-0"
+      style={{
+        background: s === "done" ? "#1d3f26" : s === "rejected" ? "#3f1d1d" : "#3a2a10",
+        color: s === "done" ? "#9be3ae" : s === "rejected" ? "#e39b9b" : "#f0c98a",
+      }}
+    >
+      {s}
+    </span>
+  );
+
+  const ResultRow = ({ job }: { job: Job }) => (
+    <div className="flex items-center justify-between gap-3 border-b border-white/8 py-2.5">
+      <div className="min-w-0">
+        <p className="font-sans text-white/60 text-xs truncate">
+          <span className="font-geist font-black text-white uppercase">{job.name}</span> ·{" "}
+          {job.world} · {job.power}
+        </p>
+        <p className="font-mono text-white/35 text-[11px] mt-0.5">{job.id}</p>
+      </div>
+      <div className="flex items-center gap-2 shrink-0">
+        <StatusChip s={job.status} />
+        {job.stillUrl && (
+          <a
+            href={job.stillUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-sans text-[10px] tracking-widest uppercase px-2.5 py-1.5 border border-white/25 text-white/75"
+          >
+            photo
+          </a>
+        )}
+        {job.videoUrl && (
+          <a
+            href={job.videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-sans text-[10px] tracking-widest uppercase px-2.5 py-1.5"
+            style={{ background: "#1d3f26", color: "#9be3ae" }}
+          >
+            video
+          </a>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="px-5 md:px-10 py-6 max-w-3xl mx-auto">
       <div className="flex items-baseline justify-between mb-1">
@@ -212,6 +292,50 @@ export default function BoothControl() {
           </p>
         </div>
       )}
+
+      {/* Find any order — by code or name, in whatever state it is in */}
+      <div className="mb-8">
+        <input
+          type="search"
+          value={q}
+          onChange={(e) => {
+            setQ(e.target.value);
+            setFound(null);
+            setFindState("idle");
+          }}
+          placeholder="Find an order — code or name"
+          autoCapitalize="characters"
+          autoCorrect="off"
+          spellCheck={false}
+          className="w-full bg-transparent border-b-2 border-white/20 focus:border-otaku outline-none font-geist text-lg text-white placeholder:text-white/25 py-2.5 transition-colors uppercase"
+        />
+        {norm && (
+          <div className="mt-3">
+            {hits.map((job) => (
+              <ResultRow key={job.id} job={job} />
+            ))}
+            {found && !hits.some((h) => h.id === found.id) && <ResultRow job={found} />}
+            {hits.length === 0 && !found && (
+              <div className="py-2">
+                {findState === "missing" ? (
+                  <p className="font-sans text-white/45 text-xs">
+                    Nothing with that code — check it with the customer, letter by letter.
+                  </p>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={norm.length < 4 || findState === "looking"}
+                    onClick={lookup}
+                    className="font-geist font-black text-[11px] text-white/75 border border-white/25 px-4 py-2.5 uppercase tracking-widest disabled:opacity-40"
+                  >
+                    {findState === "looking" ? "Searching…" : `Search the archive for “${norm}”`}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       <h2 className="font-sans text-[10px] tracking-widest2 uppercase text-otaku mb-3">
         Waiting for approval {count > 0 && `· ${count}`}

@@ -1,4 +1,4 @@
-import { keyOk, listByStatus, moveJob, publicJob, storeReady } from "@/lib/boothQueue";
+import { keyOk, listByStatus, moveJob, publicJob, readJob, storeReady } from "@/lib/boothQueue";
 import { advance, exactFaceReady, generationReady, videoReady } from "@/lib/boothGenerate";
 
 /**
@@ -28,6 +28,16 @@ function guard(req: Request) {
 export async function GET(req: Request) {
   const bad = guard(req);
   if (bad) return bad;
+
+  // ?find=CODE — the recovery desk's archive lookup. Finds any order by its
+  // exact code whatever its status, including ones that have scrolled off the
+  // done list. Read-only: a lookup never advances the queue.
+  const find = new URL(req.url).searchParams.get("find");
+  if (find) {
+    const job = await readJob(find.toUpperCase().trim());
+    if (!job) return Response.json({ error: "not found" }, { status: 404 });
+    return Response.json(publicJob(job));
+  }
 
   const [pending, approved, working, done] = await Promise.all([
     listByStatus("pending"),
