@@ -33,7 +33,9 @@ export async function GET(req: Request) {
     listByStatus("pending"),
     listByStatus("approved"),
     listByStatus("working"),
-    listByStatus("done", 12),
+    // The done list doubles as the recovery desk, so it holds a full festival
+    // day, not a dozen rows.
+    listByStatus("done", 60),
   ]);
 
   // This screen also pushes work along, so a job still finishes when the

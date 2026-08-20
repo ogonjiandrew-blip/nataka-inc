@@ -14,16 +14,70 @@ import {
   type Variant,
 } from "@/lib/otamatsuriExperience";
 
-/**
- * What the customer's tab knows about their one approved run.
- *
- * Deliberately React state and nothing else — no localStorage, no cookie. Close
- * the tab and this is gone, which is exactly the rule: one approval buys one
- * session, and a new session means coming back to the booth.
- */
 type Phase = "building" | "submitting" | "waiting" | "generating" | "ready" | "rejected" | "error";
 
 const KAWAII_PINK = "#F45C9E";
+
+/**
+ * The claim ticket for an order, persisted on the customer's phone.
+ *
+ * This page originally kept the job in React state only, so that closing the
+ * tab ended the session. A real customer then tapped her finished video, went
+ * fullscreen, pressed BACK — and the reload threw away her paid order. That is
+ * the worst possible failure: she paid, it worked, and the UI lost it.
+ *
+ * Persisting the ticket does not weaken the payment gate. Generating still
+ * requires the crew pressing Approve on that one job; restoring a ticket only
+ * lets the phone find the job it already owns. What actually guards the
+ * machine is approval-per-order, not amnesia.
+ *
+ * 24 hours, then it expires — festival phones get shared, and tomorrow's
+ * borrower should not open yesterday's order.
+ */
+const TICKET_KEY = "otamatsuri-order";
+const TICKET_TTL = 24 * 60 * 60 * 1000;
+
+interface Ticket {
+  id: string;
+  token: string;
+  name: string;
+  worldId: string;
+  powerId: string;
+  variant: Variant;
+  format: Format;
+  savedAt: number;
+}
+
+function saveTicket(t: Ticket) {
+  try {
+    localStorage.setItem(TICKET_KEY, JSON.stringify(t));
+  } catch {
+    /* storage full or blocked — the order still works for this tab */
+  }
+}
+
+function loadTicket(): Ticket | null {
+  try {
+    const raw = localStorage.getItem(TICKET_KEY);
+    if (!raw) return null;
+    const t = JSON.parse(raw) as Ticket;
+    if (!t.id || !t.token || Date.now() - t.savedAt > TICKET_TTL) {
+      localStorage.removeItem(TICKET_KEY);
+      return null;
+    }
+    return t;
+  } catch {
+    return null;
+  }
+}
+
+function clearTicket() {
+  try {
+    localStorage.removeItem(TICKET_KEY);
+  } catch {
+    /* nothing to do */
+  }
+}
 
 /**
  * The booth questionnaire, ordered for a phone held in a queue.
@@ -55,6 +109,28 @@ export default function AnimeVideoBuilder() {
   const nameRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+
+  // Restore an order this phone already owns — a back button, a refresh or a
+  // closed tab must never lose a paid order again.
+  useEffect(() => {
+    const t = loadTicket();
+    if (!t) return;
+    const w = animeWorlds.find((x) => x.id === t.worldId) || null;
+    setName(t.name);
+    setVariant(t.variant);
+    setFormat(t.format);
+    setWorld(w);
+    setPower(w?.powers.find((p) => p.id === t.powerId) || null);
+    setJob({ id: t.id, token: t.token });
+    setPhase("waiting"); // the first poll corrects this to the real state
+    setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 300);
+  }, []);
+
+  /** Wipe the ticket and hand the phone to the next person. */
+  const startNewOrder = () => {
+    clearTicket();
+    window.location.reload();
+  };
 
   const nameOk = name.trim().length >= 2;
   const ready = nameOk && world !== null && power !== null;
@@ -98,6 +174,16 @@ export default function AnimeVideoBuilder() {
         return;
       }
       setJob({ id: j.id, token: j.token });
+      saveTicket({
+        id: j.id,
+        token: j.token,
+        name: name.trim(),
+        worldId: world.id,
+        powerId: power.id,
+        variant,
+        format,
+        savedAt: Date.now(),
+      });
       setPhase("waiting");
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 150);
     } catch {
@@ -576,7 +662,8 @@ export default function AnimeVideoBuilder() {
       </div>
 
       {/* The run: submitted, waiting on the booth, generating, delivered. It
-          all happens on this page, in this tab, and dies with it. */}
+          survives refreshes and the back button — the ticket in localStorage
+          finds the order again. */}
       <div ref={resultRef} className="scroll-mt-6">
         <AnimatePresence>
           {locked && (
@@ -637,9 +724,15 @@ export default function AnimeVideoBuilder() {
                     </p>
                     <p className="font-sans text-white/70 text-sm leading-relaxed">
                       {format === "photo"
-                        ? "About a minute. Keep this page open."
-                        : "Your picture lands first, then the video. Keep this page open."}
+                        ? "About a minute — and it's safe even if you leave this page."
+                        : "Your picture lands first, then the video a few minutes after. Safe to lock your phone — this page finds your order again."}
                     </p>
+                    {job && (
+                      <p className="font-sans text-white/45 text-xs mt-3">
+                        Order <span className="font-mono" style={{ color: accent }}>{job.id}</span> —
+                        if anything goes wrong, this code recovers everything at the booth.
+                      </p>
+                    )}
                     {stillUrl && (
                       /* eslint-disable-next-line @next/next/no-img-element -- blob URL */
                       <img
@@ -666,7 +759,7 @@ export default function AnimeVideoBuilder() {
                 {phase === "ready" && (
                   <>
                     <p className="font-sans text-[10px] tracking-widest2 uppercase mb-4" style={{ color: accent }}>
-                      Done · save it now
+                      Done · it&apos;s yours
                     </p>
                     {stillUrl && (
                       <>
@@ -677,15 +770,16 @@ export default function AnimeVideoBuilder() {
                           className="w-full border mb-3"
                           style={{ borderColor: accent }}
                         />
+                        {/* ?download=1 makes Blob answer with Content-Disposition:
+                            attachment — the `download` attribute alone is ignored
+                            cross-origin, which is why "save" used to just open the
+                            file and confuse people. */}
                         <a
-                          href={stillUrl}
-                          download="otamatsuri.jpg"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          href={`${stillUrl}?download=1`}
                           className="block text-center font-geist font-black text-xs text-ink px-6 py-4 uppercase tracking-widest mb-6"
                           style={{ background: accent }}
                         >
-                          Save the picture
+                          ⬇ Download the picture
                         </a>
                       </>
                     )}
@@ -699,21 +793,31 @@ export default function AnimeVideoBuilder() {
                           style={{ borderColor: accent }}
                         />
                         <a
-                          href={videoUrl}
-                          download="otamatsuri.mp4"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          href={`${videoUrl}?download=1`}
                           className="block text-center font-geist font-black text-xs text-ink px-6 py-4 uppercase tracking-widest"
                           style={{ background: accent }}
                         >
-                          Save the video
+                          ⬇ Download the video
                         </a>
                       </>
                     )}
                     <p className="font-sans text-white/50 text-xs mt-6 leading-relaxed">
-                      Save it before you close this page — it is not stored anywhere for you, and
-                      a new session needs a new go-ahead from the booth.
+                      Relax — this stays linked to your phone for 24 hours, and the booth can
+                      always recover it with your order code{job ? " " : ""}
+                      {job && (
+                        <span className="font-mono" style={{ color: accent }}>
+                          {job.id}
+                        </span>
+                      )}
+                      . Post it and tag <span className="text-white/75">@nataka.inc</span> 🎌
                     </p>
+                    <button
+                      type="button"
+                      onClick={startNewOrder}
+                      className="w-full mt-6 font-geist font-black text-[11px] text-white/60 border border-white/20 px-4 py-3.5 uppercase tracking-widest active:scale-[0.98] transition-transform"
+                    >
+                      Done — free this phone for the next person
+                    </button>
                   </>
                 )}
 
@@ -725,6 +829,13 @@ export default function AnimeVideoBuilder() {
                     <p className="font-sans text-white/70 text-sm leading-relaxed">
                       {note || "Talk to the crew at the booth."}
                     </p>
+                    <button
+                      type="button"
+                      onClick={startNewOrder}
+                      className="w-full mt-5 font-geist font-black text-[11px] text-white/60 border border-white/20 px-4 py-3.5 uppercase tracking-widest active:scale-[0.98] transition-transform"
+                    >
+                      Start over
+                    </button>
                   </>
                 )}
               </div>

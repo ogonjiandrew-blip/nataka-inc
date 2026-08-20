@@ -271,18 +271,47 @@ export default function BoothControl() {
       {queue!.done.length > 0 && (
         <>
           <h2 className="font-sans text-[10px] tracking-widest2 uppercase text-white/45 mb-3">
-            Delivered
+            Delivered · recovery desk
           </h2>
+          <p className="font-sans text-white/40 text-[11px] mb-3 leading-relaxed">
+            Every file stays here even if the customer loses their page. Find their name or
+            order code, open the file, send it to them however works.
+          </p>
           {queue!.done.map((job) => (
             <div
               key={job.id}
-              className="flex items-center justify-between border-b border-white/8 py-2.5"
+              className="flex items-center justify-between gap-3 border-b border-white/8 py-2.5"
             >
-              <p className="font-sans text-white/60 text-xs">
-                <span className="font-geist font-black text-white uppercase">{job.name}</span>{" "}
-                · {job.world} · {job.power}
-              </p>
-              <p className="font-mono text-white/35 text-[11px]">{job.id}</p>
+              <div className="min-w-0">
+                <p className="font-sans text-white/60 text-xs truncate">
+                  <span className="font-geist font-black text-white uppercase">{job.name}</span>{" "}
+                  · {job.world} · {job.power}
+                </p>
+                <p className="font-mono text-white/35 text-[11px] mt-0.5">{job.id}</p>
+              </div>
+              <div className="flex gap-2 shrink-0">
+                {job.stillUrl && (
+                  <a
+                    href={job.stillUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-sans text-[10px] tracking-widest uppercase px-2.5 py-1.5 border border-white/25 text-white/75"
+                  >
+                    photo
+                  </a>
+                )}
+                {job.videoUrl && (
+                  <a
+                    href={job.videoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-sans text-[10px] tracking-widest uppercase px-2.5 py-1.5"
+                    style={{ background: "#1d3f26", color: "#9be3ae" }}
+                  >
+                    video
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </>
