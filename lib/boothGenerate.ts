@@ -82,9 +82,25 @@ export function exactFaceReady() {
 const IMAGE_MODEL = process.env.BOOTH_IMAGE_MODEL || "higgsfield-ai/popcorn/auto";
 const GOOGLE_IMAGE_MODEL = process.env.BOOTH_GOOGLE_IMAGE_MODEL || "gemini-3-pro-image-preview";
 
-// prompt, image_url, duration (int). Kling 3.0 has no turbo tier here — pro is
-// the only 3.0. Verified live by wrong-type probe.
-const ANIMATE_MODEL = process.env.HIGGSFIELD_VIDEO_MODEL || "kling-video/v3.0/pro/image-to-video";
+/**
+ * Video: Kling 2.5-turbo standard. prompt + image_url + duration (int).
+ *
+ * NOT 3.0 Pro, which this booth ran for one day and which quietly ate ~185
+ * credits across two to four clips — somewhere near 50-90 credits each. It
+ * conceals that: POST /estimate returns "0.000" for it at every duration, and
+ * it does not appear in GET /models at all, so neither the price list nor the
+ * estimator will warn you. The balance dropping is the only signal.
+ *
+ * 2.5-turbo estimates honestly at 3.36 credits (~$0.21), roughly twenty times
+ * cheaper for output Andrew judged good enough side by side, and being the
+ * turbo line it also returns well inside the seven minutes 3.0 Pro made a
+ * paying customer wait.
+ *
+ * Rule this cost us a day to learn: only run a model whose /estimate returns a
+ * non-zero price. A zero means unpriced, never free.
+ */
+const ANIMATE_MODEL =
+  process.env.HIGGSFIELD_VIDEO_MODEL || "kling-video/v2.5-turbo/standard/image-to-video";
 
 /**
  * A claim stops two concurrent requests submitting the same job twice, so it
@@ -200,9 +216,43 @@ async function submitVideo(job: Job, frameUrl: string) {
   });
 }
 
+/**
+ * Refuse to run a model that will not quote a price.
+ *
+ * Kling 3.0 Pro answered "0.000" to every estimate and then charged something
+ * like 50-90 credits a clip, which is how a day's video budget vanished into
+ * four renders with nothing in the logs to show it. A zero quote does not mean
+ * free, it means unpriced — and unpriced is exactly the thing that should never
+ * run unattended against a prepaid balance at a festival.
+ *
+ * The check is cheap (estimate costs nothing) and fails open on a network
+ * error: a booth that stops selling because the estimator hiccupped would be a
+ * worse bug than the one this prevents.
+ */
+async function priceOk(modelPath: string, body: Record<string, unknown>, a: string) {
+  try {
+    const res = await fetch(`${HF}/estimate/${modelPath}`, {
+      method: "POST",
+      headers: { Authorization: a, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) return; // estimator unavailable — proceed
+    const j = await res.json();
+    if (Number(j.credits) > 0) return; // priced, go ahead
+    throw new Error(
+      `${modelPath} reports no price (credits=${j.credits}) — refusing to run an unpriced model`
+    );
+  } catch (e) {
+    if (String(e).includes("refusing to run")) throw e;
+    // Anything else is an estimator problem, not a pricing problem.
+  }
+}
+
 async function submit(modelPath: string, body: Record<string, unknown>): Promise<string> {
   const a = auth();
   if (!a) throw new Error("Higgsfield API key not configured");
+  await priceOk(modelPath, body, a);
 
   const res = await fetch(`${HF}/${modelPath}`, {
     method: "POST",
