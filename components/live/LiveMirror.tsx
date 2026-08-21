@@ -208,6 +208,7 @@ const KES_PER_USD = 130;        // approximate, for the operator's on-screen met
    credit is one US cent. The meter shows credits too, so the booth number can
    be reconciled against platform.decart.ai/billing without doing arithmetic. */
 const CREDITS_PER_USD = 100;
+const CODE_STORAGE_KEY = "ntk-live-booth-code";
 const IDLE_STOP_MS = 45_000;   // empty chair → stop billing
 /* Hard ceiling on one continuous billed run, regardless of activity. A guest
    waving at the mirror keeps resetting the idle timer, so without this a single
@@ -258,6 +259,7 @@ export default function LiveMirror() {
   const lastActiveRef = useRef(Date.now());
   const stopAiRef = useRef<(next: AiState) => void>(() => {});
   const accessCodeRef = useRef<string>("");
+  const startAiRef = useRef<() => void>(() => {});
 
   const lookRef = useRef(1);
   const startedAtRef = useRef(0);
@@ -274,6 +276,8 @@ export default function LiveMirror() {
   const [billed, setBilled] = useState(0);
   const [cost, setCost] = useState(0);
   const [mode, setMode] = useState<AiMode>("full");
+  const [hasCode, setHasCode] = useState(false);
+  const [codeInput, setCodeInput] = useState("");
   const [quality, setQuality] = useState<Quality | null>(null);
   const [queuePos, setQueuePos] = useState<number | null>(null);
   const [booth, setBooth] = useState(false);
@@ -287,8 +291,50 @@ export default function LiveMirror() {
      that hook would opt this statically-rendered page into dynamic rendering. */
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
-    setBooth(q.get("booth") === "1");
-    accessCodeRef.current = q.get("code") ?? "";
+    const h = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const isBooth = q.get("booth") === "1" || h.get("booth") === "1";
+    setBooth(isBooth);
+    /* Drives the booth stylesheet in globals.css, which strips the site nav,
+       footer, marketing sections and the layout's floating widgets so the TV
+       shows the mirror and nothing else. */
+    if (isBooth) document.documentElement.dataset.booth = "1";
+
+    /* The code is remembered once and reused. A booth cannot afford to be locked
+       out of its own AI because a query param got mangled in a paste, a bookmark
+       dropped it, or the laptop restarted. Accepted from ?code=, #code=, or
+       whatever was stored last — then stripped from the address bar so it is not
+       sitting on screen in front of guests. */
+    const fromUrl = q.get("code") ?? h.get("code") ?? "";
+    let stored = "";
+    try { stored = window.localStorage.getItem(CODE_STORAGE_KEY) ?? ""; } catch { /* private mode */ }
+    const code = fromUrl || stored;
+    accessCodeRef.current = code;
+    setHasCode(!!code);
+
+    if (fromUrl) {
+      try { window.localStorage.setItem(CODE_STORAGE_KEY, fromUrl); } catch { /* private mode */ }
+      q.delete("code");
+      const rest = q.toString();
+      window.history.replaceState(null, "", window.location.pathname + (rest ? `?${rest}` : ""));
+    }
+  }, []);
+
+  /* Saving a code from the on-screen field is the recovery path when the URL
+     arrives without one. */
+  const saveCode = useCallback((code: string) => {
+    const clean = code.trim();
+    if (!clean) return;
+    accessCodeRef.current = clean;
+    setHasCode(true);
+    try { window.localStorage.setItem(CODE_STORAGE_KEY, clean); } catch { /* private mode */ }
+
+    /* Clear every latch the refused attempt left behind before retrying. A
+       rejected code sets wantAi false and may leave a retry timer armed; without
+       this reset the new code would be accepted but never actually dialled. */
+    if (retryTimerRef.current) { clearTimeout(retryTimerRef.current); retryTimerRef.current = null; }
+    connectingRef.current = false;
+    retryRef.current = 0;
+    startAiRef.current();
   }, []);
 
   /* ── local WebGL engine ── */
@@ -600,6 +646,11 @@ export default function LiveMirror() {
     void connectAiRef.current();
   }, [cam]);
 
+  /* saveCode() is declared above this point and dials through this ref. Without
+     the binding it calls the initial no-op: the code gets stored but the booth
+     never reconnects, which looks exactly like a rejected code. */
+  startAiRef.current = startAi;
+
   const stopAi = useCallback((next: AiState) => {
     wantAiRef.current = false;
     runSecondsRef.current = 0;
@@ -850,8 +901,30 @@ export default function LiveMirror() {
                     <p className="mt-2 text-cream/50 text-xs">
                       {ai === "asleep" || ai === "capped"
                         ? "Tap to wake it for the next guest."
+                        : ai === "forbidden"
+                        ? "Enter it once — this device remembers it. Instant Looks keep running meanwhile."
                         : "Instant Looks still run — switch tab to keep the booth moving."}
                     </p>
+                  )}
+                  {ai === "forbidden" && (
+                    <form
+                      onSubmit={(e) => { e.preventDefault(); saveCode(codeInput); }}
+                      className="mt-4 flex gap-2"
+                    >
+                      <input
+                        value={codeInput}
+                        onChange={(e) => setCodeInput(e.target.value)}
+                        placeholder="Paste booth code"
+                        autoFocus
+                        className="flex-1 min-w-0 bg-ink-100 border border-cream/20 focus:border-teal outline-none text-cream text-sm px-3 py-2 placeholder:text-cream/30"
+                      />
+                      <button
+                        type="submit"
+                        className="font-nataka font-black uppercase tracking-widest2 text-[10px] bg-teal text-ink px-4 hover:bg-teal-light transition-colors"
+                      >
+                        Unlock
+                      </button>
+                    </form>
                   )}
                   {(ai === "asleep" || ai === "capped" || ai === "error") && (
                     <button

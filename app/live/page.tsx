@@ -104,10 +104,10 @@ export default function LivePage() {
       />
 
       <main className="bg-ink text-cream min-h-screen">
-        <Navbar />
+        <div className="live-chrome"><Navbar /></div>
 
         {/* ── Hero: headline + the working mirror ── */}
-        <section className="pt-28 sm:pt-36 pb-16 px-5 sm:px-10 max-w-6xl mx-auto">
+        <section className="live-hero pt-28 sm:pt-36 pb-16 px-5 sm:px-10 max-w-6xl mx-auto">
           <div className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-teal mb-6 flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-[#D61F2C] animate-pulse" />
             NATAKA LIVE · REALTIME AI VIDEO
@@ -129,13 +129,13 @@ export default function LivePage() {
             From the team behind Otamatsuri · 80+ brands filmed in Nairobi
           </p>
 
-          <div className="mt-10">
+          <div className="live-stage mt-10">
             <LiveMirror />
           </div>
         </section>
 
         {/* ── How it works ── */}
-        <section className="border-t border-cream/10 px-5 sm:px-10 py-20">
+        <section className="live-chrome border-t border-cream/10 px-5 sm:px-10 py-20">
           <div className="max-w-6xl mx-auto">
             <h2 className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-teal mb-12">
               How the signal flows
@@ -155,7 +155,7 @@ export default function LivePage() {
         </section>
 
         {/* ── Products / booking ── */}
-        <section className="border-t border-cream/10 px-5 sm:px-10 py-20">
+        <section className="live-chrome border-t border-cream/10 px-5 sm:px-10 py-20">
           <div className="max-w-6xl mx-auto">
             <h2 className="font-display text-3xl sm:text-5xl max-w-2xl leading-tight">
               The demo is free. <span className="text-teal">The room going quiet</span> when
@@ -189,7 +189,7 @@ export default function LivePage() {
         </section>
 
         {/* ── Objections ── */}
-        <section className="border-t border-cream/10 px-5 sm:px-10 py-20">
+        <section className="live-chrome border-t border-cream/10 px-5 sm:px-10 py-20">
           <div className="max-w-4xl mx-auto">
             <h2 className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-teal mb-10">
               Straight answers
@@ -208,7 +208,7 @@ export default function LivePage() {
         </section>
 
         {/* ── Final CTA ── */}
-        <section className="border-t border-cream/10 px-5 sm:px-10 py-24 text-center">
+        <section className="live-chrome border-t border-cream/10 px-5 sm:px-10 py-24 text-center">
           <p className="font-display text-3xl sm:text-5xl max-w-2xl mx-auto leading-tight">
             Put the mirror in front of <span className="text-teal">your crowd.</span>
           </p>
@@ -223,7 +223,7 @@ export default function LivePage() {
           <p className="mt-4 text-cream/35 text-xs">Same-day quote. Nairobi-based, travels anywhere.</p>
         </section>
 
-        <Footer />
+        <div className="live-chrome"><Footer /></div>
       </main>
     </>
   );

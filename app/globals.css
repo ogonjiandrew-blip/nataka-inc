@@ -474,3 +474,57 @@ a:focus-visible {
   width: 1px;
   background: linear-gradient(180deg, rgba(214, 183, 127, 0.05), rgba(214, 183, 127, 0.4), rgba(214, 183, 127, 0.05));
 }
+
+/* ── NATAKA LIVE booth / TV mode ──────────────────────────────────────────
+   `/live?booth=1` is not the marketing page with a camera on it — it is a
+   booth appliance pointed at a television. LiveMirror sets data-booth on
+   <html> once it has read the URL, and everything that is not the mirror
+   gets out of the way: site nav, footer, marketing sections, and the
+   layout-level floating widgets (countdown, WhatsApp, sound toggle) that
+   are right for a website and wrong on a 55" screen in front of guests. */
+html[data-booth="1"] .live-chrome,
+html[data-booth="1"] .live-hero > :not(.live-stage) {
+  display: none !important;
+}
+
+html[data-booth="1"] .live-hero {
+  padding: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+html[data-booth="1"] .live-stage {
+  height: 100svh !important;
+  margin: 0 !important;
+}
+
+/* Grid, not flex: `1fr auto` gives the viewfinder a DEFINITE height, which is
+   what the absolutely-positioned canvas and video need to resolve h-full
+   against. With flex they inherit an indefinite height and collapse to zero. */
+html[data-booth="1"] .live-stage > div {
+  display: grid !important;
+  grid-template-rows: 1fr auto;
+  height: 100svh !important;
+}
+html[data-booth="1"] .live-stage > div > div:first-child {
+  aspect-ratio: auto !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+html[data-booth="1"] .live-stage > div > div:last-child {
+  height: auto !important;
+}
+
+/* Layout-level floating widgets — hidden by attribute, so no import changes. */
+html[data-booth="1"] a[href*="wa.me"][class*="fixed"],
+html[data-booth="1"] [class*="fixed"][class*="bottom-"][class*="right-"] {
+  display: none !important;
+}
+
+/* A booth screen should never show a text cursor or scrollbars. */
+html[data-booth="1"],
+html[data-booth="1"] body {
+  overflow: hidden !important;
+  cursor: default;
+}
+html[data-booth="1"] ::-webkit-scrollbar { width: 0; height: 0; }
