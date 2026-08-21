@@ -1,5 +1,20 @@
 # NATAKA LIVE — booth runbook
 
+## The booth URL (live now)
+
+```
+https://www.natakainc.com/live?booth=1&code=ntk-59c9ed6b8c
+```
+
+Open that on the laptop, press **F11** for fullscreen, and the booth is running.
+Nothing to install. **The `code` is what unlocks the AI engine and it is the key to
+your credit balance — do not put it on a QR code, a slide, or anywhere a guest can
+read it.** Without the code the page still works and shows Instant Looks, which is
+exactly what you want the public URL (`natakainc.com/live`) to do.
+
+For a hard kiosk with no browser chrome at all, or for running with the internet
+down, use the local launcher instead:
+
 Double-click **`START-BOOTH.bat`**. That is the whole launch.
 
 It disables sleep/screen-blanking, serves the production build on port 3005, and opens
