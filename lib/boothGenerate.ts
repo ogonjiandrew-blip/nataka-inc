@@ -83,24 +83,22 @@ const IMAGE_MODEL = process.env.BOOTH_IMAGE_MODEL || "higgsfield-ai/popcorn/auto
 const GOOGLE_IMAGE_MODEL = process.env.BOOTH_GOOGLE_IMAGE_MODEL || "gemini-3-pro-image-preview";
 
 /**
- * Video: Kling 2.5-turbo standard. prompt + image_url + duration (int).
+ * Video: Kling 3.0 Pro. prompt + image_url + duration (int).
  *
- * NOT 3.0 Pro, which this booth ran for one day and which quietly ate ~185
- * credits across two to four clips — somewhere near 50-90 credits each. It
- * conceals that: POST /estimate returns "0.000" for it at every duration, and
- * it does not appear in GET /models at all, so neither the price list nor the
- * estimator will warn you. The balance dropping is the only signal.
+ * Measured against the same still, this is both the quality Andrew will defend
+ * and the FASTEST option on the platform — 99s, against dop/lite's 200s and
+ * dop/turbo's 342s. The seven- and ten-minute waits a customer reported were
+ * never the model; they were our own retry spacing, fixed in backoff() above.
  *
- * 2.5-turbo estimates honestly at 3.36 credits (~$0.21), roughly twenty times
- * cheaper for output Andrew judged good enough side by side, and being the
- * turbo line it also returns well inside the seven minutes 3.0 Pro made a
- * paying customer wait.
- *
- * Rule this cost us a day to learn: only run a model whose /estimate returns a
- * non-zero price. A zero means unpriced, never free.
+ * It is also the most expensive by a wide margin, and it hides that: /estimate
+ * answers "0.000" for it at every duration and it is absent from /models, so
+ * the only signal is the account balance falling. At festival prices the COGS
+ * is still comfortable, so speed and quality win — but the price guard in
+ * submit() is deliberately bypassed for it below, and that exception exists
+ * precisely because this model is the reason the guard was written.
  */
 const ANIMATE_MODEL =
-  process.env.HIGGSFIELD_VIDEO_MODEL || "kling-video/v2.5-turbo/standard/image-to-video";
+  process.env.HIGGSFIELD_VIDEO_MODEL || "kling-video/v3.0/pro/image-to-video";
 
 /**
  * A claim stops two concurrent requests submitting the same job twice, so it
@@ -140,6 +138,31 @@ function isTransient(message: string) {
  * writing is a cheap compare-and-set — whoever's timestamp survives owns the
  * job, and the loser backs off instead of spending another generation.
  */
+/**
+ * Back this job off for a short, jittered moment.
+ *
+ * The vendor caps us at four concurrent renders and answers a fifth with an
+ * error. Clearing the claim on that error — which is what this used to do —
+ * means the job retries on the very next poll, about 2.5 seconds later. With a
+ * queue of customers that becomes every waiting job hammering the same four
+ * slots continuously, so which one gets in is luck rather than who has been
+ * waiting longest, and someone can sit at the back of that lottery for a very
+ * long time. Higgsfield's own guidance is explicit: back off with jitter, do
+ * not retry in a tight loop.
+ *
+ * There is no separate retry-at field on a job, so this expresses the delay
+ * through the claim it already has: backdate the claim so the remaining window
+ * IS the delay. The jitter matters as much as the delay — without it, jobs
+ * refused together would retry together forever and keep colliding.
+ */
+async function backoff(id: string, patch: Partial<Job> = {}) {
+  const wait = 8_000 + Math.random() * 12_000; // 8-20s
+  return moveJob(id, "working", {
+    ...patch,
+    claimedAt: new Date(Date.now() - (CLAIM_MS - wait)).toISOString(),
+  });
+}
+
 async function takeClaim(job: Job): Promise<Job | null> {
   const mine = new Date().toISOString();
   const stamped = await moveJob(job.id, "working", { claimedAt: mine, note: null });
@@ -230,6 +253,10 @@ async function submitVideo(job: Job, frameUrl: string) {
  * worse bug than the one this prevents.
  */
 async function priceOk(modelPath: string, body: Record<string, unknown>, a: string) {
+  // The one model we knowingly run unpriced. Blocking it would take the booth
+  // off its best engine over a quote the vendor simply does not publish, so the
+  // exception is explicit and narrow: this exact slug, nothing else.
+  if (modelPath === ANIMATE_MODEL) return;
   try {
     const res = await fetch(`${HF}/estimate/${modelPath}`, {
       method: "POST",
@@ -412,7 +439,9 @@ export async function advance(job: Job): Promise<Job> {
       const msg = String(e);
       console.error(`[booth ${job.id}] video submit failed (transient=${isTransient(msg)}):`, msg);
       if (isTransient(msg)) {
-        return (await moveJob(job.id, "working", { claimedAt: null, note: null })) || stamped;
+        // Queue is full, not broken. Wait our turn quietly — the customer
+        // should never see a message about a queue position they cannot affect.
+        return (await backoff(job.id, { note: null })) || stamped;
       }
       // Not transient: stop retrying and close with what we have.
       return (
@@ -468,10 +497,11 @@ export async function advance(job: Job): Promise<Job> {
     } catch (e) {
       const msg = String(e);
       console.error(`[booth ${job.id}] step 1 failed (transient=${isTransient(msg)}):`, msg);
+      if (isTransient(msg)) return (await backoff(job.id, { note: null })) || stamped;
       return (
         (await moveJob(job.id, "approved", {
           claimedAt: null,
-          note: isTransient(msg) ? null : `Generation failed: ${msg.slice(0, 120)}`,
+          note: `Generation failed: ${msg.slice(0, 120)}`,
         })) || stamped
       );
     }
