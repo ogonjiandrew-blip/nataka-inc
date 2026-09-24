@@ -41,6 +41,13 @@ const services = [
     tags: ["Direction", "Production", "Post"],
     href: "/services/music-video-production-nairobi",
   },
+  {
+    number: "06",
+    title: "AI Video Production",
+    description: "AI commercials, AI music videos, consistent AI characters and AI effects composited into footage we shoot for real. Directed like film, not typed into a prompt box.",
+    tags: ["AI Commercials", "AI VFX", "AI Characters"],
+    href: "/services/ai-video-production-kenya",
+  },
 ];
 
 export default function Services() {
