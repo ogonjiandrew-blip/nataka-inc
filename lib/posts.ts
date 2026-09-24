@@ -11,6 +11,65 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "ai-video-production-kenya-guide",
+    title: "AI Video Production in Kenya: What It Can Do for Your Brand in 2026 (and What It Can't)",
+    excerpt:
+      "AI commercials, AI music videos and AI effects on real footage are now affordable for Kenyan brands. Here is what works, what still fails, what it costs relative to a shoot, and how to hire an AI video company in Nairobi without getting burned.",
+    category: "AI & Production",
+    date: "2026-09-24",
+    readTime: "7 min read",
+    coverImage: "/stills/ai/military.png",
+    content: `
+<p>Kenyan brands are being pitched AI video every week. Some of it looks incredible. A lot of it looks like every other AI clip on the internet: plastic skin, melting hands, a camera that floats for no reason. The difference is not the software. Everyone has access to the same tools. The difference is whether the person using them knows how to direct a film.</p>
+
+<p>This guide is for marketing managers, founders and artists in Kenya who want to use AI video properly: what it is good at, where it still fails, how it is priced, and what to ask before you hire anyone.</p>
+
+<h2>What AI Video Is Genuinely Good At in 2026</h2>
+
+<ul>
+  <li><strong>Impossible shots.</strong> A car driving through a desert storm, a product floating above Nairobi at night, a city built from your packaging. Shots that would need a crane, a permit, a helicopter or a VFX house can now be made in days.</li>
+  <li><strong>Effects on real footage.</strong> You film real people, then AI adds what could never be filmed: explosions, transformations, a new environment, anime-style powers. The performance stays real, the world becomes impossible. For most brands this is the strongest use of AI right now.</li>
+  <li><strong>Consistent characters.</strong> A brand mascot or AI presenter who looks the same in every post, without a talent fee per appearance.</li>
+  <li><strong>Music videos and visualizers.</strong> Full AI music videos, hybrid performance videos, and looping visualizers for Spotify Canvas and TikTok.</li>
+  <li><strong>Many versions, fast.</strong> Ten variations of an ad for testing, in different settings, for the cost of one traditional shoot day.</li>
+</ul>
+
+<h2>Where AI Video Still Fails</h2>
+
+<p>Any honest AI video company should tell you this before you pay:</p>
+
+<ul>
+  <li><strong>Readable text and product labels</strong> often warp. Your logo and packaging usually need to be composited in, not generated.</li>
+  <li><strong>Hands and fine interaction</strong> (pouring, typing, handing over a product) are still unreliable.</li>
+  <li><strong>Long dialogue</strong> with lip sync over more than a few seconds rarely holds up.</li>
+  <li><strong>Exact real people.</strong> AI cannot and should not recreate a real person without their written consent.</li>
+</ul>
+
+<p>The fix is not to avoid AI. It is to mix it with real footage: shoot the hands, the product and the dialogue for real, and let AI build the world around them. That is why AI video works best when it comes from a team that can also shoot.</p>
+
+<h2>How Much Does AI Video Cost in Kenya?</h2>
+
+<p>AI video is priced by length, number of shots, and whether live footage is part of it. The main saving is on the impossible shots: no location fees, no permits, no crew days for a scene that exists only on screen. The cost that does not disappear is direction: concept, storyboard, shot selection, compositing, edit, sound and grade. Be careful with very cheap AI quotes. They usually mean one prompt and whatever came out, with no storyboard and no approval stage.</p>
+
+<p>A good rule: ask for a written concept and one sample frame before you commit. At Nataka Inc we do this free within 48 hours, because seeing the look is the only way to know if AI is right for your idea.</p>
+
+<h2>Legal and Brand-Safety Questions to Ask</h2>
+
+<ol>
+  <li><strong>Who appears in it?</strong> Anyone recognisable must have signed a release. Kenya's Data Protection Act treats a person's image as personal data.</li>
+  <li><strong>Which tools were used?</strong> Your agency should be able to tell you, so your legal team has a record.</li>
+  <li><strong>Who owns the final video?</strong> You should get a clear licence for the agreed use.</li>
+  <li><strong>Can you see a storyboard first?</strong> If the answer is no, the agency is generating and hoping.</li>
+</ol>
+
+<h2>How to Choose an AI Video Production Company in Nairobi</h2>
+
+<p>Look for three things. First, real production experience: people who have run a set know what a good shot is, and AI does not tell you that. Second, a portfolio that mixes live action and AI, not only AI clips. Third, honesty about the limits: if nobody mentions hands, text or lip sync, they have not shipped much client work.</p>
+
+<p>Nataka Inc is a Nairobi production house that makes AI commercials, AI music videos, AI characters and AI effects on real footage, alongside traditional film production. We also built and ran a live AI video booth at Otamatsuri 2026 in Nairobi, turning festival guests into anime characters on the spot. See our <a href="/services/ai-video-production-kenya">AI video production service</a>, or send your idea on WhatsApp for a free 48-hour concept.</p>
+`,
+  },
+  {
     slug: "how-to-make-a-music-video-in-kenya",
     title: "How to Make a Music Video in Kenya: The Complete 2026 Guide",
     excerpt:

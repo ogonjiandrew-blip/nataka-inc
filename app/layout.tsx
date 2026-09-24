@@ -163,7 +163,7 @@ export default function RootLayout({
                   name: "Nataka Inc",
                   alternateName: ["Nataka.inc", "Nataka Media", "Nataka Marketing Kenya"],
                   description:
-                    "Nataka Inc is a media and marketing agency in Nairobi, Kenya offering video production, music videos, brand strategy, digital marketing, and PR for brands and artists across East Africa.",
+                    "Nataka Inc is a media and marketing agency in Nairobi, Kenya offering video production, AI video production, music videos, brand strategy, digital marketing, and PR for brands and artists across East Africa.",
                   url: siteUrl,
                   logo: { "@type": "ImageObject", url: `${siteUrl}/logo.png`, width: 512, height: 512 },
                   image: `${siteUrl}/og-image.png`,
@@ -184,6 +184,10 @@ export default function RootLayout({
                     "digital marketing",
                     "public relations",
                     "influencer marketing",
+                    "AI video production",
+                    "AI commercials",
+                    "generative AI video",
+                    "visual effects",
                   ],
                   address: {
                     "@type": "PostalAddress",
@@ -235,6 +239,7 @@ export default function RootLayout({
                       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Video Production", url: `${siteUrl}/services/video-production-nairobi` } },
                       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Brand Strategy", url: `${siteUrl}/services/brand-strategy-kenya` } },
                       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Digital Marketing", url: `${siteUrl}/services/digital-marketing-nairobi` } },
+                      { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Video Production", url: `${siteUrl}/services/ai-video-production-kenya` } },
                     ],
                   },
                   sameAs: [

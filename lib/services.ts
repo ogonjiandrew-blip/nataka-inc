@@ -20,6 +20,8 @@ export type ServicePage = {
   /** Related blog slugs */
   relatedPosts: string[];
   keywords: string[];
+  /** Optional service-specific offer in the closing CTA (defaults to the generic block) */
+  cta?: { headline: string; text: string; whatsappMessage: string; button: string };
 };
 
 export const servicePages: ServicePage[] = [
@@ -629,6 +631,68 @@ export const servicePages: ServicePage[] = [
       "film production Kenya",
       "commercial production Kenya",
     ],
+  },
+  {
+    slug: "ai-video-production-kenya",
+    metaTitle: "AI Video Production & AI Commercials in Kenya | Nataka Inc",
+    metaDescription:
+      "Nataka Inc makes AI commercials, AI music videos, AI characters and VFX on real footage for brands in Nairobi and across Kenya. A real production house running a real AI pipeline. Free 48-hour concept.",
+    label: "AI Video Production",
+    headline: "AI Video Production",
+    headlineAccent: "Made In Nairobi.",
+    heroImage: "/stills/ai/military.png",
+    intro:
+      "Nataka Inc is a Nairobi production house that makes AI video for brands, artists and agencies: AI commercials, AI music videos, consistent AI characters, and AI effects composited into footage we shoot for real. Most people selling AI video in Kenya have never run a film set. We have, which is why our AI work is directed like a film, not typed into a prompt box and hoped for. You get shots that would cost a crane, a location permit or a helicopter, at a fraction of a traditional shoot, from a team that knows when AI is the right tool and when a camera still wins.",
+    deliverables: [
+      { title: "AI Commercials & Product Films", description: "15 to 60-second spots built from scratch or from a product photo. Impossible locations, weather, scale and camera moves, directed shot by shot with a storyboard you approve before we render." },
+      { title: "AI Effects On Real Footage", description: "We shoot your people for real, then add what could never be filmed: destruction, transformations, environment swaps, anime powers. Real faces, real performance, impossible world." },
+      { title: "AI Music Videos & Visualizers", description: "Full AI music videos, hybrid performance-plus-AI videos, and looping visualizers for Spotify Canvas, YouTube and TikTok. Built around the track, not a template." },
+      { title: "AI Characters & Brand Mascots", description: "A consistent character who looks the same in every frame and every post. For brand ambassadors, series, explainers and mascots that do not need a talent fee per appearance." },
+      { title: "AI Series & Micro-Dramas", description: "Episodic vertical stories with recurring characters, written for retention. The format audiences binge, now possible without a studio budget." },
+      { title: "Live AI Experiences For Events", description: "AI photo and video booths and live AI mirrors that turn guests into anime heroes or film characters on the spot, delivered to their phone. Built and run by us at Otamatsuri 2026 in Nairobi." },
+    ],
+    whyUs: [
+      "A production house first. We shoot, direct, edit and grade, so AI is one tool in a full pipeline, never the whole trick.",
+      "Directed, not generated. Every piece starts with a shot list and storyboard, so you approve the idea before any render time is spent.",
+      "Rights handled properly. We only animate real people who have signed a release, and we tell you which tools and licences were used on your work.",
+      "Honest about the limits. Hands, text, long dialogue and product labels still fail in AI. We tell you upfront, and shoot those parts for real when needed.",
+      "Built for Kenya. Kenyan faces, Kenyan streets, Kenyan light, instead of stock-looking Western defaults.",
+    ],
+    process: [
+      { step: "01", title: "Brief", description: "Tell us the product, the audience and the one feeling the video must leave. WhatsApp is fine." },
+      { step: "02", title: "Free Concept (48h)", description: "We send a written concept and a first AI frame so you can see the look before you commit a shilling." },
+      { step: "03", title: "Storyboard & Lock", description: "Shot-by-shot storyboard, character sheets and style frames, approved by you." },
+      { step: "04", title: "Generate, Shoot & Composite", description: "AI renders, live-action where it beats AI, and compositing that makes the two one film." },
+      { step: "05", title: "Edit, Sound & Delivery", description: "Edit, sound design, music and grade, delivered in every format: TV, YouTube, Reels, TikTok, billboard stills." },
+    ],
+    faqs: [
+      { question: "How much does an AI commercial cost in Kenya?", answer: "It depends on length, how many shots and whether we also shoot live footage. A short AI spot usually costs a fraction of an equivalent traditional shoot, because there is no location, crew-day or permit cost for the impossible shots. Send the brief on WhatsApp and we quote within 24 hours, with a free 48-hour concept." },
+      { question: "Will people be able to tell it is AI?", answer: "Only if you want them to. We grade and composite AI shots to match real camera footage, and we avoid the things that give AI away: plastic skin, warped hands, melting text. Where AI cannot pass, we shoot that moment for real." },
+      { question: "Can you put AI effects on video we already filmed?", answer: "Yes. Effects on real footage is one of our strongest services: send the clip and we add destruction, transformations, new environments or powers while keeping the real people and performance." },
+      { question: "Can you create an AI version of our brand ambassador or a real person?", answer: "Only with that person's written consent and a signed release. We will not animate anyone's likeness without it. With consent, we can build a consistent character for campaigns and series." },
+      { question: "Who owns the AI video you make for us?", answer: "You do. The finished video is licensed to you for the agreed use, and we document which tools were used so your legal team has a clear record." },
+      { question: "Do you work with agencies and clients outside Nairobi?", answer: "Yes. AI production is fully remote-friendly. We work with agencies and brands across Kenya, East Africa and internationally." },
+    ],
+    relatedPosts: [
+      "ai-video-production-kenya-guide",
+      "best-video-production-companies-nairobi-kenya",
+    ],
+    keywords: [
+      "AI video production Kenya",
+      "AI video production Nairobi",
+      "AI commercial Kenya",
+      "AI advert agency Nairobi",
+      "AI music video Kenya",
+      "AI generated video company Kenya",
+      "AI marketing agency Nairobi",
+      "AI VFX Kenya",
+    ],
+    cta: {
+      headline: "See Your Idea Before You Pay",
+      text: "Send us your product, song or campaign on WhatsApp. Within 48 hours we send back a written concept and a first AI frame, free. If you like it, we build the rest.",
+      whatsappMessage: "Hi Nataka, I'd like a free AI concept (code: AIWEB). The video is for ",
+      button: "Get My Free AI Concept",
+    },
   },
   {
     slug: "vfx-ai-video-editing",

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getServiceBySlug, getAllServices } from "@/lib/services";
 import { getPostBySlug } from "@/lib/posts";
+import { waLink } from "@/lib/whatsapp";
 
 const siteUrl = "https://www.natakainc.com";
 
@@ -209,17 +210,31 @@ export default function ServicePage({ params }: Props) {
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
         <div className="border border-teal/30 bg-teal/[0.04] p-10 md:p-16 text-center">
           <h2 className="font-geist font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
-            Ready To Start?
+            {service.cta ? service.cta.headline : "Ready To Start?"}
           </h2>
           <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
-            Tell us about your project. We&apos;ll come back with a clear plan and an honest quote.
+            {service.cta
+              ? service.cta.text
+              : "Tell us about your project. We’ll come back with a clear plan and an honest quote."}
           </p>
           {/* Server-rendered contact actions (crawlable + tappable on slow
               connections, unlike the client-only WhatsApp FAB). */}
           <div className="flex flex-wrap items-center justify-center gap-3">
+            {service.cta && (
+              <a
+                href={waLink(service.cta.whatsappMessage)}
+                className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+              >
+                {service.cta.button}
+              </a>
+            )}
             <Link
               href="/#contact"
-              className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+              className={
+                service.cta
+                  ? "inline-block font-geist font-black text-sm text-teal border border-teal/40 px-8 py-5 uppercase tracking-widest hover:bg-teal hover:text-ink transition-colors duration-200"
+                  : "inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+              }
             >
               Get in Touch
             </Link>
