@@ -45,8 +45,8 @@ const packages = [
 
 const standard = [
   {
-    title: "The recut promise",
-    desc: "If the first cut misses the agreed brief, we recut it at our cost until it doesn't. You approve the brief; we carry the risk of the execution.",
+    title: "Agreed revisions",
+    desc: "Before production, we agree the brief, deliverables and revision process in your scope of work.",
   },
   {
     title: "A locked delivery date",
@@ -98,11 +98,11 @@ export default function Packages() {
         ))}
       </div>
 
-      {/* The Nataka Standard — risk reversal on every engagement */}
+      {/* The Nataka Standard — clear scope before production */}
       <div className="mt-14 md:mt-16 border border-teal/25 bg-teal/[0.04] p-8 md:p-12">
         <p className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium mb-3">The Nataka Standard</p>
         <h3 className="font-geist font-black text-2xl md:text-3xl text-white uppercase leading-tight mb-8">
-          Every package carries <span className="text-teal">the same three promises.</span>
+          Every project starts with <span className="text-teal">a clear agreement.</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {standard.map((s) => (
