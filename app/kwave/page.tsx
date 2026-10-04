@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import SceneRadar from "@/components/community/SceneRadar";
 
 const siteUrl = "https://www.natakainc.com";
-const WHATSAPP_NUMBER = "254725107294";
+const WHATSAPP_NUMBER = "254117386206";
 
 const first100Url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   ["I want in on the First 100", "", "Name:", "Instagram / TikTok handle:", "Bias group:"].join("\n")

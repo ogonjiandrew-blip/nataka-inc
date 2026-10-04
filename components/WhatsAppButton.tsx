@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 const WA_URL =
-  "https://wa.me/254725107294?text=" +
+  "https://wa.me/254117386206?text=" +
   encodeURIComponent("Hi Nataka Inc! I'd like to discuss a project.");
 
 /*

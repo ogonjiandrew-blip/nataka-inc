@@ -122,7 +122,7 @@ export const countdowns: CountdownTarget[] = [
     theme: "kpop",
     detail:
       "Music, culture, connection — one day, 11am till 11pm. K-pop and Thai sounds in one lineup. Tickets Ksh 1,000.",
-    cta: { label: "Going? Join the Crew", href: "https://wa.me/254725107294?text=" + encodeURIComponent("I'm going to Kpop Meets Thai\n\nName:\nInstagram / TikTok handle:\nBias group:"), external: true },
+    cta: { label: "Going? Join the Crew", href: "https://wa.me/254117386206?text=" + encodeURIComponent("I'm going to Kpop Meets Thai\n\nName:\nInstagram / TikTok handle:\nBias group:"), external: true },
   },
 ];
 

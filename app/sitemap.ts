@@ -13,67 +13,56 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: siteUrl,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: `${siteUrl}/services`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     ...services.map((s) => ({
       url: `${siteUrl}/services/${s.slug}`,
-      lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),
     ...caseStudies.map((c) => ({
       url: `${siteUrl}/work/${c.slug}`,
-      lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.85,
     })),
     {
       url: `${siteUrl}/otamatsuri-2026`,
-      lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.95,
     },
     {
       url: `${siteUrl}/community`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${siteUrl}/community/otamatsuri-cosplay-nairobi`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${siteUrl}/kwave`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.85,
     },
     {
       url: `${siteUrl}/live`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.85,
     },
     {
       url: `${siteUrl}/gallery`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${siteUrl}/blog`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },

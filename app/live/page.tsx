@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import LiveMirror from "@/components/live/LiveMirror";
 
 const siteUrl = "https://www.natakainc.com";
-const WHATSAPP_NUMBER = "254725107294";
+const WHATSAPP_NUMBER = "254117386206";
 
 const bookUrl = (product: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(

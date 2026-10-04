@@ -56,11 +56,10 @@ export default function About() {
               transition={{ duration: 0.7, delay: 0.4 }}
               className="font-sans text-white/80 text-base leading-relaxed mb-5"
             >
-              Nataka means{" "}
-              <span className="text-teal font-semibold">"I want"</span>{" "}
-              in Swahili — and we want everything for our clients. We are a collective of
-              strategists, creatives, and storytellers who believe African brands deserve
-              world-class marketing.
+              Nataka Inc is a <span className="text-teal font-semibold">media and marketing agency</span>{" "}
+              in Nairobi, Kenya. We help businesses plan brand promotion campaigns,
+              launch products, and create brand films, corporate videos and social
+              content for Kenyan audiences.
             </motion.p>
 
             {/* Hidden on small screens — heading + first paragraph is enough */}
@@ -70,20 +69,20 @@ export default function About() {
               transition={{ duration: 0.7, delay: 0.55 }}
               className="hidden sm:block font-sans text-white/65 text-base leading-relaxed"
             >
-              From startup to enterprise, we partner with brands at every stage —
-              injecting strategy, soul, and cinematic quality into everything we touch.
-              And when the cameras stop, we build with our community: Otamatsuri, cosplay
-              shoots, and the fans who make Kenyan pop culture worth filming.
+              We bring strategy, creative development, production and rollout into one
+              campaign brief. Scope, deliverables and timing are agreed around your
+              audience and objective. Our work also includes Otamatsuri and the
+              community shaping Kenyan anime and cosplay culture.
             </motion.p>
           </div>
 
           {/* Right: values grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             {[
-              { icon: "◈", title: "Bold Ideas", desc: "We don't do safe. Every campaign starts with a brave insight." },
+              { icon: "◈", title: "Bold Ideas", desc: "Campaign concepts shaped around your audience and business objective." },
               { icon: "◉", title: "African Lens", desc: "Local culture intelligence applied to every strategy we build." },
-              { icon: "◇", title: "Cinematic Quality", desc: "Production values that rival any global agency." },
-              { icon: "◎", title: "Real Impact", desc: "Beautiful work that moves product, not just pixels." },
+              { icon: "◇", title: "Cinematic Quality", desc: "See our films for the production craft we bring to your brief." },
+              { icon: "◎", title: "Clear Scope", desc: "Agreed deliverables, timelines and responsibilities before production." },
             ].map((value, i) => (
               <motion.div
                 key={value.title}

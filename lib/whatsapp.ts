@@ -1,4 +1,6 @@
-export const WHATSAPP_NUMBER = "254725107294";
+export const WHATSAPP_NUMBER = "254117386206";
+export const PHONE_DISPLAY = "+254 117 386 206";
+export const PHONE_HREF = `tel:+${WHATSAPP_NUMBER}`;
 
 /**
  * Builds a wa.me link with a prefilled first message.

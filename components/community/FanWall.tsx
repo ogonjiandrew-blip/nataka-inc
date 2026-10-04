@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 
-const WHATSAPP_NUMBER = "254725107294";
+const WHATSAPP_NUMBER = "254117386206";
 
 const submitMessage = [
   "Fan Wall submission",

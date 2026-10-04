@@ -29,10 +29,10 @@ const services = [
   },
   {
     number: "04",
-    title: "PR & Communications",
-    description: "Strategic visibility through media relations, influencer partnerships, and event campaigns. We put your brand in rooms it needs to be in.",
-    tags: ["Media Relations", "Influencer", "Events"],
-    href: "",
+    title: "Brand Promotion",
+    description: "Campaign strategy, launch films, social content and rollout planning for Kenyan brands. Connect your message with the buyers your next campaign needs to reach.",
+    tags: ["Campaigns", "Launches", "Brand Films"],
+    href: "/services/brand-promotion-kenya",
   },
   {
     number: "05",

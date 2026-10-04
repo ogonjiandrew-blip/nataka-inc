@@ -9,11 +9,9 @@ import Packages from "@/components/Packages";
 import OtamatsuriCommunity from "@/components/OtamatsuriCommunity";
 import VideoReel from "@/components/VideoReel";
 import About from "@/components/About";
-import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import SEOStructuredData from "@/components/SEOStructuredData";
 import type { Metadata } from "next";
 
 const siteUrl = "https://www.natakainc.com";
@@ -30,7 +28,6 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <SEOStructuredData />
 
       {/* Skip to content — keyboard / screen reader navigation */}
       <a href="#main-content" className="skip-to-content">
@@ -51,7 +48,6 @@ export default function Home() {
         <Packages />
         <VideoReel />
         <About />
-        <Testimonials />
         <FAQ />
         <Contact />
         <Footer />

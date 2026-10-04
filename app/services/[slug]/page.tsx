@@ -137,7 +137,16 @@ export default function ServicePage({ params }: Props) {
         <p className="font-sans text-cream/80 text-lg md:text-xl leading-relaxed border-l-2 border-teal pl-6">
           {service.intro}
         </p>
+        <a href={waLink(`Source: ${siteUrl}/services/${service.slug}\nHi Nataka, I'd like to discuss ${service.label}. My company, project goal and target date: `)} target="_blank" rel="noopener noreferrer" className="inline-block mt-8 bg-teal text-ink font-geist font-bold uppercase text-xs tracking-widest px-7 py-4 hover:bg-teal-light transition-colors">Discuss your project on WhatsApp →</a>
       </div>
+
+      {service.proof && <section className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto" aria-labelledby="campaign-proof">
+        <h2 id="campaign-proof" className="font-geist font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">See the <span className="text-teal">work</span></h2>
+        <div className="grid md:grid-cols-2 gap-10">{service.proof.map(proof => <article key={proof.title}>
+          {proof.video ? <video controls playsInline preload="none" poster={proof.image} className="w-full aspect-video bg-black" aria-label={proof.title}><source src={proof.video} type="video/mp4" /><a href={proof.video}>Watch {proof.title}</a></video> : <Link href={proof.href} className="block relative aspect-video"><Image src={proof.image} alt={proof.title} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover" /></Link>}
+          <p className="font-sans text-teal text-xs uppercase tracking-widest mt-6 mb-2">{proof.category}</p><h3 className="font-geist font-bold text-2xl text-white mb-3">{proof.title}</h3><p className="font-sans text-cream/70 text-sm leading-relaxed">{proof.description}</p><Link href={proof.href} className="inline-block mt-5 text-teal text-sm underline underline-offset-4">{proof.linkLabel} →</Link>
+        </article>)}</div>
+      </section>}
 
       {/* Deliverables */}
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
@@ -201,6 +210,7 @@ export default function ServicePage({ params }: Props) {
             <div key={f.question}>
               <h3 className="font-geist font-bold text-lg text-white mb-3">{f.question}</h3>
               <p className="font-sans text-cream/60 text-base leading-relaxed">{f.answer}</p>
+              {f.link && <Link href={f.link.href} className="inline-block mt-3 text-teal text-sm underline underline-offset-4">{f.link.label} →</Link>}
             </div>
           ))}
         </div>
@@ -222,7 +232,7 @@ export default function ServicePage({ params }: Props) {
           <div className="flex flex-wrap items-center justify-center gap-3">
             {service.cta && (
               <a
-                href={waLink(service.cta.whatsappMessage)}
+                href={waLink(`Source: ${siteUrl}/services/${service.slug}\n${service.cta.whatsappMessage}`)}
                 className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
               >
                 {service.cta.button}
@@ -239,16 +249,16 @@ export default function ServicePage({ params }: Props) {
               Get in Touch
             </Link>
             <a
-              href="https://wa.me/254725107294"
+              href="https://wa.me/254117386206"
               className="inline-block font-geist font-black text-sm text-teal border border-teal/40 px-8 py-5 uppercase tracking-widest hover:bg-teal hover:text-ink transition-colors duration-200"
             >
               WhatsApp Us
             </a>
             <a
-              href="tel:+254725107294"
+              href="tel:+254117386206"
               className="inline-block font-sans text-sm text-white/60 px-4 py-5 tracking-widest uppercase hover:text-teal transition-colors"
             >
-              +254 725 107 294
+              +254 117 386 206
             </a>
           </div>
         </div>

@@ -134,8 +134,8 @@ export default function OtamatsuriCommunity() {
             <Link href="/otamatsuri-2026" className="text-white font-semibold underline decoration-[#E8442E] decoration-2 underline-offset-4 hover:text-[#FF6B54] transition-colors">
               Otamatsuri 2026
             </Link>{" "}
-            lands Sat 22 Aug at The Carnivore Grounds, Nairobi — date, tickets and
-            countdown are all on the event page.
+            took place on 22 August at The Carnivore Grounds, Nairobi. Explore
+            the film and the community story on the event page.
           </motion.p>
 
           <motion.div

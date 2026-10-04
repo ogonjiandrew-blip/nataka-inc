@@ -1,6 +1,7 @@
 "use client";
 
 const services = [
+  { label: "Brand Promotion", href: "/services/brand-promotion-kenya" },
   { label: "Video Production", href: "/services/video-production-nairobi" },
   { label: "AI Video Production", href: "/services/ai-video-production-kenya" },
   { label: "Corporate Video", href: "/services/corporate-video-production-kenya" },
@@ -85,8 +86,8 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="tel:+254725107294" className="hover:text-teal transition-colors">
-                  +254 725 107 294
+                <a href="tel:+254117386206" className="hover:text-teal transition-colors">
+                  +254 117 386 206
                 </a>
               </li>
               <li className="text-white/55">Westlands, Nairobi, Kenya</li>

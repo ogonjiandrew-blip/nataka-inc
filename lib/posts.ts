@@ -4,6 +4,7 @@ export type Post = {
   excerpt: string;
   category: string;
   date: string;
+  modified?: string;
   readTime: string;
   coverImage: string;
   content: string;
@@ -300,7 +301,7 @@ export const posts: Post[] = [
     category: "Film Craft",
     date: "2026-06-04",
     readTime: "6 min read",
-    coverImage: "/stills/1/3.jpg",
+    coverImage: "/stills/4/5.jpg",
     content: `
 <p>Every frame of a music video is a decision. Where the camera sits. How the light falls. What the artist is doing in the moment the shutter opens. None of it should be accidental — and when you're working with artists at the level of Ssaru and Fathermoh, none of it can afford to be.</p>
 
@@ -590,9 +591,10 @@ export const posts: Post[] = [
     slug: "why-nairobi-brands-need-video-marketing-2026",
     title: "Why Every Nairobi Brand Needs Video Marketing in 2026",
     excerpt:
-      "Video is no longer optional for brands in Kenya. Here's why video marketing is the highest-ROI content strategy for Nairobi businesses right now.",
+      "How Kenyan businesses can use brand films, product demos and social content to explain their offer, support sales and measure campaign results.",
     category: "Marketing",
     date: "2026-05-10",
+    modified: "2026-10-04",
     readTime: "5 min read",
     coverImage: "/stills/1/6.jpg",
     content: `
@@ -612,16 +614,15 @@ export const posts: Post[] = [
 
 <p>For service businesses in Nairobi — agencies, consultancies, hospitality, healthcare, education — this is especially powerful. You're asking clients to trust you with something important. A well-produced brand film that shows who you are and how you work does that job better than any written pitch.</p>
 
-<h2>The ROI of Video Content in Kenya</h2>
-<p>The business case for video is strong:</p>
+<h2>Measure the Business Value of Video</h2>
+<p>Choose the job of the video before commissioning it. Then measure the action that matters for that job:</p>
 <ul>
-<li>Websites with video get significantly higher average session times — Google rewards this with better search rankings</li>
-<li>Social posts with video generate dramatically higher engagement than static posts on Instagram and LinkedIn</li>
-<li>Email campaigns that include video see higher click-through rates</li>
-<li>Brands that use video in their sales process report shorter sales cycles</li>
+<li>A product demonstration can explain an offer. Measure product enquiries or purchases; a longer website visit alone does not prove better search rankings.</li>
+<li>Social videos can introduce a brand. Compare relevant reach, watch time and qualified responses across the formats you use.</li>
+<li>A film linked from email can give a prospect more detail. Measure clicks and the conversations that follow.</li>
+<li>Sales teams can use case-study films to answer buyer questions. Record where they help move an actual opportunity forward.</li>
 </ul>
-
-<p>And crucially: a well-produced brand video doesn't expire. Unlike an ad campaign or a social post, a strong brand film can work for your business for two to three years. It's an asset, not just an expense.</p>
+<p>Results depend on the offer, audience, distribution and follow-up. Compare production and distribution costs with the business won, and update the film when the product, team or claims change. If you need a coordinated approach, explore our <a href="/services/brand-promotion-kenya">brand promotion campaigns in Kenya</a>.</p>
 
 <h2>What Kind of Video Does Your Brand Need?</h2>
 <p>Not every brand needs the same kind of video. Here's a quick framework:</p>

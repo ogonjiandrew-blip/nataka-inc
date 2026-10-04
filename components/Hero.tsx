@@ -6,36 +6,6 @@ import { useTextScramble } from "@/hooks/useTextScramble";
 import MagneticButton from "@/components/MagneticButton";
 import LetterReveal from "@/components/LetterReveal";
 
-function useCountUp(target: number, trigger: boolean, duration = 1800) {
-  // Seed with the real target so SSR, no-JS, crawlers and the pre-animation
-  // frame all show the correct number — never a frozen "0+".
-  const [val, setVal] = useState(target);
-  useEffect(() => {
-    // In a hidden tab rAF is frozen — an eager reset would leave "0+" on
-    // screen until the tab is focused. Only ever write values from inside a
-    // running frame, so the number drops below target strictly while animating.
-    if (!trigger || document.visibilityState === "hidden") return;
-    let raf = 0;
-    let start: number | null = null;
-    const tick = (now: number) => {
-      if (start === null) start = now;
-      const p    = Math.min((now - start) / duration, 1);
-      const ease = 1 - Math.pow(1 - p, 3);
-      setVal(p < 1 ? Math.floor(ease * target) : target);
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [trigger, target, duration]);
-  return val;
-}
-
-const stats = [
-  { target: 150, suffix: "+", label: "Campaigns Delivered" },
-  { target: 80,  suffix: "+", label: "Brands Elevated"     },
-  { target: 4,   suffix: "+", label: "Years of Impact"     },
-];
-
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
@@ -80,7 +50,7 @@ export default function Hero() {
         {/* Location label */}
         <div className="mb-6">
           <LetterReveal
-            text="Nairobi, Kenya  ·  Media & Marketing"
+            text="Nairobi, Kenya  ·  Marketing & Brand Promotion"
             inView={ready}
             delay={0.2}
             stagger={0.025}
@@ -93,7 +63,7 @@ export default function Hero() {
             is brand voice, not keyword text). */}
         <h1 className="mb-5 md:mb-8">
           <span className="sr-only">
-            Nataka Inc — Media &amp; Marketing Agency in Nairobi, Kenya.{" "}
+            Nataka Inc — Marketing and Brand Promotion Agency in Nairobi, Kenya.{" "}
           </span>
           <div
             className="font-geist font-black leading-[0.92] uppercase"
@@ -148,8 +118,8 @@ export default function Hero() {
           className="font-sans text-white/85 text-sm md:text-lg max-w-md leading-relaxed mb-8 md:mb-10 font-light"
           style={{ textShadow: "0 1px 20px rgba(0,0,0,0.6)" }}
         >
-          Premium video production and campaign strategy for brands, artists and events
-          that need attention, trust, and sales — cinematic work made in Nairobi.
+          Marketing campaigns, brand films and social content for businesses in Kenya.
+          Strategy, cinematic production and rollout, built around your next launch.
         </motion.p>
 
         {/* CTAs — white primary, teal outline secondary */}
@@ -199,23 +169,9 @@ export default function Hero() {
         className="absolute bottom-0 inset-x-0 border-t border-white/8 bg-ink/85 backdrop-blur-sm"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-4 grid grid-cols-3">
-          {stats.map(s => <StatItem key={s.label} {...s} trigger={ready} />)}
+          {[ ["Strategy", "A clear campaign brief"], ["Production", "Film & social content"], ["Rollout", "A plan to reach buyers"] ].map(([title, label]) => <div key={title} className="text-center px-1 md:px-2"><p className="font-geist font-black text-teal text-sm md:text-2xl">{title}</p><p className="hidden sm:block font-sans text-white/50 text-[9px] md:text-[10px] tracking-wider uppercase mt-0.5">{label}</p></div>)}
         </div>
       </motion.div>
     </section>
-  );
-}
-
-function StatItem({ target, suffix, label, trigger }: { target: number; suffix: string; label: string; trigger: boolean }) {
-  const val = useCountUp(target, trigger, 2000);
-  return (
-    <div className="text-center px-1 md:px-2">
-      <p className="font-geist font-black text-teal text-lg md:text-2xl tabular-nums"
-        style={{ textShadow: "0 0 20px rgba(10,191,191,0.3)" }}>
-        {val}{suffix}
-      </p>
-      {/* Label hidden on small screens — too cramped at 3-col */}
-      <p className="hidden sm:block font-sans text-white/50 text-[9px] md:text-[10px] tracking-wider uppercase mt-0.5 leading-tight">{label}</p>
-    </div>
   );
 }

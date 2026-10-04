@@ -15,13 +15,13 @@ const socialLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/128374044" },
 ];
 
-const WHATSAPP_NUMBER = "254725107294";
+const WHATSAPP_NUMBER = "254117386206";
 const EMAIL = "andrew@natakainc.com";
 
 const details = [
   { label: "Email", value: EMAIL, href: `mailto:${EMAIL}` },
-  { label: "Phone", value: "+254 725 107 294", href: "tel:+254725107294" },
-  { label: "WhatsApp", value: "Chat with us", href: `https://wa.me/${WHATSAPP_NUMBER}` },
+  { label: "Phone", value: "+254 117 386 206", href: "tel:+254117386206" },
+  { label: "WhatsApp", value: "Chat with us", href: `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Nataka, I found your website. My company, campaign goal and target date: ")}` },
   { label: "Location", value: "Westlands, Nairobi, Kenya", href: null },
 ];
 
@@ -63,9 +63,8 @@ export default function Contact() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="font-sans text-cream/75 text-sm leading-relaxed max-w-sm"
             >
-              Tell us the basics — your message lands straight on our phone. During
-              business hours we typically reply within minutes, never more than 24.
-              We&apos;ll work out the details together.
+              Tell us your company, campaign goal, target date and working budget.
+              Open WhatsApp or email Andrew to discuss the right scope for your project.
             </motion.p>
           </div>
 

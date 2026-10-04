@@ -9,16 +9,20 @@ export type ServicePage = {
   headline: string;
   headlineAccent: string;
   heroImage: string;
+  heroSummary?: string;
   intro: string;
+  audience?: { title: string; description: string }[];
+  proof?: { title: string; category: string; description: string; image: string; href: string; linkLabel: string; video?: string }[];
   /** What's included */
   deliverables: { title: string; description: string }[];
   /** Why Nataka for this service */
   whyUs: string[];
   /** Process steps */
   process: { step: string; title: string; description: string }[];
-  faqs: { question: string; answer: string }[];
+  faqs: { question: string; answer: string; link?: { href: string; label: string } }[];
   /** Related blog slugs */
   relatedPosts: string[];
+  relatedServices?: string[];
   keywords: string[];
   /** Optional service-specific offer in the closing CTA (defaults to the generic block) */
   cta?: { headline: string; text: string; whatsappMessage: string; button: string };
@@ -26,10 +30,63 @@ export type ServicePage = {
 
 export const servicePages: ServicePage[] = [
   {
+    slug: "brand-promotion-kenya",
+    metaTitle: "Brand Promotion & Marketing Campaigns in Kenya | Nataka Inc",
+    metaDescription:
+      "Brand promotion in Kenya for launches, retail and corporate campaigns. Nataka brings strategy, cinematic production and a clear rollout plan. Discuss your brief.",
+    label: "Brand Promotion",
+    headline: "Brand Promotion",
+    headlineAccent: "in Kenya.",
+    heroImage: "/videos/sarit-poster.jpg",
+    heroSummary: "Campaign strategy, brand films and social content for Kenyan businesses with a product to launch, a story to tell or a market to reach.",
+    intro:
+      "A brand campaign needs a clear message, the right creative and a plan for reaching buyers. Nataka Inc is a Nairobi media and marketing agency that brings those decisions together. We help marketing teams and business owners shape a campaign around the audience, the offer and the action they want people to take, then produce the film and social assets to carry it.",
+    audience: [
+      { title: "Marketing teams", description: "One campaign brief across film, social content and rollout, with deliverables and approval points agreed before production." },
+      { title: "Retail & product brands", description: "Launches, seasonal promotions and product stories that give buyers a clear reason to visit, enquire or purchase." },
+      { title: "Corporate & service businesses", description: "Brand films and campaign content that explain your value and help a prospective client assess your business." },
+    ],
+    proof: [
+      { title: "Sarit — Your City", category: "Brand · Commercial", description: "A brand film for Sarit Centre, featured in our production reel. Watch the work to assess the visual standard for your campaign.", image: "/videos/sarit-poster.jpg", video: "/videos/sarit.mp4", href: "/#reel", linkLabel: "View the production reel" },
+      { title: "Otamatsuri", category: "Festival · Promo Film", description: "A character-led festival promo shot on Kenyan locations. The case study covers the brief, creative approach and finished work.", image: "/stills/otamatsuri/cover.jpg", href: "/work/otamatsuri-promo-film", linkLabel: "Read the promo case study" },
+    ],
+    deliverables: [
+      { title: "Campaign Strategy & Concept", description: "An audience, a campaign message and a creative direction tied to your business objective. We agree the channels, deliverables and review process in the brief." },
+      { title: "Brand Film & Campaign Assets", description: "A hero film, product or brand photography, and the edits your campaign needs. Shoot days, locations, talent and final formats are scoped for your project." },
+      { title: "Social Content & Rollout", description: "Short-form edits, launch teasers and a publishing plan that give each asset a role before, during and after the campaign. Asset quantities and publishing responsibilities are agreed in the proposal." },
+      { title: "Creator & Paid Distribution", description: "Where relevant, we scope creator involvement and paid amplification alongside the creative. Creator fees, usage rights, media spend and campaign management are identified in the proposal before you commit." },
+      { title: "Measurement & Next Steps", description: "We agree the useful measures in advance: attention and engagement for awareness, or enquiries and qualified leads for acquisition. Sales reporting depends on access to your sales data and an agreed way to attribute it." },
+    ],
+    whyUs: [
+      "You can inspect the actual film work before discussing a campaign. Sarit and Otamatsuri show our commercial and promotional production approach.",
+      "The creative starts with the buyer and the message, so your film, social edits and campaign plan share a clear purpose.",
+      "A written scope gives your team a basis for approvals: deliverables, responsibilities, usage, timetable and cost.",
+      "Reporting separates visibility from business outcomes. Views show attention; enquiries and sales need their own evidence.",
+    ],
+    process: [
+      { step: "01", title: "Business Brief", description: "Share your audience, product or service, campaign goal, launch date and working budget. We identify what the campaign needs to achieve and how it will be judged." },
+      { step: "02", title: "Concept & Scope", description: "Review the creative direction, production plan, deliverables and rollout. Agree the scope and approval points before work begins." },
+      { step: "03", title: "Produce & Adapt", description: "Create the main film and supporting assets, then adapt the approved material for the agreed channels and formats." },
+      { step: "04", title: "Launch & Review", description: "Roll out the campaign under the agreed responsibilities. Review available campaign and enquiry data to decide which creative and channels deserve the next iteration." },
+    ],
+    faqs: [
+      { question: "What does a brand promotion agency in Kenya do?", answer: "Brand promotion connects your message with an audience through a coordinated campaign. Nataka's scope can bring together campaign strategy, film production, social content and distribution. We agree the exact mix around your goal rather than assuming every campaign needs every service." },
+      { question: "How much does a brand promotion campaign cost?", answer: "The quote depends on the campaign's creative and production scope, rollout and third-party costs. Our existing homepage packages provide indicative starting ranges. We confirm your deliverables and costs in a proposal, including whether media spend, creators or talent are included.", link: { href: "/#packages", label: "View existing campaign packages" } },
+      { question: "Can you work with our in-house marketing team?", answer: "Yes. Share your brand guidelines, existing assets and approval process. We can scope production or campaign support around the work your team already handles, with a clear owner for each part of delivery." },
+      { question: "Do we need influencers or paid ads for every campaign?", answer: "No. Distribution should follow the audience and objective. If creators or paid media suit the brief, we discuss the role, cost and measurement before including them. Your existing channels and sales team may also have an important part to play." },
+      { question: "Can you guarantee sales or a return on investment?", answer: "We do not guarantee sales or a fixed return. Demand, the offer, media budget and your sales follow-up all affect the result. We agree the campaign objective and measurement before launch, and distinguish creative delivery, audience response and verified business outcomes." },
+      { question: "Do you work beyond Nairobi?", answer: "Nataka is based in Nairobi and works on campaigns for brands across Kenya. Locations, travel and any local production requirements are discussed during scoping." },
+    ],
+    relatedPosts: ["why-nairobi-brands-need-video-marketing-2026", "brand-strategy-nairobi-building-brand-east-africa"],
+    relatedServices: ["brand-strategy-kenya", "brand-video-production-kenya", "product-launch-video-kenya", "social-media-marketing-kenya", "influencer-marketing-kenya", "digital-marketing-nairobi"],
+    keywords: ["brand promotion Kenya", "brand promotion agency Kenya", "marketing campaigns Kenya", "brand awareness campaigns Nairobi", "brand marketing agency Kenya"],
+    cta: { headline: "Let's Shape Your Campaign.", text: "Share your business, the audience you want to reach and your target launch date. We'll discuss the right scope and the next step.", whatsappMessage: "Hi Nataka, I'd like to discuss a brand promotion campaign in Kenya. My business, campaign goal and target date: ", button: "Discuss This Campaign" },
+  },
+  {
     slug: "video-production-nairobi",
     metaTitle: "Video Production Company in Nairobi, Kenya | Nataka Inc",
     metaDescription:
-      "Nataka Inc is a leading video production company in Nairobi, Kenya. Cinematic brand films, commercials, corporate videos and campaign content for brands across East Africa. Get a quote today.",
+      "Nataka Inc is a video production company in Nairobi, Kenya. Cinematic brand films, commercials, corporate videos and campaign content. Discuss your project brief.",
     label: "Video Production",
     headline: "Video Production",
     headlineAccent: "In Nairobi.",
@@ -45,7 +102,7 @@ export const servicePages: ServicePage[] = [
     ],
     whyUs: [
       "End-to-end production under one roof — concept, scripting, shooting, editing, colour grade, sound mix, and delivery.",
-      "Cinema-grade equipment and a crew that has produced work for major brands including Nike.",
+      "Inspect our published films to assess the cinematography, direction and post-production for your brief.",
       "Deep knowledge of Nairobi's best locations, light, and logistics — we shoot faster and better because we know this city.",
       "Honest budgets. We tell you what's achievable at your budget and make every shilling visible on screen.",
     ],
@@ -121,6 +178,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "brand-strategy-kenya",
+    relatedServices: ["brand-promotion-kenya", "brand-video-production-kenya", "creative-agency-nairobi", "digital-marketing-nairobi"],
     metaTitle: "Brand Strategy Agency in Nairobi, Kenya | Nataka Inc",
     metaDescription:
       "Nataka Inc builds distinctive brands for the East African market. Brand strategy, identity, positioning and messaging for Kenyan businesses that refuse to blend in. Start with a conversation.",
@@ -139,7 +197,7 @@ export const servicePages: ServicePage[] = [
     whyUs: [
       "We build brands rooted in East African culture that meet global creative standards — not imported templates.",
       "Strategy and production under one roof — the team that defines your brand also brings it to life on screen.",
-      "We've elevated 80+ brands across Kenya and East Africa.",
+      "Positioning, messaging and campaign creative are developed around the audience your business needs to reach.",
       "We ask the hard questions other agencies avoid. Clarity beats comfort.",
     ],
     process: [
@@ -166,6 +224,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "digital-marketing-nairobi",
+    relatedServices: ["brand-promotion-kenya", "social-media-marketing-kenya", "influencer-marketing-kenya", "product-launch-video-kenya"],
     metaTitle: "Digital Marketing Agency in Nairobi, Kenya | Nataka Inc",
     metaDescription:
       "Nataka Inc is a digital marketing agency in Nairobi offering social media management, content strategy, SEO and paid advertising for Kenyan brands. Data-driven campaigns that actually convert.",
@@ -352,6 +411,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "product-launch-video-kenya",
+    relatedServices: ["brand-promotion-kenya", "brand-video-production-kenya", "social-media-marketing-kenya", "digital-marketing-nairobi"],
     metaTitle: "Product Launch Video & Campaigns in Kenya | Nataka Inc",
     metaDescription:
       "Product launch videos and campaigns in Kenya — teasers, hero films and launch-day content that build anticipation and drive sales. Nataka Inc launches products people actually notice.",
@@ -381,7 +441,7 @@ export const servicePages: ServicePage[] = [
       { step: "04", title: "Sustain & Measure", description: "Post-launch content and reporting to hold momentum and prove results." },
     ],
     faqs: [
-      { question: "How much does a product launch campaign cost in Kenya?", answer: "A focused launch film starts around Ksh 150,000, while a full teaser-to-launch campaign with paid media typically runs Ksh 400,000 to Ksh 1,500,000+ depending on scope and ad spend. We build the campaign to your budget and goals." },
+      { question: "How much does a product launch campaign cost in Kenya?", answer: "The quote depends on the creative concept, production, deliverables and rollout. See the Launch Campaign Package on our homepage for the current indicative range. We confirm the exact scope and whether media spend, talent or creator fees are included in your proposal.", link: { href: "/#packages", label: "View the Launch Campaign Package" } },
       { question: "How far ahead should we start before launch day?", answer: "Ideally 4–6 weeks, so there's time to build a teaser sequence and an audience before the reveal. We can compress this for tighter timelines." },
       { question: "Can you handle both the content and the advertising?", answer: "Yes — we produce the campaign and run the paid media behind it, so the whole launch is coordinated and accountable to one team." },
     ],
@@ -399,6 +459,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "social-media-marketing-kenya",
+    relatedServices: ["brand-promotion-kenya", "digital-marketing-nairobi", "influencer-marketing-kenya", "product-launch-video-kenya"],
     metaTitle: "Social Media Marketing Agency in Kenya | Nataka Inc",
     metaDescription:
       "Social media marketing for Kenyan brands — content systems, short-form video, community management and paid social that turn followers into customers. Nataka Inc runs socials that sell.",
@@ -428,7 +489,7 @@ export const servicePages: ServicePage[] = [
       { step: "04", title: "Optimise", description: "Monthly reporting and adjustments based on what's actually driving results." },
     ],
     faqs: [
-      { question: "How much does social media marketing cost in Kenya?", answer: "Social media retainers at Nataka Inc typically range from Ksh 50,000 per month for a focused single-platform package to Ksh 350,000+ for full-service content production, community management and paid social. We scope to your goals." },
+      { question: "How much does social media marketing cost in Kenya?", answer: "Your quote depends on production, content volume, platforms and management responsibilities. See the Social Content Engine on our homepage for the current indicative package range. Community management and paid media requirements are confirmed in the written scope, including whether media spend is included.", link: { href: "/#packages", label: "View the Social Content Engine" } },
       { question: "Which platforms should my Kenyan brand focus on?", answer: "For most consumer brands, TikTok and Instagram drive the most growth; LinkedIn wins for B2B. We help you focus on the two or three platforms where your audience actually is and win there, rather than spreading thin." },
       { question: "Do you create the content or just schedule it?", answer: "We create it. Strategy, filming, editing, copy and scheduling are all in-house — that's the difference between a feed that grows and one that just stays busy." },
     ],
@@ -446,6 +507,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "influencer-marketing-kenya",
+    relatedServices: ["brand-promotion-kenya", "social-media-marketing-kenya", "product-launch-video-kenya", "brand-video-production-kenya"],
     metaTitle: "Influencer Marketing Agency in Kenya | Nataka Inc",
     metaDescription:
       "Influencer and creator marketing in Kenya — matched creators, managed campaigns and content that converts. Nataka Inc runs influencer campaigns built on results, not just reach.",
@@ -493,6 +555,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "creative-agency-nairobi",
+    relatedServices: ["brand-promotion-kenya", "brand-strategy-kenya", "brand-video-production-kenya", "product-launch-video-kenya"],
     metaTitle: "Creative Agency in Nairobi, Kenya | Nataka Inc",
     metaDescription:
       "Nataka Inc is a full-service creative agency in Nairobi — strategy, film, design and campaigns for brands that refuse to blend in. One team from idea to execution across East Africa.",
@@ -540,6 +603,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "brand-video-production-kenya",
+    relatedServices: ["brand-promotion-kenya", "brand-strategy-kenya", "corporate-video-production-kenya", "product-launch-video-kenya"],
     metaTitle: "Brand Video Production in Kenya | Nataka Inc",
     metaDescription:
       "Brand video production in Kenya — cinematic brand films that make people feel something and remember you. Nataka Inc builds the film at the heart of your brand. Get a quote.",

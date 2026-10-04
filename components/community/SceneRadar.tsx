@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { sceneEvents, eventStatusLabel, type EventStatus } from "@/lib/community";
 
-const WHATSAPP_NUMBER = "254725107294";
+const WHATSAPP_NUMBER = "254117386206";
 
 const tipMessage = [
   "Scene Radar tip",
