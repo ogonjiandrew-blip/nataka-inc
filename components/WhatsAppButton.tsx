@@ -8,10 +8,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-
-const WA_URL =
-  "https://wa.me/254117386206?text=" +
-  encodeURIComponent("Hi Nataka Inc! I'd like to discuss a project.");
+import { waLink } from "@/lib/whatsapp";
 
 /*
  * Pages that run their own WhatsApp call to action and must not compete with
@@ -19,7 +16,7 @@ const WA_URL =
  * these pages the wrong outcome is a cosplayer wanting their photos landing
  * in the sales inbox instead of the community.
  */
-const SUPPRESS_ON = ["/otamatsuri-2026", "/otamatsuri-experience"];
+const SUPPRESS_ON = ["/otamatsuri-2026", "/otamatsuri-experience", "/campaign-brief"];
 
 export default function WhatsAppButton() {
   const pathname = usePathname();
@@ -44,7 +41,7 @@ export default function WhatsAppButton() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 16 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          href={WA_URL}
+          href={waLink(`Hi Nataka, I'd like to discuss a project. I was looking at https://www.natakainc.com${pathname}`)}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with Nataka Inc on WhatsApp"

@@ -89,13 +89,13 @@ export default function ServicesIndex() {
             Not Sure Where To Start?
           </h2>
           <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
-            Tell us your goal. We&apos;ll point you to the right service and an honest plan.
+            Put your goal, audience, timing and budget into a clear brief. Get a planning checklist, then talk it through with us.
           </p>
           <Link
-            href="/#contact"
+            href="/campaign-brief"
             className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
           >
-            Book a Strategy Call
+            Build a Free Campaign Brief
           </Link>
         </div>
       </section>

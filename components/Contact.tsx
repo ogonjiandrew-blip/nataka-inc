@@ -2,12 +2,9 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 
-/**
- * Contact — deliberately just a way to reach us, not an intake form.
- * The project brief form (project type, budget, timeline) was removed: it read
- * as a sales funnel on a site that is meant to feel community-first.
- */
+// Keep direct contact easy; the optional brief builder is a separate route.
 
 const socialLinks = [
   { label: "Instagram", href: "https://www.instagram.com/natakainc/" },
@@ -66,6 +63,9 @@ export default function Contact() {
               Tell us your company, campaign goal, target date and working budget.
               Open WhatsApp or email Andrew to discuss the right scope for your project.
             </motion.p>
+            <Link href="/campaign-brief" className="inline-block mt-5 text-sm text-teal underline underline-offset-4">
+              Still shaping the idea? Build a free campaign brief →
+            </Link>
           </div>
 
           {/* Right — how to reach us */}

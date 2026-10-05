@@ -261,6 +261,9 @@ export default function ServicePage({ params }: Props) {
               +254 117 386 206
             </a>
           </div>
+          <Link href="/campaign-brief" className="inline-block mt-6 text-sm text-teal underline underline-offset-4">
+            Need help organising the idea? Build a free campaign brief →
+          </Link>
         </div>
       </div>
 

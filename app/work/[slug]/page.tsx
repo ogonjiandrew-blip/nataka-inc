@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { getCaseStudyBySlug, getAllCaseStudies } from "@/lib/caseStudies";
+import { waLink } from "@/lib/whatsapp";
 
 const siteUrl = "https://www.natakainc.com";
 
@@ -227,14 +228,15 @@ export default function CaseStudyPage({ params }: Props) {
             Have a project like this?
           </h2>
           <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
-            Whether you&apos;re an artist, a brand, or somewhere in between — let&apos;s build something worth remembering.
+            Tell us what you have in mind, who it is for and when you need it. We can discuss the right scope together.
           </p>
-          <Link
-            href="/#contact"
+          <a
+            href={waLink(`Hi Nataka, I saw your ${study.title} project and would like to discuss something similar. Source: ${siteUrl}/work/${study.slug}`)}
+            target="_blank" rel="noopener noreferrer"
             className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
           >
-            Start a Project
-          </Link>
+            Discuss Your Project
+          </a>
         </div>
       </div>
 

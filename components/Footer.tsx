@@ -15,6 +15,7 @@ const services = [
 ];
 
 const company = [
+  { label: "Campaign Brief Builder", href: "/campaign-brief" },
   { label: "Work", href: "/#work" },
   { label: "Community", href: "/community" },
   { label: "Otamatsuri 2026", href: "/otamatsuri-2026" },

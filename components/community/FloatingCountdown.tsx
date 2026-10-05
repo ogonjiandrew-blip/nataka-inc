@@ -39,7 +39,7 @@ export default function FloatingCountdown() {
   // The dedicated event page has its own hero countdown — don't double up.
   // The booth funnel page is a form customers fill standing at the event;
   // nothing may pull them away from it.
-  const onEventPage = pathname === "/otamatsuri-2026" || pathname === "/otamatsuri-experience";
+  const onEventPage = pathname === "/otamatsuri-2026" || pathname === "/otamatsuri-experience" || pathname === "/campaign-brief";
 
   if (!EVENT.target || dismissed || onEventPage || now === null) return null;
 
