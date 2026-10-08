@@ -23,7 +23,8 @@ const layout = [
   { id: "cool-in-school", cell: "md:col-span-4", media: `aspect-[16/10] ${SHORT}`, sizes: "(max-width: 768px) 100vw, 33vw" },
   { id: "maxus", cell: "md:col-span-7", media: `aspect-[16/10] ${TALL}`, sizes: "(max-width: 768px) 100vw, 58vw" },
   { id: "kwanini", cell: "md:col-span-5", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 42vw" },
-  { id: "teslah", cell: "md:col-span-5", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 42vw" },
+  { id: "chiq", cell: "md:col-span-4", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 33vw" },
+  { id: "teslah", cell: "md:col-span-4", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 33vw" },
 ];
 
 export default function Work() {
@@ -60,7 +61,7 @@ export default function Work() {
         })}
 
         {/* Closing tile: the route to everything else */}
-        <Reveal delay={0.08} className="md:col-span-7">
+        <Reveal delay={0.08} className="md:col-span-4">
           <Link
             href="/gallery"
             className="group relative flex h-full min-h-[280px] flex-col justify-between overflow-hidden rounded-[22px] p-8 md:p-12 ring-1 ring-white/[0.07] hover:ring-white/20 transition-[box-shadow] duration-500"
@@ -69,7 +70,7 @@ export default function Work() {
               src="/stills/fashion/10.jpg"
               alt=""
               fill
-              sizes="(max-width: 768px) 100vw, 58vw"
+              sizes="(max-width: 768px) 100vw, 33vw"
               quality={75}
               className="object-cover opacity-40 scale-[1.04] transition-[opacity,transform] duration-[900ms] ease-out group-hover:opacity-55 group-hover:scale-[1.08]"
             />

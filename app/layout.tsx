@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, Cormorant_Garamond, Shippori_Mincho } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import NatakaHelper from "@/components/helper/NatakaHelper";
 import "./globals.css";
 
 // Brand face. Loaded with its width axis so headlines can run extended
@@ -262,6 +263,7 @@ export default function RootLayout({
         <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-px bg-gradient-to-r from-transparent via-signal to-transparent opacity-80" />
         {children}
         <WhatsAppButton />
+        <NatakaHelper />
       </body>
     </html>
   );

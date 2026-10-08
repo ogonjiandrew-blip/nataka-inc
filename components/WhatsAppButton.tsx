@@ -9,6 +9,8 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { waLink } from "@/lib/whatsapp";
+import { useHelperMode, requestWake } from "@/lib/helperStore";
+import HelperDango from "@/components/helper/HelperDango";
 
 /*
  * Pages that run their own WhatsApp call to action and must not compete with
@@ -21,6 +23,9 @@ const SUPPRESS_ON = ["/otamatsuri-2026", "/otamatsuri-experience", "/campaign-br
 export default function WhatsAppButton() {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
+  // The site helper naps on this button once she has said hello
+  const helper = useHelperMode();
+  const [jostle, setJostle] = useState(0);
 
   // appear after the visitor has scrolled a little, not over the hero
   const { scrollY } = useScroll();
@@ -34,16 +39,23 @@ export default function WhatsAppButton() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.a
+        <motion.div
+          key="wa"
           initial={{ opacity: 0, scale: 0.6, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 16 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9980]"
+        >
+        <AnimatePresence>{helper === "asleep" && <HelperDango key="dango" onWake={requestWake} jostle={jostle} />}</AnimatePresence>
+        <a
+          data-wa-pill
+          onMouseEnter={() => setJostle((j) => j + 1)}
           href={waLink(`Hi Nataka, I'd like to discuss a project. I was looking at https://www.natakainc.com${pathname}`)}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with Nataka Inc on WhatsApp"
-          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9980] flex items-center gap-3 rounded-full bg-white text-ink pl-4 pr-5 py-3.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.8)] hover:bg-accent transition-colors"
+          className="relative flex items-center gap-3 rounded-full bg-white text-ink pl-4 pr-5 py-3.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.8)] hover:bg-accent transition-colors"
         >
           {/* WhatsApp glyph */}
           <svg viewBox="0 0 24 24" className="w-5 h-5 flex-shrink-0" fill="#1FAF55" aria-hidden>
@@ -53,7 +65,8 @@ export default function WhatsAppButton() {
           <span className="font-heading font-bold text-[11px] uppercase tracking-[0.16em] whitespace-nowrap">
             WhatsApp us
           </span>
-        </motion.a>
+        </a>
+        </motion.div>
       )}
     </AnimatePresence>
   );

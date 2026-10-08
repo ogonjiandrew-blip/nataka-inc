@@ -20,6 +20,15 @@ export type Project = {
 };
 
 export const projects: Record<string, Project> = {
+  chiq: {
+    id: "chiq",
+    title: "ChiQ",
+    meta: "New menu film for ChiQ Japanese restaurant. AI film",
+    poster: "/videos/chiq-poster.jpg",
+    alt: "Burrata pizza served at ChiQ, from Nataka Inc's AI new-menu film for ChiQ Japanese restaurant",
+    preview: "/videos/previews/chiq.mp4",
+    href: "https://www.instagram.com/chiq_japanese_restaurant/",
+  },
   maxus: {
     id: "maxus",
     title: "MAXUS Kenya",
