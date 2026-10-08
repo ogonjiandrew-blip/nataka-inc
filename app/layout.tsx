@@ -3,8 +3,6 @@ import { Cormorant_Garamond, DM_Sans, Shippori_Mincho } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import Preloader from "@/components/Preloader";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import FloatingCountdown from "@/components/community/FloatingCountdown";
-import BtsPopup from "@/components/community/BtsPopup";
 import Cursor from "@/components/Cursor";
 import SoundToggle from "@/components/SoundToggle";
 import "./globals.css";
@@ -250,8 +248,6 @@ export default function RootLayout({
         <Preloader />
         <Cursor />
         {children}
-        <BtsPopup />
-        <FloatingCountdown />
         <WhatsAppButton />
         <SoundToggle />
       </body>
