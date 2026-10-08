@@ -1,25 +1,33 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { getAllServices } from "@/lib/services";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
+import ServiceIndex from "@/components/ServiceIndex";
 
 const siteUrl = "https://www.natakainc.com";
+const title = "Services: Video, Film, AI Video and Marketing in Kenya | Nataka Inc";
+const description =
+  "Nataka Inc's services: video production, brand films, commercials, music videos, AI video, brand strategy, digital, social, influencer and event marketing across Nairobi and Kenya.";
 
 export const metadata: Metadata = {
-  title: { absolute: "Services — Video, Film & Marketing in Kenya | Nataka Inc" },
-  description:
-    "Explore Nataka Inc's full range of services — video production, music videos, corporate film, brand strategy, social media, influencer and event marketing across Nairobi and Kenya.",
+  title: { absolute: title },
+  description,
   alternates: { canonical: `${siteUrl}/services` },
-  openGraph: {
-    title: "Services | Nataka Inc — Nairobi Media & Marketing",
-    description:
-      "Video production, brand films, music videos, corporate video, social, influencer and event marketing across Kenya and East Africa.",
-    url: `${siteUrl}/services`,
-    type: "website",
-  },
+  openGraph: { title, description, url: `${siteUrl}/services`, type: "website" },
+  twitter: { card: "summary_large_image", title, description },
 };
 
 export default function ServicesIndex() {
-  const services = getAllServices();
+  const items = getAllServices().map((s) => ({
+    title: s.label,
+    line: s.heroSummary ?? s.metaDescription,
+    href: `/services/${s.slug}`,
+    image: s.heroImage,
+    alt: `${s.label} by Nataka Inc`,
+  }));
 
   const breadcrumb = {
     "@context": "https://schema.org",
@@ -31,74 +39,48 @@ export default function ServicesIndex() {
   };
 
   return (
-    <main className="min-h-screen bg-ink text-cream">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+    <main id="main-content" className="min-h-screen text-cream">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <Navbar />
+
+      <ServiceIndex
+        as="h1"
+        title="Services"
+        note="Strategy, film and distribution under one roof. Every engagement is scoped to your brief before we shoot."
+        items={items}
+        className="pt-36 md:pt-48 pb-24 md:pb-32"
       />
 
-      {/* Hero */}
-      <section className="px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-16 max-w-7xl mx-auto">
-        <Link
-          href="/"
-          className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-accent transition-colors"
-        >
-          ← Nataka Inc
-        </Link>
-        <p className="font-sans text-[10px] text-accent tracking-widest uppercase mt-8 mb-4">
-          What We Do · Nairobi, Kenya
-        </p>
-        <h1 className="leading-none mb-6">
-          <span className="font-heading font-black text-[clamp(2.2rem,7vw,5.5rem)] text-white uppercase block">
-            Services
-          </span>
-        </h1>
-        <p className="font-sans text-cream/75 text-lg md:text-xl leading-relaxed max-w-2xl">
-          Strategy, film and distribution under one roof. Every service below does one thing:
-          earn attention and turn it into customers — for brands across Nairobi, Kenya and East Africa.
-        </p>
-      </section>
-
-      {/* Grid */}
-      <section className="px-6 md:px-12 pb-20 md:pb-24 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-          {services.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/services/${s.slug}`}
-              className="group border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 flex flex-col transition-all duration-300 hover:border-accent/40 hover:from-white/[0.07] hover:-translate-y-1"
-            >
-              <h2 className="font-heading font-black text-xl text-white uppercase mb-3 group-hover:text-accent transition-colors duration-300">
-                {s.label}
-              </h2>
-              <p className="font-sans text-cream/60 text-sm leading-relaxed flex-1">
-                {s.metaDescription}
-              </p>
-              <span className="inline-block mt-5 font-sans text-[11px] text-accent tracking-widest uppercase border-b border-accent/30 group-hover:border-accent pb-0.5 self-start transition-colors">
-                Explore →
-              </span>
-            </Link>
-          ))}
+      <section className="border-t border-white/8">
+        <div className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
+          <Reveal>
+            <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.96] text-[clamp(2.1rem,5.6vw,5.2rem)] max-w-[16ch]">
+              Not sure where to start?
+            </h2>
+            <p className="mt-6 font-sans text-cream/70 text-base md:text-lg leading-relaxed max-w-[52ch]">
+              Pick your goal and we recommend the package, the deliverables and a typical budget. Or build a free
+              campaign brief first and talk it through with us.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+              <Link
+                href="/work-with-us"
+                className="group btn-primary"
+              >
+                Find your package
+                <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/campaign-brief"
+                className="font-heading font-semibold text-sm text-cream/80 underline underline-offset-[6px] decoration-white/25 hover:decoration-white hover:text-white"
+              >
+                Build a free campaign brief
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="px-6 md:px-12 pb-24 max-w-7xl mx-auto">
-        <div className="border border-accent/30 bg-accent/[0.04] p-10 md:p-16 text-center">
-          <h2 className="font-heading font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
-            Not Sure Where To Start?
-          </h2>
-          <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
-            Put your goal, audience, timing and budget into a clear brief. Get a planning checklist, then talk it through with us.
-          </p>
-          <Link
-            href="/campaign-brief"
-            className="inline-block font-heading font-black text-sm text-ink bg-accent px-10 py-5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
-          >
-            Build a Free Campaign Brief
-          </Link>
-        </div>
-      </section>
+      <Footer />
     </main>
   );
 }

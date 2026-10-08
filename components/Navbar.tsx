@@ -38,8 +38,8 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-        className={`fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 h-16 md:h-[72px] transition-colors duration-500 backdrop-blur-md ${
-          scrolled ? "bg-ink/85 border-b border-white/[0.07]" : "bg-gradient-to-b from-ink/70 to-transparent"
+        className={`fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 h-16 md:h-[72px] transition-colors duration-500 ${
+          scrolled ? "bg-ink/55 backdrop-blur-xl border-b border-white/[0.07]" : "bg-transparent"
         }`}
       >
         {/* Logo */}
@@ -75,7 +75,7 @@ export default function Navbar() {
 
           <a
             href="/#contact"
-            className="px-5 py-3 bg-white text-ink text-[11px] uppercase tracking-[0.16em] font-heading font-bold hover:bg-accent active:translate-y-px transition-colors"
+            className="btn-primary !px-5 !py-2.5 !text-[11px]"
           >
             Start a project
           </a>
@@ -122,7 +122,7 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
               onClick={() => setMenuOpen(false)}
-              className="mt-2 px-10 py-4 bg-white text-ink text-xs uppercase tracking-[0.16em] font-heading font-bold"
+              className="mt-2 btn-primary"
             >
               Start a project
             </motion.a>

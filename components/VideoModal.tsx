@@ -50,13 +50,13 @@ export default function VideoModal({ film, onClose }: { film: ModalFilm; onClose
           <button
             ref={closeRef}
             onClick={onClose}
-            className="shrink-0 inline-flex items-center gap-2 font-heading font-bold text-[11px] uppercase tracking-[0.16em] text-cream/75 hover:text-white transition-colors"
+            className="shrink-0 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 font-heading font-bold text-[11px] uppercase tracking-[0.16em] text-cream/85 hover:text-white hover:border-white/40 transition-colors"
             aria-label="Close video"
           >
             Close <X size={14} weight="bold" />
           </button>
         </div>
-        <div className="w-full aspect-video bg-ink-200">
+        <div className="w-full aspect-video overflow-hidden rounded-[18px] ring-1 ring-white/10 bg-ink-200 shadow-[0_40px_140px_-30px_rgb(var(--c-ember)/0.6)]">
           <video src={film.src} poster={film.poster} controls autoPlay playsInline preload="auto" className="w-full h-full">
             Your browser does not support this video format.
           </video>

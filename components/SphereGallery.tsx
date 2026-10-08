@@ -558,7 +558,7 @@ export default function SphereGallery() {
         {/* top-left logo */}
         <a
           href="/"
-          className="pointer-events-auto absolute top-6 left-6 md:left-10 font-nataka font-black text-lg text-white tracking-tight hover:text-accent transition-colors"
+          className="pointer-events-auto absolute top-6 left-6 md:left-10 font-nataka font-black text-lg text-white tracking-tight hover:opacity-80 transition-opacity"
         >
           NATAKA<span className="text-signal">.</span>INC
         </a>
@@ -575,14 +575,14 @@ export default function SphereGallery() {
         {/* top-right clock + CTA */}
         <div className="absolute top-6 right-6 md:right-10 flex items-center gap-6">
           <div className="hidden md:block font-mono text-[10px] text-white/60 tracking-wider uppercase text-right leading-relaxed">
-            <span className="inline-block w-2 h-2 rounded-full bg-accent mr-2 align-middle" />
+            <span className="inline-block w-2 h-2 rounded-full bg-signal mr-2 align-middle" />
             Nairobi, KE&nbsp;&nbsp;<LocalTime />
           </div>
           <a
             href="/#contact"
-            className="pointer-events-auto font-sans text-xs font-semibold text-ink bg-cream rounded-full px-6 py-3 hover:bg-accent transition-colors duration-300"
+            className="pointer-events-auto btn-primary !px-5 !py-2.5 !text-[11px]"
           >
-            Let&apos;s Talk
+            Start a project
           </a>
         </div>
 
@@ -591,33 +591,33 @@ export default function SphereGallery() {
           <span className="font-sans text-xs font-semibold text-ink bg-cream rounded-full px-6 py-2.5">
             Work
           </span>
-          <a href="/#about" className="font-sans text-xs font-medium text-white/80 px-6 py-2.5 hover:text-accent transition-colors">
+          <a href="/#about" className="font-sans text-xs font-medium text-white/80 px-6 py-2.5 hover:text-white transition-colors">
             About
           </a>
-          <a href="/#contact" className="font-sans text-xs font-medium text-white/80 px-6 py-2.5 hover:text-accent transition-colors">
+          <a href="/#contact" className="font-sans text-xs font-medium text-white/80 px-6 py-2.5 hover:text-white transition-colors">
             Contact
           </a>
         </nav>
 
         {/* bottom-left hint */}
         <p className="hidden md:block absolute bottom-8 left-10 font-mono text-[10px] text-white/35 tracking-wider uppercase">
-          Drag to explore — click a card to open
+          Drag to explore. Click a card to open
         </p>
 
         {/* iOS motion permission — Apple requires a tap before sensor access */}
         {needsMotionTap && (
           <button
             onClick={() => enableGyroRef.current?.()}
-            className="pointer-events-auto absolute bottom-24 left-1/2 -translate-x-1/2 font-mono text-[11px] text-ink bg-accent tracking-widest uppercase rounded-full px-6 py-3 shadow-lg shadow-accent/20"
+            className="pointer-events-auto absolute bottom-24 left-1/2 -translate-x-1/2 font-mono text-[11px] text-on-signal bg-signal tracking-widest uppercase rounded-full px-6 py-3"
           >
-            ⊕ Enable 360° Motion
+            Enable 360° motion
           </button>
         )}
 
         {/* 360° active indicator (mobile) */}
         {gyroActive && (
-          <span className="absolute bottom-24 left-1/2 -translate-x-1/2 font-mono text-[10px] text-accent/80 tracking-[0.3em] uppercase">
-            ◉ 360° — Move your phone
+          <span className="absolute bottom-24 left-1/2 -translate-x-1/2 font-mono text-[10px] text-signal/80 tracking-[0.3em] uppercase">
+            360° on. Move your phone
           </span>
         )}
       </div>
@@ -647,21 +647,21 @@ export default function SphereGallery() {
               </span>
               <button
                 onClick={closeOverlay}
-                className="font-mono text-[11px] text-white/60 tracking-widest uppercase hover:text-accent transition-colors border border-white/20 rounded-full px-5 py-2.5 hover:border-accent"
+                className="font-mono text-[11px] text-white/60 tracking-widest uppercase hover:text-white transition-colors border border-white/20 rounded-full px-5 py-2.5 hover:border-white/50"
               >
                 Close ✕
               </button>
             </div>
 
             <div className="flex-1 px-6 md:px-10 pb-16 max-w-6xl mx-auto w-full">
-              <p data-reveal className="font-mono text-[11px] text-accent tracking-widest uppercase mb-4">
+              <p data-reveal className="font-mono text-[11px] text-signal tracking-widest uppercase mb-4">
                 {selected.client} · {selected.year}
               </p>
-              <h1 data-reveal className="font-heading font-black text-[clamp(2.5rem,8vw,6rem)] text-white uppercase leading-none mb-8">
-                {selected.title}
+              <h1 data-reveal className="font-heading font-extrabold stretch-wide tracking-[-0.025em] text-[clamp(2.3rem,7vw,5.6rem)] text-white uppercase leading-[0.95] mb-8">
+                {selected.title}<span className="text-signal">.</span>
               </h1>
 
-              <div data-reveal className="relative aspect-[16/9] overflow-hidden mb-8 bg-black">
+              <div data-reveal className="relative aspect-[16/9] overflow-hidden mb-8 bg-black rounded-[22px] ring-1 ring-white/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={selected.image}
@@ -679,7 +679,7 @@ export default function SphereGallery() {
               </div>
 
               <p data-reveal className="font-sans text-cream/60 text-base leading-relaxed max-w-2xl mb-12">
-                A project by Nataka Inc — directed, produced and finished in Nairobi.
+                A project by Nataka Inc: directed, produced and finished in Nairobi.
                 {selected.title === "KWANINI"
                   ? " Read the full case study, or get in touch about your own project."
                   : " Full case study coming soon. For project enquiries, get in touch."}
@@ -689,26 +689,22 @@ export default function SphereGallery() {
                 {selected.title === "KWANINI" && (
                   <a
                     href="/work/ssaru-fathermoh-kwanini"
-                    className="font-heading font-black text-xs text-ink bg-accent px-8 py-4 uppercase tracking-widest hover:bg-accent-light transition-colors"
+                    className="btn-primary"
                   >
-                    View Case Study
+                    Read the case study
                   </a>
                 )}
                 <a
                   href="/#contact"
-                  className={`font-heading font-black text-xs px-8 py-4 uppercase tracking-widest transition-colors ${
-                    selected.title === "KWANINI"
-                      ? "text-white border border-white/25 hover:border-accent hover:text-accent"
-                      : "text-ink bg-accent hover:bg-accent-light"
-                  }`}
+                  className={selected.title === "KWANINI" ? "btn-ghost" : "btn-primary"}
                 >
-                  Start a Project
+                  Start a project
                 </a>
                 <button
                   onClick={closeOverlay}
-                  className="font-heading font-black text-xs text-white/60 px-4 py-4 uppercase tracking-widest hover:text-accent transition-colors"
+                  className="font-heading font-bold text-[11px] text-white/60 px-4 py-4 uppercase tracking-[0.16em] hover:text-white transition-colors"
                 >
-                  Back to Gallery
+                  Back to gallery
                 </button>
               </div>
             </div>

@@ -2,8 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight, ArrowUpRight, Play } from "@phosphor-icons/react/dist/ssr";
 import { getCaseStudyBySlug, getAllCaseStudies } from "@/lib/caseStudies";
-import { waLink } from "@/lib/whatsapp";
+import { waLink, PHONE_DISPLAY, PHONE_HREF } from "@/lib/whatsapp";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
+import Statement from "@/components/Statement";
+import FilmEmbed from "@/components/FilmEmbed";
 
 const siteUrl = "https://www.natakainc.com";
 
@@ -50,12 +56,13 @@ export default function CaseStudyPage({ params }: Props) {
   const others = getAllCaseStudies().filter((c) => c.slug !== study.slug);
 
   const ytId = youTubeId(study.watchUrl);
+  const workName = study.title === study.client ? study.title : `${study.title} by ${study.client}`;
 
   const graph: Record<string, unknown>[] = [
     {
       "@type": "CreativeWork",
       "@id": `${siteUrl}/work/${study.slug}#work`,
-      name: `${study.title} — ${study.client}`,
+      name: workName,
       description: study.metaDescription,
       // references the single site-wide org entity from app/layout.tsx
       creator: { "@id": `${siteUrl}/#org` },
@@ -77,7 +84,7 @@ export default function CaseStudyPage({ params }: Props) {
   if (ytId) {
     graph.push({
       "@type": "VideoObject",
-      name: `${study.title} — ${study.client} (Official Music Video)`,
+      name: `${workName} (Official Music Video)`,
       description: study.metaDescription,
       thumbnailUrl: [
         `${siteUrl}${study.heroImage}`,
@@ -97,164 +104,308 @@ export default function CaseStudyPage({ params }: Props) {
 
   const schema = { "@context": "https://schema.org", "@graph": graph };
 
+  // The film itself leads when it is on YouTube; otherwise the first still does
+  const feature = ytId ? null : study.gallery[0];
+  const stills = ytId ? study.gallery : study.gallery.slice(1);
+  const pair = stills.slice(0, 2);
+  const more = stills.slice(2);
+  const lastWide = more.length % 2 === 1;
+  const enquiry = waLink(
+    `Source: natakainc.com/work/${study.slug}\nHi Nataka, I saw ${study.title} and I'd like something similar. My company, the goal and our target date: `,
+  );
+
   return (
-    <main className="min-h-screen bg-ink text-cream">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+    <main id="main-content" className="min-h-screen text-cream">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <Navbar />
 
-      {/* Hero */}
-      <div className="relative h-[70vh] md:h-[85vh] overflow-hidden">
-        <Image
-          src={study.heroImage}
-          alt={`${study.title} by ${study.client} — directed by Nataka Inc`}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          quality={90}
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/30" />
+      {/* Hero: the key frame in a rounded screen, lit from behind */}
+      <section className="relative isolate px-2.5 pt-2.5 md:px-4 md:pt-4">
+        <div aria-hidden="true" className="pointer-events-none absolute -inset-x-[10%] -top-[10%] -bottom-[30%] -z-10 bg-[radial-gradient(55%_45%_at_50%_62%,rgb(var(--c-ember)/0.62),rgb(var(--c-ember)/0.18)_45%,transparent_72%)]" />
+        <div className="relative isolate flex min-h-[86vh] md:min-h-[92vh] flex-col justify-end overflow-hidden rounded-[22px] md:rounded-[32px] ring-1 ring-white/10 shadow-[0_40px_120px_-40px_rgba(0,0,0,0.9)]">
+          <Image
+            src={study.heroImage}
+            alt={`${study.title} by ${study.client}, directed by Nataka Inc`}
+            fill
+            priority
+            sizes="100vw"
+            quality={90}
+            className="object-cover"
+          />
+          <div aria-hidden="true" className="absolute inset-0 bg-ink/15" />
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/25 to-transparent" />
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-ink via-ink/60 to-transparent" />
+          <div aria-hidden="true" className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink/70 to-transparent" />
+          <div aria-hidden="true" className="halftone absolute inset-0 opacity-[0.14] [mask-image:radial-gradient(70%_80%_at_0%_100%,black,transparent_70%)]" />
 
-        <div className="absolute top-8 left-6 md:left-12 z-10">
-          <Link
-            href="/gallery"
-            className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-accent transition-colors"
-          >
-            ← Gallery
-          </Link>
+          <div className="relative w-full max-w-7xl mx-auto px-6 md:px-12 pt-32 pb-14 md:pb-20">
+            <nav
+              aria-label="Breadcrumb"
+              className="hero-rise mb-6 md:mb-8 flex flex-wrap items-center font-sans font-medium text-[10px] md:text-[11px] uppercase tracking-[0.28em] text-cream/70"
+            >
+              <Link href="/#work" className="hover:text-white transition-colors">
+                Work
+              </Link>
+              <span aria-hidden="true" className="mx-3 text-cream/35">
+                /
+              </span>
+              <span>{study.client}</span>
+            </nav>
+
+            <h1
+              className="hero-wipe font-heading font-extrabold uppercase stretch-wide leading-[0.92] tracking-[-0.03em] text-white text-[clamp(2.6rem,10vw,9rem)]"
+              style={{ animationDelay: "120ms" }}
+            >
+              {study.title}
+              <span className="text-signal">.</span>
+            </h1>
+
+            <div
+              className="hero-rise mt-7 md:mt-9 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8"
+              style={{ animationDelay: "600ms" }}
+            >
+              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-cream/70">
+                {study.category}
+                <span aria-hidden="true" className="mx-3 text-signal">
+                  /
+                </span>
+                {study.year}
+              </p>
+              {ytId && (
+                <a href="#film" className="btn-ghost self-start">
+                  <Play size={13} weight="fill" />
+                  Watch the film
+                </a>
+              )}
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div className="absolute bottom-0 inset-x-0 px-6 md:px-12 pb-14 max-w-7xl mx-auto">
-          <p className="font-mono text-[11px] text-accent tracking-widest uppercase mb-4">
-            {study.category} · {study.year}
-          </p>
-          <p className="font-sans text-white/60 text-sm tracking-widest uppercase mb-2">{study.client}</p>
-          <h1 className="font-heading font-black text-[clamp(2.8rem,10vw,7rem)] text-white uppercase leading-none">
-            {study.title}
-          </h1>
-        </div>
-      </div>
+      {/* Summary, lit word by word */}
+      <Statement text={study.summary} size="md" label={`About ${study.title}`} />
 
-      {/* Summary + facts */}
-      <div className="px-6 md:px-12 py-16 md:py-20 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr] gap-12 md:gap-20">
-          <p className="font-sans text-cream/85 text-xl md:text-2xl leading-relaxed">
-            {study.summary}
-          </p>
-          <div className="space-y-px self-start">
-            {study.facts.map((f) => (
-              <div key={f.label} className="flex justify-between py-3 border-b border-white/10">
-                <span className="font-mono text-[11px] text-white/40 tracking-widest uppercase">{f.label}</span>
-                <span className="font-sans text-sm text-cream/80 text-right">{f.value}</span>
+      {/* Credits */}
+      <section className="px-6 md:px-12 max-w-7xl mx-auto">
+        <dl className="grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-8 border-t border-white/10 pt-8">
+          {study.facts.map((f) => (
+            <div key={f.label}>
+              <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-cream/45">{f.label}</dt>
+              <dd className="mt-2 font-sans text-sm md:text-base text-white leading-snug">{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      {/* The film, or the frame that sums it up */}
+      <section id="film" className="scroll-mt-28 px-6 md:px-12 pt-20 md:pt-28 max-w-7xl mx-auto">
+        <Reveal>
+          {ytId ? (
+            <FilmEmbed youTubeId={ytId} poster={study.heroImage} title={`${study.title} by ${study.client}`} />
+          ) : (
+            feature && (
+              <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[22px] md:rounded-[28px] ring-1 ring-white/10">
+                <Image
+                  src={feature}
+                  alt={`${study.title}, still from the film`}
+                  fill
+                  sizes="(max-width: 1280px) 100vw, 1200px"
+                  quality={88}
+                  className="object-cover"
+                />
               </div>
+            )
+          )}
+        </Reveal>
+      </section>
+
+      {/* The brief */}
+      <section className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-y-8 gap-x-16">
+        <Reveal className="lg:col-span-4">
+          <span className="font-mono text-xs text-cream/50 tabular-nums">01</span>
+          <h2 className={H2}>
+            The brief<span className="text-signal">.</span>
+          </h2>
+        </Reveal>
+        <Reveal className="lg:col-span-8" delay={0.06}>
+          <p className="font-sans text-cream/80 text-lg md:text-xl leading-relaxed max-w-[60ch]">{study.challenge}</p>
+        </Reveal>
+      </section>
+
+      {pair.length === 2 && (
+        <section className="px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {pair.map((src, i) => (
+            <Reveal key={src} delay={i * 0.06}>
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[20px] ring-1 ring-white/10">
+                <Image
+                  src={src}
+                  alt={`${study.title}, still from the film`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  quality={86}
+                  className="object-cover"
+                />
+              </div>
+            </Reveal>
+          ))}
+        </section>
+      )}
+
+      {/* The approach */}
+      <section className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
+        <Reveal className="mb-12 md:mb-16">
+          <span className="font-mono text-xs text-cream/50 tabular-nums">02</span>
+          <h2 className={H2}>
+            The approach<span className="text-signal">.</span>
+          </h2>
+        </Reveal>
+        <ol className="border-t border-white/10">
+          {study.approach.map((step, i) => (
+            <li key={i} className="grid grid-cols-12 gap-x-6 gap-y-3 py-7 md:py-9 border-b border-white/10">
+              <span className="col-span-12 md:col-span-1 font-mono text-xs text-cream/50 md:pt-1.5 tabular-nums">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <p className="col-span-12 md:col-span-10 md:col-start-3 font-sans text-cream/80 text-base md:text-lg leading-relaxed">
+                {step}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {more.length > 0 && (
+        <section className="px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {more.map((src, i) => {
+            const wide = lastWide && i === more.length - 1;
+            return (
+              <Reveal key={src} delay={(i % 2) * 0.06} className={wide ? "md:col-span-2" : undefined}>
+                <div
+                  className={`relative overflow-hidden rounded-[20px] ring-1 ring-white/10 ${
+                    wide ? "aspect-[16/9] md:aspect-[21/9]" : "aspect-video"
+                  }`}
+                >
+                  <Image
+                    src={src}
+                    alt={`${study.title}, still from the film`}
+                    fill
+                    sizes={wide ? "(max-width: 1280px) 100vw, 1200px" : "(max-width: 768px) 100vw, 50vw"}
+                    quality={86}
+                    className="object-cover"
+                  />
+                </div>
+              </Reveal>
+            );
+          })}
+        </section>
+      )}
+
+      {/* The result */}
+      <section className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-y-8 gap-x-16">
+        <Reveal className="lg:col-span-4">
+          <span className="font-mono text-xs text-cream/50 tabular-nums">03</span>
+          <h2 className={H2}>
+            The result<span className="text-signal">.</span>
+          </h2>
+        </Reveal>
+        <Reveal className="lg:col-span-8" delay={0.06}>
+          <p className="font-sans text-white text-lg md:text-2xl leading-relaxed max-w-[56ch]">{study.result}</p>
+          {study.watchUrl && (
+            <a
+              href={study.watchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-9 inline-flex items-center gap-2 font-heading font-bold text-[11px] uppercase tracking-[0.16em] text-white"
+            >
+              {study.watchLabel ?? "Watch the film"}
+              <ArrowUpRight
+                size={14}
+                weight="bold"
+                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
+          )}
+        </Reveal>
+      </section>
+
+      {/* Closing call to action, in the lit room */}
+      <section className="relative isolate overflow-hidden border-t border-white/8">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_70%_at_15%_100%,rgb(var(--c-ember)/0.5),rgb(var(--c-ember)/0.12)_50%,transparent_75%)]" />
+        <div aria-hidden="true" className="halftone absolute inset-0 -z-10 opacity-[0.09] [mask-image:radial-gradient(60%_80%_at_100%_0%,black,transparent_75%)]" />
+        <div className="px-6 md:px-12 py-24 md:py-36 max-w-7xl mx-auto">
+          <Reveal>
+            <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.96] text-[clamp(2.1rem,5.6vw,5.2rem)] max-w-[16ch] [text-wrap:balance]">
+              Want a film <span className="text-accent-dark">like this</span>
+              <span className="text-signal">.</span>
+            </h2>
+            <p className="mt-6 font-sans text-cream/70 text-base md:text-lg leading-relaxed max-w-[52ch]">
+              Tell us what you have in mind, who it is for and when you need it. We reply with the scope that fits.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+              <a href={enquiry} target="_blank" rel="noopener noreferrer" className="group btn-primary">
+                Start a project
+                <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+              <a href={PHONE_HREF} className="font-sans text-sm text-cream/60 hover:text-white transition-colors tabular-nums">
+                {PHONE_DISPLAY}
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* More work */}
+      <section className="border-t border-white/8">
+        <div className="px-6 md:px-12 py-24 md:py-28 max-w-7xl mx-auto">
+          <Reveal className="mb-10 md:mb-12 flex items-end justify-between gap-6">
+            <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.02em] leading-[1] text-[clamp(1.5rem,3vw,2.4rem)]">
+              More work
+            </h2>
+            <Link
+              href="/#work"
+              className="group inline-flex items-center gap-2 font-heading font-bold text-[11px] uppercase tracking-[0.16em] text-white"
+            >
+              All work
+              <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-10">
+            {others.map((c, i) => (
+              <Reveal key={c.slug} delay={i * 0.06}>
+                <Link href={`/work/${c.slug}`} className="group block">
+                  <div className="relative aspect-[16/9] overflow-hidden rounded-[20px] ring-1 ring-white/10 bg-ink-50 transition-[box-shadow] duration-500 group-hover:ring-signal/50">
+                    <Image
+                      src={c.heroImage}
+                      alt={`${c.title} by ${c.client}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      quality={82}
+                      className="object-cover scale-[1.02] transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
+                    />
+                  </div>
+                  <div className="flex items-start justify-between gap-6 px-1 pt-4">
+                    <div>
+                      <h3 className="font-heading font-bold stretch-semi text-lg md:text-xl text-white tracking-tight leading-tight">
+                        {c.title}
+                      </h3>
+                      <p className="mt-1.5 font-sans text-sm text-cream/55">{c.category}</p>
+                    </div>
+                    <span className="mt-1 shrink-0 inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-cream/60 group-hover:text-signal transition-colors">
+                      Case study
+                      <ArrowUpRight size={12} weight="bold" />
+                    </span>
+                  </div>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* First gallery image — full bleed */}
-      {study.gallery[0] && (
-        <div className="relative aspect-[21/9] mb-16 md:mb-24">
-          <Image src={study.gallery[0]} alt={study.title} fill className="object-cover" sizes="100vw" quality={90} />
-        </div>
-      )}
-
-      {/* Challenge */}
-      <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-4xl mx-auto">
-        <h2 className="font-mono text-[11px] text-accent tracking-widest uppercase mb-6">01 — The Challenge</h2>
-        <p className="font-sans text-cream/75 text-lg leading-relaxed">{study.challenge}</p>
-      </div>
-
-      {/* Two gallery images side by side */}
-      {study.gallery.length >= 3 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-          {study.gallery.slice(1, 3).map((src) => (
-            <div key={src} className="relative aspect-[4/5] overflow-hidden">
-              <Image src={src} alt={study.title} fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" quality={88} />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Approach */}
-      <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-4xl mx-auto">
-        <h2 className="font-mono text-[11px] text-accent tracking-widest uppercase mb-8">02 — The Approach</h2>
-        <ul className="space-y-6">
-          {study.approach.map((step, i) => (
-            <li key={i} className="flex gap-5 items-start">
-              <span className="font-heading font-black text-accent/50 text-sm pt-1 tabular-nums flex-shrink-0">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <p className="font-sans text-cream/75 text-lg leading-relaxed">{step}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Remaining gallery images */}
-      {study.gallery.length > 3 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-          {study.gallery.slice(3).map((src) => (
-            <div key={src} className="relative aspect-video overflow-hidden">
-              <Image src={src} alt={study.title} fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" quality={88} />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Result */}
-      <div className="px-6 md:px-12 pb-16 md:pb-20 max-w-4xl mx-auto">
-        <h2 className="font-mono text-[11px] text-accent tracking-widest uppercase mb-6">03 — The Result</h2>
-        <p className="font-sans text-cream/85 text-xl leading-relaxed mb-10">{study.result}</p>
-
-        {study.watchUrl && (
-          <a
-            href={study.watchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 font-heading font-black text-sm text-ink bg-accent px-8 py-4 uppercase tracking-widest hover:bg-accent-light transition-colors"
-          >
-            ▶ {study.watchLabel ?? "Watch the film"}
-          </a>
-        )}
-      </div>
-
-      {/* CTA */}
-      <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <div className="border border-accent/30 bg-accent/[0.04] p-10 md:p-16 text-center">
-          <h2 className="font-heading font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
-            Have a project like this?
-          </h2>
-          <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
-            Tell us what you have in mind, who it is for and when you need it. We can discuss the right scope together.
-          </p>
-          <a
-            href={waLink(`Hi Nataka, I saw your ${study.title} project and would like to discuss something similar. Source: ${siteUrl}/work/${study.slug}`)}
-            target="_blank" rel="noopener noreferrer"
-            className="inline-block font-heading font-black text-sm text-ink bg-accent px-10 py-5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
-          >
-            Discuss Your Project
-          </a>
-        </div>
-      </div>
-
-      {/* Other work */}
-      <div className="px-6 md:px-12 pb-24 max-w-7xl mx-auto">
-        <div className="h-px bg-white/8 mb-10" />
-        <div className="flex flex-wrap items-center gap-4">
-          <span className="font-mono text-[11px] text-white/40 tracking-widest uppercase">Explore</span>
-          <Link href="/gallery" className="font-sans text-xs text-accent tracking-widest uppercase border border-accent/30 px-5 py-3 hover:bg-accent hover:text-ink transition-colors">
-            Full Gallery
-          </Link>
-          {others.map((c) => (
-            <Link key={c.slug} href={`/work/${c.slug}`} className="font-sans text-xs text-accent tracking-widest uppercase border border-accent/30 px-5 py-3 hover:bg-accent hover:text-ink transition-colors">
-              {c.title}
-            </Link>
-          ))}
-        </div>
-      </div>
+      <Footer />
     </main>
   );
 }
+
+/** Section titles: the same extended uppercase cut as the rest of the site. */
+const H2 =
+  "mt-3 font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.95] text-[clamp(1.85rem,4.4vw,3.8rem)]";

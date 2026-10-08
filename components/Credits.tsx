@@ -1,19 +1,20 @@
 /** Credit line under the hero: names already credited elsewhere on the site, nothing invented. */
-const credits = ["Ssaru x Fathermoh", "Vijana Barubaru ft. Scar Mkadinali", "Sarit Centre", "Teslah"];
+const credits = ["dance10fikshun", "Ssaru x Fathermoh", "Sarit Centre", "Vijana Barubaru", "Scar Mkadinali", "Teslah"];
 
 export default function Credits() {
   return (
-    <section aria-label="Recent credits" className="border-y border-white/8 bg-ink-100">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 md:py-7 flex flex-col md:flex-row md:items-center gap-3 md:gap-12">
-        <p className="font-mono text-xs text-cream/60 shrink-0">Recent credits</p>
-        <ul className="flex flex-wrap gap-x-8 md:gap-x-12 gap-y-2">
-          {credits.map((c) => (
-            <li key={c} className="font-heading font-semibold text-sm md:text-base text-cream/75 tracking-tight">
-              {c}
-            </li>
-          ))}
-        </ul>
-      </div>
+    <section aria-label="Recent credits" className="px-6 md:px-12 pt-12 md:pt-16 max-w-7xl mx-auto">
+      <p className="text-center font-mono text-[11px] uppercase tracking-[0.18em] text-cream/45">Credits include</p>
+      <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-10 md:gap-x-16 gap-y-3">
+        {credits.map((c) => (
+          <li
+            key={c}
+            className="font-heading font-bold uppercase stretch-semi text-xs md:text-sm tracking-[0.12em] text-cream/60"
+          >
+            {c}
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

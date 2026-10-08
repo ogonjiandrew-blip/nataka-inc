@@ -10,9 +10,9 @@ const proof = [
 
 export default function About() {
   return (
-    <section id="about" className="border-y border-white/8 bg-ink-100">
+    <section id="about" className="border-y border-white/8 bg-white/[0.025]">
       <div className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        <Reveal className="lg:col-span-5 relative aspect-[4/5] overflow-hidden bg-ink-50" as="figure">
+        <Reveal className="lg:col-span-5 relative aspect-[4/5] overflow-hidden rounded-[22px] ring-1 ring-white/10 bg-ink-50" as="figure">
           <Image
             src="/stills/1/27.jpg"
             alt="Film still by Nataka Inc: a woman with natural hair in soft daylight"

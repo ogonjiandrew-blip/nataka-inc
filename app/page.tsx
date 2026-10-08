@@ -31,7 +31,7 @@ export default function Home() {
         Skip to content
       </a>
 
-      <main id="main-content" className="bg-ink text-cream min-h-screen">
+      <main id="main-content" className="text-cream min-h-screen">
         <Navbar />
         <Hero />
         <Credits />

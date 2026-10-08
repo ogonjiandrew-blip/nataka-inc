@@ -21,7 +21,7 @@ export default function ServiceFinder() {
   const sel = goals.find((g) => g.id === active) ?? goals[0];
 
   return (
-    <section id="find-service" className="border-y border-white/8 bg-ink-100">
+    <section id="find-service" className="border-y border-white/8 bg-white/[0.025]">
       <div className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
         <Reveal className="lg:col-span-5">
           <h2 className="font-heading font-extrabold stretch-semi text-white tracking-[-0.03em] leading-[1.05] text-[clamp(2rem,4.4vw,3.4rem)]">
@@ -37,9 +37,9 @@ export default function ServiceFinder() {
                 type="button"
                 onClick={() => setActive(g.id)}
                 aria-pressed={active === g.id}
-                className={`text-left font-sans text-sm px-4 py-2.5 border transition-colors duration-200 active:translate-y-px ${
+                className={`text-left font-sans text-sm px-4 py-2.5 rounded-full border transition-colors duration-200 active:translate-y-px ${
                   active === g.id
-                    ? "bg-white text-ink border-white font-semibold"
+                    ? "bg-signal text-on-signal border-signal font-semibold"
                     : "text-cream/75 border-white/15 hover:border-accent/60 hover:text-white"
                 }`}
               >
@@ -50,7 +50,7 @@ export default function ServiceFinder() {
         </Reveal>
 
         <div className="lg:col-span-7 lg:sticky lg:top-28" aria-live="polite">
-          <div key={sel.id} className="bg-ink border border-white/10 p-8 md:p-10">
+          <div key={sel.id} className="rounded-[22px] bg-ink/70 ring-1 ring-white/10 p-8 md:p-10 backdrop-blur-md shadow-[0_30px_90px_-40px_rgb(var(--c-ember)/0.6)]">
             <p className="font-mono text-[11px] text-accent">We recommend</p>
             <h3 className="mt-3 font-heading font-bold text-2xl md:text-3xl text-white tracking-tight leading-tight [text-wrap:balance]">
               {sel.recommend}
@@ -73,7 +73,7 @@ export default function ServiceFinder() {
               href={waLink(sel.wa)}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-9 inline-flex items-center gap-3 bg-white text-ink font-heading font-bold text-xs uppercase tracking-[0.16em] px-8 py-[1.1rem] hover:bg-accent active:translate-y-px transition-colors"
+              className="group mt-9 btn-primary"
             >
               Get a quote
               <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />

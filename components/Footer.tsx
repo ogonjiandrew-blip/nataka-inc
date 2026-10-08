@@ -32,7 +32,9 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/8 px-6 md:px-12 pt-16 pb-10">
+    <footer className="relative isolate overflow-hidden border-t border-white/8 px-6 md:px-12 pt-16 pb-10">
+      {/* Print dots fading down from the top edge */}
+      <div aria-hidden="true" className="halftone absolute inset-0 -z-10 opacity-[0.07] [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
       <div className="max-w-7xl mx-auto">
 
         {/* Top — brand + link columns */}
@@ -116,6 +118,7 @@ export default function Footer() {
         </div>
 
       </div>
+
     </footer>
   );
 }

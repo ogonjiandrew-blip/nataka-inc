@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { waLink } from "@/lib/whatsapp";
 import type { CaseStudy } from "@/lib/services";
 
@@ -14,16 +15,26 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
     <section
       id="case-study"
       aria-labelledby="case-study-title"
-      className="border-y border-white/8 bg-gradient-to-b from-white/[0.02] to-transparent py-16 md:py-24 mb-16 md:mb-24"
+      className="border-y border-white/8 bg-white/[0.025] py-24 md:py-32"
     >
       <div className="px-6 md:px-12 max-w-7xl mx-auto">
-        <p className="font-sans text-[10px] text-accent tracking-widest uppercase mb-4">{study.eyebrow}</p>
-        <h2 id="case-study-title" className="leading-[0.95] mb-6">
-          <span className="font-heading font-black text-[clamp(1.9rem,5vw,4rem)] text-white uppercase block">
+        <p className="font-sans font-medium text-[10px] md:text-[11px] uppercase tracking-[0.28em] text-cream/70 mb-6">{study.eyebrow}</p>
+        <h2
+          id="case-study-title"
+          className="font-heading font-extrabold uppercase stretch-wide tracking-[-0.025em] leading-[0.95] text-[clamp(1.85rem,5vw,4.4rem)] mb-8"
+        >
+          <span className="text-white block">
             {study.title}
           </span>
-          <span className="font-heading font-black text-[clamp(1.9rem,5vw,4rem)] text-accent uppercase block">
-            {study.titleAccent}
+          <span className="text-accent-dark block">
+            {study.titleAccent.endsWith(".") ? (
+              <>
+                {study.titleAccent.slice(0, -1)}
+                <span className="text-signal">.</span>
+              </>
+            ) : (
+              study.titleAccent
+            )}
           </span>
         </h2>
         <p className="font-sans text-cream/75 text-base md:text-lg leading-relaxed max-w-3xl mb-12">{study.lede}</p>
@@ -31,7 +42,7 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
         {/* Loop + numbers */}
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-16 md:mb-20">
           <figure className="lg:col-span-8">
-            <div className="relative aspect-[4/3] bg-black overflow-hidden">
+            <div className="relative aspect-[4/3] bg-ink-50 overflow-hidden">
               <video
                 src={study.loop.src}
                 poster={study.loop.poster}
@@ -43,11 +54,10 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
                 className="absolute inset-0 w-full h-full object-cover"
                 aria-label={study.loop.alt}
               />
-              <span className="absolute top-4 left-4 font-sans text-[10px] tracking-widest uppercase text-white/85 bg-ink/60 px-3 py-1.5">
-                {study.loop.tag}
-              </span>
-            </div>
-            <figcaption className="font-sans text-xs text-cream/45 mt-3">{study.loop.caption}</figcaption>
+                          </div>
+            <figcaption className="font-sans text-xs text-cream/60 mt-3">
+              <span className="text-cream/85">{study.loop.tag.replace(" · ", ": ")}.</span> {study.loop.caption}
+            </figcaption>
           </figure>
 
           <dl className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-x-6 gap-y-8 lg:pt-2">
@@ -55,10 +65,10 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
               <div key={s.label} className="border-t border-white/10 pt-5">
                 <dt className="sr-only">{s.label}</dt>
                 <dd>
-                  <span className="font-heading font-black text-[clamp(2.2rem,4.5vw,3.4rem)] text-white leading-none block tabular-nums">
+                  <span className="font-heading font-extrabold stretch-wide text-[clamp(2.2rem,4.5vw,3.4rem)] text-white leading-none block tabular-nums">
                     {s.value}
                   </span>
-                  <span className="font-sans text-xs text-cream/55 uppercase tracking-widest mt-2 block">{s.label}</span>
+                  <span className="font-sans text-sm text-cream/60 mt-2 block">{s.label}</span>
                 </dd>
               </div>
             ))}
@@ -66,14 +76,14 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
         </div>
 
         {/* Contact sheet: monochrome until you look at a frame */}
-        <h3 className="font-heading font-black text-[clamp(1.2rem,2.6vw,1.9rem)] text-white uppercase mb-6">
-          The <span className="text-accent">contact sheet</span>
+        <h3 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.02em] text-[clamp(1.2rem,2.4vw,1.8rem)] mb-6">
+          The contact sheet
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3 mb-16 md:mb-20">
           {study.stills.map((s, i) => (
             <figure
               key={s.src}
-              className={`group relative overflow-hidden bg-black ${
+              className={`group relative overflow-hidden bg-ink-50 ${
                 i === 0
                   ? "col-span-2 md:row-span-2 aspect-[16/9] md:aspect-auto"
                   : i === study.stills.length - 1 && study.stills.length % 2 === 0
@@ -91,7 +101,7 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
               />
               <figcaption className="absolute bottom-0 inset-x-0 flex justify-between items-end gap-3 p-3 md:p-4 bg-gradient-to-t from-ink/85 to-transparent">
                 <span className="font-sans text-[10px] md:text-xs text-white/90 uppercase tracking-widest">{s.caption}</span>
-                <span className="font-sans text-[10px] text-accent tabular-nums tracking-widest">FR {String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-[10px] text-cream/60 tabular-nums">FR {String(i + 1).padStart(2, "0")}</span>
               </figcaption>
             </figure>
           ))}
@@ -100,14 +110,14 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
         {/* Vertical cut-downs */}
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center mb-16 md:mb-20">
           <div className="lg:col-span-5">
-            <h3 className="font-heading font-black text-[clamp(1.2rem,2.6vw,1.9rem)] text-white uppercase mb-4">
-              Cut for <span className="text-accent">every feed</span>
+            <h3 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.02em] text-[clamp(1.2rem,2.4vw,1.8rem)] mb-4">
+              Cut for every feed
             </h3>
             <p className="font-sans text-cream/70 text-base leading-relaxed mb-6">{study.verticalsText}</p>
             <ul className="space-y-4">
               {study.forYou.map((point, i) => (
                 <li key={point} className="flex gap-4 items-start">
-                  <span className="font-heading font-black text-accent/60 text-sm pt-0.5 tabular-nums flex-shrink-0">
+                  <span className="font-mono text-xs text-cream/50 pt-1 tabular-nums flex-shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <p className="font-sans text-cream/75 text-sm leading-relaxed">{point}</p>
@@ -123,7 +133,7 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
                   playsInline
                   preload="none"
                   poster={v.poster}
-                  className="w-full aspect-[9/16] bg-black object-cover"
+                  className="w-full aspect-[9/16] bg-ink-50 object-cover"
                   aria-label={v.title}
                 >
                   <source src={v.src} type="video/mp4" />
@@ -131,7 +141,7 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
                 </video>
                 <figcaption className="mt-3">
                   <span className="font-heading font-bold text-sm text-white block">{v.title}</span>
-                  <span className="font-sans text-[10px] text-accent uppercase tracking-widest">{v.meta}</span>
+                  <span className="font-sans text-xs text-cream/55">{v.meta}</span>
                 </figcaption>
               </figure>
             ))}
@@ -144,20 +154,21 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
             href={waLink(`Source: ${siteUrl}/services/${slug}#case-study\n${study.cta.whatsappMessage}`)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-accent text-ink font-heading font-black uppercase text-xs tracking-widest px-8 py-5 hover:bg-accent-light transition-colors"
+            className="group btn-primary"
           >
-            {study.cta.button} →
+            {study.cta.button}
+            <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
           </a>
           <a
             href={study.cta.watchHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-sans text-sm text-accent underline underline-offset-4"
+            className="font-heading font-semibold text-sm text-cream/80 underline underline-offset-[6px] decoration-white/25 hover:decoration-white hover:text-white"
           >
             {study.cta.watchLabel}
           </a>
         </div>
-        <p className="font-sans text-xs text-cream/40 mt-6 max-w-2xl">{study.disclosure}</p>
+        <p className="font-sans text-xs text-cream/55 mt-6 max-w-2xl">{study.disclosure}</p>
       </div>
     </section>
   );

@@ -13,7 +13,9 @@ const socialLinks = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="border-t border-white/8">
+    <section id="contact" className="relative isolate overflow-hidden border-t border-white/8">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_70%_at_15%_100%,rgb(var(--c-ember)/0.5),rgb(var(--c-ember)/0.12)_50%,transparent_75%)]" />
+      <div aria-hidden="true" className="halftone absolute inset-0 -z-10 opacity-[0.09] [mask-image:radial-gradient(60%_80%_at_100%_0%,black,transparent_75%)]" />
       <div className="px-6 md:px-12 py-24 md:py-36 max-w-7xl mx-auto">
         <Reveal>
           <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.96] text-[clamp(2.3rem,6.4vw,5.6rem)] max-w-[16ch] [text-wrap:balance]">
@@ -27,7 +29,7 @@ export default function Contact() {
               href={waLink("Source: natakainc.com (contact)\nHi Nataka, I'd like to start a project. My company, the goal, target date and budget: ")}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center gap-3 bg-white text-ink font-heading font-bold text-xs uppercase tracking-[0.16em] px-9 py-[1.1rem] hover:bg-accent active:translate-y-px transition-colors"
+              className="group btn-primary"
             >
               Start a project
               <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />

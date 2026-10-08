@@ -258,6 +258,8 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <div aria-hidden="true" className="atmosphere" />
+        <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-px bg-gradient-to-r from-transparent via-signal to-transparent opacity-80" />
         {children}
         <WhatsAppButton />
       </body>

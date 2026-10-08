@@ -2,10 +2,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { getServiceBySlug, getAllServices } from "@/lib/services";
+import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
+import { getServiceBySlug, getAllServices, type ServicePage as Service } from "@/lib/services";
 import { getPostBySlug } from "@/lib/posts";
-import { waLink } from "@/lib/whatsapp";
+import { waLink, PHONE_DISPLAY, PHONE_HREF } from "@/lib/whatsapp";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import LoopVideo from "@/components/LoopVideo";
+import Reveal from "@/components/Reveal";
+import Statement from "@/components/Statement";
 import AiCaseStudy from "@/components/services/AiCaseStudy";
+import WorkStrip from "@/components/services/WorkStrip";
 
 const siteUrl = "https://www.natakainc.com";
 
@@ -19,8 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = getServiceBySlug(params.slug);
   if (!service) return {};
   return {
-    // absolute bypasses the root "%s | Nataka.inc — …" template; metaTitle
-    // already ends in "| Nataka Inc", so the template was double-branding it.
+    // absolute bypasses the root title template; metaTitle already ends in "| Nataka Inc"
     title: { absolute: service.metaTitle },
     description: service.metaDescription,
     keywords: service.keywords,
@@ -32,8 +38,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [{ url: `${siteUrl}${service.heroImage}` }],
       type: "website",
     },
-    // Per-page Twitter card (otherwise it inherits the homepage's wrong title
-    // + the old 404 image from the root layout).
     twitter: {
       card: "summary_large_image",
       title: service.metaTitle,
@@ -43,6 +47,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+/** Section titles: the same extended uppercase cut as the homepage. */
+const H2 =
+  "font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.95] text-[clamp(1.85rem,5vw,4.4rem)]";
+
+/** Ends a headline on the signal-red full stop when it has one. */
+function Stop({ text }: { text: string }) {
+  if (!text.endsWith(".")) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, -1)}
+      <span className="text-signal">.</span>
+    </>
+  );
+}
+
+const processCols: Record<number, string> = {
+  3: "lg:grid-cols-3",
+  4: "lg:grid-cols-4",
+  5: "lg:grid-cols-5",
+};
+
 export default function ServicePage({ params }: Props) {
   const service = getServiceBySlug(params.slug);
   if (!service) notFound();
@@ -51,7 +76,21 @@ export default function ServicePage({ params }: Props) {
     .map((slug) => getPostBySlug(slug))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
 
-  const otherServices = getAllServices().filter((s) => s.slug !== service.slug);
+  const more: Service[] = (
+    service.relatedServices?.length
+      ? service.relatedServices.map((slug) => getServiceBySlug(slug))
+      : getAllServices().filter((s) => s.slug !== service.slug)
+  )
+    .filter((s): s is Service => Boolean(s))
+    .slice(0, 8);
+
+  const quote = waLink(
+    `Source: ${siteUrl}/services/${service.slug}\n${
+      service.cta?.whatsappMessage ??
+      `Hi Nataka, I'd like a quote for ${service.label.toLowerCase()}. My company, the goal and our target date: `
+    }`,
+  );
+  const workHref = service.caseStudy ? "#case-study" : service.work?.length ? "#work" : "/#work";
 
   // Service + FAQ structured data, scoped to this page
   const schema = {
@@ -62,7 +101,6 @@ export default function ServicePage({ params }: Props) {
         "@id": `${siteUrl}/services/${service.slug}#service`,
         name: service.label,
         description: service.metaDescription,
-        // references the single site-wide org entity from app/layout.tsx
         provider: { "@id": `${siteUrl}/#org` },
         areaServed: [
           { "@type": "City", name: "Nairobi" },
@@ -82,7 +120,10 @@ export default function ServicePage({ params }: Props) {
         ? [service.caseStudy.loop, ...service.caseStudy.verticals].map((v, i) => ({
             "@type": "VideoObject",
             "@id": `${siteUrl}/services/${service.slug}#video-${i + 1}`,
-            name: i === 0 ? `AANOTHER, ${service.caseStudy!.loop.tag.split("·").pop()!.trim()} (AI music video by Nataka)` : `AANOTHER: ${(v as { title: string }).title} (AI Short by Nataka)`,
+            name:
+              i === 0
+                ? `AANOTHER, ${service.caseStudy!.loop.tag.split("·").pop()!.trim()} (AI music video by Nataka)`
+                : `AANOTHER: ${(v as { title: string }).title} (AI Short by Nataka)`,
             description: i === 0 ? service.caseStudy!.loop.caption : service.caseStudy!.verticalsText,
             thumbnailUrl: `${siteUrl}${v.poster}`,
             contentUrl: `${siteUrl}${v.src}`,
@@ -103,259 +144,309 @@ export default function ServicePage({ params }: Props) {
   };
 
   return (
-    <main className="min-h-screen bg-ink text-cream">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+    <main id="main-content" className="min-h-screen text-cream">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <Navbar />
 
       {/* Hero */}
-      <div className="relative min-h-[60vh] md:min-h-[70vh] overflow-hidden flex items-end">
+      <section className="relative isolate px-2.5 pt-2.5 md:px-4 md:pt-4">
+        <div aria-hidden="true" className="pointer-events-none absolute -inset-x-[10%] -top-[10%] -bottom-[30%] -z-10 bg-[radial-gradient(55%_45%_at_50%_62%,rgb(var(--c-ember)/0.62),rgb(var(--c-ember)/0.18)_45%,transparent_72%)]" />
+        <div className="relative isolate flex min-h-[86vh] md:min-h-[90vh] flex-col justify-end overflow-hidden rounded-[22px] md:rounded-[32px] ring-1 ring-white/10">
         <Image
           src={service.heroImage}
-          alt={`${service.label} by Nataka Inc — Nairobi, Kenya`}
+          alt={`${service.label} by Nataka Inc, Nairobi, Kenya`}
           fill
-          className="object-cover"
-          sizes="100vw"
-          quality={90}
           priority
+          sizes="100vw"
+          quality={85}
+          className="object-cover"
         />
         {service.heroVideo && (
-          <video
-            src={service.heroVideo.src}
-            poster={service.heroVideo.poster}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover motion-reduce:hidden"
-          />
+          <LoopVideo src={service.heroVideo.src} srcMobile={service.heroVideo.srcMobile} poster={service.heroVideo.poster} />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/25" />
+        <div aria-hidden="true" className="absolute inset-0 bg-ink/25" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/40 to-transparent" />
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-ink via-ink/70 to-transparent" />
+        <div aria-hidden="true" className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink/70 to-transparent" />
 
-        <div className="absolute top-8 left-6 md:left-12 z-10">
-          <Link
-            href="/"
-            className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-accent transition-colors"
+        <div className="relative w-full max-w-7xl mx-auto px-6 md:px-12 pt-32 pb-16 md:pb-24">
+          <nav
+            aria-label="Breadcrumb"
+            className="hero-rise mb-6 md:mb-8 flex flex-wrap items-center font-sans font-medium text-[10px] md:text-[11px] uppercase tracking-[0.28em] text-cream/70"
           >
-            ← Nataka Inc
-          </Link>
-        </div>
-
-        <div className="relative w-full px-6 md:px-12 pt-28 pb-14 max-w-7xl mx-auto">
-          <p className="font-sans text-[10px] text-accent tracking-widest uppercase mb-4">
-            {service.label} · Nairobi, Kenya
-          </p>
-          <h1 className="leading-none">
-            <span className="font-heading font-black text-[clamp(2.2rem,7vw,5.5rem)] text-white uppercase block">
-              {service.headline}{" "}
+            <Link href="/services" className="hover:text-white transition-colors">
+              Services
+            </Link>
+            <span aria-hidden="true" className="mx-3 text-cream/35">
+              /
             </span>
-            <span className="font-heading font-black text-[clamp(2.2rem,7vw,5.5rem)] text-accent uppercase block">
-              {service.headlineAccent}
+            <span>{service.label}</span>
+          </nav>
+
+          <h1 className="font-heading font-extrabold uppercase stretch-wide leading-[0.95] tracking-[-0.025em] text-[clamp(2rem,5.6vw,5.6rem)] max-w-[20ch] [text-wrap:balance]">
+            <span className="hero-wipe block text-white" style={{ animationDelay: "120ms" }}>
+              {service.headline}
+            </span>
+            <span className="hero-wipe block text-accent-dark" style={{ animationDelay: "290ms" }}>
+              <Stop text={service.headlineAccent} />
             </span>
           </h1>
+
           {service.heroSummary && (
-            <p className="font-sans text-white/80 text-base md:text-lg leading-relaxed max-w-2xl mt-6">
+            <p
+              className="hero-rise mt-7 md:mt-9 font-sans text-cream/80 text-base md:text-lg leading-relaxed max-w-[52ch]"
+              style={{ animationDelay: "600ms" }}
+            >
               {service.heroSummary}
             </p>
           )}
-          {service.caseStudy && (
-            <a href="#case-study" className="inline-block mt-6 font-sans text-xs text-accent tracking-widest uppercase underline underline-offset-4">
-              See the band we built ↓
+
+          <div className="hero-rise mt-9 md:mt-10 flex flex-col sm:flex-row gap-3" style={{ animationDelay: "720ms" }}>
+            <a
+              href={quote}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group btn-primary"
+            >
+              Get a quote
+              <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
+            <a href={workHref} className="btn-ghost">
+              See the work
+            </a>
+          </div>
+
+          {service.heroVideo?.label && (
+            <p className="hero-rise mt-8 font-mono text-[10px] uppercase tracking-[0.14em] text-cream/45" style={{ animationDelay: "900ms" }}>
+              {service.heroVideo.label}
+            </p>
           )}
         </div>
-      </div>
+        </div>
+      </section>
 
-      {/* Intro */}
-      <div className="px-6 md:px-12 py-16 md:py-20 max-w-4xl mx-auto">
-        <p className="font-sans text-cream/80 text-lg md:text-xl leading-relaxed border-l-2 border-accent pl-6">
-          {service.intro}
-        </p>
-        <a href={waLink(`Source: ${siteUrl}/services/${service.slug}\nHi Nataka, I'd like to discuss ${service.label}. My company, project goal and target date: `)} target="_blank" rel="noopener noreferrer" className="inline-block mt-8 bg-accent text-ink font-heading font-bold uppercase text-xs tracking-widest px-7 py-4 hover:bg-accent-light transition-colors">Discuss your project on WhatsApp →</a>
-      </div>
+      {/* Intro, lit word by word on scroll */}
+      <Statement text={service.intro} size="md" label={`About ${service.label}`} />
 
       {service.caseStudy && <AiCaseStudy study={service.caseStudy} slug={service.slug} />}
+      {service.work && <WorkStrip ids={service.work} />}
 
-      {service.proof && <section className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto" aria-labelledby="campaign-proof">
-        <h2 id="campaign-proof" className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">See the <span className="text-accent">work</span></h2>
-        <div className="grid md:grid-cols-2 gap-10">{service.proof.map(proof => <article key={proof.title}>
-          {proof.video ? <video controls playsInline preload="none" poster={proof.image} className="w-full aspect-video bg-black" aria-label={proof.title}><source src={proof.video} type="video/mp4" /><a href={proof.video}>Watch {proof.title}</a></video> : <Link href={proof.href} className="block relative aspect-video"><Image src={proof.image} alt={proof.title} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover" /></Link>}
-          <p className="font-sans text-accent text-xs uppercase tracking-widest mt-6 mb-2">{proof.category}</p><h3 className="font-heading font-bold text-2xl text-white mb-3">{proof.title}</h3><p className="font-sans text-cream/70 text-sm leading-relaxed">{proof.description}</p><Link href={proof.href} className="inline-block mt-5 text-accent text-sm underline underline-offset-4">{proof.linkLabel} →</Link>
-        </article>)}</div>
-      </section>}
-
-      {/* Deliverables */}
-      <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <h2 className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
-          What We <span className="text-accent">Deliver</span>
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-          {service.deliverables.map((d) => (
-            <div key={d.title} className="border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 transition-all duration-300 hover:border-accent/40 hover:from-white/[0.07] hover:-translate-y-1">
-              <h3 className="font-heading font-black text-lg text-white uppercase mb-3">
-                {d.title}
-              </h3>
-              <p className="font-sans text-cream/60 text-sm leading-relaxed">{d.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Why Nataka */}
-      <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <h2 className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
-          Why <span className="text-accent">Nataka</span>
-        </h2>
-        <ul className="space-y-5 max-w-3xl">
-          {service.whyUs.map((reason, i) => (
-            <li key={i} className="flex gap-5 items-start">
-              <span className="font-heading font-black text-accent/60 text-sm pt-0.5 tabular-nums flex-shrink-0">
+      {/* What you get */}
+      <section className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
+        <Reveal className="mb-12 md:mb-16">
+          <h2 className={H2}>What you get</h2>
+        </Reveal>
+        <ol className="border-t border-white/10">
+          {service.deliverables.map((d, i) => (
+            <Reveal
+              as="li"
+              key={d.title}
+              delay={Math.min(i, 4) * 0.05}
+              className="grid grid-cols-12 gap-x-6 gap-y-3 py-7 md:py-9 border-b border-white/10"
+            >
+              <span className="col-span-12 md:col-span-1 font-mono text-xs text-cream/50 md:pt-2 tabular-nums">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <p className="font-sans text-cream/75 text-base leading-relaxed">{reason}</p>
-            </li>
+              <h3 className="col-span-12 md:col-span-5 font-heading font-bold uppercase stretch-semi text-white tracking-[-0.01em] leading-tight text-[clamp(1.15rem,2vw,1.6rem)]">
+                {d.title}
+              </h3>
+              <p className="col-span-12 md:col-span-6 font-sans text-cream/65 text-base leading-relaxed">{d.description}</p>
+            </Reveal>
           ))}
-        </ul>
-      </div>
+        </ol>
+      </section>
 
-      {/* Process */}
-      <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <h2 className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
-          The <span className="text-accent">Process</span>
-        </h2>
-        <div className="divide-y divide-white/8 border-t border-b border-white/8">
-          {service.process.map((p) => (
-            <div key={p.step} className="grid grid-cols-[56px_1fr] md:grid-cols-[80px_280px_1fr] gap-4 md:gap-8 py-7 items-baseline">
-              <span className="font-heading font-black text-sm text-accent/50 tabular-nums">{p.step}</span>
-              <h3 className="font-heading font-black text-xl text-white uppercase">{p.title}</h3>
-              <p className="font-sans text-cream/60 text-sm leading-relaxed col-span-2 md:col-span-1 col-start-2 md:col-start-auto">
-                {p.description}
-              </p>
+      {/* Who it's for (only some services carry this) */}
+      {service.audience && (
+        <section className="border-y border-white/8 bg-white/[0.025]">
+          <div className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
+            <Reveal className="mb-12 md:mb-16">
+              <h2 className={H2}>Who it&apos;s for</h2>
+            </Reveal>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-10">
+              {service.audience.map((a, i) => (
+                <Reveal key={a.title} delay={i * 0.06} className="border-t border-white/15 pt-6">
+                  <h3 className="font-heading font-bold stretch-semi text-xl text-white tracking-tight">{a.title}</h3>
+                  <p className="mt-3 font-sans text-cream/65 leading-relaxed">{a.description}</p>
+                </Reveal>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* FAQ */}
-      <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-4xl mx-auto">
-        <h2 className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
-          Common <span className="text-accent">Questions</span>
-        </h2>
-        <div className="space-y-10">
-          {service.faqs.map((f) => (
-            <div key={f.question}>
-              <h3 className="font-heading font-bold text-lg text-white mb-3">{f.question}</h3>
-              <p className="font-sans text-cream/60 text-base leading-relaxed">{f.answer}</p>
-              {f.link && <Link href={f.link.href} className="inline-block mt-3 text-accent text-sm underline underline-offset-4">{f.link.label} →</Link>}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <div className="border border-accent/30 bg-accent/[0.04] p-10 md:p-16 text-center">
-          <h2 className="font-heading font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
-            {service.cta ? service.cta.headline : "Ready To Start?"}
-          </h2>
-          <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
-            {service.cta
-              ? service.cta.text
-              : "Tell us about your project. We’ll come back with a clear plan and an honest quote."}
-          </p>
-          {/* Server-rendered contact actions (crawlable + tappable on slow
-              connections, unlike the client-only WhatsApp FAB). */}
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {service.cta && (
-              <a
-                href={waLink(`Source: ${siteUrl}/services/${service.slug}\n${service.cta.whatsappMessage}`)}
-                className="inline-block font-heading font-black text-sm text-ink bg-accent px-10 py-5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
-              >
-                {service.cta.button}
-              </a>
-            )}
-            <Link
-              href="/#contact"
-              className={
-                service.cta
-                  ? "inline-block font-heading font-black text-sm text-accent border border-accent/40 px-8 py-5 uppercase tracking-widest hover:bg-accent hover:text-ink transition-colors duration-200"
-                  : "inline-block font-heading font-black text-sm text-ink bg-accent px-10 py-5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
-              }
-            >
-              Get in Touch
-            </Link>
-            <a
-              href="https://wa.me/254117386206"
-              className="inline-block font-heading font-black text-sm text-accent border border-accent/40 px-8 py-5 uppercase tracking-widest hover:bg-accent hover:text-ink transition-colors duration-200"
-            >
-              WhatsApp Us
-            </a>
-            <a
-              href="tel:+254117386206"
-              className="inline-block font-sans text-sm text-white/60 px-4 py-5 tracking-widest uppercase hover:text-accent transition-colors"
-            >
-              +254 117 386 206
-            </a>
           </div>
-          <Link href="/campaign-brief" className="inline-block mt-6 text-sm text-accent underline underline-offset-4">
-            Need help organising the idea? Build a free campaign brief →
-          </Link>
-        </div>
-      </div>
-
-      {/* Related articles */}
-      {related.length > 0 && (
-        <div className="px-6 md:px-12 pb-16 max-w-7xl mx-auto">
-          <h2 className="font-heading font-black text-xl text-white uppercase mb-8">
-            From Our <span className="text-accent">Insights</span>
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {related.map((p) => (
-              <Link key={p.slug} href={`/blog/${p.slug}`} className="group block">
-                <div className="relative aspect-[4/3] overflow-hidden bg-ink-50 mb-4">
-                  <Image
-                    src={p.coverImage}
-                    alt={p.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    quality={80}
-                  />
-                  <div className="absolute inset-0 bg-ink/40 group-hover:bg-ink/20 transition-colors duration-300" />
-                </div>
-                <span className="font-sans text-[9px] text-accent tracking-widest uppercase font-medium block mb-1">
-                  {p.category}
-                </span>
-                <h3 className="font-heading font-black text-base text-white uppercase leading-tight group-hover:text-accent transition-colors duration-200">
-                  {p.title}
-                </h3>
-              </Link>
-            ))}
-          </div>
-        </div>
+        </section>
       )}
 
-      {/* Other services */}
-      <div className="px-6 md:px-12 pb-24 max-w-7xl mx-auto">
-        <div className="h-px bg-white/8 mb-10" />
-        <h2 className="font-heading font-black text-xl text-white uppercase mb-8">
-          More <span className="text-accent">Services</span>
-        </h2>
-        <div className="flex flex-wrap gap-3">
-          {otherServices.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/services/${s.slug}`}
-              className="font-sans text-xs text-accent tracking-widest uppercase border border-accent/30 px-5 py-3 hover:bg-accent hover:text-ink transition-colors duration-200"
-            >
-              {s.label}
-            </Link>
+      {/* Why Nataka */}
+      <section className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        <Reveal className="lg:col-span-4">
+          <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.95] text-[clamp(1.85rem,4vw,3.4rem)]">
+            Why Nataka<span className="text-signal">.</span>
+          </h2>
+        </Reveal>
+        <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10">
+          {service.whyUs.map((reason, i) => (
+            <Reveal key={i} delay={(i % 2) * 0.06} className="border-t border-white/15 pt-6">
+              <span className="font-mono text-xs text-cream/50 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+              <p className="mt-4 font-heading font-medium text-lg md:text-xl text-white leading-snug tracking-[-0.01em]">
+                {reason}
+              </p>
+            </Reveal>
           ))}
         </div>
-      </div>
+      </section>
+
+      {/* How it works */}
+      <section className="border-y border-white/8 bg-white/[0.025]">
+        <div className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
+          <Reveal className="mb-12 md:mb-16">
+            <h2 className={H2}>How it works</h2>
+          </Reveal>
+          <ol className={`grid grid-cols-1 md:grid-cols-2 ${processCols[service.process.length] ?? "lg:grid-cols-4"} gap-x-8 gap-y-12`}>
+            {service.process.map((p, i) => (
+              <Reveal as="li" key={p.step} delay={i * 0.06} className="border-t border-white/20 pt-6">
+                <span className="font-mono text-xs text-cream/50 tabular-nums">{p.step}</span>
+                <h3 className="mt-4 font-heading font-bold uppercase stretch-semi text-white text-lg tracking-tight leading-tight">
+                  {p.title}
+                </h3>
+                <p className="mt-3 font-sans text-sm text-cream/65 leading-relaxed">{p.description}</p>
+              </Reveal>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Questions: answers stay in the HTML for buyers and search engines */}
+      <section className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-y-12">
+        <Reveal className="lg:col-span-12">
+          <h2 className={H2}>Questions</h2>
+        </Reveal>
+        <div className="lg:col-span-8 lg:col-start-5 border-t border-white/10">
+          {service.faqs.map((f) => (
+            <div key={f.question} className="py-7 md:py-8 border-b border-white/10">
+              <h3 className="font-heading font-semibold text-lg md:text-xl text-white tracking-tight leading-snug">{f.question}</h3>
+              <p className="mt-3 font-sans text-cream/65 leading-relaxed max-w-[64ch]">{f.answer}</p>
+              {f.link && (
+                <Link
+                  href={f.link.href}
+                  className="group mt-4 inline-flex items-center gap-2 font-heading font-bold text-[11px] uppercase tracking-[0.16em] text-white"
+                >
+                  {f.link.label}
+                  <ArrowRight size={13} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Closing call to action */}
+      <section className="border-t border-white/8">
+        <div className="px-6 md:px-12 py-24 md:py-36 max-w-7xl mx-auto">
+          <Reveal>
+            <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.96] text-[clamp(2.1rem,5.6vw,5.2rem)] max-w-[18ch] [text-wrap:balance]">
+              <Stop text={service.cta?.headline ?? "Tell us what you need."} />
+            </h2>
+            <p className="mt-6 font-sans text-cream/70 text-base md:text-lg leading-relaxed max-w-[52ch]">
+              {service.cta?.text ??
+                "Share your company, the goal, a target date and a working budget. We reply with the scope that fits."}
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+              <a
+                href={quote}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group btn-primary"
+              >
+                {service.cta?.button ?? "Get a quote"}
+                <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+              <Link
+                href="/work-with-us"
+                className="font-heading font-semibold text-sm text-cream/80 underline underline-offset-[6px] decoration-white/25 hover:decoration-white hover:text-white"
+              >
+                See packages and prices
+              </Link>
+              <a href={PHONE_HREF} className="font-sans text-sm text-cream/60 hover:text-white transition-colors tabular-nums">
+                {PHONE_DISPLAY}
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Related insights */}
+      {related.length > 0 && (
+        <section className="border-t border-white/8">
+          <div className="px-6 md:px-12 py-24 md:py-28 max-w-7xl mx-auto">
+            <Reveal className="mb-10 md:mb-12">
+              <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.02em] leading-[1] text-[clamp(1.5rem,3vw,2.4rem)]">
+                Insights
+              </h2>
+            </Reveal>
+            <div className={`grid grid-cols-1 gap-x-6 gap-y-10 ${related.length >= 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
+              {related.map((p, i) => (
+                <Reveal key={p.slug} delay={i * 0.06}>
+                  <Link href={`/blog/${p.slug}`} className="group block">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] ring-1 ring-white/10 bg-ink-50 transition-[box-shadow] duration-500 group-hover:ring-signal/50">
+                      <Image
+                        src={p.coverImage}
+                        alt={p.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        quality={80}
+                        className="object-cover scale-[1.02] transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                      />
+                    </div>
+                    <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">{p.category}</p>
+                    <h3 className="mt-2 font-heading font-bold text-lg text-white leading-snug tracking-tight group-hover:text-accent transition-colors">
+                      {p.title}
+                    </h3>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* More services */}
+      <section className="border-t border-white/8">
+        <div className="px-6 md:px-12 py-24 md:py-28 max-w-7xl mx-auto">
+          <Reveal className="mb-10 md:mb-12 flex items-end justify-between gap-6">
+            <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.02em] leading-[1] text-[clamp(1.5rem,3vw,2.4rem)]">
+              More services
+            </h2>
+            <Link
+              href="/services"
+              className="group inline-flex items-center gap-2 font-heading font-bold text-[11px] uppercase tracking-[0.16em] text-white"
+            >
+              All services
+              <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </Reveal>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-12 border-t border-white/10 md:border-t-0">
+            {more.map((s) => (
+              <li key={s.slug} className="md:first:border-t md:[&:nth-child(2)]:border-t border-white/10">
+                <Link
+                  href={`/services/${s.slug}`}
+                  className="group flex items-center justify-between gap-6 py-5 border-b border-white/10"
+                >
+                  <span className="font-heading font-bold uppercase stretch-semi text-white tracking-tight text-base md:text-lg">
+                    {s.label}
+                  </span>
+                  <ArrowUpRight
+                    size={18}
+                    weight="bold"
+                    aria-hidden="true"
+                    className="shrink-0 text-cream/50 transition-[color,transform] duration-300 group-hover:text-white group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <Footer />
     </main>
   );
 }

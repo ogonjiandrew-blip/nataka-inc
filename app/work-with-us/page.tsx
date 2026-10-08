@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function WorkWithUsPage() {
   return (
-    <main id="main-content" className="bg-ink text-cream min-h-screen">
+    <main id="main-content" className="text-cream min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

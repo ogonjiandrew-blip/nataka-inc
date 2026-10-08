@@ -5,12 +5,12 @@ import GalleryGrid from "@/components/GalleryGrid";
 const siteUrl = "https://www.natakainc.com";
 
 export const metadata: Metadata = {
-  title: { absolute: "Gallery | Nataka Inc — Film & Music Video Production Nairobi" },
+  title: { absolute: "Gallery | Nataka Inc, Film and Music Video Production Nairobi" },
   description:
-    "Explore Nataka Inc's work — music videos, films, campaigns and studio stills produced in Nairobi, Kenya. Switch between the immersive 3D gallery and a full grid view.",
+    "Explore Nataka Inc's work: music videos, films, campaigns and studio stills produced in Nairobi, Kenya. Switch between the immersive 3D gallery and a full grid view.",
   alternates: { canonical: `${siteUrl}/gallery` },
   openGraph: {
-    title: "Gallery | Nataka Inc — Nairobi Media & Marketing",
+    title: "Gallery | Nataka Inc, Nairobi Media and Marketing",
     description: "Music videos, films, campaigns and studio stills produced in Nairobi, Kenya.",
     url: `${siteUrl}/gallery`,
     type: "website",

@@ -6,9 +6,39 @@
   --accent: #D9DDE2;
   --accent-light: #F1F3F5;
   --accent-dark: #9AA3AE;
-  --signal: #E8432F;
+  /* Palette: Glacier (default). Channels are bare RGB so Tailwind can add alpha. */
+  --c-signal: 56 207 224;        /* #38CFE0 clean cyan */
+  --c-signal-light: 128 229 240; /* #80E5F0 */
+  --c-on-signal: 3 17 21;        /* #031115 */
+  --c-ember: 9 78 92;            /* #094E5C deep teal room light */
+  --c-ember-deep: 5 40 48;       /* #052830 */
   --ink: #0B0C0E;
   --cream: #E7E9EC;
+}
+
+/* Palette options shown to Andrew (set data-palette on <html> to preview).
+   Abyss: cyan over a navy room.  Heritage: Nataka's original teal, refined.
+   Ice: near-white cyan on slate, the quietest and coldest. */
+[data-palette="abyss"] {
+  --c-signal: 94 226 240;        /* #5EE2F0 */
+  --c-signal-light: 158 238 246;
+  --c-on-signal: 3 14 24;
+  --c-ember: 14 50 104;          /* #0E3268 */
+  --c-ember-deep: 8 26 58;
+}
+[data-palette="heritage"] {
+  --c-signal: 22 190 184;        /* #16BEB8 */
+  --c-signal-light: 84 220 212;
+  --c-on-signal: 2 18 17;
+  --c-ember: 6 78 70;            /* #064E46 */
+  --c-ember-deep: 3 40 36;
+}
+[data-palette="ice"] {
+  --c-signal: 196 238 245;       /* #C4EEF5 */
+  --c-signal-light: 230 248 251;
+  --c-on-signal: 8 16 20;
+  --c-ember: 38 66 80;           /* #264250 */
+  --c-ember-deep: 20 34 42;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -115,7 +145,7 @@ body::before {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.018;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 200px;
 }
@@ -190,8 +220,77 @@ body::before {
   .statement-words > span { opacity: 1 !important; }
 }
 
+/* ── Darkroom atmosphere ──
+   The page sits in a dark room lit by the palette's deep colour: three large ember glows on a
+   fixed layer behind everything (z-index -1, so it paints above the canvas and
+   below all content). They drift over 48s, slower than the eye tracks, so the
+   room feels alive without anything visibly animating. Static under reduced
+   motion. Sections stay transparent so the light reaches them. */
+.atmosphere {
+  position: fixed;
+  inset: -15%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 34% at 82% 12%, rgb(var(--c-ember) / 0.55), transparent 70%),
+    radial-gradient(46% 40% at 8% 88%, rgb(var(--c-ember) / 0.5), transparent 72%),
+    radial-gradient(34% 30% at 46% 52%, rgb(var(--c-ember-deep) / 0.4), transparent 70%),
+    radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.55) 100%),
+    #0B0C0E; /* opaque base: the relief below needs a dark backdrop to blend with */
+}
+/* The embossed floral relief, caught by the room light: soft-light leaves the
+   dark areas almost untouched and raises the relief where the light falls,
+   like light raking across pressed paper. */
+.atmosphere::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/textures/relief.webp") center / cover;
+  mix-blend-mode: soft-light;
+  opacity: 0.4;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .atmosphere { animation: darkroom-drift 48s ease-in-out infinite alternate; }
+}
+
+/* Halftone: light print dots for edges and corners, faded in with a mask. */
+.halftone {
+  background: url("/textures/halftone.png") center / cover;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+@keyframes darkroom-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-3%, 2%, 0) scale(1.06); }
+  100% { transform: translate3d(2%, -2%, 0) scale(1.02); }
+}
+
+/* ── Buttons ── one primary (red pill), one secondary (glass pill) */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-3 rounded-full bg-signal px-8 py-[1.05rem] font-heading text-xs font-bold uppercase tracking-[0.16em] text-on-signal transition-[background-color,transform] duration-300 hover:bg-signal-light active:translate-y-px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-3 rounded-full border border-white/15 bg-white/[0.06] px-8 py-[1.05rem] font-heading text-xs font-bold uppercase tracking-[0.16em] text-white backdrop-blur-md transition-colors duration-300 hover:border-white/40 hover:bg-white/[0.1] active:translate-y-px;
+  }
+}
+
+/* Ambient light: a blurred copy of the media glows behind its frame, the way a
+   screen lights a dark room. Used behind the hero screen, video cards and the
+   AI feature. */
+.ambient {
+  position: absolute;
+  inset: 6% 4% -4%;
+  z-index: -1;
+  filter: blur(60px) saturate(1.5);
+  opacity: 0.45;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
 /* ── Selection ── */
-::selection { background: #D9DDE2; color: #0B0C0E; }
+::selection { background: rgb(var(--c-signal)); color: rgb(var(--c-on-signal)); }
 
 /* ── Teal gradient text ── */
 .text-accent-gradient {
@@ -218,43 +317,52 @@ body::before {
 
 /* ── Blog / Article prose ── */
 .prose-nataka {
-  color: rgba(231, 233, 236, 0.75);
+  color: rgba(231, 233, 236, 0.78);
   font-family: var(--font-archivo);
-  font-size: 1rem;
+  font-size: 1.0625rem;
   line-height: 1.85;
 }
 .prose-nataka p { margin-bottom: 1.6rem; }
 .prose-nataka h2 {
   font-family: var(--font-archivo);
   font-weight: 800;
-  font-size: clamp(1.3rem, 3vw, 1.9rem);
-  color: #fff;
+  font-stretch: 112.5%;
+  font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+  line-height: 1.15;
+  color: #F5F6F8;
   text-transform: uppercase;
-  letter-spacing: -0.01em;
-  margin-top: 3rem;
+  letter-spacing: -0.015em;
+  margin-top: 3.25rem;
   margin-bottom: 1rem;
 }
 .prose-nataka h3 {
   font-family: var(--font-archivo);
   font-weight: 700;
-  font-size: 1.05rem;
-  color: #D9DDE2;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 2rem;
+  font-size: 1.15rem;
+  color: rgb(var(--c-signal));
+  margin-top: 2.25rem;
   margin-bottom: 0.75rem;
 }
 .prose-nataka ul, .prose-nataka ol {
-  padding-left: 1.5rem;
+  padding-left: 1.25rem;
   margin-bottom: 1.6rem;
 }
-.prose-nataka li { margin-bottom: 0.5rem; }
+.prose-nataka li { margin-bottom: 0.55rem; padding-left: 0.25rem; }
 .prose-nataka ul li { list-style-type: disc; }
+.prose-nataka ul li::marker { color: rgb(var(--c-signal)); }
 .prose-nataka ol li { list-style-type: decimal; }
-.prose-nataka a { color: #F5F6F8; text-decoration: underline; text-underline-offset: 3px; }
-.prose-nataka a:hover { color: #D9DDE2; }
-.prose-nataka strong { color: #fff; font-weight: 600; }
-.prose-nataka em { color: rgba(231,233,236,0.9); font-style: italic; }
+.prose-nataka ol li::marker { color: rgb(var(--c-signal)); font-weight: 700; }
+.prose-nataka a { color: rgb(var(--c-signal)); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.prose-nataka a:hover { color: rgb(var(--c-signal-light)); }
+.prose-nataka strong { color: #F5F6F8; font-weight: 600; }
+.prose-nataka em { color: rgba(231, 233, 236, 0.92); font-style: italic; }
+.prose-nataka blockquote {
+  margin: 2rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid rgb(var(--c-signal));
+  color: #F5F6F8;
+  font-size: 1.15rem;
+}
 
 /* ── Sound toggle equalizer ── */
 @keyframes eq { from { height: 20%; } to { height: 100%; } }

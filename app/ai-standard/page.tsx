@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { waLink } from "@/lib/whatsapp";
 
@@ -64,7 +67,7 @@ export const metadata: Metadata = {
 
 export default function AiStandardPage() {
   return (
-    <main className="min-h-screen bg-ink text-cream font-sans">
+    <main id="main-content" className="min-h-screen text-cream font-sans">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -89,53 +92,97 @@ export default function AiStandardPage() {
           }),
         }}
       />
-      <header className="max-w-7xl mx-auto px-6 md:px-12 pt-10 flex justify-between gap-6 items-center">
-        <Link href="/" className="font-nataka font-black text-lg text-white">NATAKA<span className="text-signal">.</span>INC</Link>
-        <Link href="/services/ai-video-production-kenya" className="text-sm text-cream/70 hover:text-accent">AI video production →</Link>
-      </header>
+      <Navbar />
 
-      <section className="max-w-7xl mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-12 md:pb-16">
-        <p className="font-mono text-xs text-accent uppercase tracking-widest mb-5">The Nataka AI Standard · Updated {updated}</p>
-        <h1 className="font-heading font-black text-[clamp(2.4rem,6vw,5.2rem)] text-white leading-[1.05] max-w-4xl mb-7">
-          AI video your brand can <span className="text-accent">put its name on.</span>
+      <section className="px-6 md:px-12 pt-36 md:pt-48 pb-14 md:pb-20 max-w-7xl mx-auto">
+        <p className="font-sans font-medium text-[10px] md:text-[11px] uppercase tracking-[0.28em] text-cream/70 mb-6">
+          The Nataka AI Standard
+        </p>
+        <h1 className="font-heading font-extrabold uppercase stretch-wide tracking-[-0.025em] leading-[0.95] text-[clamp(2.2rem,6vw,5.6rem)] max-w-[17ch] [text-wrap:balance]">
+          <span className="text-white">AI video your brand can </span>
+          <span className="text-accent-dark">put its name on</span>
+          <span className="text-signal">.</span>
         </h1>
-        <p className="max-w-2xl text-lg text-cream/80 leading-relaxed">
+        <p className="mt-7 font-sans text-cream/75 text-base md:text-lg leading-relaxed max-w-[58ch]">
           Kenya has seen what careless AI does to a brand: extra fingers, borrowed faces, ads that get screenshotted for the
           wrong reasons. These are the seven rules every Nataka AI production follows. Ask for them in your contract.
         </p>
+        <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/50">Updated {updated}</p>
       </section>
 
-      <section aria-label="The seven rules" className="max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24">
-        <ol className="divide-y divide-white/8 border-t border-b border-white/8">
+      {/* The band we built under these rules, framed like a screen */}
+      <section className="relative isolate px-6 md:px-12 max-w-7xl mx-auto">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-[6%] -inset-y-[20%] -z-10 bg-[radial-gradient(50%_50%_at_50%_55%,rgb(var(--c-ember)/0.5),rgb(var(--c-ember)/0.12)_50%,transparent_75%)]"
+        />
+        <figure>
+          <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[22px] md:rounded-[28px] ring-1 ring-white/10 shadow-[0_40px_120px_-40px_rgba(0,0,0,0.9)]">
+            <Image
+              src="/ai/aanother/lineup.jpg"
+              alt="AANOTHER, a fictional rock band made with AI by Nataka Inc"
+              fill
+              priority
+              sizes="(max-width: 1280px) 100vw, 1200px"
+              quality={88}
+              className="object-cover"
+            />
+            <div aria-hidden="true" className="halftone absolute inset-0 opacity-[0.12] [mask-image:radial-gradient(70%_80%_at_0%_100%,black,transparent_70%)]" />
+          </div>
+          <figcaption className="mt-4 px-1 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/50">
+            AI image: AANOTHER, a fictional band we made under this Standard
+          </figcaption>
+        </figure>
+      </section>
+
+      <section aria-label="The seven rules" className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
+        <h2 className="mb-12 md:mb-16 font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.95] text-[clamp(1.85rem,5vw,4.4rem)]">
+          The seven rules<span className="text-signal">.</span>
+        </h2>
+        <ol className="border-t border-white/10">
           {rules.map((r) => (
-            <li key={r.n} className="grid grid-cols-[48px_1fr] md:grid-cols-[80px_320px_1fr] gap-4 md:gap-10 py-8 md:py-10 items-baseline">
-              <span className="font-heading font-black text-sm text-accent/60 tabular-nums">{r.n}</span>
-              <h2 className="font-heading font-black text-xl md:text-2xl text-white uppercase leading-tight">{r.title}</h2>
-              <p className="col-span-2 md:col-span-1 col-start-2 md:col-start-auto text-cream/70 text-base leading-relaxed max-w-2xl">{r.body}</p>
+            <li key={r.n} className="grid grid-cols-12 gap-x-6 gap-y-3 py-8 md:py-10 border-b border-white/10">
+              <span className="col-span-12 md:col-span-1 font-mono text-xs text-cream/50 md:pt-2 tabular-nums">{r.n}</span>
+              <h3 className="col-span-12 md:col-span-5 font-heading font-bold uppercase stretch-semi text-white tracking-[-0.01em] leading-tight text-[clamp(1.15rem,2vw,1.6rem)]">
+                {r.title}
+              </h3>
+              <p className="col-span-12 md:col-span-6 font-sans text-cream/70 text-base leading-relaxed">{r.body}</p>
             </li>
           ))}
         </ol>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 md:px-12 pb-20 md:pb-28 grid md:grid-cols-2 gap-10 md:gap-16 items-start">
-        <div>
-          <h2 className="font-heading font-black text-[clamp(1.4rem,3vw,2.2rem)] text-white uppercase mb-4">
-            Why we <span className="text-accent">publish this</span>
+      <section className="px-6 md:px-12 pb-24 md:pb-32 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="lg:col-span-6">
+          <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.95] text-[clamp(1.6rem,3.4vw,2.8rem)]">
+            Why we publish this<span className="text-signal">.</span>
           </h2>
-          <p className="text-cream/70 leading-relaxed mb-4">
+          <p className="mt-6 font-sans text-cream/70 leading-relaxed">
             Brands are right to be careful. Using someone&apos;s face without consent already costs Kenyan businesses money at
             the Data Protection Commissioner, and the AI Bill 2026 proposes labels and penalties for misleading AI content.
             A studio that waits for the law to force good habits puts its clients at risk.
           </p>
-          <p className="text-cream/70 leading-relaxed">
+          <p className="mt-4 font-sans text-cream/70 leading-relaxed">
             We built AANOTHER, a whole rock band made with AI, under these rules: fictional characters, labelled on every
-            platform, directed shot by shot.{" "}
-            <Link href="/services/ai-video-production-kenya#case-study" className="text-accent underline underline-offset-4">See the band →</Link>
+            platform, directed shot by shot.
           </p>
+          <Link
+            href="/services/ai-video-production-kenya#case-study"
+            className="group mt-7 inline-flex items-center gap-2 font-heading font-bold text-[11px] uppercase tracking-[0.16em] text-white"
+          >
+            See the band
+            <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </div>
-        <div className="border border-accent/30 bg-accent/[0.04] p-8 md:p-10">
-          <h2 className="font-heading font-black text-xl text-white uppercase mb-3">Planning an AI campaign?</h2>
-          <p className="text-cream/65 text-sm leading-relaxed mb-6">
+
+        {/* Offer panel, in the lit room */}
+        <div className="lg:col-span-6 relative isolate overflow-hidden rounded-[24px] ring-1 ring-white/10 bg-white/[0.02] p-8 md:p-12">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(70%_80%_at_10%_100%,rgb(var(--c-ember)/0.55),rgb(var(--c-ember)/0.12)_55%,transparent_80%)]" />
+          <div aria-hidden="true" className="halftone absolute inset-0 -z-10 opacity-[0.1] [mask-image:radial-gradient(60%_80%_at_100%_0%,black,transparent_75%)]" />
+          <h2 className="font-heading font-extrabold uppercase stretch-semi text-white tracking-[-0.02em] leading-[1] text-[clamp(1.4rem,2.4vw,2rem)]">
+            Planning an AI campaign<span className="text-signal">?</span>
+          </h2>
+          <p className="mt-4 font-sans text-cream/70 leading-relaxed max-w-[46ch]">
             Tell us the product and the one feeling the video must leave. We send a written concept and a first AI frame
             within 48 hours, made under this Standard.
           </p>
@@ -143,9 +190,10 @@ export default function AiStandardPage() {
             href={waLink(`Source: ${url}\nHi Nataka, I read the AI Standard and I'd like a free AI concept (code: AISTD). The project is `)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-accent text-ink font-heading font-black uppercase text-xs tracking-widest px-7 py-4 hover:bg-accent-light transition-colors"
+            className="group btn-primary mt-8"
           >
-            Get a free AI concept →
+            Get a free AI concept
+            <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
           </a>
         </div>
       </section>

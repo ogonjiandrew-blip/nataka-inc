@@ -32,7 +32,7 @@ export default function Packages() {
       </Reveal>
 
       {/* Lead package: the full campaign, shown first and widest */}
-      <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 bg-ink-100 border border-white/15 p-8 md:p-12">
+      <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 rounded-[22px] bg-white/[0.035] ring-1 ring-white/15 p-8 md:p-12 shadow-[0_30px_90px_-40px_rgb(var(--c-ember)/0.6)]">
         <div className="lg:col-span-7">
           <h3 className="font-heading font-bold text-2xl md:text-4xl text-white tracking-tight leading-tight">{lead.name}</h3>
           <p className="mt-3 font-sans text-cream/70 text-base leading-relaxed max-w-[48ch]">{lead.who}</p>
@@ -50,7 +50,7 @@ export default function Packages() {
 
       <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
         {rest.map((p, i) => (
-          <Reveal key={p.name} delay={(i % 2) * 0.06} className="bg-ink-100 p-8 md:p-10 flex flex-col">
+          <Reveal key={p.name} delay={(i % 2) * 0.06} className="rounded-[22px] bg-white/[0.025] ring-1 ring-white/[0.07] p-8 md:p-10 flex flex-col">
             <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
               <h3 className="font-heading font-bold text-xl text-white tracking-tight">{p.name}</h3>
               <p className="font-heading font-bold text-base text-accent tabular-nums">{p.range}</p>

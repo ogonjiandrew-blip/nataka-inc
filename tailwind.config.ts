@@ -12,14 +12,22 @@ const config: Config = {
         // Brand palette, October 2026 refresh: graphite, platinum and one signal red.
         // accent  = platinum. Buttons, links, active states (was teal until the refresh).
         // accent.dark = silver, the second tone in two-tone headlines.
-        // signal  = the full stop. Logo dot and the stop that ends a headline, nothing else.
+        // signal  = the brand colour (cyan family, set per palette in globals.css):
+        //           the full stop that ends a headline, the logo dot, the primary action.
+        // ember   = the same hue, deep, for the room light. on-signal = text on signal.
         accent: {
           DEFAULT: "#D9DDE2",
           light: "#F1F3F5",
           dark: "#9AA3AE",
         },
         signal: {
-          DEFAULT: "#E8432F",
+          DEFAULT: "rgb(var(--c-signal) / <alpha-value>)",
+          light: "rgb(var(--c-signal-light) / <alpha-value>)",
+        },
+        "on-signal": "rgb(var(--c-on-signal) / <alpha-value>)",
+        ember: {
+          DEFAULT: "rgb(var(--c-ember) / <alpha-value>)",
+          deep: "rgb(var(--c-ember-deep) / <alpha-value>)",
         },
         ink: {
           DEFAULT: "#0B0C0E",

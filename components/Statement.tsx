@@ -3,8 +3,13 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 
-const TEXT =
+const HOME_TEXT =
   "Nataka is a Nairobi production house for brands that want to be noticed. We write the campaign, shoot the film, cut it for every feed, and make what cameras can't with AI.";
+
+const SIZES = {
+  lg: "text-[clamp(1.6rem,3.5vw,3.1rem)] leading-[1.18] max-w-5xl",
+  md: "text-[clamp(1.3rem,2.5vw,2.15rem)] leading-[1.3] max-w-4xl",
+};
 
 /**
  * Manifesto line under the hero. Each word lifts from silver to white as the
@@ -12,16 +17,24 @@ const TEXT =
  * it is revealed. Under reduced motion a CSS rule (globals.css, .statement-words)
  * lights every word, so the server and client markup stay identical.
  */
-export default function Statement() {
+export default function Statement({
+  text = HOME_TEXT,
+  size = "lg",
+  label = "About Nataka",
+}: {
+  text?: string;
+  size?: keyof typeof SIZES;
+  label?: string;
+}) {
   const ref = useRef<HTMLParagraphElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "end 0.5"] });
-  const words = TEXT.split(" ");
+  const words = text.split(" ");
 
   return (
-    <section aria-label="About Nataka" className="px-6 md:px-12 py-28 md:py-44 max-w-7xl mx-auto">
+    <section aria-label={label} className="px-6 md:px-12 py-28 md:py-44 max-w-7xl mx-auto">
       <p
         ref={ref}
-        className="statement-words font-heading font-semibold stretch-semi tracking-[-0.02em] leading-[1.18] text-[clamp(1.6rem,3.5vw,3.1rem)] max-w-5xl"
+        className={`statement-words font-heading font-semibold stretch-semi tracking-[-0.02em] ${SIZES[size]}`}
       >
         {words.map((w, i) => (
           <Word key={i} progress={scrollYProgress} range={[i / words.length, (i + 1) / words.length]}>

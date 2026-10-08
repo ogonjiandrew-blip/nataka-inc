@@ -43,7 +43,7 @@ export default function WhatsAppButton() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with Nataka Inc on WhatsApp"
-          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9980] flex items-center gap-3 bg-white text-ink pl-4 pr-5 py-3.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.8)] hover:bg-accent transition-colors"
+          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9980] flex items-center gap-3 rounded-full bg-white text-ink pl-4 pr-5 py-3.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.8)] hover:bg-accent transition-colors"
         >
           {/* WhatsApp glyph */}
           <svg viewBox="0 0 24 24" className="w-5 h-5 flex-shrink-0" fill="#1FAF55" aria-hidden>

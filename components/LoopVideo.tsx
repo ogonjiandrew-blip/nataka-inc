@@ -15,11 +15,14 @@ import { useEffect, useRef } from "react";
  */
 export default function LoopVideo({
   src,
+  srcMobile,
   poster,
   lazy = false,
   className = "absolute inset-0 h-full w-full object-cover",
 }: {
   src: string;
+  /** Lighter cut for phones, picked by the browser from <source media> */
+  srcMobile?: string;
   poster: string;
   lazy?: boolean;
   className?: string;
@@ -61,7 +64,6 @@ export default function LoopVideo({
   return (
     <video
       ref={ref}
-      src={src}
       poster={poster}
       autoPlay={!lazy}
       muted
@@ -70,6 +72,9 @@ export default function LoopVideo({
       preload={lazy ? "none" : "auto"}
       aria-hidden="true"
       className={className}
-    />
+    >
+      {srcMobile && <source src={srcMobile} type="video/mp4" media="(max-width: 767px)" />}
+      <source src={src} type="video/mp4" />
+    </video>
   );
 }

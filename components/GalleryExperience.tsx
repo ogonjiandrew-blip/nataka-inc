@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 function Loading() {
   return (
     <div className="min-h-[100dvh] bg-ink flex items-center justify-center">
-      <span className="font-sans text-accent text-xs tracking-widest uppercase animate-pulse">Loading gallery…</span>
+      <span className="font-mono text-cream/60 text-[11px] tracking-[0.2em] uppercase animate-pulse">Loading gallery</span>
     </div>
   );
 }
@@ -36,20 +36,20 @@ export default function GalleryExperience({ children }: { children: React.ReactN
   };
 
   return (
-    <div className="relative bg-ink min-h-[100dvh]">
-      {/* View toggle — lower right, above the WhatsApp button. Springy z-pop on load to draw the eye. */}
+    <div className="relative min-h-[100dvh]">
+      {/* View toggle: lower right, above the WhatsApp button. Springy z-pop on load to draw the eye. */}
       <motion.div
         initial={{ scale: 0.3, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 480, damping: 11, delay: 0.35 }}
         style={{ transformOrigin: "center" }}
-        className="fixed bottom-24 right-4 md:bottom-28 md:right-8 z-[9970] flex items-stretch overflow-hidden rounded-full border border-accent/50 bg-ink/90 backdrop-blur-md shadow-2xl shadow-black/60"
+        className="fixed bottom-24 right-4 md:bottom-28 md:right-8 z-[9970] flex items-stretch overflow-hidden rounded-full border border-white/15 bg-ink/80 p-1 backdrop-blur-md shadow-2xl shadow-black/60"
       >
         <button
           type="button"
           onClick={() => choose("3d")}
           aria-pressed={view === "3d"}
-          className={`px-5 py-3 font-heading font-black text-xs tracking-widest uppercase transition-colors duration-200 ${view === "3d" ? "bg-accent text-ink" : "text-white/85 hover:text-white"}`}
+          className={`rounded-full px-5 py-2.5 font-heading font-bold text-[11px] tracking-[0.16em] uppercase transition-colors duration-200 ${view === "3d" ? "bg-signal text-on-signal" : "text-white/80 hover:text-white"}`}
         >
           3D
         </button>
@@ -57,7 +57,7 @@ export default function GalleryExperience({ children }: { children: React.ReactN
           type="button"
           onClick={() => choose("grid")}
           aria-pressed={view === "grid"}
-          className={`px-5 py-3 font-heading font-black text-xs tracking-widest uppercase transition-colors duration-200 ${view === "grid" ? "bg-accent text-ink" : "text-white/85 hover:text-white"}`}
+          className={`rounded-full px-5 py-2.5 font-heading font-bold text-[11px] tracking-[0.16em] uppercase transition-colors duration-200 ${view === "grid" ? "bg-signal text-on-signal" : "text-white/80 hover:text-white"}`}
         >
           Grid
         </button>
@@ -67,7 +67,7 @@ export default function GalleryExperience({ children }: { children: React.ReactN
       {!ready && <Loading />}
       {ready && view === "3d" && <SphereGallery />}
 
-      {/* Grid / crawl view — always in the DOM so search engines can index it */}
+      {/* Grid / crawl view: always in the DOM so search engines can index it */}
       <div className={ready && view === "grid" ? "block" : "hidden"}>{children}</div>
     </div>
   );
