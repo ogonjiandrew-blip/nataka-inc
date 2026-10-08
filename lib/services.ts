@@ -1,3 +1,18 @@
+export type CaseStudy = {
+  eyebrow: string;
+  title: string;
+  titleAccent: string;
+  lede: string;
+  loop: { src: string; poster: string; alt: string; tag: string; caption: string };
+  stats: { value: string; label: string }[];
+  stills: { src: string; alt: string; caption: string }[];
+  verticalsText: string;
+  verticals: { src: string; poster: string; title: string; meta: string }[];
+  forYou: string[];
+  cta: { button: string; whatsappMessage: string; watchHref: string; watchLabel: string };
+  disclosure: string;
+};
+
 export type ServicePage = {
   slug: string;
   /** Keyword-rich page title for <title> tag */
@@ -9,7 +24,11 @@ export type ServicePage = {
   headline: string;
   headlineAccent: string;
   heroImage: string;
+  /** Optional muted hero loop (heroImage stays the poster + share image) */
+  heroVideo?: { src: string; poster: string };
   heroSummary?: string;
+  /** Flagship piece of our own work, shown right after the intro */
+  caseStudy?: CaseStudy;
   intro: string;
   audience?: { title: string; description: string }[];
   proof?: { title: string; category: string; description: string; image: string; href: string; linkLabel: string; video?: string }[];
@@ -704,9 +723,59 @@ export const servicePages: ServicePage[] = [
     label: "AI Video Production",
     headline: "AI Video Production",
     headlineAccent: "Made In Nairobi.",
-    heroImage: "/stills/ai/military.png",
+    heroImage: "/ai/aanother/frontman.jpg",
+    heroVideo: { src: "/ai/aanother/aanother-loop.mp4", poster: "/ai/aanother/aanother-loop-poster.jpg" },
+    heroSummary:
+      "AI commercials, AI music videos and AI characters, directed like a film. Proof below: we built a rock band that does not exist and made it three music videos.",
     intro:
       "Nataka Inc is a Nairobi production house that makes AI video for brands, artists and agencies: AI commercials, AI music videos, consistent AI characters, and AI effects composited into footage we shoot for real. Most people selling AI video in Kenya have never run a film set. We have, which is why our AI work is directed like a film, not typed into a prompt box and hoped for. You get shots that would cost a crane, a location permit or a helicopter, at a fraction of a traditional shoot, from a team that knows when AI is the right tool and when a camera still wins.",
+    caseStudy: {
+      eyebrow: "Case study · Every frame is AI",
+      title: "We built a rock band",
+      titleAccent: "that doesn't exist.",
+      lede:
+        "AANOTHER is a four-piece arena rock band: a frontman, a redhead on guitar, a drummer and a platinum-haired bassist. None of them are real. Neither is the crowd, the arena or the pyro. Nataka directed every shot like a film set, kept the same four faces in every frame, and made three music videos with the cut-downs to match.",
+      loop: {
+        src: "/ai/aanother/aanother-loop.mp4",
+        poster: "/ai/aanother/aanother-loop-poster.jpg",
+        alt: "AANOTHER, the AI rock band made by Nataka: opening of the I Mean It music video",
+        tag: "AANOTHER · I MEAN IT",
+        caption: "Opening of the I Mean It music video, upscaled to 4K. Graded as 1980s arena-rock broadcast footage.",
+      },
+      stats: [
+        { value: "3", label: "Music videos" },
+        { value: "4", label: "AI band members, one face each" },
+        { value: "650+", label: "Finished AI shots" },
+        { value: "0", label: "Cameras, crews or venues" },
+      ],
+      stills: [
+        { src: "/ai/aanother/lineup.jpg", alt: "AANOTHER on stage: frontman, guitarist, drummer and bassist under a wall of lights", caption: "The line-up" },
+        { src: "/ai/aanother/frontman.jpg", alt: "AANOTHER frontman pointing at the crowd mid-song", caption: "On stage" },
+        { src: "/ai/aanother/together.jpg", alt: "AANOTHER frontman and bassist in a slow dance on stage", caption: "I Mean It" },
+        { src: "/ai/aanother/drum-riser.jpg", alt: "Frontman and redhead guitarist lying on the drum riser", caption: "I Mean It" },
+        { src: "/ai/aanother/chain.jpg", alt: "Guitarist pulling the frontman down by his chain", caption: "I Mean It" },
+        { src: "/ai/aanother/smile.jpg", alt: "Frontman smiling down at the guitarist by the drum kit", caption: "I Mean It" },
+      ],
+      verticalsText:
+        "Every song ships as a full music video plus vertical cut-downs for Shorts, Reels and TikTok, each opening on its strongest moment.",
+      verticals: [
+        { src: "/ai/aanother/short-wire.mp4", poster: "/ai/aanother/short-wire-poster.jpg", title: "The wire snaps", meta: "Short · Stay Mad" },
+        { src: "/ai/aanother/short-flinch.mp4", poster: "/ai/aanother/short-flinch-poster.jpg", title: "He doesn't flinch", meta: "Short · Say It Again" },
+      ],
+      forYou: [
+        "A brand character who looks the same in your first post and your hundredth, with no talent fee per appearance.",
+        "Arenas, stunts, crowds and pyro without a venue, a permit or a crew day.",
+        "One production that feeds YouTube, Reels, TikTok and your ads, instead of a single video.",
+      ],
+      cta: {
+        button: "Get a free AI concept for your brand",
+        whatsappMessage: "Hi Nataka, I saw AANOTHER on your site and I'd like a free AI concept (code: AIWEB-BAND). The video is for ",
+        watchHref: "https://www.youtube.com/@nataka_inc",
+        watchLabel: "Watch AANOTHER on YouTube",
+      },
+      disclosure:
+        "AANOTHER is a fictional band created by Nataka. The members, crowds and venues are AI-generated, and the videos carry YouTube's AI label.",
+    },
     deliverables: [
       { title: "AI Commercials & Product Films", description: "15 to 60-second spots built from scratch or from a product photo. Impossible locations, weather, scale and camera moves, directed shot by shot with a storyboard you approve before we render." },
       { title: "AI Effects On Real Footage", description: "We shoot your people for real, then add what could never be filmed: destruction, transformations, environment swaps, anime powers. Real faces, real performance, impossible world." },

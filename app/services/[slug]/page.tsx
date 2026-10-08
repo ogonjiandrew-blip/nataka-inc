@@ -5,6 +5,7 @@ import Image from "next/image";
 import { getServiceBySlug, getAllServices } from "@/lib/services";
 import { getPostBySlug } from "@/lib/posts";
 import { waLink } from "@/lib/whatsapp";
+import AiCaseStudy from "@/components/services/AiCaseStudy";
 
 const siteUrl = "https://www.natakainc.com";
 
@@ -96,7 +97,7 @@ export default function ServicePage({ params }: Props) {
       />
 
       {/* Hero */}
-      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
+      <div className="relative min-h-[60vh] md:min-h-[70vh] overflow-hidden flex items-end">
         <Image
           src={service.heroImage}
           alt={`${service.label} by Nataka Inc — Nairobi, Kenya`}
@@ -106,6 +107,19 @@ export default function ServicePage({ params }: Props) {
           quality={90}
           priority
         />
+        {service.heroVideo && (
+          <video
+            src={service.heroVideo.src}
+            poster={service.heroVideo.poster}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover motion-reduce:hidden"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/25" />
 
         <div className="absolute top-8 left-6 md:left-12 z-10">
@@ -117,7 +131,7 @@ export default function ServicePage({ params }: Props) {
           </Link>
         </div>
 
-        <div className="absolute bottom-0 inset-x-0 px-6 md:px-12 pb-14 max-w-7xl mx-auto">
+        <div className="relative w-full px-6 md:px-12 pt-28 pb-14 max-w-7xl mx-auto">
           <p className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">
             {service.label} · Nairobi, Kenya
           </p>
@@ -129,6 +143,16 @@ export default function ServicePage({ params }: Props) {
               {service.headlineAccent}
             </span>
           </h1>
+          {service.heroSummary && (
+            <p className="font-sans text-white/80 text-base md:text-lg leading-relaxed max-w-2xl mt-6">
+              {service.heroSummary}
+            </p>
+          )}
+          {service.caseStudy && (
+            <a href="#case-study" className="inline-block mt-6 font-sans text-xs text-teal tracking-widest uppercase underline underline-offset-4">
+              See the band we built ↓
+            </a>
+          )}
         </div>
       </div>
 
@@ -139,6 +163,8 @@ export default function ServicePage({ params }: Props) {
         </p>
         <a href={waLink(`Source: ${siteUrl}/services/${service.slug}\nHi Nataka, I'd like to discuss ${service.label}. My company, project goal and target date: `)} target="_blank" rel="noopener noreferrer" className="inline-block mt-8 bg-teal text-ink font-geist font-bold uppercase text-xs tracking-widest px-7 py-4 hover:bg-teal-light transition-colors">Discuss your project on WhatsApp →</a>
       </div>
+
+      {service.caseStudy && <AiCaseStudy study={service.caseStudy} slug={service.slug} />}
 
       {service.proof && <section className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto" aria-labelledby="campaign-proof">
         <h2 id="campaign-proof" className="font-geist font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">See the <span className="text-teal">work</span></h2>

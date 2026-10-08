@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import MarqueeBanner from "@/components/MarqueeBanner";
 import Services from "@/components/Services";
+import AiBandFeature from "@/components/AiBandFeature";
 import BuyerPaths from "@/components/BuyerPaths";
 import ServiceFinder from "@/components/ServiceFinder";
 import Work from "@/components/Work";
@@ -42,6 +43,7 @@ export default function Home() {
             section leads the page while the event window is open. */}
         <OtamatsuriCommunity />
         <Services />
+        <AiBandFeature />
         <BuyerPaths />
         <ServiceFinder />
         <Work />
