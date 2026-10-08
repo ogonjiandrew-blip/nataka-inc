@@ -12,6 +12,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
+      url: `${siteUrl}/work-with-us`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${siteUrl}/ai-standard`,
       changeFrequency: "monthly",
       priority: 0.7,

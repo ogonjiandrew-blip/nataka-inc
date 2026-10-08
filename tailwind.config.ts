@@ -9,21 +9,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        teal: {
-          DEFAULT: "#0ABFBF",
-          light: "#2DD4D4",
-          dark: "#089090",
+        // Brand palette, October 2026 refresh: graphite, platinum and one signal red.
+        // accent  = platinum. Buttons, links, active states (was teal until the refresh).
+        // accent.dark = silver, the second tone in two-tone headlines.
+        // signal  = the full stop. Logo dot and the stop that ends a headline, nothing else.
+        accent: {
+          DEFAULT: "#D9DDE2",
+          light: "#F1F3F5",
+          dark: "#9AA3AE",
+        },
+        signal: {
+          DEFAULT: "#E8432F",
         },
         ink: {
-          DEFAULT: "#080808",
-          "50": "#1C1C1C",
-          "100": "#141414",
-          "200": "#0F0F0F",
+          DEFAULT: "#0B0C0E",
+          "50": "#1C1F23",
+          "100": "#131519",
+          "200": "#0E1013",
         },
         cream: {
-          DEFAULT: "#F0EDE6",
-          dark: "#D4CFC6",
+          DEFAULT: "#E7E9EC",
+          dark: "#C4C9D0",
         },
+        // Off-white instead of #FFFFFF, so every text-white/bg-white reads as paper, not glare.
+        white: "#F5F6F8",
         // Otamatsuri / anime — festival red
         otaku: {
           DEFAULT: "#E8442E",
@@ -45,9 +54,13 @@ const config: Config = {
         ai: "#25344B",                                  // 藍 indigo
       },
       fontFamily: {
+        // Archivo carries a width axis (62-125%): normal width for text, the
+        // .stretch-* utilities in globals.css for the extended display cut.
+        heading: ["var(--font-archivo)", "system-ui", "sans-serif"],
+        sans: ["var(--font-archivo)", "system-ui", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
+        // Serif kept only for the community / Otamatsuri skins.
         display: ["var(--font-cormorant)", "Georgia", "serif"],
-        sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
-        geist: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
         nataka: ['"Helvetica Neue"', '"Helvetica"', '"Arial Black"', "Arial", "sans-serif"],
         jp: [
           "var(--font-jp)",

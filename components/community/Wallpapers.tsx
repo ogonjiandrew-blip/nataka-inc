@@ -20,7 +20,7 @@ export default function Wallpapers() {
 
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12 md:mb-16">
         <h2 className="leading-none">
-          <span className="font-geist font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
+          <span className="font-heading font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
             Otamatsuri
           </span>
           <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,4.5rem)] text-otaku block">
@@ -56,7 +56,7 @@ export default function Wallpapers() {
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent opacity-80" />
 
               <div className="absolute inset-x-0 bottom-0 p-3">
-                <p className="font-geist font-black text-white text-[11px] uppercase tracking-wide leading-tight">
+                <p className="font-heading font-black text-white text-[11px] uppercase tracking-wide leading-tight">
                   {w.title}
                 </p>
                 <span className="font-sans text-otaku-light text-[9px] tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">

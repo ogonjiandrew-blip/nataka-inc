@@ -1,23 +1,22 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans, Shippori_Mincho } from "next/font/google";
-import { GeistSans } from "geist/font/sans";
-import Preloader from "@/components/Preloader";
+import { Archivo, Cormorant_Garamond, Shippori_Mincho } from "next/font/google";
+import { GeistMono } from "geist/font/mono";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import Cursor from "@/components/Cursor";
-import SoundToggle from "@/components/SoundToggle";
 import "./globals.css";
+
+// Brand face. Loaded with its width axis so headlines can run extended
+// (font-stretch 112-125%) while body copy stays at normal width.
+const archivo = Archivo({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  variable: "--font-archivo",
+  display: "swap",
+});
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-cormorant",
-  display: "swap",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-dm-sans",
   display: "swap",
 });
 
@@ -138,7 +137,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-KE" className={`${cormorant.variable} ${dmSans.variable} ${GeistSans.variable} ${shippori.variable}`}>
+    <html lang="en-KE" className={`${archivo.variable} ${cormorant.variable} ${GeistMono.variable} ${shippori.variable}`}>
       <head>
         {/* Preconnect to Google Fonts for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -259,11 +258,8 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Preloader />
-        <Cursor />
         {children}
         <WhatsAppButton />
-        <SoundToggle />
       </body>
     </html>
   );

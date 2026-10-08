@@ -127,7 +127,7 @@ export default function KWavePage() {
                 </div>
 
                 <h1 className="leading-none mb-7">
-                  <span className="font-geist font-black text-[clamp(2.4rem,10vw,8rem)] text-white uppercase block">
+                  <span className="font-heading font-black text-[clamp(2.4rem,10vw,8rem)] text-white uppercase block">
                     K-Wave
                   </span>
                   <span className="font-display font-semibold italic text-[clamp(2.4rem,10vw,8rem)] text-kpop block">
@@ -146,7 +146,7 @@ export default function KWavePage() {
                     href={first100Url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-geist font-black text-xs text-white bg-kpop px-7 py-4 uppercase tracking-widest hover:bg-kpop-mid transition-colors duration-200"
+                    className="font-heading font-black text-xs text-white bg-kpop px-7 py-4 uppercase tracking-widest hover:bg-kpop-mid transition-colors duration-200"
                   >
                     Join the First 100 →
                   </a>
@@ -154,7 +154,7 @@ export default function KWavePage() {
                     href={organiserUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-kpop hover:text-kpop-light transition-colors duration-200"
+                    className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-kpop hover:text-kpop-light transition-colors duration-200"
                   >
                     I&apos;m Running an Event
                   </a>
@@ -179,7 +179,7 @@ export default function KWavePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
             {stats.map((s) => (
               <div key={s.label} className="border-l-2 border-kpop pl-6">
-                <p className="font-geist font-black text-4xl md:text-5xl text-white leading-none mb-3">{s.n}</p>
+                <p className="font-heading font-black text-4xl md:text-5xl text-white leading-none mb-3">{s.n}</p>
                 <p className="font-sans text-kpop-light text-xs tracking-wide uppercase font-semibold mb-3">{s.label}</p>
                 <p className="font-sans text-white/60 text-sm leading-relaxed">{s.detail}</p>
               </div>
@@ -197,7 +197,7 @@ export default function KWavePage() {
           </div>
 
           <h2 className="leading-none mb-12 md:mb-16">
-            <span className="font-geist font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
+            <span className="font-heading font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
               One Night.
             </span>
             <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,4.5rem)] text-kpop block">
@@ -213,11 +213,11 @@ export default function KWavePage() {
               >
                 <span
                   aria-hidden
-                  className="font-geist font-black text-kpop/70 text-base block mb-4 group-hover:text-kpop-light transition-colors duration-300"
+                  className="font-heading font-black text-kpop/70 text-base block mb-4 group-hover:text-kpop-light transition-colors duration-300"
                 >
                   {m.kr}
                 </span>
-                <h3 className="font-geist font-black text-white text-base md:text-lg uppercase mb-2.5 leading-tight">
+                <h3 className="font-heading font-black text-white text-base md:text-lg uppercase mb-2.5 leading-tight">
                   {m.title}
                 </h3>
                 <p className="font-sans text-white/60 text-sm leading-relaxed">{m.desc}</p>
@@ -235,7 +235,7 @@ export default function KWavePage() {
             <p className="font-sans text-kpop-light text-[10px] tracking-widest2 uppercase font-medium mb-5">
               The First 100
             </p>
-            <h2 className="font-geist font-black text-[clamp(1.5rem,5vw,3.4rem)] text-white uppercase leading-none mb-6">
+            <h2 className="font-heading font-black text-[clamp(1.5rem,5vw,3.4rem)] text-white uppercase leading-none mb-6">
               See it before <span className="text-kpop">everyone else.</span>
             </h2>
             <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed max-w-2xl mb-8">
@@ -248,7 +248,7 @@ export default function KWavePage() {
               href={first100Url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block font-geist font-black text-xs text-white bg-kpop px-8 py-4 uppercase tracking-widest hover:bg-kpop-mid transition-colors duration-200"
+              className="inline-block font-heading font-black text-xs text-white bg-kpop px-8 py-4 uppercase tracking-widest hover:bg-kpop-mid transition-colors duration-200"
             >
               Get In Early →
             </a>
@@ -261,7 +261,7 @@ export default function KWavePage() {
         <section className="px-6 md:px-12 pb-24 md:pb-32 max-w-7xl mx-auto">
           <div className="border border-white/10 p-8 md:p-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h2 className="font-geist font-black text-white text-xl md:text-2xl uppercase mb-3 leading-tight">
+              <h2 className="font-heading font-black text-white text-xl md:text-2xl uppercase mb-3 leading-tight">
                 Organising something? Let&apos;s talk before the day.
               </h2>
               <p className="font-sans text-white/65 text-sm leading-relaxed max-w-xl">
@@ -274,7 +274,7 @@ export default function KWavePage() {
               href={organiserUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-geist font-black text-xs text-white bg-kpop px-7 py-4 uppercase tracking-widest hover:bg-kpop-mid transition-colors duration-200 whitespace-nowrap self-start md:self-auto"
+              className="font-heading font-black text-xs text-white bg-kpop px-7 py-4 uppercase tracking-widest hover:bg-kpop-mid transition-colors duration-200 whitespace-nowrap self-start md:self-auto"
             >
               Talk to Nataka →
             </a>

@@ -10,19 +10,19 @@ export default function NotFound() {
       {/* oversized ghost 404 */}
       <span
         aria-hidden
-        className="absolute font-geist font-black text-[40vw] leading-none text-white/[0.03] select-none pointer-events-none"
+        className="absolute font-heading font-black text-[40vw] leading-none text-white/[0.03] select-none pointer-events-none"
       >
         404
       </span>
 
       <div className="relative z-10 text-center max-w-lg">
-        <p className="font-mono text-[11px] text-teal tracking-[0.35em] uppercase mb-6">
+        <p className="font-mono text-[11px] text-accent tracking-[0.35em] uppercase mb-6">
           Lost the frame
         </p>
-        <h1 className="font-geist font-black text-[clamp(2rem,6vw,4rem)] text-white uppercase leading-none mb-6">
+        <h1 className="font-heading font-black text-[clamp(2rem,6vw,4rem)] text-white uppercase leading-none mb-6">
           This Shot
           <br />
-          <span className="text-teal">Didn&apos;t Make</span>
+          <span className="text-accent">Didn&apos;t Make</span>
           <br />
           The Cut.
         </h1>
@@ -34,13 +34,13 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/"
-            className="inline-block font-geist font-black text-xs text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+            className="inline-block font-heading font-black text-xs text-ink bg-accent px-8 py-4 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
           >
             Back to Home
           </Link>
           <Link
             href="/gallery"
-            className="inline-block font-sans text-xs text-white border border-white/25 px-8 py-4 uppercase tracking-widest hover:border-teal hover:text-teal transition-colors duration-200"
+            className="inline-block font-sans text-xs text-white border border-white/25 px-8 py-4 uppercase tracking-widest hover:border-accent hover:text-accent transition-colors duration-200"
           >
             Explore the Gallery
           </Link>

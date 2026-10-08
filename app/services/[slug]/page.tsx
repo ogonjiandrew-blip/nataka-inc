@@ -138,21 +138,21 @@ export default function ServicePage({ params }: Props) {
         <div className="absolute top-8 left-6 md:left-12 z-10">
           <Link
             href="/"
-            className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-teal transition-colors"
+            className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-accent transition-colors"
           >
             ← Nataka Inc
           </Link>
         </div>
 
         <div className="relative w-full px-6 md:px-12 pt-28 pb-14 max-w-7xl mx-auto">
-          <p className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">
+          <p className="font-sans text-[10px] text-accent tracking-widest uppercase mb-4">
             {service.label} · Nairobi, Kenya
           </p>
           <h1 className="leading-none">
-            <span className="font-geist font-black text-[clamp(2.2rem,7vw,5.5rem)] text-white uppercase block">
+            <span className="font-heading font-black text-[clamp(2.2rem,7vw,5.5rem)] text-white uppercase block">
               {service.headline}{" "}
             </span>
-            <span className="font-display font-semibold italic text-[clamp(2.2rem,7vw,5.5rem)] text-teal block">
+            <span className="font-heading font-black text-[clamp(2.2rem,7vw,5.5rem)] text-accent uppercase block">
               {service.headlineAccent}
             </span>
           </h1>
@@ -162,7 +162,7 @@ export default function ServicePage({ params }: Props) {
             </p>
           )}
           {service.caseStudy && (
-            <a href="#case-study" className="inline-block mt-6 font-sans text-xs text-teal tracking-widest uppercase underline underline-offset-4">
+            <a href="#case-study" className="inline-block mt-6 font-sans text-xs text-accent tracking-widest uppercase underline underline-offset-4">
               See the band we built ↓
             </a>
           )}
@@ -171,31 +171,31 @@ export default function ServicePage({ params }: Props) {
 
       {/* Intro */}
       <div className="px-6 md:px-12 py-16 md:py-20 max-w-4xl mx-auto">
-        <p className="font-sans text-cream/80 text-lg md:text-xl leading-relaxed border-l-2 border-teal pl-6">
+        <p className="font-sans text-cream/80 text-lg md:text-xl leading-relaxed border-l-2 border-accent pl-6">
           {service.intro}
         </p>
-        <a href={waLink(`Source: ${siteUrl}/services/${service.slug}\nHi Nataka, I'd like to discuss ${service.label}. My company, project goal and target date: `)} target="_blank" rel="noopener noreferrer" className="inline-block mt-8 bg-teal text-ink font-geist font-bold uppercase text-xs tracking-widest px-7 py-4 hover:bg-teal-light transition-colors">Discuss your project on WhatsApp →</a>
+        <a href={waLink(`Source: ${siteUrl}/services/${service.slug}\nHi Nataka, I'd like to discuss ${service.label}. My company, project goal and target date: `)} target="_blank" rel="noopener noreferrer" className="inline-block mt-8 bg-accent text-ink font-heading font-bold uppercase text-xs tracking-widest px-7 py-4 hover:bg-accent-light transition-colors">Discuss your project on WhatsApp →</a>
       </div>
 
       {service.caseStudy && <AiCaseStudy study={service.caseStudy} slug={service.slug} />}
 
       {service.proof && <section className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto" aria-labelledby="campaign-proof">
-        <h2 id="campaign-proof" className="font-geist font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">See the <span className="text-teal">work</span></h2>
+        <h2 id="campaign-proof" className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">See the <span className="text-accent">work</span></h2>
         <div className="grid md:grid-cols-2 gap-10">{service.proof.map(proof => <article key={proof.title}>
           {proof.video ? <video controls playsInline preload="none" poster={proof.image} className="w-full aspect-video bg-black" aria-label={proof.title}><source src={proof.video} type="video/mp4" /><a href={proof.video}>Watch {proof.title}</a></video> : <Link href={proof.href} className="block relative aspect-video"><Image src={proof.image} alt={proof.title} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover" /></Link>}
-          <p className="font-sans text-teal text-xs uppercase tracking-widest mt-6 mb-2">{proof.category}</p><h3 className="font-geist font-bold text-2xl text-white mb-3">{proof.title}</h3><p className="font-sans text-cream/70 text-sm leading-relaxed">{proof.description}</p><Link href={proof.href} className="inline-block mt-5 text-teal text-sm underline underline-offset-4">{proof.linkLabel} →</Link>
+          <p className="font-sans text-accent text-xs uppercase tracking-widest mt-6 mb-2">{proof.category}</p><h3 className="font-heading font-bold text-2xl text-white mb-3">{proof.title}</h3><p className="font-sans text-cream/70 text-sm leading-relaxed">{proof.description}</p><Link href={proof.href} className="inline-block mt-5 text-accent text-sm underline underline-offset-4">{proof.linkLabel} →</Link>
         </article>)}</div>
       </section>}
 
       {/* Deliverables */}
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <h2 className="font-geist font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
-          What We <span className="text-teal">Deliver</span>
+        <h2 className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
+          What We <span className="text-accent">Deliver</span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
           {service.deliverables.map((d) => (
-            <div key={d.title} className="border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 transition-all duration-300 hover:border-teal/40 hover:from-white/[0.07] hover:-translate-y-1">
-              <h3 className="font-geist font-black text-lg text-white uppercase mb-3">
+            <div key={d.title} className="border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 transition-all duration-300 hover:border-accent/40 hover:from-white/[0.07] hover:-translate-y-1">
+              <h3 className="font-heading font-black text-lg text-white uppercase mb-3">
                 {d.title}
               </h3>
               <p className="font-sans text-cream/60 text-sm leading-relaxed">{d.description}</p>
@@ -206,13 +206,13 @@ export default function ServicePage({ params }: Props) {
 
       {/* Why Nataka */}
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <h2 className="font-geist font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
-          Why <span className="text-teal">Nataka</span>
+        <h2 className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
+          Why <span className="text-accent">Nataka</span>
         </h2>
         <ul className="space-y-5 max-w-3xl">
           {service.whyUs.map((reason, i) => (
             <li key={i} className="flex gap-5 items-start">
-              <span className="font-geist font-black text-teal/60 text-sm pt-0.5 tabular-nums flex-shrink-0">
+              <span className="font-heading font-black text-accent/60 text-sm pt-0.5 tabular-nums flex-shrink-0">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <p className="font-sans text-cream/75 text-base leading-relaxed">{reason}</p>
@@ -223,14 +223,14 @@ export default function ServicePage({ params }: Props) {
 
       {/* Process */}
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <h2 className="font-geist font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
-          The <span className="text-teal">Process</span>
+        <h2 className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
+          The <span className="text-accent">Process</span>
         </h2>
         <div className="divide-y divide-white/8 border-t border-b border-white/8">
           {service.process.map((p) => (
             <div key={p.step} className="grid grid-cols-[56px_1fr] md:grid-cols-[80px_280px_1fr] gap-4 md:gap-8 py-7 items-baseline">
-              <span className="font-geist font-black text-sm text-teal/50 tabular-nums">{p.step}</span>
-              <h3 className="font-geist font-black text-xl text-white uppercase">{p.title}</h3>
+              <span className="font-heading font-black text-sm text-accent/50 tabular-nums">{p.step}</span>
+              <h3 className="font-heading font-black text-xl text-white uppercase">{p.title}</h3>
               <p className="font-sans text-cream/60 text-sm leading-relaxed col-span-2 md:col-span-1 col-start-2 md:col-start-auto">
                 {p.description}
               </p>
@@ -241,15 +241,15 @@ export default function ServicePage({ params }: Props) {
 
       {/* FAQ */}
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-4xl mx-auto">
-        <h2 className="font-geist font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
-          Common <span className="text-teal">Questions</span>
+        <h2 className="font-heading font-black text-[clamp(1.5rem,3.5vw,2.5rem)] text-white uppercase mb-10">
+          Common <span className="text-accent">Questions</span>
         </h2>
         <div className="space-y-10">
           {service.faqs.map((f) => (
             <div key={f.question}>
-              <h3 className="font-geist font-bold text-lg text-white mb-3">{f.question}</h3>
+              <h3 className="font-heading font-bold text-lg text-white mb-3">{f.question}</h3>
               <p className="font-sans text-cream/60 text-base leading-relaxed">{f.answer}</p>
-              {f.link && <Link href={f.link.href} className="inline-block mt-3 text-teal text-sm underline underline-offset-4">{f.link.label} →</Link>}
+              {f.link && <Link href={f.link.href} className="inline-block mt-3 text-accent text-sm underline underline-offset-4">{f.link.label} →</Link>}
             </div>
           ))}
         </div>
@@ -257,8 +257,8 @@ export default function ServicePage({ params }: Props) {
 
       {/* CTA */}
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <div className="border border-teal/30 bg-teal/[0.04] p-10 md:p-16 text-center">
-          <h2 className="font-geist font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
+        <div className="border border-accent/30 bg-accent/[0.04] p-10 md:p-16 text-center">
+          <h2 className="font-heading font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
             {service.cta ? service.cta.headline : "Ready To Start?"}
           </h2>
           <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
@@ -272,7 +272,7 @@ export default function ServicePage({ params }: Props) {
             {service.cta && (
               <a
                 href={waLink(`Source: ${siteUrl}/services/${service.slug}\n${service.cta.whatsappMessage}`)}
-                className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+                className="inline-block font-heading font-black text-sm text-ink bg-accent px-10 py-5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
               >
                 {service.cta.button}
               </a>
@@ -281,26 +281,26 @@ export default function ServicePage({ params }: Props) {
               href="/#contact"
               className={
                 service.cta
-                  ? "inline-block font-geist font-black text-sm text-teal border border-teal/40 px-8 py-5 uppercase tracking-widest hover:bg-teal hover:text-ink transition-colors duration-200"
-                  : "inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+                  ? "inline-block font-heading font-black text-sm text-accent border border-accent/40 px-8 py-5 uppercase tracking-widest hover:bg-accent hover:text-ink transition-colors duration-200"
+                  : "inline-block font-heading font-black text-sm text-ink bg-accent px-10 py-5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
               }
             >
               Get in Touch
             </Link>
             <a
               href="https://wa.me/254117386206"
-              className="inline-block font-geist font-black text-sm text-teal border border-teal/40 px-8 py-5 uppercase tracking-widest hover:bg-teal hover:text-ink transition-colors duration-200"
+              className="inline-block font-heading font-black text-sm text-accent border border-accent/40 px-8 py-5 uppercase tracking-widest hover:bg-accent hover:text-ink transition-colors duration-200"
             >
               WhatsApp Us
             </a>
             <a
               href="tel:+254117386206"
-              className="inline-block font-sans text-sm text-white/60 px-4 py-5 tracking-widest uppercase hover:text-teal transition-colors"
+              className="inline-block font-sans text-sm text-white/60 px-4 py-5 tracking-widest uppercase hover:text-accent transition-colors"
             >
               +254 117 386 206
             </a>
           </div>
-          <Link href="/campaign-brief" className="inline-block mt-6 text-sm text-teal underline underline-offset-4">
+          <Link href="/campaign-brief" className="inline-block mt-6 text-sm text-accent underline underline-offset-4">
             Need help organising the idea? Build a free campaign brief →
           </Link>
         </div>
@@ -309,8 +309,8 @@ export default function ServicePage({ params }: Props) {
       {/* Related articles */}
       {related.length > 0 && (
         <div className="px-6 md:px-12 pb-16 max-w-7xl mx-auto">
-          <h2 className="font-geist font-black text-xl text-white uppercase mb-8">
-            From Our <span className="text-teal">Insights</span>
+          <h2 className="font-heading font-black text-xl text-white uppercase mb-8">
+            From Our <span className="text-accent">Insights</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {related.map((p) => (
@@ -326,10 +326,10 @@ export default function ServicePage({ params }: Props) {
                   />
                   <div className="absolute inset-0 bg-ink/40 group-hover:bg-ink/20 transition-colors duration-300" />
                 </div>
-                <span className="font-sans text-[9px] text-teal tracking-widest uppercase font-medium block mb-1">
+                <span className="font-sans text-[9px] text-accent tracking-widest uppercase font-medium block mb-1">
                   {p.category}
                 </span>
-                <h3 className="font-geist font-black text-base text-white uppercase leading-tight group-hover:text-teal transition-colors duration-200">
+                <h3 className="font-heading font-black text-base text-white uppercase leading-tight group-hover:text-accent transition-colors duration-200">
                   {p.title}
                 </h3>
               </Link>
@@ -341,15 +341,15 @@ export default function ServicePage({ params }: Props) {
       {/* Other services */}
       <div className="px-6 md:px-12 pb-24 max-w-7xl mx-auto">
         <div className="h-px bg-white/8 mb-10" />
-        <h2 className="font-geist font-black text-xl text-white uppercase mb-8">
-          More <span className="text-teal">Services</span>
+        <h2 className="font-heading font-black text-xl text-white uppercase mb-8">
+          More <span className="text-accent">Services</span>
         </h2>
         <div className="flex flex-wrap gap-3">
           {otherServices.map((s) => (
             <Link
               key={s.slug}
               href={`/services/${s.slug}`}
-              className="font-sans text-xs text-teal tracking-widest uppercase border border-teal/30 px-5 py-3 hover:bg-teal hover:text-ink transition-colors duration-200"
+              className="font-sans text-xs text-accent tracking-widest uppercase border border-accent/30 px-5 py-3 hover:bg-accent hover:text-ink transition-colors duration-200"
             >
               {s.label}
             </Link>

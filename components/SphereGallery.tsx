@@ -558,9 +558,9 @@ export default function SphereGallery() {
         {/* top-left logo */}
         <a
           href="/"
-          className="pointer-events-auto absolute top-6 left-6 md:left-10 font-nataka font-black text-lg text-white tracking-tight hover:text-teal transition-colors"
+          className="pointer-events-auto absolute top-6 left-6 md:left-10 font-nataka font-black text-lg text-white tracking-tight hover:text-accent transition-colors"
         >
-          NATAKA<span className="text-teal">.</span>INC
+          NATAKA<span className="text-signal">.</span>INC
         </a>
 
         {/* top-centre description */}
@@ -575,12 +575,12 @@ export default function SphereGallery() {
         {/* top-right clock + CTA */}
         <div className="absolute top-6 right-6 md:right-10 flex items-center gap-6">
           <div className="hidden md:block font-mono text-[10px] text-white/60 tracking-wider uppercase text-right leading-relaxed">
-            <span className="inline-block w-2 h-2 rounded-full bg-teal mr-2 align-middle" />
+            <span className="inline-block w-2 h-2 rounded-full bg-accent mr-2 align-middle" />
             Nairobi, KE&nbsp;&nbsp;<LocalTime />
           </div>
           <a
             href="/#contact"
-            className="pointer-events-auto font-sans text-xs font-semibold text-ink bg-cream rounded-full px-6 py-3 hover:bg-teal transition-colors duration-300"
+            className="pointer-events-auto font-sans text-xs font-semibold text-ink bg-cream rounded-full px-6 py-3 hover:bg-accent transition-colors duration-300"
           >
             Let&apos;s Talk
           </a>
@@ -591,10 +591,10 @@ export default function SphereGallery() {
           <span className="font-sans text-xs font-semibold text-ink bg-cream rounded-full px-6 py-2.5">
             Work
           </span>
-          <a href="/#about" className="font-sans text-xs font-medium text-white/80 px-6 py-2.5 hover:text-teal transition-colors">
+          <a href="/#about" className="font-sans text-xs font-medium text-white/80 px-6 py-2.5 hover:text-accent transition-colors">
             About
           </a>
-          <a href="/#contact" className="font-sans text-xs font-medium text-white/80 px-6 py-2.5 hover:text-teal transition-colors">
+          <a href="/#contact" className="font-sans text-xs font-medium text-white/80 px-6 py-2.5 hover:text-accent transition-colors">
             Contact
           </a>
         </nav>
@@ -608,7 +608,7 @@ export default function SphereGallery() {
         {needsMotionTap && (
           <button
             onClick={() => enableGyroRef.current?.()}
-            className="pointer-events-auto absolute bottom-24 left-1/2 -translate-x-1/2 font-mono text-[11px] text-ink bg-teal tracking-widest uppercase rounded-full px-6 py-3 shadow-lg shadow-teal/20"
+            className="pointer-events-auto absolute bottom-24 left-1/2 -translate-x-1/2 font-mono text-[11px] text-ink bg-accent tracking-widest uppercase rounded-full px-6 py-3 shadow-lg shadow-accent/20"
           >
             ⊕ Enable 360° Motion
           </button>
@@ -616,7 +616,7 @@ export default function SphereGallery() {
 
         {/* 360° active indicator (mobile) */}
         {gyroActive && (
-          <span className="absolute bottom-24 left-1/2 -translate-x-1/2 font-mono text-[10px] text-teal/80 tracking-[0.3em] uppercase">
+          <span className="absolute bottom-24 left-1/2 -translate-x-1/2 font-mono text-[10px] text-accent/80 tracking-[0.3em] uppercase">
             ◉ 360° — Move your phone
           </span>
         )}
@@ -643,21 +643,21 @@ export default function SphereGallery() {
           <div className="min-h-full flex flex-col">
             <div className="flex items-center justify-between px-6 md:px-10 py-6">
               <span className="font-nataka font-black text-lg text-white tracking-tight">
-                NATAKA<span className="text-teal">.</span>INC
+                NATAKA<span className="text-signal">.</span>INC
               </span>
               <button
                 onClick={closeOverlay}
-                className="font-mono text-[11px] text-white/60 tracking-widest uppercase hover:text-teal transition-colors border border-white/20 rounded-full px-5 py-2.5 hover:border-teal"
+                className="font-mono text-[11px] text-white/60 tracking-widest uppercase hover:text-accent transition-colors border border-white/20 rounded-full px-5 py-2.5 hover:border-accent"
               >
                 Close ✕
               </button>
             </div>
 
             <div className="flex-1 px-6 md:px-10 pb-16 max-w-6xl mx-auto w-full">
-              <p data-reveal className="font-mono text-[11px] text-teal tracking-widest uppercase mb-4">
+              <p data-reveal className="font-mono text-[11px] text-accent tracking-widest uppercase mb-4">
                 {selected.client} · {selected.year}
               </p>
-              <h1 data-reveal className="font-geist font-black text-[clamp(2.5rem,8vw,6rem)] text-white uppercase leading-none mb-8">
+              <h1 data-reveal className="font-heading font-black text-[clamp(2.5rem,8vw,6rem)] text-white uppercase leading-none mb-8">
                 {selected.title}
               </h1>
 
@@ -689,24 +689,24 @@ export default function SphereGallery() {
                 {selected.title === "KWANINI" && (
                   <a
                     href="/work/ssaru-fathermoh-kwanini"
-                    className="font-geist font-black text-xs text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors"
+                    className="font-heading font-black text-xs text-ink bg-accent px-8 py-4 uppercase tracking-widest hover:bg-accent-light transition-colors"
                   >
                     View Case Study
                   </a>
                 )}
                 <a
                   href="/#contact"
-                  className={`font-geist font-black text-xs px-8 py-4 uppercase tracking-widest transition-colors ${
+                  className={`font-heading font-black text-xs px-8 py-4 uppercase tracking-widest transition-colors ${
                     selected.title === "KWANINI"
-                      ? "text-white border border-white/25 hover:border-teal hover:text-teal"
-                      : "text-ink bg-teal hover:bg-teal-light"
+                      ? "text-white border border-white/25 hover:border-accent hover:text-accent"
+                      : "text-ink bg-accent hover:bg-accent-light"
                   }`}
                 >
                   Start a Project
                 </a>
                 <button
                   onClick={closeOverlay}
-                  className="font-geist font-black text-xs text-white/60 px-4 py-4 uppercase tracking-widest hover:text-teal transition-colors"
+                  className="font-heading font-black text-xs text-white/60 px-4 py-4 uppercase tracking-widest hover:text-accent transition-colors"
                 >
                   Back to Gallery
                 </button>

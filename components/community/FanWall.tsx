@@ -45,7 +45,7 @@ export default function FanWall() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-end mb-12 md:mb-16">
         <h2 className="leading-none">
-          <span className="font-geist font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
+          <span className="font-heading font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
             Cosplayed?
           </span>
           <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,4.5rem)] text-otaku block">
@@ -64,7 +64,7 @@ export default function FanWall() {
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200"
+              className="font-heading font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200"
             >
               Send Your Cosplay →
             </a>
@@ -72,7 +72,7 @@ export default function FanWall() {
               href="https://www.instagram.com/natakainc/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200"
+              className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200"
             >
               Tag Us On Instagram
             </a>

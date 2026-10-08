@@ -26,7 +26,7 @@ export default function DropLog() {
 
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12 md:mb-16">
         <h2 className="leading-none">
-          <span className="font-geist font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
+          <span className="font-heading font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
             One Chapter
           </span>
           <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,4.5rem)] text-otaku block">
@@ -44,13 +44,13 @@ export default function DropLog() {
         {drops.map((d, i) => {
           const Row = (
             <>
-              <span className="font-geist font-black text-2xl md:text-4xl text-white/15 group-hover:text-otaku/70 transition-colors duration-300 tabular-nums w-16 md:w-24 shrink-0">
+              <span className="font-heading font-black text-2xl md:text-4xl text-white/15 group-hover:text-otaku/70 transition-colors duration-300 tabular-nums w-16 md:w-24 shrink-0">
                 {d.chapter}
               </span>
 
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-2">
-                  <h3 className={`font-geist font-black text-lg md:text-2xl uppercase leading-tight ${d.status === "tba" ? "text-white/40" : "text-white"}`}>
+                  <h3 className={`font-heading font-black text-lg md:text-2xl uppercase leading-tight ${d.status === "tba" ? "text-white/40" : "text-white"}`}>
                     {d.title}
                   </h3>
                   <span className={`font-sans text-[9px] tracking-widest uppercase border px-2.5 py-1 ${statusStyle[d.status]}`}>

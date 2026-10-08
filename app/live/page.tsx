@@ -108,7 +108,7 @@ export default function LivePage() {
 
         {/* ── Hero: headline + the working mirror ── */}
         <section className="live-hero pt-28 sm:pt-36 pb-16 px-5 sm:px-10 max-w-6xl mx-auto">
-          <div className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-teal mb-6 flex items-center gap-3">
+          <div className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-accent mb-6 flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-[#D61F2C] animate-pulse" />
             NATAKA LIVE · REALTIME AI VIDEO
           </div>
@@ -116,7 +116,7 @@ export default function LivePage() {
           <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl leading-[1.05] max-w-4xl">
             Step in front of the camera.
             <br />
-            <span className="text-teal">Come out somewhere else.</span>
+            <span className="text-accent">Come out somewhere else.</span>
           </h1>
 
           <p className="mt-6 max-w-2xl text-cream/60 text-base sm:text-lg leading-relaxed">
@@ -137,7 +137,7 @@ export default function LivePage() {
         {/* ── How it works ── */}
         <section className="live-chrome border-t border-cream/10 px-5 sm:px-10 py-20">
           <div className="max-w-6xl mx-auto">
-            <h2 className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-teal mb-12">
+            <h2 className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-accent mb-12">
               How the signal flows
             </h2>
             <div className="grid sm:grid-cols-3 gap-10">
@@ -158,7 +158,7 @@ export default function LivePage() {
         <section className="live-chrome border-t border-cream/10 px-5 sm:px-10 py-20">
           <div className="max-w-6xl mx-auto">
             <h2 className="font-display text-3xl sm:text-5xl max-w-2xl leading-tight">
-              The demo is free. <span className="text-teal">The room going quiet</span> when
+              The demo is free. <span className="text-accent">The room going quiet</span> when
               someone transforms on screen — that&apos;s what you book.
             </h2>
 
@@ -166,9 +166,9 @@ export default function LivePage() {
               {products.map((p) => (
                 <div
                   key={p.name}
-                  className="border border-cream/10 p-8 flex flex-col hover:border-teal/40 transition-colors"
+                  className="border border-cream/10 p-8 flex flex-col hover:border-accent/40 transition-colors"
                 >
-                  <div className="font-nataka font-black uppercase tracking-widest2 text-[9px] text-teal">
+                  <div className="font-nataka font-black uppercase tracking-widest2 text-[9px] text-accent">
                     {p.tag}
                   </div>
                   <h3 className="font-display text-2xl mt-3">{p.name}</h3>
@@ -178,7 +178,7 @@ export default function LivePage() {
                     href={bookUrl(p.name)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 inline-block text-center font-nataka font-black uppercase tracking-widest2 text-[10px] border border-teal text-teal px-6 py-4 hover:bg-teal hover:text-ink transition-colors"
+                    className="mt-6 inline-block text-center font-nataka font-black uppercase tracking-widest2 text-[10px] border border-accent text-accent px-6 py-4 hover:bg-accent hover:text-ink transition-colors"
                   >
                     {p.cta}
                   </a>
@@ -191,7 +191,7 @@ export default function LivePage() {
         {/* ── Objections ── */}
         <section className="live-chrome border-t border-cream/10 px-5 sm:px-10 py-20">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-teal mb-10">
+            <h2 className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-accent mb-10">
               Straight answers
             </h2>
             <div className="divide-y divide-cream/10">
@@ -210,13 +210,13 @@ export default function LivePage() {
         {/* ── Final CTA ── */}
         <section className="live-chrome border-t border-cream/10 px-5 sm:px-10 py-24 text-center">
           <p className="font-display text-3xl sm:text-5xl max-w-2xl mx-auto leading-tight">
-            Put the mirror in front of <span className="text-teal">your crowd.</span>
+            Put the mirror in front of <span className="text-accent">your crowd.</span>
           </p>
           <a
             href={bookUrl("General")}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-10 inline-block font-nataka font-black uppercase tracking-widest2 text-xs bg-teal text-ink px-10 py-5 hover:bg-teal-light transition-colors"
+            className="mt-10 inline-block font-nataka font-black uppercase tracking-widest2 text-xs bg-accent text-ink px-10 py-5 hover:bg-accent-light transition-colors"
           >
             WhatsApp the team
           </a>

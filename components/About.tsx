@@ -1,102 +1,57 @@
-"use client";
+import Image from "next/image";
+import Link from "next/link";
+import Reveal from "@/components/Reveal";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+const proof = [
+  { text: "Directed Kwanini for Ssaru x Fathermoh", href: "/work/ssaru-fathermoh-kwanini" },
+  { text: "Built AANOTHER, an AI band, over 650 finished shots", href: "/services/ai-video-production-kenya#case-study" },
+  { text: "Published the Nataka AI Standard for safe AI video", href: "/ai-standard" },
+];
 
 export default function About() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <section id="about" className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden" ref={ref}>
-      <div className="absolute inset-0 bg-ink-50" />
-      <div className="absolute top-0 inset-x-0 h-px hr-teal opacity-20" />
-      <div className="absolute bottom-0 inset-x-0 h-px hr-teal opacity-20" />
+    <section id="about" className="border-y border-white/8 bg-ink-100">
+      <div className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <Reveal className="lg:col-span-5 relative aspect-[4/5] overflow-hidden bg-ink-50" as="figure">
+          <Image
+            src="/stills/1/27.jpg"
+            alt="Film still by Nataka Inc: a woman with natural hair in soft daylight"
+            fill
+            sizes="(max-width: 1024px) 100vw, 40vw"
+            quality={85}
+            className="object-cover object-[30%_50%] scale-[1.04]"
+          />
+        </Reveal>
 
-      <div className="relative max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
+        <div className="lg:col-span-7">
+          <Reveal>
+            <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[1] text-[clamp(1.6rem,3.5vw,2.9rem)] [text-wrap:balance]">
+              Directors, not an <span className="text-accent-dark">account team</span><span className="text-signal">.</span>
+            </h2>
+            <p className="mt-6 font-sans text-cream/75 text-base md:text-lg leading-relaxed max-w-[58ch]">
+              Nataka Inc is a media and marketing agency in Westlands, Nairobi. We plan campaigns, shoot films and
+              commercials, run social and paid media and make AI video, with one small senior team.
+            </p>
+            <p className="mt-4 font-sans text-cream/60 text-base leading-relaxed max-w-[58ch]">
+              The person who directed your film is the person on your WhatsApp.
+            </p>
+          </Reveal>
 
-          {/* Left */}
-          <div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.5 }}
-              className="font-sans text-teal text-[10px] tracking-widest2 uppercase mb-6 font-medium"
-            >
-              About Nataka
-            </motion.p>
-
-            <div className="overflow-hidden mb-8">
-              <motion.div
-                initial={{ clipPath: "inset(0 100% 0 0)" }}
-                animate={inView ? { clipPath: "inset(0 0% 0 0)" } : {}}
-                transition={{ duration: 1, delay: 0.1, ease: [0.77, 0, 0.175, 1] }}
-              >
-                <h2 className="leading-tight">
-                  <span className="font-geist font-black text-[clamp(1.5rem,5vw,4.5rem)] text-white uppercase block">
-                    Rooted in
+          <ul className="mt-10 border-t border-white/10">
+            {proof.map((p, i) => (
+              <Reveal as="li" key={p.href} delay={i * 0.06}>
+                <Link
+                  href={p.href}
+                  className="group flex items-center justify-between gap-6 py-5 border-b border-white/10 font-heading font-semibold text-base md:text-lg text-white hover:text-accent transition-colors"
+                >
+                  {p.text}
+                  <span aria-hidden="true" className="text-accent transition-transform duration-300 group-hover:translate-x-1">
+                    &rarr;
                   </span>
-                  <span className="font-display font-semibold italic text-[clamp(1.5rem,5vw,4.5rem)] text-teal block">
-                    Nairobi.
-                  </span>
-                  <span className="font-geist font-black text-[clamp(1.5rem,5vw,4.5rem)] text-white uppercase block">
-                    Built for
-                  </span>
-                  <span className="font-display font-semibold italic text-[clamp(1.5rem,5vw,4.5rem)] text-white/60 block">
-                    the World.
-                  </span>
-                </h2>
-              </motion.div>
-            </div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.4 }}
-              className="font-sans text-white/80 text-base leading-relaxed mb-5"
-            >
-              Nataka Inc is a <span className="text-teal font-semibold">media and marketing agency</span>{" "}
-              in Nairobi, Kenya. We help businesses plan brand promotion campaigns,
-              launch products, and create brand films, corporate videos and social
-              content for Kenyan audiences.
-            </motion.p>
-
-            {/* Hidden on small screens — heading + first paragraph is enough */}
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.55 }}
-              className="hidden sm:block font-sans text-white/65 text-base leading-relaxed"
-            >
-              We bring strategy, creative development, production and rollout into one
-              campaign brief. Scope, deliverables and timing are agreed around your
-              audience and objective. Our work also includes Otamatsuri and the
-              community shaping Kenyan anime and cosplay culture.
-            </motion.p>
-          </div>
-
-          {/* Right: values grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-            {[
-              { icon: "◈", title: "Bold Ideas", desc: "Campaign concepts shaped around your audience and business objective." },
-              { icon: "◉", title: "African Lens", desc: "Local culture intelligence applied to every strategy we build." },
-              { icon: "◇", title: "Cinematic Quality", desc: "See our films for the production craft we bring to your brief." },
-              { icon: "◎", title: "Clear Scope", desc: "Agreed deliverables, timelines and responsibilities before production." },
-            ].map((value, i) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.55, delay: 0.3 + i * 0.1 }}
-                className="p-5 md:p-6 border border-white/8 bg-ink hover:border-teal/25 transition-colors duration-300 group"
-              >
-                <span className="text-teal text-lg mb-4 block">{value.icon}</span>
-                <h4 className="font-geist font-black text-white text-sm uppercase mb-2 group-hover:text-teal transition-colors duration-300">{value.title}</h4>
-                <p className="font-sans text-white/60 text-xs leading-relaxed">{value.desc}</p>
-              </motion.div>
+                </Link>
+              </Reveal>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </section>

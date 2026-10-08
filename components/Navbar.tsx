@@ -1,21 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 
 const navLinks = [
-  { label: "Services", href: "/#services" },
   { label: "Work",     href: "/#work"     },
-  { label: "Community", href: "/community" },
-  { label: "Reel",     href: "/#reel"     },
-  { label: "Gallery",  href: "/gallery"   },
+  { label: "Services", href: "/#services" },
+  { label: "AI video", href: "/services/ai-video-production-kenya" },
   { label: "About",    href: "/#about"    },
+  { label: "Pricing",  href: "/work-with-us" },
   { label: "Insights", href: "/blog"      },
-  { label: "Contact",  href: "/#contact"  },
 ];
 
-// The full-screen mobile menu has room for K-Wave; the desktop bar does not.
-const mobileNavLinks = [...navLinks, { label: "K-Wave", href: "/kwave" }];
+// The full-screen mobile menu has room for the secondary pages; the desktop bar does not.
+const mobileNavLinks = [...navLinks, { label: "Gallery", href: "/gallery" }, { label: "Community", href: "/community" }];
 
 const socialLinks = [
   { label: "Instagram", href: "https://www.instagram.com/natakainc/" },
@@ -27,11 +25,12 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  // Only flips state when the 60px threshold is crossed, not on every frame
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const past = y > 60;
+    if (past !== scrolled) setScrolled(past);
+  });
 
   return (
     <>
@@ -39,14 +38,14 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-        className={`fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 transition-all duration-500 backdrop-blur-md ${
-          scrolled ? "bg-ink/92 border-b border-white/8" : "bg-gradient-to-b from-ink/85 via-ink/45 to-transparent"
+        className={`fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 h-16 md:h-[72px] transition-colors duration-500 backdrop-blur-md ${
+          scrolled ? "bg-ink/85 border-b border-white/[0.07]" : "bg-gradient-to-b from-ink/70 to-transparent"
         }`}
       >
         {/* Logo */}
-        <a href="#" className="group">
-          <span className="font-nataka font-black text-xl text-white tracking-tight group-hover:text-teal transition-colors duration-300">
-            NATAKA<span className="text-teal">.</span>INC
+        <a href="/" className="group" aria-label="Nataka Inc home">
+          <span className="font-nataka font-black text-xl text-white tracking-tight transition-opacity duration-300 group-hover:opacity-80">
+            NATAKA<span className="text-signal">.</span>INC
           </span>
         </a>
 
@@ -60,14 +59,14 @@ export default function Navbar() {
               key={link.label}
               href={link.href}
               onMouseEnter={() => setHoveredLink(link.label)}
-              className="relative font-sans text-xs tracking-widest uppercase font-medium py-1 transition-colors duration-200"
-              style={{ color: hoveredLink === link.label ? "#F0EDE6" : "rgba(240,237,230,0.55)" }}
+              className="relative font-sans text-sm font-medium py-1 transition-colors duration-200"
+              style={{ color: hoveredLink === link.label ? "#F5F6F8" : "rgba(231,233,236,0.62)" }}
             >
               {link.label}
               {hoveredLink === link.label && (
                 <motion.span
                   layoutId="nav-underline"
-                  className="absolute bottom-0 left-0 right-0 h-px bg-teal"
+                  className="absolute bottom-0 left-0 right-0 h-px bg-white"
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
@@ -75,14 +74,10 @@ export default function Navbar() {
           ))}
 
           <a
-            href="#contact"
-            className="relative px-6 py-2.5 border border-teal text-teal text-xs tracking-widest uppercase font-sans font-medium overflow-hidden group"
+            href="/#contact"
+            className="px-5 py-3 bg-white text-ink text-[11px] uppercase tracking-[0.16em] font-heading font-bold hover:bg-accent active:translate-y-px transition-colors"
           >
-            {/* Fill sweep on hover */}
-            <span className="absolute inset-0 bg-teal translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-            <span className="relative z-10 group-hover:text-ink transition-colors duration-300">
-              Start a Project
-            </span>
+            Start a project
           </a>
         </nav>
 
@@ -116,20 +111,20 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 + 0.1 }}
                 onClick={() => setMenuOpen(false)}
-                className="font-geist font-black text-[2rem] sm:text-4xl text-white hover:text-teal transition-colors uppercase shrink-0"
+                className="font-heading font-extrabold stretch-semi text-[2rem] sm:text-4xl tracking-tight text-white hover:text-accent-dark transition-colors shrink-0"
               >
                 {link.label}
               </motion.a>
             ))}
             <motion.a
-              href="#contact"
+              href="/#contact"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
               onClick={() => setMenuOpen(false)}
-              className="mt-2 px-10 py-3 border border-teal text-teal text-sm tracking-widest uppercase font-sans font-medium"
+              className="mt-2 px-10 py-4 bg-white text-ink text-xs uppercase tracking-[0.16em] font-heading font-bold"
             >
-              Start a Project
+              Start a project
             </motion.a>
             <motion.div
               initial={{ opacity: 0 }}
@@ -139,7 +134,7 @@ export default function Navbar() {
             >
               {socialLinks.map((s) => (
                 <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                  className="font-sans text-xs text-white/40 tracking-widest uppercase hover:text-teal transition-colors">
+                  className="font-sans text-sm text-cream/55 hover:text-accent transition-colors">
                   {s.label}
                 </a>
               ))}

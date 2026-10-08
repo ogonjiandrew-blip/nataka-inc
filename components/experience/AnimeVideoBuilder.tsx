@@ -330,7 +330,7 @@ export default function AnimeVideoBuilder() {
                 >
                   {v.jp}
                 </span>
-                <span className="font-geist font-black text-base text-white uppercase tracking-wide block pr-10">
+                <span className="font-heading font-black text-base text-white uppercase tracking-wide block pr-10">
                   {v.label}
                 </span>
                 <span className="font-sans text-white/55 text-xs block mt-1 pr-10 leading-relaxed">
@@ -391,7 +391,7 @@ export default function AnimeVideoBuilder() {
                     {w.jp}
                   </span>
                   <span
-                    className={`font-geist font-black text-sm uppercase tracking-wide block leading-tight ${
+                    className={`font-heading font-black text-sm uppercase tracking-wide block leading-tight ${
                       active ? "text-ink" : "text-white"
                     }`}
                   >
@@ -449,7 +449,7 @@ export default function AnimeVideoBuilder() {
                       >
                         {p.jp}
                       </span>
-                      <span className="font-geist font-black text-base text-white uppercase tracking-wide block pr-9">
+                      <span className="font-heading font-black text-base text-white uppercase tracking-wide block pr-9">
                         {p.label}
                       </span>
                       <span className="font-sans text-white/55 text-xs block mt-1 pr-9 leading-relaxed">
@@ -506,7 +506,7 @@ export default function AnimeVideoBuilder() {
                       >
                         {f.jp}
                       </span>
-                      <span className="font-geist font-black text-base text-white uppercase tracking-wide block pr-9">
+                      <span className="font-heading font-black text-base text-white uppercase tracking-wide block pr-9">
                         {f.label}
                       </span>
                       <span className="font-sans text-white/55 text-xs block mt-1 pr-9 leading-relaxed">
@@ -552,7 +552,7 @@ export default function AnimeVideoBuilder() {
                       <button
                         type="button"
                         onClick={() => cameraRef.current?.click()}
-                        className="font-geist font-black text-[11px] text-white border border-white/25 px-4 py-2.5 uppercase tracking-widest active:scale-[0.97] transition-transform"
+                        className="font-heading font-black text-[11px] text-white border border-white/25 px-4 py-2.5 uppercase tracking-widest active:scale-[0.97] transition-transform"
                       >
                         Retake
                       </button>
@@ -563,7 +563,7 @@ export default function AnimeVideoBuilder() {
                     <button
                       type="button"
                       onClick={() => cameraRef.current?.click()}
-                      className="w-full font-geist font-black text-sm text-white border-2 px-6 py-5 uppercase tracking-widest active:scale-[0.98] transition-transform"
+                      className="w-full font-heading font-black text-sm text-white border-2 px-6 py-5 uppercase tracking-widest active:scale-[0.98] transition-transform"
                       style={{ borderColor: accent }}
                     >
                       📸 Open camera
@@ -585,7 +585,7 @@ export default function AnimeVideoBuilder() {
                 autoComplete="given-name"
                 maxLength={24}
                 enterKeyHint="done"
-                className="w-full bg-transparent border-b-2 border-white/20 focus:border-white outline-none font-geist font-black text-3xl md:text-4xl text-white placeholder:text-white/20 uppercase tracking-wide py-3 transition-colors"
+                className="w-full bg-transparent border-b-2 border-white/20 focus:border-white outline-none font-heading font-black text-3xl md:text-4xl text-white placeholder:text-white/20 uppercase tracking-wide py-3 transition-colors"
                 style={{ caretColor: accent }}
               />
               <p className="font-sans text-white/45 text-xs mt-3">
@@ -638,7 +638,7 @@ export default function AnimeVideoBuilder() {
                             <p className="font-sans text-white/45 text-[9px] tracking-widest uppercase mb-1">
                               Starring
                             </p>
-                            <p className="font-geist font-black text-xl sm:text-2xl text-white uppercase leading-none">
+                            <p className="font-heading font-black text-xl sm:text-2xl text-white uppercase leading-none">
                               {name.trim()}
                             </p>
                           </div>
@@ -646,7 +646,7 @@ export default function AnimeVideoBuilder() {
                             <p className="font-sans text-white/45 text-[9px] tracking-widest uppercase mb-1">
                               Power
                             </p>
-                            <p className="font-geist font-black text-sm sm:text-base text-white uppercase leading-none">
+                            <p className="font-heading font-black text-sm sm:text-base text-white uppercase leading-none">
                               {power.label}
                             </p>
                           </div>
@@ -691,7 +691,7 @@ export default function AnimeVideoBuilder() {
                       Show this at the booth
                     </p>
                     <p
-                      className="font-geist font-black text-5xl sm:text-6xl leading-none mb-4 tracking-widest"
+                      className="font-heading font-black text-5xl sm:text-6xl leading-none mb-4 tracking-widest"
                       style={{ color: accent }}
                     >
                       {job.id}
@@ -719,7 +719,7 @@ export default function AnimeVideoBuilder() {
                     <p className="font-sans text-white/50 text-[10px] tracking-widest2 uppercase mb-2">
                       Approved · generating
                     </p>
-                    <p className="font-geist font-black text-2xl text-white uppercase mb-3">
+                    <p className="font-heading font-black text-2xl text-white uppercase mb-3">
                       {stillUrl ? "Your video is rendering" : "Building your world"}
                     </p>
                     <p className="font-sans text-white/70 text-sm leading-relaxed">
@@ -776,7 +776,7 @@ export default function AnimeVideoBuilder() {
                             file and confuse people. */}
                         <a
                           href={`${stillUrl}?download=1`}
-                          className="block text-center font-geist font-black text-xs text-ink px-6 py-4 uppercase tracking-widest mb-6"
+                          className="block text-center font-heading font-black text-xs text-ink px-6 py-4 uppercase tracking-widest mb-6"
                           style={{ background: accent }}
                         >
                           ⬇ Download the picture
@@ -794,7 +794,7 @@ export default function AnimeVideoBuilder() {
                         />
                         <a
                           href={`${videoUrl}?download=1`}
-                          className="block text-center font-geist font-black text-xs text-ink px-6 py-4 uppercase tracking-widest"
+                          className="block text-center font-heading font-black text-xs text-ink px-6 py-4 uppercase tracking-widest"
                           style={{ background: accent }}
                         >
                           ⬇ Download the video
@@ -814,7 +814,7 @@ export default function AnimeVideoBuilder() {
                     <button
                       type="button"
                       onClick={startNewOrder}
-                      className="w-full mt-6 font-geist font-black text-[11px] text-white/60 border border-white/20 px-4 py-3.5 uppercase tracking-widest active:scale-[0.98] transition-transform"
+                      className="w-full mt-6 font-heading font-black text-[11px] text-white/60 border border-white/20 px-4 py-3.5 uppercase tracking-widest active:scale-[0.98] transition-transform"
                     >
                       Done — free this phone for the next person
                     </button>
@@ -823,7 +823,7 @@ export default function AnimeVideoBuilder() {
 
                 {phase === "rejected" && (
                   <>
-                    <p className="font-geist font-black text-xl text-white uppercase mb-2">
+                    <p className="font-heading font-black text-xl text-white uppercase mb-2">
                       Not released
                     </p>
                     <p className="font-sans text-white/70 text-sm leading-relaxed">
@@ -832,7 +832,7 @@ export default function AnimeVideoBuilder() {
                     <button
                       type="button"
                       onClick={startNewOrder}
-                      className="w-full mt-5 font-geist font-black text-[11px] text-white/60 border border-white/20 px-4 py-3.5 uppercase tracking-widest active:scale-[0.98] transition-transform"
+                      className="w-full mt-5 font-heading font-black text-[11px] text-white/60 border border-white/20 px-4 py-3.5 uppercase tracking-widest active:scale-[0.98] transition-transform"
                     >
                       Start over
                     </button>
@@ -862,7 +862,7 @@ export default function AnimeVideoBuilder() {
                 type="button"
                 disabled={!ready || uploading}
                 onClick={submit}
-                className="w-full text-center font-geist font-black text-sm px-6 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform disabled:cursor-not-allowed"
+                className="w-full text-center font-heading font-black text-sm px-6 py-5 uppercase tracking-widest active:scale-[0.985] transition-transform disabled:cursor-not-allowed"
                 style={
                   ready && !uploading
                     ? { background: accent, color: "#0A0A0A" }
@@ -913,7 +913,7 @@ function StepLabel({
 }) {
   return (
     <div className="flex items-center gap-3 mb-5">
-      <span className="font-geist font-black text-[11px]" style={{ color: accent }}>
+      <span className="font-heading font-black text-[11px]" style={{ color: accent }}>
         {n}
       </span>
       <span className="h-px w-7" style={{ background: accent }} />

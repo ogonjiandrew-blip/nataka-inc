@@ -22,14 +22,14 @@ export default function BlogPage() {
 
         {/* Header */}
         <div className="mb-16 md:mb-20">
-          <span className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium block mb-5">
+          <span className="font-sans text-accent text-[10px] tracking-widest2 uppercase font-medium block mb-5">
             Insights
           </span>
           <h1 className="leading-none mb-6">
-            <span className="font-geist font-black text-[clamp(2rem,7vw,6rem)] text-white uppercase block">
+            <span className="font-heading font-black text-[clamp(2rem,7vw,6rem)] text-white uppercase block">
               Ideas &amp; Industry
             </span>
-            <span className="font-display font-semibold italic text-[clamp(2rem,7vw,6rem)] text-teal block">
+            <span className="font-heading font-black text-[clamp(2rem,7vw,6rem)] text-accent uppercase block">
               Thinking.
             </span>
           </h1>
@@ -52,17 +52,17 @@ export default function BlogPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent" />
             <div className="absolute bottom-0 inset-x-0 p-5 md:p-12">
-              <span className="font-sans text-[10px] text-teal tracking-widest uppercase border border-teal/40 px-3 py-1 bg-ink/60 backdrop-blur-sm font-medium inline-block mb-3 md:mb-4">
+              <span className="font-sans text-[10px] text-accent tracking-widest uppercase border border-accent/40 px-3 py-1 bg-ink/60 backdrop-blur-sm font-medium inline-block mb-3 md:mb-4">
                 {featured.category}
               </span>
-              <h2 className="font-geist font-black text-lg sm:text-2xl md:text-4xl text-white uppercase leading-tight mb-3 max-w-3xl">
+              <h2 className="font-heading font-black text-lg sm:text-2xl md:text-4xl text-white uppercase leading-tight mb-3 max-w-3xl">
                 {featured.title}
               </h2>
               <p className="font-sans text-cream/70 text-sm md:text-base max-w-2xl leading-relaxed hidden md:block">
                 {featured.excerpt}
               </p>
             </div>
-            <div className="absolute bottom-0 inset-x-0 h-0.5 bg-teal scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+            <div className="absolute bottom-0 inset-x-0 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
           </div>
           <div className="flex items-center gap-4 font-sans text-white/35 text-xs">
             <span>{new Date(featured.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</span>
@@ -87,12 +87,12 @@ export default function BlogPage() {
                   quality={85}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-                <span className="absolute top-4 left-4 font-sans text-[10px] text-teal tracking-widest uppercase border border-teal/40 px-3 py-1 bg-ink/60 backdrop-blur-sm font-medium">
+                <span className="absolute top-4 left-4 font-sans text-[10px] text-accent tracking-widest uppercase border border-accent/40 px-3 py-1 bg-ink/60 backdrop-blur-sm font-medium">
                   {post.category}
                 </span>
-                <div className="absolute bottom-0 inset-x-0 h-0.5 bg-teal scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                <div className="absolute bottom-0 inset-x-0 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
               </div>
-              <h3 className="font-geist font-black text-lg text-white uppercase leading-tight mb-3 group-hover:text-teal transition-colors duration-200">
+              <h3 className="font-heading font-black text-lg text-white uppercase leading-tight mb-3 group-hover:text-accent transition-colors duration-200">
                 {post.title}
               </h3>
               <p className="font-sans text-cream/55 text-sm leading-relaxed mb-4 line-clamp-3">
@@ -112,7 +112,7 @@ export default function BlogPage() {
           <p className="font-sans text-cream/50 text-sm mb-6">Ready to work together?</p>
           <Link
             href="/#contact"
-            className="inline-block font-geist font-black text-sm text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+            className="inline-block font-heading font-black text-sm text-ink bg-accent px-8 py-4 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
           >
             Start a Project
           </Link>

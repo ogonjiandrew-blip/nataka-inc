@@ -172,11 +172,11 @@ export default function CosplayScroll({
 
                   <div className="mt-6 md:mt-7">
                     <div className="flex items-baseline gap-3 mb-2 flex-wrap">
-                      <span className="font-geist font-black text-kin text-xs tracking-widest">
+                      <span className="font-heading font-black text-kin text-xs tracking-widest">
                         {String(n).padStart(2, "0")}
                         <span className="text-white/35"> / {frames.length}</span>
                       </span>
-                      <h3 className="font-geist font-black text-white uppercase text-lg md:text-2xl leading-none">
+                      <h3 className="font-heading font-black text-white uppercase text-lg md:text-2xl leading-none">
                         {frame.title}
                       </h3>
                       <span className="font-jp font-medium text-white/35 text-sm">
@@ -214,10 +214,10 @@ export default function CosplayScroll({
               <span className="font-jp font-bold text-shu-light text-base md:text-xl shrink-0">
                 {open.jp}
               </span>
-              <span className="font-geist font-black text-white uppercase text-sm md:text-lg truncate">
+              <span className="font-heading font-black text-white uppercase text-sm md:text-lg truncate">
                 {open.title}
               </span>
-              <span className="font-geist font-black text-kin text-[11px] tracking-widest shrink-0">
+              <span className="font-heading font-black text-kin text-[11px] tracking-widest shrink-0">
                 {String((openIndex ?? 0) + 1).padStart(2, "0")} / {frames.length}
               </span>
             </div>
@@ -226,7 +226,7 @@ export default function CosplayScroll({
               type="button"
               autoFocus
               onClick={close}
-              className="font-geist font-black text-white/60 hover:text-shu-light text-xs tracking-widest uppercase px-3 py-2 shrink-0"
+              className="font-heading font-black text-white/60 hover:text-shu-light text-xs tracking-widest uppercase px-3 py-2 shrink-0"
             >
               <span className="font-jp font-medium">閉じる</span> Close ✕
             </button>
@@ -253,7 +253,7 @@ export default function CosplayScroll({
             <button
               type="button"
               onClick={() => step(-1)}
-              className="font-geist font-black text-white/60 hover:text-kin-light text-xs tracking-widest uppercase py-2"
+              className="font-heading font-black text-white/60 hover:text-kin-light text-xs tracking-widest uppercase py-2"
               aria-label="Previous frame"
             >
               ← <span className="font-jp font-medium">前</span>
@@ -266,7 +266,7 @@ export default function CosplayScroll({
             <button
               type="button"
               onClick={() => step(1)}
-              className="font-geist font-black text-white/60 hover:text-kin-light text-xs tracking-widest uppercase py-2"
+              className="font-heading font-black text-white/60 hover:text-kin-light text-xs tracking-widest uppercase py-2"
               aria-label="Next frame"
             >
               <span className="font-jp font-medium">次</span> →

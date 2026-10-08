@@ -1,5 +1,3 @@
-"use client";
-
 const services = [
   { label: "Brand Promotion", href: "/services/brand-promotion-kenya" },
   { label: "Video Production", href: "/services/video-production-nairobi" },
@@ -12,17 +10,15 @@ const services = [
   { label: "Digital Marketing", href: "/services/digital-marketing-nairobi" },
   { label: "Event Video", href: "/services/event-video-production-kenya" },
   { label: "Automotive Marketing", href: "/services/automotive-marketing-kenya" },
-  { label: "All Services →", href: "/services" },
+  { label: "All services", href: "/services" },
 ];
 
 const company = [
+  { label: "Pricing", href: "/work-with-us" },
   { label: "Campaign Brief Builder", href: "/campaign-brief" },
   { label: "Work", href: "/#work" },
   { label: "Community", href: "/community" },
-  { label: "Otamatsuri 2026", href: "/otamatsuri-2026" },
-  { label: "Anime Video Booth", href: "/otamatsuri-experience" },
-  { label: "K-Wave Kenya", href: "/kwave" },
-  { label: "Wallpapers", href: "/community#wallpapers" },
+  { label: "Gallery", href: "/gallery" },
   { label: "About", href: "/#about" },
   { label: "Insights", href: "/blog" },
   { label: "Contact", href: "/#contact" },
@@ -44,21 +40,20 @@ export default function Footer() {
 
           <div className="col-span-2 md:col-span-1">
             <span className="font-nataka font-black text-xl text-white tracking-tight uppercase block mb-4">
-              NATAKA<span className="text-teal">.</span>INC
+              NATAKA<span className="text-signal">.</span>INC
             </span>
-            <p className="font-sans text-white/60 text-xs leading-relaxed max-w-[220px]">
-              Media &amp; marketing agency in Nairobi, Kenya. Film, music videos, brand
-              strategy and campaigns for brands that refuse to be ignored. Home of
-              Otamatsuri and Kenya&apos;s anime &amp; cosplay community.
+            <p className="font-sans text-cream/60 text-sm leading-relaxed max-w-[260px]">
+              Media and marketing agency in Nairobi, Kenya. Campaigns, films, music
+              videos and AI video for brands and artists.
             </p>
           </div>
 
           <div>
-            <h3 className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">Services</h3>
+            <h3 className="font-mono text-xs text-cream/60 mb-4">Services</h3>
             <ul className="space-y-2.5">
               {services.map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} className="font-sans text-xs text-white/50 hover:text-teal transition-colors">
+                  <a href={l.href} className="font-sans text-sm text-cream/65 hover:text-accent transition-colors">
                     {l.label}
                   </a>
                 </li>
@@ -67,11 +62,11 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">Company</h3>
+            <h3 className="font-mono text-xs text-cream/60 mb-4">Company</h3>
             <ul className="space-y-2.5">
               {company.map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} className="font-sans text-xs text-white/50 hover:text-teal transition-colors">
+                  <a href={l.href} className="font-sans text-sm text-cream/65 hover:text-accent transition-colors">
                     {l.label}
                   </a>
                 </li>
@@ -80,19 +75,19 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">Contact</h3>
-            <ul className="space-y-2.5 font-sans text-xs text-white/50">
+            <h3 className="font-mono text-xs text-cream/60 mb-4">Contact</h3>
+            <ul className="space-y-2.5 font-sans text-sm text-cream/65">
               <li>
-                <a href="mailto:andrew@natakainc.com" className="hover:text-teal transition-colors">
+                <a href="mailto:andrew@natakainc.com" className="hover:text-accent transition-colors">
                   andrew@natakainc.com
                 </a>
               </li>
               <li>
-                <a href="tel:+254117386206" className="hover:text-teal transition-colors">
+                <a href="tel:+254117386206" className="hover:text-accent transition-colors">
                   +254 117 386 206
                 </a>
               </li>
-              <li className="text-white/55">Westlands, Nairobi, Kenya</li>
+              <li>Westlands, Nairobi, Kenya</li>
             </ul>
             <div className="flex gap-4 mt-5">
               {socialLinks.map((s) => (
@@ -101,7 +96,7 @@ export default function Footer() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-sans text-[10px] text-white/55 tracking-widest uppercase hover:text-teal transition-colors"
+                  className="font-sans text-sm text-cream/65 hover:text-accent transition-colors"
                 >
                   {s.label}
                 </a>
@@ -112,10 +107,10 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/8 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="font-sans text-white/55 text-[11px] tracking-wider">
+          <p className="font-sans text-cream/45 text-xs">
             © {new Date().getFullYear()} Nataka Inc. All rights reserved.
           </p>
-          <p className="font-sans text-white/50 text-[11px] tracking-wider">
+          <p className="font-sans text-cream/45 text-xs">
             Made in Nairobi. Built to travel.
           </p>
         </div>

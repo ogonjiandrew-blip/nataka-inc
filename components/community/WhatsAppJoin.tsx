@@ -94,7 +94,7 @@ export default function WhatsAppJoin({
 
               No em dashes anywhere in this copy. House rule for Otamatsuri work.
             */}
-            <h2 className="font-geist font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase leading-none mb-6">
+            <h2 className="font-heading font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase leading-none mb-6">
               You Were Never{" "}
               <span className="font-display font-semibold italic normal-case text-otaku block">
                 {heading}
@@ -122,7 +122,7 @@ export default function WhatsAppJoin({
               href={WHATSAPP_INVITE}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="inline-flex items-center gap-3 font-geist font-black text-xs text-ink bg-[#25D366] px-8 py-4 uppercase tracking-widest hover:bg-[#3ee07c] transition-colors duration-200"
+              className="inline-flex items-center gap-3 font-heading font-black text-xs text-ink bg-[#25D366] px-8 py-4 uppercase tracking-widest hover:bg-[#3ee07c] transition-colors duration-200"
             >
               <svg
                 aria-hidden

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Plus } from "@phosphor-icons/react";
 
 const faqSchema = {
   "@context": "https://schema.org",
@@ -74,16 +75,11 @@ export default function FAQ() {
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
     />
-    <section id="faq" className="bg-ink border-t border-white/8 px-6 md:px-12 py-20 md:py-28">
+    <section id="faq" className="px-6 md:px-12 pt-4 md:pt-8 pb-24 md:pb-32">
       <div className="max-w-3xl mx-auto">
 
-        {/* Header */}
-        <p className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">
-          Common Questions
-        </p>
-        <h2 className="font-geist font-black text-[clamp(1.8rem,4vw,3rem)] text-white uppercase leading-tight mb-12">
-          What You Need<br />
-          <span className="text-teal">To Know</span>
+        <h2 className="font-heading font-extrabold stretch-semi text-white tracking-[-0.03em] leading-[1.05] text-[clamp(2rem,4.4vw,3.4rem)] mb-10 md:mb-12">
+          Questions buyers ask
         </h2>
 
         {/* Accordion */}
@@ -95,19 +91,19 @@ export default function FAQ() {
                 className="w-full flex items-center justify-between py-6 text-left group"
                 aria-expanded={open === i}
               >
-                <span className="font-geist font-bold text-base md:text-lg text-white group-hover:text-teal transition-colors duration-200 pr-8">
+                <span className="font-heading font-semibold text-base md:text-lg text-white tracking-tight group-hover:text-accent transition-colors duration-200 pr-8">
                   {faq.question}
                 </span>
                 <span
-                  className="flex-shrink-0 w-8 h-8 border border-white/20 flex items-center justify-center transition-colors duration-200 group-hover:border-teal"
+                  className="flex-shrink-0 w-8 h-8 border border-white/20 flex items-center justify-center transition-colors duration-200 group-hover:border-accent"
                   aria-hidden
                 >
                   <motion.span
                     animate={{ rotate: open === i ? 45 : 0 }}
                     transition={{ duration: 0.2, ease: "easeInOut" }}
-                    className="text-teal font-light text-xl leading-none"
+                    className="text-accent flex"
                   >
-                    +
+                    <Plus size={14} weight="bold" />
                   </motion.span>
                 </span>
               </button>
@@ -121,7 +117,7 @@ export default function FAQ() {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <p className="font-sans text-cream/60 text-base leading-relaxed pb-6 pr-12">
+                    <p className="font-sans text-cream/65 text-base leading-relaxed pb-6 pr-12 max-w-[62ch]">
                       {faq.answer}
                     </p>
                   </motion.div>
@@ -129,19 +125,6 @@ export default function FAQ() {
               </AnimatePresence>
             </div>
           ))}
-        </div>
-
-        {/* CTA */}
-        <div className="mt-12 pt-12 border-t border-white/8">
-          <p className="font-sans text-cream/60 text-sm mb-4">
-            Have a different question?
-          </p>
-          <a
-            href="/#contact"
-            className="inline-block font-geist font-black text-xs text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
-          >
-            Get in Touch
-          </a>
         </div>
 
       </div>

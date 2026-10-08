@@ -17,7 +17,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         animate={{ scaleY: 0 }}
         transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1] }}
         style={{ transformOrigin: "top" }}
-        className="fixed inset-0 z-[9990] bg-ink pointer-events-none border-b-2 border-teal"
+        className="fixed inset-0 z-[9990] bg-ink pointer-events-none border-b-2 border-accent"
         aria-hidden
       />
 

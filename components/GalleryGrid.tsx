@@ -49,13 +49,13 @@ export default function GalleryGrid() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
 
       <div className="max-w-7xl mx-auto">
-        <Link href="/" className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-teal transition-colors">
+        <Link href="/" className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-accent transition-colors">
           ← Nataka Inc
         </Link>
 
         <h1 className="leading-none mt-8 mb-5">
-          <span className="font-geist font-black text-[clamp(2rem,7vw,5rem)] text-white uppercase block">Work</span>
-          <span className="font-display font-semibold italic text-[clamp(2rem,7vw,5rem)] text-teal block">Gallery.</span>
+          <span className="font-heading font-black text-[clamp(2rem,7vw,5rem)] text-white uppercase block">Work</span>
+          <span className="font-display font-semibold italic text-[clamp(2rem,7vw,5rem)] text-accent block">Gallery.</span>
         </h1>
         <p className="font-sans text-cream/65 text-sm md:text-base max-w-2xl mb-14 leading-relaxed">
           Selected film, music video, campaign and studio work by Nataka Inc — a media, marketing and
@@ -64,7 +64,7 @@ export default function GalleryGrid() {
 
         {/* Videos */}
         <section className="mb-16 md:mb-24">
-          <h2 className="font-geist font-black text-lg md:text-xl text-white uppercase mb-6">Films &amp; Music Videos</h2>
+          <h2 className="font-heading font-black text-lg md:text-xl text-white uppercase mb-6">Films &amp; Music Videos</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {videos.map((v) => (
               <figure key={v.src} className="group">
@@ -80,8 +80,8 @@ export default function GalleryGrid() {
                   </video>
                 </div>
                 <figcaption className="mt-3">
-                  <span className="font-sans text-[10px] text-teal tracking-widest uppercase block mb-1">{v.cat}</span>
-                  <h3 className="font-geist font-black text-base text-white uppercase leading-tight">{v.title}</h3>
+                  <span className="font-sans text-[10px] text-accent tracking-widest uppercase block mb-1">{v.cat}</span>
+                  <h3 className="font-heading font-black text-base text-white uppercase leading-tight">{v.title}</h3>
                   <p className="font-sans text-cream/55 text-sm leading-relaxed mt-1">{v.desc}</p>
                 </figcaption>
               </figure>
@@ -91,7 +91,7 @@ export default function GalleryGrid() {
 
         {groups.map((g) => (
           <section key={g.heading} className="mb-14 md:mb-20">
-            <h2 className="font-geist font-black text-lg md:text-xl text-white uppercase mb-6">{g.heading}</h2>
+            <h2 className="font-heading font-black text-lg md:text-xl text-white uppercase mb-6">{g.heading}</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {g.imgs.map((src, i) => (
                 <div key={src} className="relative aspect-[4/5] overflow-hidden bg-ink-50 group">
@@ -109,14 +109,14 @@ export default function GalleryGrid() {
           </section>
         ))}
 
-        <div className="border border-teal/30 bg-teal/[0.04] p-10 md:p-14 text-center mt-4">
-          <h2 className="font-geist font-black text-[clamp(1.5rem,4vw,2.6rem)] text-white uppercase leading-tight mb-4">
+        <div className="border border-accent/30 bg-accent/[0.04] p-10 md:p-14 text-center mt-4">
+          <h2 className="font-heading font-black text-[clamp(1.5rem,4vw,2.6rem)] text-white uppercase leading-tight mb-4">
             Make Something Like This
           </h2>
           <p className="font-sans text-cream/60 text-sm mb-8 max-w-xl mx-auto">
             Tell us about your project and we&apos;ll come back with a clear plan and an honest quote.
           </p>
-          <Link href="/#contact" className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200">
+          <Link href="/#contact" className="inline-block font-heading font-black text-sm text-ink bg-accent px-10 py-5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200">
             Start a Project →
           </Link>
         </div>

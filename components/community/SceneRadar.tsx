@@ -58,7 +58,7 @@ export default function SceneRadar() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-end mb-10 md:mb-14">
           <h2 className="leading-none">
-            <span className="font-geist font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
+            <span className="font-heading font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
               What&apos;s Actually
             </span>
             <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,4.5rem)] text-kpop block">
@@ -102,7 +102,7 @@ export default function SceneRadar() {
               className="border border-white/10 border-l-2 border-l-kpop/70 bg-white/[0.02] hover:bg-white/[0.04] hover:border-l-kpop transition-colors duration-300 p-6 md:p-7"
             >
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
-                <h3 className="font-geist font-black text-lg md:text-xl text-white uppercase leading-tight">
+                <h3 className="font-heading font-black text-lg md:text-xl text-white uppercase leading-tight">
                   {e.name}
                 </h3>
                 <span className={`font-sans text-[9px] tracking-widest uppercase border px-2.5 py-1 ${statusStyle[e.status]}`}>
@@ -129,7 +129,7 @@ export default function SceneRadar() {
                   href={e.link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block mt-4 font-geist font-black text-[11px] text-white border border-white/25 px-5 py-2.5 uppercase tracking-widest hover:border-kpop hover:text-kpop-light transition-colors duration-200"
+                  className="inline-block mt-4 font-heading font-black text-[11px] text-white border border-white/25 px-5 py-2.5 uppercase tracking-widest hover:border-kpop hover:text-kpop-light transition-colors duration-200"
                 >
                   {e.link.label} →
                 </a>
@@ -141,7 +141,7 @@ export default function SceneRadar() {
         {/* Community submission */}
         <div className="mt-10 border border-dashed border-kpop/30 bg-kpop/[0.03] p-7 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-5">
           <div>
-            <h3 className="font-geist font-black text-white text-base uppercase mb-1.5">
+            <h3 className="font-heading font-black text-white text-base uppercase mb-1.5">
               Running something we&apos;ve missed?
             </h3>
             <p className="font-sans text-white/60 text-sm leading-relaxed max-w-lg">
@@ -153,7 +153,7 @@ export default function SceneRadar() {
             href={tipUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-geist font-black text-xs text-white bg-kpop px-7 py-4 uppercase tracking-widest hover:bg-kpop-mid transition-colors duration-200 whitespace-nowrap self-start md:self-auto"
+            className="font-heading font-black text-xs text-white bg-kpop px-7 py-4 uppercase tracking-widest hover:bg-kpop-mid transition-colors duration-200 whitespace-nowrap self-start md:self-auto"
           >
             Add An Event →
           </a>

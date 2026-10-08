@@ -1,213 +1,136 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import LetterReveal from "@/components/LetterReveal";
-import { useTextScramble } from "@/hooks/useTextScramble";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "@phosphor-icons/react";
+import Reveal from "@/components/Reveal";
 
-const services = [
+type Service = { title: string; line: string; href: string; image: string; alt: string };
+
+const services: Service[] = [
   {
-    number: "01",
-    title: "Brand Strategy",
-    description: "We decode what makes your brand irreplaceable — then build the systems, voice, and positioning to prove it. Identity design, brand architecture, messaging frameworks.",
-    tags: ["Brand Identity", "Positioning", "Messaging"],
-    href: "/services/brand-strategy-kenya",
-  },
-  {
-    number: "02",
-    title: "Digital Marketing",
-    description: "Data-driven campaigns that cut through noise. Social media, SEO, paid media, content strategy — we engineer growth with precision and creativity.",
-    tags: ["Social Media", "Paid Ads", "SEO", "Content"],
-    href: "/services/digital-marketing-nairobi",
-  },
-  {
-    number: "03",
-    title: "Creative Production",
-    description: "Cinematic video, editorial photography, motion graphics. We produce content that stops the scroll and earns attention in a world that has none to spare.",
-    tags: ["Video", "Photography", "Motion Graphics"],
-    href: "/services/video-production-nairobi",
-  },
-  {
-    number: "04",
-    title: "Brand Promotion",
-    description: "Campaign strategy, launch films, social content and rollout planning for Kenyan brands. Connect your message with the buyers your next campaign needs to reach.",
-    tags: ["Campaigns", "Launches", "Brand Films"],
-    href: "/services/brand-promotion-kenya",
-  },
-  {
-    number: "05",
-    title: "Music Videos",
-    description: "Artist-driven music video production — concept, direction, and post for Kenya's boldest sounds. We directed Ssaru x Fathermoh's 'Kwanini'.",
-    tags: ["Direction", "Production", "Post"],
-    href: "/services/music-video-production-nairobi",
-  },
-  {
-    number: "06",
-    title: "AI Video Production",
-    description: "AI commercials, AI music videos, consistent AI characters and AI effects on footage we shoot for real. Directed like film: we built a whole AI rock band, AANOTHER, to prove it.",
-    tags: ["AI Commercials", "AI VFX", "AI Characters"],
+    title: "AI video",
+    line: "AI commercials, music videos and brand characters, directed shot by shot.",
     href: "/services/ai-video-production-kenya",
+    image: "/ai/aanother/frontman.jpg",
+    alt: "AANOTHER frontman on stage, an AI band made by Nataka Inc",
+  },
+  {
+    title: "Film & commercials",
+    line: "Brand films, TV and online commercials, shot by our own crew.",
+    href: "/services/video-production-nairobi",
+    image: "/stills/1/46.jpg",
+    alt: "Film still by Nataka Inc: a man in a hat against a bright sky",
+  },
+  {
+    title: "Music videos",
+    line: "Concept, shoot and edit for artists, plus the cut-downs for release week.",
+    href: "/services/music-video-production-nairobi",
+    image: "/stills/4/p5.jpg",
+    alt: "Still from the Kwanini music video directed by Nataka Inc",
+  },
+  {
+    title: "Launch campaigns",
+    line: "The idea, the hero film, the social cutdowns and the rollout plan.",
+    href: "/services/brand-promotion-kenya",
+    image: "/videos/sarit-poster-clean.jpg",
+    alt: "Frame from the Sarit Centre commercial by Nataka Inc",
+  },
+  {
+    title: "Digital marketing",
+    line: "Paid social, search and content plans built around enquiries, not likes.",
+    href: "/services/digital-marketing-nairobi",
+    image: "/stills/teslah/2.jpg",
+    alt: "Studio portrait from a Nataka Inc music video shoot",
+  },
+  {
+    title: "Brand strategy",
+    line: "Positioning, identity and messaging, so every ad says the same thing.",
+    href: "/services/brand-strategy-kenya",
+    image: "/stills/fashion/6.jpg",
+    alt: "Fashion editorial portrait by Nataka Inc",
   },
 ];
 
+/**
+ * Typographic index of services. On large screens a preview pane beside the
+ * list swaps to the hovered service's image; on smaller screens the list
+ * stands alone, since the work grid above already carries the imagery.
+ */
 export default function Services() {
-  const ref    = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [active, setActive] = useState(0);
+  const [hovering, setHovering] = useState(false);
 
   return (
-    <section id="services" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto" ref={ref}>
+    <section id="services" className="px-6 md:px-12 py-24 md:py-36 max-w-7xl mx-auto">
+      <Reveal className="mb-12 md:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.95] text-[clamp(1.85rem,6vw,5.2rem)]">
+          What we make
+        </h2>
+        <p className="font-sans text-cream/60 text-base leading-relaxed max-w-[34ch]">
+          Six services, one team. Most clients start with one and add the rest once it works.
+        </p>
+      </Reveal>
 
-      <div className="mb-16 md:mb-20">
-        {/* Character-stagger label */}
-        <div className="mb-5">
-          <LetterReveal text="What We Do" inView={inView} delay={0} stagger={0.045}
-            className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium" />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+        <ul className="lg:col-span-7 border-t border-white/10" onMouseLeave={() => setHovering(false)}>
+          {services.map((s, i) => (
+            <li
+              key={s.href}
+              onMouseEnter={() => {
+                setActive(i);
+                setHovering(true);
+              }}
+            >
+              <Link
+                href={s.href}
+                onFocus={() => setActive(i)}
+                className={`group flex items-start justify-between gap-6 py-6 md:py-7 border-b border-white/10 transition-opacity duration-300 ${
+                  hovering && active !== i ? "lg:opacity-40" : ""
+                }`}
+              >
+                <span className="min-w-0">
+                  <span className="block font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.02em] leading-[1] text-[clamp(1.45rem,3.1vw,2.6rem)] transition-transform duration-500 ease-out lg:group-hover:translate-x-2">
+                    {s.title}
+                  </span>
+                  <span className="mt-2.5 block font-sans text-sm md:text-[0.95rem] text-cream/60 leading-relaxed max-w-[52ch]">
+                    {s.line}
+                  </span>
+                </span>
+                <ArrowUpRight
+                  size={22}
+                  weight="bold"
+                  aria-hidden="true"
+                  className="mt-1 shrink-0 text-cream/50 transition-[color,transform] duration-300 group-hover:text-white group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Preview pane (large screens): every image stays mounted and cross-fades */}
+        <div className="hidden lg:block lg:col-span-5 lg:sticky lg:top-28">
+          <div className="relative aspect-[4/5] overflow-hidden bg-ink-50">
+            {services.map((s, i) => (
+              <Image
+                key={s.image}
+                src={s.image}
+                alt={i === active ? s.alt : ""}
+                fill
+                sizes="40vw"
+                quality={82}
+                className={`object-cover transition-[opacity,transform] duration-700 ease-out ${
+                  i === active ? "opacity-100 scale-[1.04]" : "opacity-0 scale-[1.1]"
+                }`}
+              />
+            ))}
+          </div>
+          <p className="mt-4 font-mono text-xs text-cream/60" aria-live="polite">
+            {services[active].title}
+          </p>
         </div>
-
-        <div className="overflow-hidden">
-          <motion.div
-            initial={{ clipPath: "inset(0 100% 0 0)" }}
-            animate={inView ? { clipPath: "inset(0 0% 0 0)" } : {}}
-            transition={{ duration: 1, delay: 0.1, ease: [0.77, 0, 0.175, 1] }}
-          >
-            <h2 className="leading-none">
-              <span className="font-geist font-black text-[clamp(1.8rem,7vw,6rem)] text-white uppercase block">Full-Service</span>
-              <span className="font-display font-semibold italic text-[clamp(1.8rem,7vw,6rem)] text-teal block">Excellence.</span>
-            </h2>
-          </motion.div>
-        </div>
       </div>
-
-      {/* Animated HR */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={inView ? { scaleX: 1 } : {}}
-        transition={{ duration: 1.1, delay: 0.3, ease: [0.77, 0, 0.175, 1] }}
-        style={{ transformOrigin: "left" }}
-        className="hr-teal opacity-30 mb-16 md:mb-20"
-      />
-
-      {/* Desktop rows */}
-      <div className="hidden md:block divide-y divide-white/8">
-        {services.map((s, i) => <DesktopRow key={s.number} service={s} index={i} inView={inView} />)}
-      </div>
-
-      {/* Mobile accordion */}
-      <div className="md:hidden divide-y divide-white/8">
-        {services.map((s, i) => (
-          <MobileAccordion key={s.number} service={s} index={i}
-            isOpen={openIndex === i} onToggle={() => setOpenIndex(openIndex === i ? null : i)} inView={inView} />
-        ))}
-      </div>
-
-      {/* View all services */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.6 }}
-        className="mt-14 md:mt-20"
-      >
-        <a
-          href="/services"
-          className="inline-flex items-center justify-center gap-2 font-geist font-black text-xs text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors duration-300"
-        >
-          View All Services →
-        </a>
-      </motion.div>
     </section>
-  );
-}
-
-/* ── Desktop row — number scrambles on hover ── */
-function DesktopRow({ service, index, inView }: { service: (typeof services)[0]; index: number; inView: boolean }) {
-  const [hovered, setHovered] = useState(false);
-  const scrambled = useTextScramble(service.number, hovered, 0);
-
-  return (
-    <motion.div
-      initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-      animate={inView ? { clipPath: "inset(0 0 0% 0)", opacity: 1 } : {}}
-      transition={{ duration: 0.7, delay: 0.4 + index * 0.12, ease: [0.22, 1, 0.36, 1] }}
-      className="group grid grid-cols-[64px_1fr_1.2fr_auto] gap-6 py-9 hover:bg-white/[0.018] transition-colors duration-500 cursor-default"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {/* Number — scrambles on hover */}
-      <span className="font-geist font-black text-sm text-teal/50 pt-1 group-hover:text-teal transition-colors duration-200 tabular-nums">
-        {scrambled}
-      </span>
-
-      <h3 className="font-geist font-black text-2xl text-white uppercase group-hover:text-teal transition-colors duration-300 self-start pt-0.5">
-        {service.title}
-      </h3>
-
-      <div>
-        <p className="font-sans text-white/75 text-sm leading-relaxed">{service.description}</p>
-        {service.href && (
-          <a href={service.href} className="inline-block mt-3 font-sans text-[11px] text-teal tracking-widest uppercase border-b border-teal/30 hover:border-teal pb-0.5 transition-colors">
-            Learn More →
-          </a>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-2 items-end self-start pt-1">
-        {service.tags.map((tag) => (
-          <span key={tag} className="font-sans text-[10px] text-teal tracking-wider uppercase border border-teal/25 px-3 py-1 font-medium whitespace-nowrap group-hover:border-teal/50 transition-colors duration-300">
-            {tag}
-          </span>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
-/* ── Mobile accordion ── */
-function MobileAccordion({ service, index, isOpen, onToggle, inView }: {
-  service: (typeof services)[0]; index: number; isOpen: boolean; onToggle: () => void; inView: boolean;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-    >
-      <button onClick={onToggle}
-        className="w-full flex items-center justify-between py-5 text-left min-h-[56px]"
-        aria-expanded={isOpen}>
-        <div className="flex items-center gap-4">
-          <span className="font-geist font-black text-[10px] text-teal/50">{service.number}</span>
-          <h3 className="font-geist font-black text-xl text-white uppercase">{service.title}</h3>
-        </div>
-        <motion.span animate={{ rotate: isOpen ? 45 : 0 }} transition={{ duration: 0.25 }}
-          className="text-teal text-2xl leading-none flex-shrink-0 ml-4" aria-hidden>+</motion.span>
-      </button>
-
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="pb-6 pt-1 space-y-4">
-              <p className="font-sans text-white/75 text-sm leading-relaxed">{service.description}</p>
-              {service.href && (
-                <a href={service.href} className="inline-block font-sans text-[11px] text-teal tracking-widest uppercase border-b border-teal/30 pb-0.5">
-                  Learn More →
-                </a>
-              )}
-              <div className="flex flex-wrap gap-2">
-                {service.tags.map((tag) => (
-                  <span key={tag} className="font-sans text-[10px] text-teal tracking-wider uppercase border border-teal/25 px-3 py-1.5 font-medium">{tag}</span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
   );
 }

@@ -96,7 +96,7 @@ export default function SoundToggle() {
     <button
       onClick={toggle}
       aria-label={on ? "Turn interface sound off" : "Turn interface sound on"}
-      className="fixed bottom-6 left-6 z-[9970] hidden md:flex items-center gap-2 font-mono text-[10px] tracking-[0.25em] uppercase text-white/45 hover:text-teal transition-colors"
+      className="fixed bottom-6 left-6 z-[9970] hidden md:flex items-center gap-2 font-mono text-[10px] tracking-[0.25em] uppercase text-white/45 hover:text-accent transition-colors"
     >
       {/* 4-bar equalizer — animates only when on */}
       <span className="flex items-end gap-[2px] h-3" aria-hidden>

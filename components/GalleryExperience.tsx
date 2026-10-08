@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 function Loading() {
   return (
     <div className="min-h-[100dvh] bg-ink flex items-center justify-center">
-      <span className="font-sans text-teal text-xs tracking-widest uppercase animate-pulse">Loading gallery…</span>
+      <span className="font-sans text-accent text-xs tracking-widest uppercase animate-pulse">Loading gallery…</span>
     </div>
   );
 }
@@ -43,13 +43,13 @@ export default function GalleryExperience({ children }: { children: React.ReactN
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 480, damping: 11, delay: 0.35 }}
         style={{ transformOrigin: "center" }}
-        className="fixed bottom-24 right-4 md:bottom-28 md:right-8 z-[9970] flex items-stretch overflow-hidden rounded-full border border-teal/50 bg-ink/90 backdrop-blur-md shadow-2xl shadow-black/60"
+        className="fixed bottom-24 right-4 md:bottom-28 md:right-8 z-[9970] flex items-stretch overflow-hidden rounded-full border border-accent/50 bg-ink/90 backdrop-blur-md shadow-2xl shadow-black/60"
       >
         <button
           type="button"
           onClick={() => choose("3d")}
           aria-pressed={view === "3d"}
-          className={`px-5 py-3 font-geist font-black text-xs tracking-widest uppercase transition-colors duration-200 ${view === "3d" ? "bg-teal text-ink" : "text-white/85 hover:text-white"}`}
+          className={`px-5 py-3 font-heading font-black text-xs tracking-widest uppercase transition-colors duration-200 ${view === "3d" ? "bg-accent text-ink" : "text-white/85 hover:text-white"}`}
         >
           3D
         </button>
@@ -57,7 +57,7 @@ export default function GalleryExperience({ children }: { children: React.ReactN
           type="button"
           onClick={() => choose("grid")}
           aria-pressed={view === "grid"}
-          className={`px-5 py-3 font-geist font-black text-xs tracking-widest uppercase transition-colors duration-200 ${view === "grid" ? "bg-teal text-ink" : "text-white/85 hover:text-white"}`}
+          className={`px-5 py-3 font-heading font-black text-xs tracking-widest uppercase transition-colors duration-200 ${view === "grid" ? "bg-accent text-ink" : "text-white/85 hover:text-white"}`}
         >
           Grid
         </button>

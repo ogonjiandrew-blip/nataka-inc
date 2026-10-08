@@ -101,7 +101,7 @@ export default function PostPage({ params }: Props) {
         <div className="absolute top-8 left-6 md:left-12">
           <Link
             href="/blog"
-            className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-teal transition-colors flex items-center gap-2"
+            className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-accent transition-colors flex items-center gap-2"
           >
             ← Insights
           </Link>
@@ -109,10 +109,10 @@ export default function PostPage({ params }: Props) {
 
         {/* Post meta */}
         <div className="absolute bottom-0 inset-x-0 px-6 md:px-12 pb-12 max-w-4xl">
-          <span className="font-sans text-[10px] text-teal tracking-widest uppercase border border-teal/40 px-3 py-1 bg-ink/60 backdrop-blur-sm font-medium inline-block mb-5">
+          <span className="font-sans text-[10px] text-accent tracking-widest uppercase border border-accent/40 px-3 py-1 bg-ink/60 backdrop-blur-sm font-medium inline-block mb-5">
             {post.category}
           </span>
-          <h1 className="font-geist font-black text-[clamp(1.6rem,4vw,3.2rem)] text-white uppercase leading-tight mb-4">
+          <h1 className="font-heading font-black text-[clamp(1.6rem,4vw,3.2rem)] text-white uppercase leading-tight mb-4">
             {post.title}
           </h1>
           <div className="flex items-center gap-4 font-sans text-white/40 text-xs">
@@ -120,14 +120,14 @@ export default function PostPage({ params }: Props) {
             <span>·</span>
             <span>{post.readTime}</span>
             <span>·</span>
-            <span className="text-teal">Nataka Inc</span>
+            <span className="text-accent">Nataka Inc</span>
           </div>
         </div>
       </div>
 
       {/* Article body */}
       <div className="px-6 md:px-12 py-16 max-w-3xl mx-auto">
-        <p className="font-sans text-cream/70 text-base md:text-lg leading-relaxed mb-10 border-l-2 border-teal pl-6">
+        <p className="font-sans text-cream/70 text-base md:text-lg leading-relaxed mb-10 border-l-2 border-accent pl-6">
           {post.excerpt}
         </p>
 
@@ -141,13 +141,13 @@ export default function PostPage({ params }: Props) {
           <p className="font-sans text-cream/50 text-sm mb-2">Ready to start a project?</p>
           <Link
             href="/#contact"
-            className="inline-block font-geist font-black text-sm text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200 mr-4"
+            className="inline-block font-heading font-black text-sm text-ink bg-accent px-8 py-4 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200 mr-4"
           >
             Get in Touch
           </Link>
           <Link
             href="/blog"
-            className="inline-block font-sans text-white/50 text-xs tracking-widest uppercase hover:text-teal transition-colors pt-4"
+            className="inline-block font-sans text-white/50 text-xs tracking-widest uppercase hover:text-accent transition-colors pt-4"
           >
             ← More Insights
           </Link>
@@ -158,7 +158,7 @@ export default function PostPage({ params }: Props) {
       {allPosts.length > 0 && (
         <div className="px-6 md:px-12 pb-24 max-w-7xl mx-auto">
           <div className="h-px bg-white/8 mb-12" />
-          <h2 className="font-geist font-black text-xl text-white uppercase mb-8">More Insights</h2>
+          <h2 className="font-heading font-black text-xl text-white uppercase mb-8">More Insights</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {allPosts.map((p) => (
               <Link key={p.slug} href={`/blog/${p.slug}`} className="group block">
@@ -172,10 +172,10 @@ export default function PostPage({ params }: Props) {
                     quality={80}
                   />
                   <div className="absolute inset-0 bg-ink/40 group-hover:bg-ink/20 transition-colors duration-300" />
-                  <div className="absolute bottom-0 inset-x-0 h-0.5 bg-teal scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                  <div className="absolute bottom-0 inset-x-0 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                 </div>
-                <span className="font-sans text-[9px] text-teal tracking-widest uppercase font-medium block mb-1">{p.category}</span>
-                <h3 className="font-geist font-black text-base text-white uppercase leading-tight group-hover:text-teal transition-colors duration-200">
+                <span className="font-sans text-[9px] text-accent tracking-widest uppercase font-medium block mb-1">{p.category}</span>
+                <h3 className="font-heading font-black text-base text-white uppercase leading-tight group-hover:text-accent transition-colors duration-200">
                   {p.title}
                 </h3>
               </Link>

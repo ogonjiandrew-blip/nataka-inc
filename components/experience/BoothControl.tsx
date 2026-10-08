@@ -107,7 +107,7 @@ export default function BoothControl() {
           <p className="font-sans text-white/45 text-[10px] tracking-widest2 uppercase mb-3">
             Nataka · Internal
           </p>
-          <h1 className="font-geist font-black text-3xl text-white uppercase mb-6">
+          <h1 className="font-heading font-black text-3xl text-white uppercase mb-6">
             Booth Control
           </h1>
           <input
@@ -116,11 +116,11 @@ export default function BoothControl() {
             onChange={(e) => setKey(e.target.value)}
             placeholder="Password"
             autoComplete="current-password"
-            className="w-full bg-transparent border-b-2 border-white/20 focus:border-otaku outline-none font-geist text-xl text-white placeholder:text-white/25 py-3 transition-colors"
+            className="w-full bg-transparent border-b-2 border-white/20 focus:border-otaku outline-none font-heading text-xl text-white placeholder:text-white/25 py-3 transition-colors"
           />
           <button
             type="submit"
-            className="w-full mt-6 font-geist font-black text-xs text-ink bg-otaku px-6 py-4 uppercase tracking-widest"
+            className="w-full mt-6 font-heading font-black text-xs text-ink bg-otaku px-6 py-4 uppercase tracking-widest"
           >
             Unlock
           </button>
@@ -134,7 +134,7 @@ export default function BoothControl() {
     <div className="border border-white/12 p-4 mb-2.5">
       <div className="flex items-start justify-between gap-3 mb-2">
         <div>
-          <p className="font-geist font-black text-lg text-white uppercase leading-none">
+          <p className="font-heading font-black text-lg text-white uppercase leading-none">
             {job.name}
           </p>
           <p className="font-sans text-white/50 text-xs mt-1.5">
@@ -226,7 +226,7 @@ export default function BoothControl() {
     <div className="flex items-center justify-between gap-3 border-b border-white/8 py-2.5">
       <div className="min-w-0">
         <p className="font-sans text-white/60 text-xs truncate">
-          <span className="font-geist font-black text-white uppercase">{job.name}</span> ·{" "}
+          <span className="font-heading font-black text-white uppercase">{job.name}</span> ·{" "}
           {job.world} · {job.power}
         </p>
         <p className="font-mono text-white/35 text-[11px] mt-0.5">{job.id}</p>
@@ -261,7 +261,7 @@ export default function BoothControl() {
   return (
     <div className="px-5 md:px-10 py-6 max-w-3xl mx-auto">
       <div className="flex items-baseline justify-between mb-1">
-        <h1 className="font-geist font-black text-xl text-white uppercase tracking-wide">
+        <h1 className="font-heading font-black text-xl text-white uppercase tracking-wide">
           Booth <span className="text-otaku">Control</span>
         </h1>
         <p className="font-sans text-white/40 text-[10px] uppercase tracking-widest">
@@ -307,7 +307,7 @@ export default function BoothControl() {
           autoCapitalize="characters"
           autoCorrect="off"
           spellCheck={false}
-          className="w-full bg-transparent border-b-2 border-white/20 focus:border-otaku outline-none font-geist text-lg text-white placeholder:text-white/25 py-2.5 transition-colors uppercase"
+          className="w-full bg-transparent border-b-2 border-white/20 focus:border-otaku outline-none font-heading text-lg text-white placeholder:text-white/25 py-2.5 transition-colors uppercase"
         />
         {norm && (
           <div className="mt-3">
@@ -326,7 +326,7 @@ export default function BoothControl() {
                     type="button"
                     disabled={norm.length < 4 || findState === "looking"}
                     onClick={lookup}
-                    className="font-geist font-black text-[11px] text-white/75 border border-white/25 px-4 py-2.5 uppercase tracking-widest disabled:opacity-40"
+                    className="font-heading font-black text-[11px] text-white/75 border border-white/25 px-4 py-2.5 uppercase tracking-widest disabled:opacity-40"
                   >
                     {findState === "looking" ? "Searching…" : `Search the archive for “${norm}”`}
                   </button>
@@ -351,7 +351,7 @@ export default function BoothControl() {
                   type="button"
                   disabled={busy === job.id}
                   onClick={() => act(job.id, "approve")}
-                  className="font-geist font-black text-xs text-ink bg-otaku px-4 py-3.5 uppercase tracking-widest disabled:opacity-50"
+                  className="font-heading font-black text-xs text-ink bg-otaku px-4 py-3.5 uppercase tracking-widest disabled:opacity-50"
                 >
                   ✓ Paid — approve
                 </button>
@@ -359,7 +359,7 @@ export default function BoothControl() {
                   type="button"
                   disabled={busy === job.id}
                   onClick={() => act(job.id, "reject")}
-                  className="font-geist font-black text-xs text-white/70 border border-white/20 px-4 py-3.5 uppercase tracking-widest disabled:opacity-50"
+                  className="font-heading font-black text-xs text-white/70 border border-white/20 px-4 py-3.5 uppercase tracking-widest disabled:opacity-50"
                 >
                   Reject
                 </button>
@@ -408,7 +408,7 @@ export default function BoothControl() {
             >
               <div className="min-w-0">
                 <p className="font-sans text-white/60 text-xs truncate">
-                  <span className="font-geist font-black text-white uppercase">{job.name}</span>{" "}
+                  <span className="font-heading font-black text-white uppercase">{job.name}</span>{" "}
                   · {job.world} · {job.power}
                 </p>
                 <p className="font-mono text-white/35 text-[11px] mt-0.5">{job.id}</p>

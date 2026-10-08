@@ -37,9 +37,9 @@ export default function MarqueeBanner() {
           >
             {items.map((item, i) => (
               item.style === "dot" ? (
-                <span key={i} className="text-teal/40 text-base">·</span>
+                <span key={i} className="text-accent/40 text-base">·</span>
               ) : item.style === "nataka" ? (
-                <span key={i} className="font-geist font-black text-[11px] text-white/55 uppercase tracking-wider whitespace-nowrap">
+                <span key={i} className="font-heading font-black text-[11px] text-white/55 uppercase tracking-wider whitespace-nowrap">
                   {item.text}
                 </span>
               ) : (

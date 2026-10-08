@@ -17,12 +17,12 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
       className="border-y border-white/8 bg-gradient-to-b from-white/[0.02] to-transparent py-16 md:py-24 mb-16 md:mb-24"
     >
       <div className="px-6 md:px-12 max-w-7xl mx-auto">
-        <p className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">{study.eyebrow}</p>
+        <p className="font-sans text-[10px] text-accent tracking-widest uppercase mb-4">{study.eyebrow}</p>
         <h2 id="case-study-title" className="leading-[0.95] mb-6">
-          <span className="font-geist font-black text-[clamp(1.9rem,5vw,4rem)] text-white uppercase block">
+          <span className="font-heading font-black text-[clamp(1.9rem,5vw,4rem)] text-white uppercase block">
             {study.title}
           </span>
-          <span className="font-display font-semibold italic text-[clamp(1.9rem,5vw,4rem)] text-teal block">
+          <span className="font-heading font-black text-[clamp(1.9rem,5vw,4rem)] text-accent uppercase block">
             {study.titleAccent}
           </span>
         </h2>
@@ -55,7 +55,7 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
               <div key={s.label} className="border-t border-white/10 pt-5">
                 <dt className="sr-only">{s.label}</dt>
                 <dd>
-                  <span className="font-geist font-black text-[clamp(2.2rem,4.5vw,3.4rem)] text-white leading-none block tabular-nums">
+                  <span className="font-heading font-black text-[clamp(2.2rem,4.5vw,3.4rem)] text-white leading-none block tabular-nums">
                     {s.value}
                   </span>
                   <span className="font-sans text-xs text-cream/55 uppercase tracking-widest mt-2 block">{s.label}</span>
@@ -66,8 +66,8 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
         </div>
 
         {/* Contact sheet: monochrome until you look at a frame */}
-        <h3 className="font-geist font-black text-[clamp(1.2rem,2.6vw,1.9rem)] text-white uppercase mb-6">
-          The <span className="text-teal">contact sheet</span>
+        <h3 className="font-heading font-black text-[clamp(1.2rem,2.6vw,1.9rem)] text-white uppercase mb-6">
+          The <span className="text-accent">contact sheet</span>
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3 mb-16 md:mb-20">
           {study.stills.map((s, i) => (
@@ -91,7 +91,7 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
               />
               <figcaption className="absolute bottom-0 inset-x-0 flex justify-between items-end gap-3 p-3 md:p-4 bg-gradient-to-t from-ink/85 to-transparent">
                 <span className="font-sans text-[10px] md:text-xs text-white/90 uppercase tracking-widest">{s.caption}</span>
-                <span className="font-sans text-[10px] text-teal tabular-nums tracking-widest">FR {String(i + 1).padStart(2, "0")}</span>
+                <span className="font-sans text-[10px] text-accent tabular-nums tracking-widest">FR {String(i + 1).padStart(2, "0")}</span>
               </figcaption>
             </figure>
           ))}
@@ -100,14 +100,14 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
         {/* Vertical cut-downs */}
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center mb-16 md:mb-20">
           <div className="lg:col-span-5">
-            <h3 className="font-geist font-black text-[clamp(1.2rem,2.6vw,1.9rem)] text-white uppercase mb-4">
-              Cut for <span className="text-teal">every feed</span>
+            <h3 className="font-heading font-black text-[clamp(1.2rem,2.6vw,1.9rem)] text-white uppercase mb-4">
+              Cut for <span className="text-accent">every feed</span>
             </h3>
             <p className="font-sans text-cream/70 text-base leading-relaxed mb-6">{study.verticalsText}</p>
             <ul className="space-y-4">
               {study.forYou.map((point, i) => (
                 <li key={point} className="flex gap-4 items-start">
-                  <span className="font-geist font-black text-teal/60 text-sm pt-0.5 tabular-nums flex-shrink-0">
+                  <span className="font-heading font-black text-accent/60 text-sm pt-0.5 tabular-nums flex-shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <p className="font-sans text-cream/75 text-sm leading-relaxed">{point}</p>
@@ -130,8 +130,8 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
                   <a href={v.src}>Watch {v.title}</a>
                 </video>
                 <figcaption className="mt-3">
-                  <span className="font-geist font-bold text-sm text-white block">{v.title}</span>
-                  <span className="font-sans text-[10px] text-teal uppercase tracking-widest">{v.meta}</span>
+                  <span className="font-heading font-bold text-sm text-white block">{v.title}</span>
+                  <span className="font-sans text-[10px] text-accent uppercase tracking-widest">{v.meta}</span>
                 </figcaption>
               </figure>
             ))}
@@ -144,7 +144,7 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
             href={waLink(`Source: ${siteUrl}/services/${slug}#case-study\n${study.cta.whatsappMessage}`)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-teal text-ink font-geist font-black uppercase text-xs tracking-widest px-8 py-5 hover:bg-teal-light transition-colors"
+            className="inline-block bg-accent text-ink font-heading font-black uppercase text-xs tracking-widest px-8 py-5 hover:bg-accent-light transition-colors"
           >
             {study.cta.button} →
           </a>
@@ -152,7 +152,7 @@ export default function AiCaseStudy({ study, slug }: { study: CaseStudy; slug: s
             href={study.cta.watchHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-sans text-sm text-teal underline underline-offset-4"
+            className="font-sans text-sm text-accent underline underline-offset-4"
           >
             {study.cta.watchLabel}
           </a>

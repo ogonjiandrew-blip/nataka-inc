@@ -785,7 +785,7 @@ export default function LiveMirror() {
         {/* idle / permission states */}
         {cam !== "live" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 text-center">
-            <div className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-teal/70">
+            <div className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-accent/70">
               NTK-LIVE · SIGNAL STANDBY
             </div>
             {cam === "idle" && (
@@ -795,7 +795,7 @@ export default function LiveMirror() {
                 </p>
                 <button
                   onClick={() => startCamera()}
-                  className="font-nataka font-black uppercase tracking-widest2 text-xs bg-teal text-ink px-8 py-4 hover:bg-teal-light transition-colors"
+                  className="font-nataka font-black uppercase tracking-widest2 text-xs bg-accent text-ink px-8 py-4 hover:bg-accent-light transition-colors"
                 >
                   Start the mirror
                 </button>
@@ -817,7 +817,7 @@ export default function LiveMirror() {
                 </p>
                 <button
                   onClick={() => startCamera()}
-                  className="font-nataka font-black uppercase tracking-widest2 text-xs border border-teal text-teal px-8 py-4 hover:bg-teal hover:text-ink transition-colors"
+                  className="font-nataka font-black uppercase tracking-widest2 text-xs border border-accent text-accent px-8 py-4 hover:bg-accent hover:text-ink transition-colors"
                 >
                   Try again
                 </button>
@@ -830,12 +830,12 @@ export default function LiveMirror() {
                 </p>
                 <p className="text-cream/50 text-sm max-w-sm">
                   If this is the OBS Virtual Camera, open OBS and press{" "}
-                  <span className="text-teal">Start Virtual Camera</span>. Otherwise close
+                  <span className="text-accent">Start Virtual Camera</span>. Otherwise close
                   whatever app is already holding the camera, then try again.
                 </p>
                 <button
                   onClick={() => startCamera()}
-                  className="font-nataka font-black uppercase tracking-widest2 text-xs border border-teal text-teal px-8 py-4 hover:bg-teal hover:text-ink transition-colors"
+                  className="font-nataka font-black uppercase tracking-widest2 text-xs border border-accent text-accent px-8 py-4 hover:bg-accent hover:text-ink transition-colors"
                 >
                   Try again
                 </button>
@@ -855,7 +855,7 @@ export default function LiveMirror() {
           <>
             {["top-3 left-3 border-t border-l", "top-3 right-3 border-t border-r", "bottom-3 left-3 border-b border-l", "bottom-3 right-3 border-b border-r"].map(
               (pos) => (
-                <div key={pos} className={`absolute ${pos} w-6 h-6 border-teal/60 pointer-events-none`} />
+                <div key={pos} className={`absolute ${pos} w-6 h-6 border-accent/60 pointer-events-none`} />
               ),
             )}
             <div className="absolute top-4 inset-x-0 px-8 flex items-center justify-between pointer-events-none font-nataka font-black uppercase tracking-widest2 text-[9px] sm:text-[10px]">
@@ -863,7 +863,7 @@ export default function LiveMirror() {
                 <span className="w-2 h-2 rounded-full bg-[#D61F2C] animate-pulse" />
                 LIVE
               </span>
-              <span className="text-teal/80">
+              <span className="text-accent/80">
                 {aiActive ? `AI · ${activeMode.model.toUpperCase()}` : `LOOK · ${LOOKS[look].name}`}
               </span>
               <span className="text-cream/60">{clock}</span>
@@ -873,19 +873,19 @@ export default function LiveMirror() {
               <span className="hidden sm:inline">
                 {engine === "ai" ? "DECART UPLINK" : "ON-DEVICE GPU"}
                 {quality && engine === "ai" && (
-                  <span className={quality === "good" ? "text-teal/70" : quality === "fair" ? "text-[#F5C542]" : "text-[#D61F2C]"}>
+                  <span className={quality === "good" ? "text-accent/70" : quality === "fair" ? "text-[#F5C542]" : "text-[#D61F2C]"}>
                     {" "}· LINK {quality.toUpperCase()}
                   </span>
                 )}
               </span>
-              <span className="text-teal/70">{fps} FPS</span>
+              <span className="text-accent/70">{fps} FPS</span>
             </div>
 
             {/* AI status — every state says what to do next, never a black screen */}
             {engine === "ai" && ai !== "live" && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
                 <div className="bg-ink/85 px-6 py-5 text-center max-w-sm pointer-events-auto">
-                  <p className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-teal">
+                  <p className="font-nataka font-black uppercase tracking-widest2 text-[10px] text-accent">
                     {ai === "checking" && "Checking AI engine…"}
                     {ai === "connecting" && "Connecting to Lucy 2.5"}
                     {ai === "reconnecting" && "Reconnecting — hold still"}
@@ -916,11 +916,11 @@ export default function LiveMirror() {
                         onChange={(e) => setCodeInput(e.target.value)}
                         placeholder="Paste booth code"
                         autoFocus
-                        className="flex-1 min-w-0 bg-ink-100 border border-cream/20 focus:border-teal outline-none text-cream text-sm px-3 py-2 placeholder:text-cream/30"
+                        className="flex-1 min-w-0 bg-ink-100 border border-cream/20 focus:border-accent outline-none text-cream text-sm px-3 py-2 placeholder:text-cream/30"
                       />
                       <button
                         type="submit"
-                        className="font-nataka font-black uppercase tracking-widest2 text-[10px] bg-teal text-ink px-4 hover:bg-teal-light transition-colors"
+                        className="font-nataka font-black uppercase tracking-widest2 text-[10px] bg-accent text-ink px-4 hover:bg-accent-light transition-colors"
                       >
                         Unlock
                       </button>
@@ -929,7 +929,7 @@ export default function LiveMirror() {
                   {(ai === "asleep" || ai === "capped" || ai === "error") && (
                     <button
                       onClick={startAi}
-                      className="mt-4 font-nataka font-black uppercase tracking-widest2 text-[10px] bg-teal text-ink px-6 py-3 hover:bg-teal-light transition-colors"
+                      className="mt-4 font-nataka font-black uppercase tracking-widest2 text-[10px] bg-accent text-ink px-6 py-3 hover:bg-accent-light transition-colors"
                     >
                       {ai === "asleep" || ai === "capped" ? "Wake the mirror" : "Retry"}
                     </button>
@@ -942,7 +942,7 @@ export default function LiveMirror() {
             {booth && billed > 0 && (
               <div className="absolute top-12 right-8 text-right pointer-events-none font-nataka font-black uppercase tracking-widest2 text-[9px]">
                 <div className="text-cream/40">AI SECONDS {Math.round(billed)}</div>
-                <div className="text-teal/80">
+                <div className="text-accent/80">
                   {Math.round(cost * CREDITS_PER_USD).toLocaleString()} CREDITS · KES{" "}
                   {Math.round(cost * KES_PER_USD).toLocaleString()}
                 </div>
@@ -955,7 +955,7 @@ export default function LiveMirror() {
             <button
               onClick={goFullscreen}
               aria-label="Fullscreen booth mode"
-              className="absolute top-3 right-3 sm:top-auto sm:bottom-12 sm:right-8 w-8 h-8 hidden sm:flex items-center justify-center text-cream/40 hover:text-teal transition-colors"
+              className="absolute top-3 right-3 sm:top-auto sm:bottom-12 sm:right-8 w-8 h-8 hidden sm:flex items-center justify-center text-cream/40 hover:text-accent transition-colors"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M1 5V1h4M13 5V1H9M1 9v4h4M13 9v4H9" />
@@ -971,7 +971,7 @@ export default function LiveMirror() {
           <button
             onClick={() => switchEngine("looks")}
             className={`flex-1 py-4 transition-colors ${
-              engine === "looks" ? "bg-teal text-ink" : "bg-ink-100 text-cream/50 hover:text-cream"
+              engine === "looks" ? "bg-accent text-ink" : "bg-ink-100 text-cream/50 hover:text-cream"
             }`}
           >
             Instant looks
@@ -979,7 +979,7 @@ export default function LiveMirror() {
           <button
             onClick={() => switchEngine("ai")}
             className={`flex-1 py-4 transition-colors ${
-              engine === "ai" ? "bg-teal text-ink" : "bg-ink-100 text-cream/50 hover:text-cream"
+              engine === "ai" ? "bg-accent text-ink" : "bg-ink-100 text-cream/50 hover:text-cream"
             }`}
           >
             AI engine · Lucy 2.5
@@ -996,7 +996,7 @@ export default function LiveMirror() {
             <select
               value={deviceId}
               onChange={(e) => void switchCamera(e.target.value)}
-              className="flex-1 bg-ink-100 border border-cream/15 focus:border-teal outline-none text-cream/80 text-xs px-3 py-2"
+              className="flex-1 bg-ink-100 border border-cream/15 focus:border-accent outline-none text-cream/80 text-xs px-3 py-2"
             >
               {cameras.map((d, i) => (
                 <option key={d.deviceId} value={d.deviceId}>
@@ -1015,7 +1015,7 @@ export default function LiveMirror() {
                 onClick={() => setLook(lk.id)}
                 className={`shrink-0 px-4 py-3 border font-nataka font-black uppercase tracking-widest2 text-[9px] transition-colors ${
                   look === lk.id
-                    ? "border-teal text-teal"
+                    ? "border-accent text-accent"
                     : "border-cream/15 text-cream/50 hover:border-cream/40 hover:text-cream"
                 }`}
               >
@@ -1035,7 +1035,7 @@ export default function LiveMirror() {
                   onClick={() => switchMode(m)}
                   className={`flex-1 px-3 py-3 border text-left transition-colors ${
                     mode === m
-                      ? "border-teal text-teal"
+                      ? "border-accent text-accent"
                       : "border-cream/15 text-cream/45 hover:border-cream/40 hover:text-cream"
                   }`}
                 >
@@ -1059,7 +1059,7 @@ export default function LiveMirror() {
                   onClick={() => { setAiChip(i); applyPrompt(p.prompt); }}
                   className={`shrink-0 px-4 py-3 border font-nataka font-black uppercase tracking-widest2 text-[9px] transition-colors ${
                     aiChip === i
-                      ? "border-teal text-teal"
+                      ? "border-accent text-accent"
                       : "border-cream/15 text-cream/50 hover:border-cream/40 hover:text-cream"
                   }`}
                 >
@@ -1082,11 +1082,11 @@ export default function LiveMirror() {
                   value={customPrompt}
                   onChange={(e) => setCustomPrompt(e.target.value)}
                   placeholder="Type your own world — “rooftop in Tokyo at night, raining”"
-                  className="flex-1 bg-ink-100 border border-cream/15 focus:border-teal outline-none text-cream text-sm px-4 py-3 placeholder:text-cream/30"
+                  className="flex-1 bg-ink-100 border border-cream/15 focus:border-accent outline-none text-cream text-sm px-4 py-3 placeholder:text-cream/30"
                 />
                 <button
                   type="submit"
-                  className="font-nataka font-black uppercase tracking-widest2 text-[10px] border border-teal text-teal px-5 hover:bg-teal hover:text-ink transition-colors"
+                  className="font-nataka font-black uppercase tracking-widest2 text-[10px] border border-accent text-accent px-5 hover:bg-accent hover:text-ink transition-colors"
                 >
                   Apply
                 </button>

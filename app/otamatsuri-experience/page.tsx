@@ -82,7 +82,7 @@ export default function OtamatsuriExperiencePage() {
           {/* Slim header */}
           <header className="relative flex items-center justify-between px-6 md:px-12 py-5">
             <Link href="/" className="font-nataka font-black text-lg text-white tracking-tight">
-              NATAKA<span className="text-teal">.</span>INC
+              NATAKA<span className="text-signal">.</span>INC
             </Link>
             <span className="font-sans text-white/55 text-[10px] tracking-widest2 uppercase">
               Otamatsuri · Nairobi
@@ -98,7 +98,7 @@ export default function OtamatsuriExperiencePage() {
             </div>
 
             <h1 className="leading-[0.92] mb-4">
-              <span className="font-geist font-black text-[clamp(2.6rem,12vw,5.5rem)] text-white uppercase block">
+              <span className="font-heading font-black text-[clamp(2.6rem,12vw,5.5rem)] text-white uppercase block">
                 Enter your
               </span>
               <span className="font-display font-semibold italic text-[clamp(2.4rem,11vw,5rem)] text-otaku block">
@@ -113,7 +113,7 @@ export default function OtamatsuriExperiencePage() {
 
             <a
               href="#build"
-              className="inline-flex items-center gap-2 font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest active:scale-[0.98] transition-transform"
+              className="inline-flex items-center gap-2 font-heading font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest active:scale-[0.98] transition-transform"
             >
               Start — it takes 20 seconds
             </a>
@@ -125,7 +125,7 @@ export default function OtamatsuriExperiencePage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-16 md:mb-20">
             {steps.map((s) => (
               <div key={s.n} className="border border-white/12 p-4">
-                <span className="font-geist font-black text-otaku text-xs block mb-2">
+                <span className="font-heading font-black text-otaku text-xs block mb-2">
                   {s.n} —
                 </span>
                 <p className="font-sans text-white/65 text-xs leading-relaxed">{s.text}</p>
@@ -140,11 +140,11 @@ export default function OtamatsuriExperiencePage() {
           {/* Tiny footer */}
           <p className="font-sans text-white/35 text-[11px] tracking-wider mt-20 pt-6 border-t border-white/8">
             An Otamatsuri booth experience by{" "}
-            <Link href="/" className="text-white/55 hover:text-teal transition-colors">
+            <Link href="/" className="text-white/55 hover:text-accent transition-colors">
               Nataka Inc
             </Link>{" "}
             ·{" "}
-            <Link href="/community" className="text-white/55 hover:text-teal transition-colors">
+            <Link href="/community" className="text-white/55 hover:text-accent transition-colors">
               Community
             </Link>
           </p>

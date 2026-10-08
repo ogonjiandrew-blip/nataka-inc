@@ -1,401 +1,273 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import LetterReveal from "@/components/LetterReveal";
-import { setCursorLabel, clearCursorLabel } from "@/hooks/useCursorLabel";
-
-// Rotating gallery — all updated stills from STILLS/1
-const filmGallery = [
-  "/stills/1/1.jpg",
-  "/stills/1/2.jpg",
-  "/stills/1/4.jpg",
-  "/stills/1/5.jpg",
-  "/stills/1/6.jpg",
-  "/stills/1/7.jpg",
-  "/stills/1/8.jpg",
-  "/stills/1/27.jpg",
-  "/stills/1/43.jpg",
-  "/stills/1/46.jpg",
-  "/stills/1/a.jpg",
-  "/stills/1/b.jpg",
-  "/stills/4/6.jpg",
-  "/stills/4/7.jpg",
-];
-
-// Music video gallery — 4:5 portrait crops matched to the card's aspect ratio
-const musicVideoGallery = [
-  "/stills/4/p5.jpg",
-  "/stills/4/p1.jpg",
-  "/stills/4/p4.jpg",
-];
-
-// Editorial fashion gallery — curated portrait fashion shots
-const fashionGallery = [
-  "/stills/fashion/6.jpg",
-  "/stills/fashion/1.jpg",
-  "/stills/fashion/2.jpg",
-  "/stills/fashion/12.jpg",
-  "/stills/fashion/8.jpg",
-  "/stills/fashion/7.jpg",
-  "/stills/fashion/3.jpg",
-  "/stills/fashion/9.jpg",
-];
-
-// Otamatsuri — cinematic promo film (16:9-friendly frames for the wide card)
-const otamatsuriGallery = [
-  "/stills/otamatsuri/cover.jpg",
-  "/stills/otamatsuri/1.jpg",
-  "/stills/otamatsuri/2.jpg",
-  "/stills/otamatsuri/8.jpg",
-];
-
-// Teslah — studio music video (centre-weighted frames for the 4:5 card)
-const teslahGallery = [
-  "/stills/teslah/6.jpg",
-  "/stills/teslah/5.jpg",
-  "/stills/teslah/1.jpg",
-  "/stills/teslah/4.jpg",
-];
+import { AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Play } from "@phosphor-icons/react";
+import Reveal from "@/components/Reveal";
+import VideoModal, { type ModalFilm } from "@/components/VideoModal";
 
 type Project = {
-  id: number;
+  id: string;
   title: string;
-  category: string;
-  year: string;
-  description: string;
+  meta: string;
+  poster: string;
   alt: string;
-  image: string;
+  /** Short muted loop that plays while the pointer is over the tile. */
+  preview?: string;
+  /** Stills that cycle on hover when there is no motion preview. */
   gallery?: string[];
-  span: string;
-  aspect: string;
-  sizes: string;
-  metric?: string;
+  /** Full film with sound, opened in the player. */
+  film?: string;
+  /** Case-study page, when there is one. */
   href?: string;
+  cell: string;
+  media: string;
+  sizes: string;
 };
 
-// TODO: Replace metric strings with real performance numbers from your analytics
+const ROW = "md:aspect-auto md:h-[clamp(360px,38vw,560px)]";
+
+/* Editorial grid: one full-width opener, then two asymmetric pairs. */
 const projects: Project[] = [
   {
-    id: 1,
-    title: "Otamatsuri",
-    category: "Promo Film · Direction",
-    year: "2026",
-    description: "A cinematic, anime-inspired promo film — directed and produced by Nataka Inc on location in Kenya.",
-    alt: "Otamatsuri cinematic promo film still by Nataka Inc — film and video production in Kenya",
-    image: "/stills/otamatsuri/cover.jpg",
-    gallery: otamatsuriGallery,
-    metric: "Cinematic promo · Direction & Production",
-    href: "/work/otamatsuri-promo-film",
-    span: "md:col-span-2",
-    aspect: "aspect-[16/9]",
-    sizes: "(max-width: 768px) 100vw, 66vw",
+    id: "za-mabuda",
+    title: "Za Mabuda",
+    meta: "Vijana Barubaru ft. Scar Mkadinali. Period film, directed by Andrew Ogonji",
+    poster: "/videos/za-mabuda-still.jpg",
+    alt: "Za Mabuda: two men in flat caps stand in front of an explosion",
+    preview: "/videos/previews/za-mabuda.mp4",
+    film: "/videos/za-mabuda.mp4",
+    cell: "md:col-span-12",
+    media: "aspect-[16/9] md:aspect-[21/9]",
+    sizes: "100vw",
   },
   {
-    id: 2,
-    title: "Music Video",
-    category: "Music Video · Direction",
-    year: "2024",
-    description: "From concept to final cut — artist-driven music video production in Nairobi.",
-    alt: "Music video production by Nataka Inc — media company Kenya",
-    image: "/stills/4/p5.jpg",
-    gallery: musicVideoGallery,
-    metric: "Ssaru x Fathermoh · official video",
+    id: "sarit",
+    title: "Your City",
+    meta: "Sarit Centre. Brand commercial",
+    poster: "/videos/sarit-poster-clean.jpg",
+    alt: "Sarit Centre commercial: friends dancing in a bowling alley",
+    preview: "/videos/previews/sarit.mp4",
+    film: "/videos/sarit.mp4",
+    cell: "md:col-span-7",
+    media: `aspect-[16/10] ${ROW}`,
+    sizes: "(max-width: 768px) 100vw, 58vw",
+  },
+  {
+    id: "kwanini",
+    title: "Kwanini",
+    meta: "Ssaru x Fathermoh. Music video",
+    poster: "/stills/4/p5.jpg",
+    alt: "Still from the Kwanini music video directed by Nataka Inc",
+    gallery: ["/stills/4/p5.jpg", "/stills/4/p1.jpg", "/stills/4/p4.jpg"],
     href: "/work/ssaru-fathermoh-kwanini",
-    span: "md:col-span-1",
-    aspect: "aspect-[4/5]",
-    sizes: "(max-width: 768px) 100vw, 33vw",
+    cell: "md:col-span-5",
+    media: `aspect-[4/5] ${ROW}`,
+    sizes: "(max-width: 768px) 100vw, 42vw",
   },
   {
-    id: 3,
-    title: "Ssaru",
-    category: "Artist Campaign · PR",
-    year: "2024",
-    description: "Visual campaign for Kenya's rising music artist — raw, vibrant, undeniable.",
-    alt: "Ssaru artist campaign by Nataka Inc — PR and music marketing agency Kenya",
-    image: "/stills/ssaru/2.jpg",
-    span: "md:col-span-1",
-    aspect: "aspect-[16/9]",
-    sizes: "(max-width: 768px) 100vw, 33vw",
-  },
-  {
-    id: 4,
+    id: "teslah",
     title: "Teslah",
-    category: "Music Video · Direction",
-    year: "2026",
-    description: "A studio-built music video for Teslah — directed and produced by Nataka Inc in Nairobi.",
-    alt: "Teslah music video still by Nataka Inc — music video production in Nairobi Kenya",
-    image: "/stills/teslah/6.jpg",
-    gallery: teslahGallery,
-    metric: "Studio music video · Nairobi",
+    meta: "Studio music video",
+    poster: "/stills/teslah/6.jpg",
+    alt: "Teslah music video still: the artist in a pale blue studio",
+    gallery: ["/stills/teslah/6.jpg", "/stills/teslah/5.jpg", "/stills/teslah/1.jpg", "/stills/teslah/4.jpg"],
     href: "/work/teslah-music-video",
-    span: "md:col-span-1",
-    aspect: "aspect-[4/5]",
-    sizes: "(max-width: 768px) 100vw, 33vw",
+    cell: "md:col-span-5",
+    media: `aspect-[4/5] ${ROW}`,
+    sizes: "(max-width: 768px) 100vw, 42vw",
   },
   {
-    id: 5,
-    title: "Editorial Fashion",
-    category: "Fashion Editorial",
-    year: "2024",
-    description: "High-end fashion editorial showcasing African style on a global stage.",
-    alt: "Fashion editorial photography by Nataka Inc — creative agency Kenya",
-    image: "/stills/fashion/6.jpg",
-    gallery: fashionGallery,
-    span: "md:col-span-1",
-    aspect: "aspect-[4/5]",
-    sizes: "(max-width: 768px) 100vw, 33vw",
+    id: "save-her",
+    title: "Save Her",
+    meta: "Music video. Direction and post",
+    poster: "/videos/save-her-poster.jpg",
+    alt: "Save Her: extreme close-up of a woman's eyes in warm light",
+    preview: "/videos/previews/save-her.mp4",
+    film: "/videos/save-her.mp4",
+    cell: "md:col-span-7",
+    media: `aspect-[16/10] ${ROW}`,
+    sizes: "(max-width: 768px) 100vw, 58vw",
   },
   {
-    id: 6,
-    title: "Film & Drama",
-    category: "Film Production",
-    year: "2023",
-    description: "Dramatic film stills from our narrative and commercial work across Kenya.",
-    alt: "Film production stills by Nataka Inc — production company Kenya",
-    image: "/stills/1/1.jpg",
-    gallery: filmGallery,
-    span: "md:col-span-3",
-    aspect: "aspect-[21/9]",
-    sizes: "(max-width: 768px) 100vw, 1280px",
+    id: "cool-in-school",
+    title: "Cool in School",
+    meta: "Music video. Direction and post",
+    poster: "/videos/cool-in-school-poster.jpg",
+    alt: "Cool in School music video: friends laughing in sunglasses",
+    preview: "/videos/previews/cool-in-school.mp4",
+    film: "/videos/cool-in-school.mp4",
+    cell: "md:col-span-7",
+    media: `aspect-[16/10] ${ROW}`,
+    sizes: "(max-width: 768px) 100vw, 58vw",
   },
 ];
 
 export default function Work() {
-  const ref    = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const [film, setFilm] = useState<ModalFilm | null>(null);
+  const close = useCallback(() => setFilm(null), []);
 
   return (
-    <section id="work" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto" ref={ref}>
+    <section id="work" className="px-6 md:px-12 py-24 md:py-36 max-w-7xl mx-auto">
+      {/* Older links point at /#reel; the reel now lives inside this section */}
+      <span id="reel" aria-hidden="true" className="block -translate-y-24" />
 
-      <div className="mb-16 md:mb-20">
-        <div className="mb-5">
-          <LetterReveal text="Selected Work" inView={inView} delay={0} stagger={0.04}
-            className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium" />
-        </div>
+      <Reveal className="mb-12 md:mb-20 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+        <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.95] text-[clamp(1.85rem,6vw,5.2rem)] lg:whitespace-nowrap">
+          Selected work
+        </h2>
+        <p className="font-sans text-cream/60 text-base leading-relaxed max-w-[30ch]">
+          Films, commercials and music videos we directed and finished. Hover to preview, click to watch with sound.
+        </p>
+      </Reveal>
 
-        <div className="flex items-end justify-between flex-wrap gap-6 overflow-hidden">
-          <motion.div
-            initial={{ clipPath: "inset(0 100% 0 0)" }}
-            animate={inView ? { clipPath: "inset(0 0% 0 0)" } : {}}
-            transition={{ duration: 1, delay: 0.1, ease: [0.77, 0, 0.175, 1] }}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-x-4 gap-y-12 md:gap-y-16">
+        {projects.map((p, i) => (
+          <Reveal key={p.id} delay={(i % 2) * 0.08} className={p.cell}>
+            <ProjectTile
+              project={p}
+              onPlay={() => p.film && setFilm({ title: p.title, meta: p.meta, src: p.film, poster: p.poster })}
+            />
+          </Reveal>
+        ))}
+
+        {/* Closing tile: the route to everything else */}
+        <Reveal delay={0.08} className="md:col-span-5">
+          <Link
+            href="/gallery"
+            className="group relative flex h-full min-h-[260px] flex-col justify-between overflow-hidden border border-white/10 p-8 md:p-10 hover:border-white/30 transition-colors"
           >
-            <h2 className="leading-none">
-              <span className="font-geist font-black text-[clamp(1.8rem,7vw,6rem)] text-white uppercase block">Work That</span>
-              <span className="font-display font-semibold italic text-[clamp(1.8rem,7vw,6rem)] text-teal block">Moves People.</span>
-            </h2>
-          </motion.div>
-
-          <motion.a
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.5 }}
-            href="#contact"
-            className="hidden md:block font-sans text-white/55 text-xs tracking-widest uppercase hover:text-teal transition-colors border-b border-white/15 hover:border-teal pb-1 self-end mb-2"
-          >
-            Start Your Project →
-          </motion.a>
-        </div>
+            <Image
+              src="/stills/fashion/10.jpg"
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 42vw"
+              quality={75}
+              className="object-cover opacity-35 scale-[1.04] transition-[opacity,transform] duration-[900ms] ease-out group-hover:opacity-50 group-hover:scale-[1.08]"
+            />
+            <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/20" />
+            <span className="relative font-mono text-xs text-cream/70">More work</span>
+            <span className="relative font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.02em] leading-[1] text-[clamp(1.6rem,3vw,2.6rem)]">
+              Open the
+              <br />
+              gallery
+              <ArrowUpRight
+                size={28}
+                weight="bold"
+                className="inline-block ml-3 -mt-2 text-accent transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
+              />
+            </span>
+          </Link>
+        </Reveal>
       </div>
 
-      {/* Desktop grid */}
-      <div className="hidden md:grid md:grid-cols-3 gap-4">
-        {projects.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
-      </div>
-
-      {/* Mobile stack */}
-      <div className="md:hidden space-y-2">
-        {projects.map((p, i) => <MobileProjectCard key={p.id} project={p} index={i} />)}
-      </div>
+      <AnimatePresence>{film && <VideoModal film={film} onClose={close} />}</AnimatePresence>
     </section>
   );
 }
 
-/* ── Desktop card — cursor label + film-light sweep ── */
-function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const ref    = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [hovered, setHovered] = useState(false);
+function ProjectTile({ project, onPlay }: { project: Project; onPlay: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hover, setHover] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [frame, setFrame] = useState(0);
+  const gallery = project.gallery ?? [];
 
-  // Gallery rotation — all frames stay in DOM, only opacity changes (no black flash)
-  const gallery = project.gallery ?? [project.image];
-  const [slide, setSlide] = useState(0);
-
+  // Motion preview: start on enter, rewind on leave
   useEffect(() => {
-    if (gallery.length <= 1) return;
-    const id = setInterval(() => setSlide((s) => (s + 1) % gallery.length), 3200);
-    return () => clearInterval(id);
-  }, [gallery.length]);
+    const v = videoRef.current;
+    if (!v) return;
+    if (hover) {
+      v.muted = true;
+      v.play().catch(() => {});
+    } else {
+      v.pause();
+      v.currentTime = 0;
+      setPlaying(false);
+    }
+  }, [hover]);
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className={`relative overflow-hidden group cursor-default ${project.span}`}
-      onMouseEnter={() => { setHovered(true); if (project.href) setCursorLabel("VIEW"); }}
-      onMouseLeave={() => { setHovered(false); clearCursorLabel(); }}
-    >
-      <div className={`relative ${project.aspect} overflow-hidden bg-ink-50`}>
+  // Stills preview: step through the frames while hovered
+  useEffect(() => {
+    if (!hover || gallery.length < 2) return;
+    const id = window.setInterval(() => setFrame((f) => (f + 1) % gallery.length), 900);
+    return () => window.clearInterval(id);
+  }, [hover, gallery.length]);
 
-        {project.href && (
-          <Link href={project.href} aria-label={`View ${project.title} case study`} className="absolute inset-0 z-30" />
-        )}
-
-        {/* All frames stay in DOM — opacity crossfade + per-frame Ken-Burns drift */}
-        {gallery.map((src, i) => (
-          <motion.div
-            key={src}
-            className="absolute inset-0"
-            animate={{ opacity: i === slide ? 1 : 0 }}
-            transition={{ duration: 1.6, ease: "easeInOut" }}
-          >
-            <motion.div
-              className="absolute inset-0"
-              animate={i === slide
-                ? { scale: 1.0, x: 0, y: 0 }
-                : { scale: 1.06, x: 0, y: 0 }}
-              initial={{ scale: 1.06 }}
-              transition={{ duration: 3.8, ease: "easeOut" }}
-            >
-              <Image
-                src={src}
-                alt={project.alt}
-                fill
-                className="object-cover object-center"
-                sizes={project.sizes}
-                quality={90}
-                priority={i === 0}
-              />
-            </motion.div>
-          </motion.div>
-        ))}
-
-        {/* Progress bars — bottom right */}
-        {gallery.length > 1 && (
-          <div className="absolute bottom-4 right-5 flex gap-1.5 z-10 pointer-events-none">
-            {gallery.map((_, i) => (
-              <motion.div
-                key={i}
-                animate={{ opacity: i === slide ? 1 : 0.3, width: i === slide ? 18 : 4 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="h-[2px] bg-white/60 rounded-full"
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Base gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent" />
-
-        {/* Hover darkening */}
-        <motion.div animate={{ opacity: hovered ? 0.3 : 0 }} transition={{ duration: 0.35 }}
-          className="absolute inset-0 bg-ink" />
-
-        {/* Film-light sweep — travels left→right on hover */}
-        <motion.div
-          initial={false}
-          animate={hovered
-            ? { x: ["-100%", "200%"], opacity: [0, 0.12, 0] }
-            : { x: "-100%", opacity: 0 }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
-          className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white to-transparent skew-x-[-20deg] pointer-events-none"
-        />
-
-        {/* Teal bottom line */}
-        <motion.div
-          animate={{ scaleX: hovered ? 1 : 0 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute bottom-0 inset-x-0 h-0.5 bg-teal origin-left"
-        />
-
-        <div className="absolute inset-0 flex flex-col justify-between p-6">
-          <div className="flex items-start justify-between">
-            <span className="font-sans text-[10px] text-teal tracking-widest uppercase border border-teal/40 px-3 py-1 bg-ink/60 backdrop-blur-sm font-medium">{project.category}</span>
-            <span className="font-sans text-white/60 text-xs font-medium">{project.year}</span>
-          </div>
-          <div>
-            <h3 className="font-geist font-black text-2xl text-white uppercase leading-none mb-1.5 drop-shadow-lg">{project.title}</h3>
-            {project.metric && (
-              <p className="font-sans text-teal text-[10px] tracking-wider uppercase font-semibold mb-2 drop-shadow">
-                {project.metric}
-              </p>
-            )}
-            {project.href && (
-              <span className="inline-block font-sans text-white/85 text-[10px] tracking-widest uppercase border-b border-white/40 pb-0.5 mb-2">
-                View Case Study →
-              </span>
-            )}
-            <motion.p
-              animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 8 }}
-              transition={{ duration: 0.3 }}
-              className="font-sans text-white/80 text-sm leading-relaxed"
-            >{project.description}</motion.p>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ── Mobile card — full-width image with overlay, designed for phone ── */
-function MobileProjectCard({ project, index }: { project: Project; index: number }) {
-  const ref    = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-30px" });
-
-  // First card gets cinematic widescreen; panoramic card gets letterbox; rest get 4:3
-  const aspect =
-    index === 0 ? "aspect-[16/9]" :
-    project.aspect === "aspect-[21/9]" ? "aspect-[16/7]" :
-    "aspect-[4/3]";
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: Math.min(index * 0.07, 0.28) }}
-      className="relative overflow-hidden"
-    >
-      <div className={`relative ${aspect} overflow-hidden bg-ink`}>
-
-        {project.href && (
-          <Link href={project.href} aria-label={`View ${project.title} case study`} className="absolute inset-0 z-30" />
-        )}
+  const media = (
+    <div className={`relative overflow-hidden bg-ink-50 ${project.media}`}>
+      {(gallery.length ? gallery : [project.poster]).map((src, i) => (
         <Image
-          src={project.image}
-          alt={project.alt}
+          key={src}
+          src={src}
+          alt={i === 0 ? project.alt : ""}
           fill
-          className="object-cover object-center"
-          sizes="100vw"
+          sizes={project.sizes}
           quality={85}
+          className={`object-cover scale-[1.04] transition-[opacity,transform] duration-[900ms] ease-out group-hover:scale-[1.07] ${
+            i === (hover ? frame : 0) ? "opacity-100" : "opacity-0"
+          }`}
         />
-        {/* Gradient: heavy at bottom for text legibility, light at top for category tag */}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/20 to-transparent" />
-        <div className="absolute inset-0 flex flex-col justify-between p-4">
-          {/* Top row: category + year */}
-          <div className="flex items-center justify-between">
-            <span className="font-sans text-[9px] text-teal tracking-widest uppercase border border-teal/40 px-2.5 py-1 bg-ink/60 font-medium">
-              {project.category}
-            </span>
-            <span className="font-sans text-white/40 text-[9px] tabular-nums">{project.year}</span>
-          </div>
-          {/* Bottom: title + metric */}
-          <div>
-            <h3 className="font-geist font-black text-xl text-white uppercase leading-tight mb-0.5 drop-shadow-lg">
-              {project.title}
-            </h3>
-            {project.metric && (
-              <p className="font-sans text-teal text-[10px] tracking-wider uppercase font-semibold">
-                {project.metric}
-              </p>
-            )}
-          </div>
-        </div>
+      ))}
+      {project.preview && (
+        <video
+          ref={videoRef}
+          src={project.preview}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+          onPlaying={() => setPlaying(true)}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+            hover && playing ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
+    </div>
+  );
+
+  const caption = (
+    <div className="mt-5 flex items-start justify-between gap-6">
+      <div>
+        <h3 className="font-heading font-bold stretch-semi text-xl md:text-2xl text-white tracking-tight leading-tight">
+          {project.title}
+        </h3>
+        <p className="mt-1.5 font-sans text-sm text-cream/55">{project.meta}</p>
       </div>
-    </motion.div>
+      <span className="mt-1 shrink-0 inline-flex items-center gap-2 font-heading font-bold text-[11px] uppercase tracking-[0.16em] text-cream/70 group-hover:text-white transition-colors">
+        {project.film ? (
+          <>
+            Play <Play size={13} weight="fill" />
+          </>
+        ) : (
+          <>
+            Case study <ArrowUpRight size={13} weight="bold" />
+          </>
+        )}
+      </span>
+    </div>
+  );
+
+  const handlers = {
+    onMouseEnter: () => setHover(true),
+    onMouseLeave: () => {
+      setHover(false);
+      setFrame(0);
+    },
+  };
+
+  return project.film ? (
+    <button type="button" onClick={onPlay} {...handlers} className="group block w-full text-left" aria-label={`Play ${project.title}`}>
+      {media}
+      {caption}
+    </button>
+  ) : (
+    <Link href={project.href ?? "#"} {...handlers} className="group block" aria-label={`${project.title}: case study`}>
+      {media}
+      {caption}
+    </Link>
   );
 }

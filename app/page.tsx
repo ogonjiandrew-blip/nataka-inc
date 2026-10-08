@@ -1,16 +1,13 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import MarqueeBanner from "@/components/MarqueeBanner";
-import Services from "@/components/Services";
-import AiBandFeature from "@/components/AiBandFeature";
-import BuyerPaths from "@/components/BuyerPaths";
-import ServiceFinder from "@/components/ServiceFinder";
+import Credits from "@/components/Credits";
+import Statement from "@/components/Statement";
 import Work from "@/components/Work";
-import Packages from "@/components/Packages";
-import VideoReel from "@/components/VideoReel";
+import AiBandFeature from "@/components/AiBandFeature";
+import Services from "@/components/Services";
 import About from "@/components/About";
+import Engagements from "@/components/Engagements";
 import Contact from "@/components/Contact";
-import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
@@ -29,7 +26,7 @@ export default function Home() {
   return (
     <>
 
-      {/* Skip to content — keyboard / screen reader navigation */}
+      {/* Skip to content: keyboard / screen reader navigation */}
       <a href="#main-content" className="skip-to-content">
         Skip to content
       </a>
@@ -37,16 +34,13 @@ export default function Home() {
       <main id="main-content" className="bg-ink text-cream min-h-screen">
         <Navbar />
         <Hero />
-        <MarqueeBanner />
-        <Services />
-        <AiBandFeature />
-        <BuyerPaths />
-        <ServiceFinder />
+        <Credits />
+        <Statement />
         <Work />
-        <Packages />
-        <VideoReel />
+        <AiBandFeature />
+        <Services />
         <About />
-        <FAQ />
+        <Engagements />
         <Contact />
         <Footer />
       </main>

@@ -1,121 +1,77 @@
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { waLink } from "@/lib/whatsapp";
+import Reveal from "@/components/Reveal";
+import { packages, standard } from "@/lib/packages";
 
-const packages = [
-  {
-    name: "Launch Campaign Package",
-    who: "Brands launching a product, store, service, event or new campaign.",
-    range: "KES 500K – 2M+",
-    includes: ["Campaign concept", "Hero video", "Short-form cutdowns", "Photo assets", "Distribution plan", "Optional influencer push"],
-    cta: "Plan My Launch",
-    wa: "Hi Nataka! I want the Launch Campaign Package. What I'm launching: ",
-  },
-  {
-    name: "Social Content Engine",
-    who: "Brands that need consistent, high-quality monthly content.",
-    range: "KES 150K – 700K / month",
-    includes: ["Monthly shoot day", "8–20 short videos", "Captions & content direction", "Content calendar", "Performance review"],
-    cta: "Build My Content Engine",
-    wa: "Hi Nataka! I want the Social Content Engine. My brand is: ",
-  },
-  {
-    name: "Premium Brand Film",
-    who: "Companies that need credibility, trust and a polished public image.",
-    range: "KES 300K – 1.5M+",
-    includes: ["Concept development", "Cinematic production", "Interviews / story structure", "Brand messaging", "Master film + cutdowns"],
-    cta: "Create My Brand Film",
-    wa: "Hi Nataka! I want a Premium Brand Film. My company is: ",
-  },
-  {
-    name: "Music Video / Artist Campaign",
-    who: "Artists who need high-quality visuals and rollout content.",
-    range: "KES 150K – 1M+",
-    includes: ["Concept & direction", "Shoot", "Music video", "Teaser edits", "Social rollout assets"],
-    cta: "Plan My Music Video",
-    wa: "Hi Nataka! I want the Music Video / Artist Campaign. My artist name and the track: ",
-  },
-  {
-    name: "Event Content Package",
-    who: "Events that need promotion before, during and after.",
-    range: "KES 100K – 700K+",
-    includes: ["Promo video", "Event coverage", "Highlight film", "Sponsor clips", "Social recap edits"],
-    cta: "Promote My Event",
-    wa: "Hi Nataka! I want the Event Content Package. The event and date: ",
-  },
-];
-
-const standard = [
-  {
-    title: "Agreed revisions",
-    desc: "Before production, we agree the brief, deliverables and revision process in your scope of work.",
-  },
-  {
-    title: "A locked delivery date",
-    desc: "Every engagement gets a delivery date in writing before we shoot — not \"when it's ready.\"",
-  },
-  {
-    title: "The director answers",
-    desc: "No account-manager wall. The person who directed your work is the person on your WhatsApp.",
-  },
-];
+function QuoteLink({ message, label }: { message: string; label: string }) {
+  return (
+    <a
+      href={waLink(message)}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="group inline-flex items-center gap-2 font-heading font-semibold text-sm text-accent"
+    >
+      Get a quote
+      <ArrowRight size={15} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+    </a>
+  );
+}
 
 export default function Packages() {
+  const [lead, ...rest] = packages;
   return (
-    <section id="packages" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-      <p className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium mb-5">Nataka Packages</p>
-      <h2 className="leading-none mb-5">
-        <span className="font-geist font-black text-[clamp(1.8rem,6vw,5rem)] text-white uppercase block">Ways To</span>
-        <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,5rem)] text-teal block">Work With Us.</span>
-      </h2>
-      <p className="font-sans text-cream/60 text-sm md:text-base max-w-2xl mb-12 md:mb-16 leading-relaxed">
-        Starting points, not fixed quotes. Every engagement is scoped to your brief, goals and budget — these ranges help you see where you fit before we talk.
-      </p>
+    <section id="packages" className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
+      <Reveal className="mb-12 md:mb-16 max-w-2xl">
+        <h2 className="font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.025em] leading-[0.95] text-[clamp(2.2rem,5vw,4.4rem)]">
+          Packages
+        </h2>
+        <p className="mt-4 font-sans text-cream/65 text-base md:text-lg leading-relaxed max-w-[56ch]">
+          Starting ranges, not fixed quotes. Every job is scoped to your brief and budget before we shoot.
+        </p>
+      </Reveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-        {packages.map((p) => (
-          <div key={p.name} className="border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 flex flex-col transition-all duration-300 hover:border-teal/40 hover:from-white/[0.07] hover:-translate-y-1">
-            <h3 className="font-geist font-black text-xl text-white uppercase mb-2 leading-tight">{p.name}</h3>
-            <p className="font-sans text-cream/55 text-xs leading-relaxed mb-5">{p.who}</p>
-            <p className="font-geist font-black text-teal text-lg mb-6 tabular-nums" style={{ textShadow: "0 0 20px rgba(10,191,191,0.25)" }}>
-              {p.range}
-            </p>
-            <ul className="space-y-2.5 mb-7 flex-1">
-              {p.includes.map((item) => (
-                <li key={item} className="flex gap-3 items-start font-sans text-cream/70 text-sm">
-                  <span className="text-teal text-xs pt-1 flex-shrink-0">◈</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <a
-              href={waLink(p.wa)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block font-geist font-black text-xs text-teal border border-teal/40 px-6 py-3.5 uppercase tracking-widest hover:bg-teal hover:text-ink transition-colors duration-200 self-start"
-            >
-              {p.cta} →
-            </a>
-          </div>
+      {/* Lead package: the full campaign, shown first and widest */}
+      <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 bg-ink-100 border border-white/15 p-8 md:p-12">
+        <div className="lg:col-span-7">
+          <h3 className="font-heading font-bold text-2xl md:text-4xl text-white tracking-tight leading-tight">{lead.name}</h3>
+          <p className="mt-3 font-sans text-cream/70 text-base leading-relaxed max-w-[48ch]">{lead.who}</p>
+          <p className="mt-6 font-heading font-bold stretch-semi text-2xl md:text-3xl text-white tabular-nums">{lead.range}</p>
+        </div>
+        <div className="lg:col-span-5 flex flex-col justify-between gap-8">
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-3">
+            {lead.includes.map((item) => (
+              <li key={item} className="font-sans text-sm text-cream/80 leading-snug pl-3 border-l border-white/25">{item}</li>
+            ))}
+          </ul>
+          <QuoteLink message={lead.wa} label={`Get a quote for the ${lead.name}`} />
+        </div>
+      </Reveal>
+
+      <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+        {rest.map((p, i) => (
+          <Reveal key={p.name} delay={(i % 2) * 0.06} className="bg-ink-100 p-8 md:p-10 flex flex-col">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+              <h3 className="font-heading font-bold text-xl text-white tracking-tight">{p.name}</h3>
+              <p className="font-heading font-bold text-base text-accent tabular-nums">{p.range}</p>
+            </div>
+            <p className="mt-2 font-sans text-sm text-cream/60 leading-relaxed">{p.who}</p>
+            <p className="mt-5 font-sans text-sm text-cream/80 leading-relaxed flex-1">{p.includes.join(", ")}.</p>
+            <div className="mt-6">
+              <QuoteLink message={p.wa} label={`Get a quote for the ${p.name}`} />
+            </div>
+          </Reveal>
         ))}
       </div>
 
-      {/* The Nataka Standard — clear scope before production */}
-      <div className="mt-14 md:mt-16 border border-teal/25 bg-teal/[0.04] p-8 md:p-12">
-        <p className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium mb-3">The Nataka Standard</p>
-        <h3 className="font-geist font-black text-2xl md:text-3xl text-white uppercase leading-tight mb-8">
-          Every project starts with <span className="text-teal">a clear agreement.</span>
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {standard.map((s) => (
-            <div key={s.title}>
-              <h4 className="font-geist font-black text-white text-sm uppercase mb-2">{s.title}</h4>
-              <p className="font-sans text-cream/65 text-sm leading-relaxed">{s.desc}</p>
-            </div>
-          ))}
-        </div>
-        <p className="font-sans text-cream/50 text-xs leading-relaxed mt-8 max-w-2xl">
-          We&apos;re a small senior team and take on a limited number of productions each
-          month — if your dates matter, ask about availability early.
-        </p>
+      {/* What every engagement starts with */}
+      <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 border-t border-white/10 pt-10">
+        {standard.map((s) => (
+          <div key={s.title}>
+            <h3 className="font-heading font-bold text-base text-white">{s.title}</h3>
+            <p className="mt-2 font-sans text-sm text-cream/60 leading-relaxed max-w-[40ch]">{s.desc}</p>
+          </div>
+        ))}
       </div>
     </section>
   );

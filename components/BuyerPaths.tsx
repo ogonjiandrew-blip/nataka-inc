@@ -55,20 +55,20 @@ const paths = [
 export default function BuyerPaths() {
   return (
     <section id="who-its-for" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-      <p className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium mb-5">Choose Your Path</p>
+      <p className="font-sans text-accent text-[10px] tracking-widest2 uppercase font-medium mb-5">Choose Your Path</p>
       <h2 className="leading-none mb-12 md:mb-16">
-        <span className="font-geist font-black text-[clamp(1.8rem,6vw,5rem)] text-white uppercase block">Find Your</span>
-        <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,5rem)] text-teal block">Starting Point.</span>
+        <span className="font-heading font-black text-[clamp(1.8rem,6vw,5rem)] text-white uppercase block">Find Your</span>
+        <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,5rem)] text-accent block">Starting Point.</span>
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
         {paths.map((p) => (
-          <div key={p.tag} className="border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 md:p-10 flex flex-col transition-all duration-300 hover:border-teal/40 hover:from-white/[0.07] hover:-translate-y-1">
-            <span className="font-sans text-[10px] text-teal tracking-widest uppercase mb-4">{p.tag}</span>
-            <h3 className="font-geist font-black text-2xl text-white uppercase mb-4">{p.title}</h3>
+          <div key={p.tag} className="border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 md:p-10 flex flex-col transition-all duration-300 hover:border-accent/40 hover:from-white/[0.07] hover:-translate-y-1">
+            <span className="font-sans text-[10px] text-accent tracking-widest uppercase mb-4">{p.tag}</span>
+            <h3 className="font-heading font-black text-2xl text-white uppercase mb-4">{p.title}</h3>
             <p className="font-sans text-cream/65 text-sm leading-relaxed mb-6 flex-1">{p.desc}</p>
             <div className="flex flex-wrap gap-2 mb-7">
               {p.services.map((s) => (
-                <Link key={s.label} href={s.href} className="font-sans text-[10px] text-teal/90 tracking-wider uppercase border border-teal/25 px-3 py-1.5 hover:bg-teal hover:text-ink transition-colors duration-200">
+                <Link key={s.label} href={s.href} className="font-sans text-[10px] text-accent/90 tracking-wider uppercase border border-accent/25 px-3 py-1.5 hover:bg-accent hover:text-ink transition-colors duration-200">
                   {s.label}
                 </Link>
               ))}
@@ -77,7 +77,7 @@ export default function BuyerPaths() {
               href={waLink(p.wa)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block font-geist font-black text-xs text-ink bg-teal px-6 py-3.5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200 self-start"
+              className="inline-block font-heading font-black text-xs text-ink bg-accent px-6 py-3.5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200 self-start"
             >
               {p.cta} →
             </a>

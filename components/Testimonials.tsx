@@ -65,7 +65,7 @@ export default function Testimonials() {
   return (
     <section className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden" ref={ref}>
       <div className="absolute inset-0 bg-ink-50" />
-      <div className="absolute top-0 inset-x-0 h-px hr-teal opacity-20" />
+      <div className="absolute top-0 inset-x-0 h-px hr-accent opacity-20" />
 
       <div className="relative max-w-7xl mx-auto">
 
@@ -75,7 +75,7 @@ export default function Testimonials() {
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.5 }}
-            className="font-sans text-teal text-[10px] tracking-widest2 uppercase mb-5 font-medium"
+            className="font-sans text-accent text-[10px] tracking-widest2 uppercase mb-5 font-medium"
           >
             Client Voices
           </motion.p>
@@ -86,10 +86,10 @@ export default function Testimonials() {
               transition={{ duration: 1, delay: 0.1, ease: [0.77, 0, 0.175, 1] }}
             >
               <h2 className="leading-none">
-                <span className="font-geist font-black text-[clamp(1.8rem,6vw,5rem)] text-white uppercase block">
+                <span className="font-heading font-black text-[clamp(1.8rem,6vw,5rem)] text-white uppercase block">
                   What Our
                 </span>
-                <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,5rem)] text-teal block">
+                <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,5rem)] text-accent block">
                   Clients Say.
                 </span>
               </h2>
@@ -105,11 +105,11 @@ export default function Testimonials() {
               initial={{ opacity: 0, y: 28 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.65, delay: 0.2 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className="p-6 md:p-8 border border-white/8 bg-ink hover:border-teal/20 transition-colors duration-300 flex flex-col"
+              className="p-6 md:p-8 border border-white/8 bg-ink hover:border-accent/20 transition-colors duration-300 flex flex-col"
             >
               {/* Open quote mark */}
               <span
-                className="font-display text-6xl text-teal/25 leading-none mb-3 -ml-1 block"
+                className="font-display text-6xl text-accent/25 leading-none mb-3 -ml-1 block"
                 aria-hidden="true"
               >
                 "
@@ -123,15 +123,15 @@ export default function Testimonials() {
 
               <div className="flex items-center gap-3">
                 <div
-                  className="w-9 h-9 rounded-full bg-teal/12 border border-teal/25 flex items-center justify-center flex-shrink-0"
+                  className="w-9 h-9 rounded-full bg-accent/12 border border-accent/25 flex items-center justify-center flex-shrink-0"
                   aria-hidden="true"
                 >
-                  <span className="font-geist font-black text-[10px] text-teal tracking-tight">
+                  <span className="font-heading font-black text-[10px] text-accent tracking-tight">
                     {t.initials}
                   </span>
                 </div>
                 <div>
-                  <p className="font-geist font-black text-white text-xs uppercase tracking-wide leading-none mb-0.5">
+                  <p className="font-heading font-black text-white text-xs uppercase tracking-wide leading-none mb-0.5">
                     {t.name}
                   </p>
                   <p className="font-sans text-white/45 text-[10px] tracking-wide">
@@ -152,7 +152,7 @@ export default function Testimonials() {
         >
           <a
             href="#contact"
-            className="font-sans text-white/45 text-xs tracking-widest uppercase hover:text-teal transition-colors border-b border-white/15 hover:border-teal pb-1"
+            className="font-sans text-white/45 text-xs tracking-widest uppercase hover:text-accent transition-colors border-b border-white/15 hover:border-accent pb-1"
           >
             Join 80+ brands we&apos;ve elevated →
           </a>

@@ -207,7 +207,7 @@ export default function OtamatsuriCosplayPage() {
               </div>
 
               <h1 className="leading-none mb-5">
-                <span className="font-geist font-black text-[clamp(2rem,8vw,6.6rem)] text-white uppercase block">
+                <span className="font-heading font-black text-[clamp(2rem,8vw,6.6rem)] text-white uppercase block">
                   Otamatsuri Cosplay
                 </span>
                 <span className="font-display font-semibold italic text-[clamp(1.5rem,5vw,4rem)] text-shu-light block mt-2">
@@ -233,13 +233,13 @@ export default function OtamatsuriCosplayPage() {
               <div className="flex flex-wrap gap-3 mt-8">
                 <a
                   href="#the-scroll"
-                  className="font-geist font-black text-xs text-[#0B0907] bg-shu-light px-7 py-4 uppercase tracking-widest hover:bg-shu transition-colors duration-200"
+                  className="font-heading font-black text-xs text-[#0B0907] bg-shu-light px-7 py-4 uppercase tracking-widest hover:bg-shu transition-colors duration-200"
                 >
                   Unroll the scroll ↓
                 </a>
                 <Link
                   href="/otamatsuri-2026"
-                  className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-kin hover:text-kin-light transition-colors duration-200"
+                  className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-kin hover:text-kin-light transition-colors duration-200"
                 >
                   Otamatsuri 2026 →
                 </Link>
@@ -265,7 +265,7 @@ export default function OtamatsuriCosplayPage() {
                   </span>
                 </div>
 
-                <h2 className="font-geist font-black text-white uppercase text-[clamp(1.3rem,4vw,2.6rem)] leading-none mb-5">
+                <h2 className="font-heading font-black text-white uppercase text-[clamp(1.3rem,4vw,2.6rem)] leading-none mb-5">
                   Kenya&apos;s cosplay scene showed up.
                   <br />
                   <span className="text-shu-light">So we brought the cinema glass.</span>
@@ -338,7 +338,7 @@ export default function OtamatsuriCosplayPage() {
                   </p>
                 </div>
 
-                <h2 className="font-geist font-black text-white uppercase text-[clamp(1.3rem,4vw,2.6rem)] leading-none mb-6">
+                <h2 className="font-heading font-black text-white uppercase text-[clamp(1.3rem,4vw,2.6rem)] leading-none mb-6">
                   What Otamatsuri actually is
                 </h2>
 
@@ -360,19 +360,19 @@ export default function OtamatsuriCosplayPage() {
                 <div className="flex flex-wrap gap-3 mt-9">
                   <Link
                     href="/otamatsuri-2026"
-                    className="font-geist font-black text-xs text-[#0B0907] bg-kin px-7 py-4 uppercase tracking-widest hover:bg-kin-light transition-colors duration-200"
+                    className="font-heading font-black text-xs text-[#0B0907] bg-kin px-7 py-4 uppercase tracking-widest hover:bg-kin-light transition-colors duration-200"
                   >
                     Otamatsuri 2026 details →
                   </Link>
                   <Link
                     href="/work/otamatsuri-promo-film"
-                    className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-shu hover:text-shu-light transition-colors duration-200"
+                    className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-shu hover:text-shu-light transition-colors duration-200"
                   >
                     How the film was made →
                   </Link>
                   <Link
                     href="/community#wallpapers"
-                    className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-shu hover:text-shu-light transition-colors duration-200"
+                    className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-shu hover:text-shu-light transition-colors duration-200"
                   >
                     Free wallpapers ↓
                   </Link>
@@ -398,7 +398,7 @@ export default function OtamatsuriCosplayPage() {
                     {["一", "二", "三", "四", "五"][i]}
                   </span>
                   <div>
-                    <h3 className="font-geist font-black text-white uppercase text-sm md:text-base leading-snug mb-3">
+                    <h3 className="font-heading font-black text-white uppercase text-sm md:text-base leading-snug mb-3">
                       {f.q}
                     </h3>
                     <p className="font-sans text-white/65 text-sm leading-relaxed">{f.a}</p>
@@ -430,7 +430,7 @@ export default function OtamatsuriCosplayPage() {
                 </p>
 
                 <h2 className="leading-none mb-5">
-                  <span className="font-geist font-black text-[clamp(1.4rem,5vw,3.6rem)] text-white uppercase block">
+                  <span className="font-heading font-black text-[clamp(1.4rem,5vw,3.6rem)] text-white uppercase block">
                     You built it for months.
                   </span>
                   <span className="font-display font-semibold italic text-[clamp(1.4rem,5vw,3.6rem)] text-shu-light block">
@@ -450,7 +450,7 @@ export default function OtamatsuriCosplayPage() {
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block font-geist font-black text-xs text-[#0B0907] bg-shu-light px-8 py-4 uppercase tracking-widest hover:bg-shu transition-colors duration-200"
+                  className="inline-block font-heading font-black text-xs text-[#0B0907] bg-shu-light px-8 py-4 uppercase tracking-widest hover:bg-shu transition-colors duration-200"
                 >
                   WhatsApp us →
                 </a>

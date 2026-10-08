@@ -90,14 +90,14 @@ export default function AiStandardPage() {
         }}
       />
       <header className="max-w-7xl mx-auto px-6 md:px-12 pt-10 flex justify-between gap-6 items-center">
-        <Link href="/" className="font-nataka font-black text-lg text-white">NATAKA<span className="text-teal">.</span>INC</Link>
-        <Link href="/services/ai-video-production-kenya" className="text-sm text-cream/70 hover:text-teal">AI video production →</Link>
+        <Link href="/" className="font-nataka font-black text-lg text-white">NATAKA<span className="text-signal">.</span>INC</Link>
+        <Link href="/services/ai-video-production-kenya" className="text-sm text-cream/70 hover:text-accent">AI video production →</Link>
       </header>
 
       <section className="max-w-7xl mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-12 md:pb-16">
-        <p className="font-mono text-xs text-teal uppercase tracking-widest mb-5">The Nataka AI Standard · Updated {updated}</p>
-        <h1 className="font-geist font-black text-[clamp(2.4rem,6vw,5.2rem)] text-white leading-[1.05] max-w-4xl mb-7">
-          AI video your brand can <span className="font-display italic text-teal">put its name on.</span>
+        <p className="font-mono text-xs text-accent uppercase tracking-widest mb-5">The Nataka AI Standard · Updated {updated}</p>
+        <h1 className="font-heading font-black text-[clamp(2.4rem,6vw,5.2rem)] text-white leading-[1.05] max-w-4xl mb-7">
+          AI video your brand can <span className="text-accent">put its name on.</span>
         </h1>
         <p className="max-w-2xl text-lg text-cream/80 leading-relaxed">
           Kenya has seen what careless AI does to a brand: extra fingers, borrowed faces, ads that get screenshotted for the
@@ -109,8 +109,8 @@ export default function AiStandardPage() {
         <ol className="divide-y divide-white/8 border-t border-b border-white/8">
           {rules.map((r) => (
             <li key={r.n} className="grid grid-cols-[48px_1fr] md:grid-cols-[80px_320px_1fr] gap-4 md:gap-10 py-8 md:py-10 items-baseline">
-              <span className="font-geist font-black text-sm text-teal/60 tabular-nums">{r.n}</span>
-              <h2 className="font-geist font-black text-xl md:text-2xl text-white uppercase leading-tight">{r.title}</h2>
+              <span className="font-heading font-black text-sm text-accent/60 tabular-nums">{r.n}</span>
+              <h2 className="font-heading font-black text-xl md:text-2xl text-white uppercase leading-tight">{r.title}</h2>
               <p className="col-span-2 md:col-span-1 col-start-2 md:col-start-auto text-cream/70 text-base leading-relaxed max-w-2xl">{r.body}</p>
             </li>
           ))}
@@ -119,8 +119,8 @@ export default function AiStandardPage() {
 
       <section className="max-w-7xl mx-auto px-6 md:px-12 pb-20 md:pb-28 grid md:grid-cols-2 gap-10 md:gap-16 items-start">
         <div>
-          <h2 className="font-geist font-black text-[clamp(1.4rem,3vw,2.2rem)] text-white uppercase mb-4">
-            Why we <span className="text-teal">publish this</span>
+          <h2 className="font-heading font-black text-[clamp(1.4rem,3vw,2.2rem)] text-white uppercase mb-4">
+            Why we <span className="text-accent">publish this</span>
           </h2>
           <p className="text-cream/70 leading-relaxed mb-4">
             Brands are right to be careful. Using someone&apos;s face without consent already costs Kenyan businesses money at
@@ -130,11 +130,11 @@ export default function AiStandardPage() {
           <p className="text-cream/70 leading-relaxed">
             We built AANOTHER, a whole rock band made with AI, under these rules: fictional characters, labelled on every
             platform, directed shot by shot.{" "}
-            <Link href="/services/ai-video-production-kenya#case-study" className="text-teal underline underline-offset-4">See the band →</Link>
+            <Link href="/services/ai-video-production-kenya#case-study" className="text-accent underline underline-offset-4">See the band →</Link>
           </p>
         </div>
-        <div className="border border-teal/30 bg-teal/[0.04] p-8 md:p-10">
-          <h2 className="font-geist font-black text-xl text-white uppercase mb-3">Planning an AI campaign?</h2>
+        <div className="border border-accent/30 bg-accent/[0.04] p-8 md:p-10">
+          <h2 className="font-heading font-black text-xl text-white uppercase mb-3">Planning an AI campaign?</h2>
           <p className="text-cream/65 text-sm leading-relaxed mb-6">
             Tell us the product and the one feeling the video must leave. We send a written concept and a first AI frame
             within 48 hours, made under this Standard.
@@ -143,7 +143,7 @@ export default function AiStandardPage() {
             href={waLink(`Source: ${url}\nHi Nataka, I read the AI Standard and I'd like a free AI concept (code: AISTD). The project is `)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-teal text-ink font-geist font-black uppercase text-xs tracking-widest px-7 py-4 hover:bg-teal-light transition-colors"
+            className="inline-block bg-accent text-ink font-heading font-black uppercase text-xs tracking-widest px-7 py-4 hover:bg-accent-light transition-colors"
           >
             Get a free AI concept →
           </a>

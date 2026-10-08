@@ -124,7 +124,7 @@ export default function Preloader() {
           <motion.div
             exit={{ y: "-100%" }}
             transition={{ duration: 0.85, delay: 0.12, ease: [0.77, 0, 0.175, 1] }}
-            className="absolute inset-x-0 bottom-0 h-full bg-teal translate-y-full"
+            className="absolute inset-x-0 bottom-0 h-full bg-accent translate-y-full"
           />
 
           {/* flickering stills — projector warming up.
@@ -189,7 +189,7 @@ export default function Preloader() {
               transition={{ delay: 0.2 }}
               className="flex items-center gap-2 mb-6"
             >
-              <span className="w-2 h-2 rounded-full bg-teal animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               <span className="font-mono text-[10px] text-white/45 tracking-[0.35em] uppercase">
                 Roll Camera
               </span>
@@ -212,7 +212,7 @@ export default function Preloader() {
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.85, duration: 0.35, ease: "backOut" }}
-                className="font-nataka font-black text-[clamp(2.8rem,10vw,6.5rem)] text-teal leading-none"
+                className="font-nataka font-black text-[clamp(2.8rem,10vw,6.5rem)] text-accent leading-none"
               >
                 .
               </motion.span>
@@ -223,7 +223,7 @@ export default function Preloader() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="font-mono text-[11px] text-teal tracking-[0.45em] uppercase mb-12 h-4 tabular-nums"
+              className="font-mono text-[11px] text-accent tracking-[0.45em] uppercase mb-12 h-4 tabular-nums"
             >
               {word}
             </motion.p>
@@ -231,7 +231,7 @@ export default function Preloader() {
             {/* progress line */}
             <div className="w-[220px] h-px bg-white/10 relative overflow-hidden">
               <div
-                className="absolute inset-y-0 left-0 bg-teal transition-[width] duration-100 ease-out"
+                className="absolute inset-y-0 left-0 bg-accent transition-[width] duration-100 ease-out"
                 style={{ width: `${pct}%` }}
               />
             </div>
@@ -239,10 +239,10 @@ export default function Preloader() {
 
           {/* counter bottom-right */}
           <div className="absolute bottom-6 right-7 md:bottom-10 md:right-12 flex items-baseline gap-1">
-            <span className="font-geist font-black text-6xl md:text-8xl text-white/12 tabular-nums leading-none">
+            <span className="font-heading font-black text-6xl md:text-8xl text-white/12 tabular-nums leading-none">
               {String(pct).padStart(3, "0")}
             </span>
-            <span className="font-mono text-xs text-teal/60">%</span>
+            <span className="font-mono text-xs text-accent/60">%</span>
           </div>
 
           {/* timecode bottom-left — like a camera HUD */}

@@ -3,11 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --teal: #0ABFBF;
-  --teal-light: #2DD4D4;
-  --teal-dark: #089090;
-  --ink: #080808;
-  --cream: #F0EDE6;
+  --accent: #D9DDE2;
+  --accent-light: #F1F3F5;
+  --accent-dark: #9AA3AE;
+  --signal: #E8432F;
+  --ink: #0B0C0E;
+  --cream: #E7E9EC;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,9 +16,10 @@
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
-  background-color: #080808;
-  color: #F0EDE6;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  background-color: #0B0C0E;
+  color: #E7E9EC;
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -33,7 +35,7 @@ body {
   .cursor-dot {
     width: 6px;
     height: 6px;
-    background: #0ABFBF;
+    background: #D9DDE2;
     border-radius: 50%;
     position: fixed;
     top: 0; left: 0;
@@ -46,7 +48,7 @@ body {
   .cursor-ring {
     width: 36px;
     height: 36px;
-    border: 1px solid rgba(10, 191, 191, 0.35);
+    border: 1px solid rgba(217, 221, 226, 0.35);
     border-radius: 50%;
     position: fixed;
     top: 0; left: 0;
@@ -60,7 +62,7 @@ body {
   .cursor-ring.hover {
     width: 48px;
     height: 48px;
-    border-color: rgba(10, 191, 191, 0.7);
+    border-color: rgba(217, 221, 226, 0.7);
     background: transparent;
   }
 
@@ -75,7 +77,7 @@ body {
     font-weight: 700;
     font-size: 8px;
     letter-spacing: 0.18em;
-    color: rgba(10, 191, 191, 0.9);
+    color: rgba(217, 221, 226, 0.9);
     text-transform: uppercase;
     white-space: nowrap;
     transition: opacity 0.2s ease;
@@ -88,8 +90,8 @@ body {
   top: -100%;
   left: 1rem;
   z-index: 99999;
-  background: #0ABFBF;
-  color: #080808;
+  background: #D9DDE2;
+  color: #0B0C0E;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 900;
   font-size: 0.75rem;
@@ -103,8 +105,8 @@ body {
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: #080808; }
-::-webkit-scrollbar-thumb { background: #0ABFBF; }
+::-webkit-scrollbar-track { background: #0B0C0E; }
+::-webkit-scrollbar-thumb { background: #4A5059; }
 
 /* ── Grain texture ── */
 body::before {
@@ -160,22 +162,50 @@ body::before {
   66%      { transform: translate3d(1px, -1px, 0); }
 }
 
+/* Homepage hero entrance. CSS, not JS, so it runs before hydration and the
+   H1 (the LCP element) is never held back by a framework mount. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-rise { animation: hero-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+}
+@keyframes hero-rise {
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Archivo's width axis. Display headlines run extended; body stays at 100%. */
+.stretch-wide { font-stretch: 125%; }
+.stretch-semi { font-stretch: 112.5%; }
+
+/* Hero headline: each line wipes in left to right, like a title card. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-wipe { animation: hero-wipe 1.05s cubic-bezier(0.77, 0, 0.175, 1) both; }
+}
+@keyframes hero-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* Statement words light up with scroll; reduced motion gets them fully lit. */
+@media (prefers-reduced-motion: reduce) {
+  .statement-words > span { opacity: 1 !important; }
+}
+
 /* ── Selection ── */
-::selection { background: #0ABFBF; color: #080808; }
+::selection { background: #D9DDE2; color: #0B0C0E; }
 
 /* ── Teal gradient text ── */
-.text-teal-gradient {
-  background: linear-gradient(135deg, #0ABFBF 0%, #2DD4D4 50%, #089090 100%);
+.text-accent-gradient {
+  background: linear-gradient(135deg, #F1F3F5 0%, #D9DDE2 50%, #9AA3AE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* ── HR ── */
-.hr-teal {
+.hr-accent {
   border: none;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #0ABFBF, transparent);
+  background: linear-gradient(90deg, transparent, #9AA3AE, transparent);
   display: block;
 }
 
@@ -188,15 +218,15 @@ body::before {
 
 /* ── Blog / Article prose ── */
 .prose-nataka {
-  color: rgba(240, 237, 230, 0.75);
-  font-family: var(--font-dm-sans);
+  color: rgba(231, 233, 236, 0.75);
+  font-family: var(--font-archivo);
   font-size: 1rem;
   line-height: 1.85;
 }
 .prose-nataka p { margin-bottom: 1.6rem; }
 .prose-nataka h2 {
-  font-family: var(--font-geist-sans);
-  font-weight: 900;
+  font-family: var(--font-archivo);
+  font-weight: 800;
   font-size: clamp(1.3rem, 3vw, 1.9rem);
   color: #fff;
   text-transform: uppercase;
@@ -205,10 +235,10 @@ body::before {
   margin-bottom: 1rem;
 }
 .prose-nataka h3 {
-  font-family: var(--font-geist-sans);
+  font-family: var(--font-archivo);
   font-weight: 700;
   font-size: 1.05rem;
-  color: #0ABFBF;
+  color: #D9DDE2;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-top: 2rem;
@@ -221,10 +251,10 @@ body::before {
 .prose-nataka li { margin-bottom: 0.5rem; }
 .prose-nataka ul li { list-style-type: disc; }
 .prose-nataka ol li { list-style-type: decimal; }
-.prose-nataka a { color: #0ABFBF; text-decoration: underline; text-underline-offset: 3px; }
-.prose-nataka a:hover { color: #2DD4D4; }
+.prose-nataka a { color: #F5F6F8; text-decoration: underline; text-underline-offset: 3px; }
+.prose-nataka a:hover { color: #D9DDE2; }
 .prose-nataka strong { color: #fff; font-weight: 600; }
-.prose-nataka em { color: rgba(240,237,230,0.9); font-style: italic; }
+.prose-nataka em { color: rgba(231,233,236,0.9); font-style: italic; }
 
 /* ── Sound toggle equalizer ── */
 @keyframes eq { from { height: 20%; } to { height: 100%; } }
@@ -233,13 +263,13 @@ body::before {
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid #0ABFBF !important;
+  outline: 2px solid #D9DDE2 !important;
   outline-offset: 2px;
 }
 
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #0ABFBF;
+  outline: 2px solid #D9DDE2;
   outline-offset: 3px;
   border-radius: 1px;
 }

@@ -79,7 +79,7 @@ export default function FloatingCountdown() {
               </span>
               {/* Days sit apart from the clock — at a glance the day count is
                   the number that matters, and the digits need room to read. */}
-              <span className="flex items-baseline gap-4 font-geist font-black text-sm md:text-base tabular-nums">
+              <span className="flex items-baseline gap-4 font-heading font-black text-sm md:text-base tabular-nums">
                 <span className="text-white">
                   {d}<span className="text-white/55 ml-px">d</span>
                 </span>

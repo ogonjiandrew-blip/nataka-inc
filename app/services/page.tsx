@@ -41,15 +41,15 @@ export default function ServicesIndex() {
       <section className="px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-16 max-w-7xl mx-auto">
         <Link
           href="/"
-          className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-teal transition-colors"
+          className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-accent transition-colors"
         >
           ← Nataka Inc
         </Link>
-        <p className="font-sans text-[10px] text-teal tracking-widest uppercase mt-8 mb-4">
+        <p className="font-sans text-[10px] text-accent tracking-widest uppercase mt-8 mb-4">
           What We Do · Nairobi, Kenya
         </p>
         <h1 className="leading-none mb-6">
-          <span className="font-geist font-black text-[clamp(2.2rem,7vw,5.5rem)] text-white uppercase block">
+          <span className="font-heading font-black text-[clamp(2.2rem,7vw,5.5rem)] text-white uppercase block">
             Services
           </span>
         </h1>
@@ -66,15 +66,15 @@ export default function ServicesIndex() {
             <Link
               key={s.slug}
               href={`/services/${s.slug}`}
-              className="group border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 flex flex-col transition-all duration-300 hover:border-teal/40 hover:from-white/[0.07] hover:-translate-y-1"
+              className="group border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-8 flex flex-col transition-all duration-300 hover:border-accent/40 hover:from-white/[0.07] hover:-translate-y-1"
             >
-              <h2 className="font-geist font-black text-xl text-white uppercase mb-3 group-hover:text-teal transition-colors duration-300">
+              <h2 className="font-heading font-black text-xl text-white uppercase mb-3 group-hover:text-accent transition-colors duration-300">
                 {s.label}
               </h2>
               <p className="font-sans text-cream/60 text-sm leading-relaxed flex-1">
                 {s.metaDescription}
               </p>
-              <span className="inline-block mt-5 font-sans text-[11px] text-teal tracking-widest uppercase border-b border-teal/30 group-hover:border-teal pb-0.5 self-start transition-colors">
+              <span className="inline-block mt-5 font-sans text-[11px] text-accent tracking-widest uppercase border-b border-accent/30 group-hover:border-accent pb-0.5 self-start transition-colors">
                 Explore →
               </span>
             </Link>
@@ -84,8 +84,8 @@ export default function ServicesIndex() {
 
       {/* CTA */}
       <section className="px-6 md:px-12 pb-24 max-w-7xl mx-auto">
-        <div className="border border-teal/30 bg-teal/[0.04] p-10 md:p-16 text-center">
-          <h2 className="font-geist font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
+        <div className="border border-accent/30 bg-accent/[0.04] p-10 md:p-16 text-center">
+          <h2 className="font-heading font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
             Not Sure Where To Start?
           </h2>
           <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
@@ -93,7 +93,7 @@ export default function ServicesIndex() {
           </p>
           <Link
             href="/campaign-brief"
-            className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+            className="inline-block font-heading font-black text-sm text-ink bg-accent px-10 py-5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
           >
             Build a Free Campaign Brief
           </Link>

@@ -64,7 +64,7 @@ export default function CommunityPage() {
 
           <span
             aria-hidden
-            className="absolute right-2 top-24 md:top-28 font-geist font-black text-[clamp(4rem,16vw,13rem)] leading-none text-white/[0.05] select-none pointer-events-none"
+            className="absolute right-2 top-24 md:top-28 font-heading font-black text-[clamp(4rem,16vw,13rem)] leading-none text-white/[0.05] select-none pointer-events-none"
           >
             オタ祭
           </span>
@@ -85,7 +85,7 @@ export default function CommunityPage() {
             </div>
 
             <h1 className="leading-none mb-6">
-              <span className="font-geist font-black text-[clamp(2.2rem,9vw,7.5rem)] text-white uppercase block">
+              <span className="font-heading font-black text-[clamp(2.2rem,9vw,7.5rem)] text-white uppercase block">
                 The Community
               </span>
               <span className="font-display font-semibold italic text-[clamp(1.4rem,4.5vw,3.4rem)] text-otaku block mt-2">
@@ -103,25 +103,25 @@ export default function CommunityPage() {
             <div className="flex flex-wrap gap-3 mt-8">
               <Link
                 href="/community/otamatsuri-cosplay-nairobi"
-                className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200"
+                className="font-heading font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200"
               >
                 See the Cosplay →
               </Link>
               <a
                 href="#wallpapers"
-                className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200"
+                className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200"
               >
                 Get the Wallpapers ↓
               </a>
               <a
                 href="#scene-radar"
-                className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-kpop hover:text-kpop-light transition-colors duration-200"
+                className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-kpop hover:text-kpop-light transition-colors duration-200"
               >
                 What&apos;s Happening
               </a>
               <Link
                 href="/otamatsuri-experience"
-                className="font-geist font-black text-xs text-white border border-otaku/50 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200"
+                className="font-heading font-black text-xs text-white border border-otaku/50 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200"
               >
                 Anime Video Booth
               </Link>
@@ -162,7 +162,7 @@ export default function CommunityPage() {
                 </div>
 
                 <h2 className="leading-none mb-5">
-                  <span className="font-geist font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase block">
+                  <span className="font-heading font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase block">
                     Otamatsuri Cosplay
                   </span>
                   <span className="font-display font-semibold italic text-[clamp(1.5rem,4.5vw,3rem)] text-otaku block">
@@ -176,7 +176,7 @@ export default function CommunityPage() {
                   real locations.
                 </p>
 
-                <span className="inline-block self-start font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest group-hover:bg-otaku-light transition-colors duration-200">
+                <span className="inline-block self-start font-heading font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest group-hover:bg-otaku-light transition-colors duration-200">
                   Open the scroll →
                 </span>
               </div>
@@ -201,7 +201,7 @@ export default function CommunityPage() {
                 Also from Nataka
               </p>
               <h2 className="leading-none mb-5">
-                <span className="font-geist font-black text-[clamp(1.6rem,5.5vw,4rem)] text-white uppercase block">
+                <span className="font-heading font-black text-[clamp(1.6rem,5.5vw,4rem)] text-white uppercase block">
                   K-Wave Kenya
                 </span>
                 <span className="font-display font-semibold italic text-[clamp(1.6rem,5.5vw,4rem)] text-kpop block">
@@ -213,7 +213,7 @@ export default function CommunityPage() {
                 everything — mostly on shaky phones. We think the scene deserves better
                 footage than that.
               </p>
-              <span className="inline-block font-geist font-black text-xs text-white bg-kpop px-7 py-4 uppercase tracking-widest group-hover:bg-kpop-mid transition-colors duration-200">
+              <span className="inline-block font-heading font-black text-xs text-white bg-kpop px-7 py-4 uppercase tracking-widest group-hover:bg-kpop-mid transition-colors duration-200">
                 Enter K-Wave →
               </span>
             </div>

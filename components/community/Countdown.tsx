@@ -45,7 +45,7 @@ function partsFor(target: string | null, now: number): Parts {
 function Unit({ value, label, numCls }: { value: number; label: string; numCls: string }) {
   return (
     <div className="text-center">
-      <p className={`font-geist font-black text-4xl md:text-6xl tabular-nums leading-none ${numCls}`}>
+      <p className={`font-heading font-black text-4xl md:text-6xl tabular-nums leading-none ${numCls}`}>
         {String(value).padStart(2, "0")}
       </p>
       <p className="font-sans text-white/45 text-[9px] md:text-[10px] tracking-widest uppercase mt-2">{label}</p>
@@ -70,14 +70,14 @@ function CountdownCard({ c, now }: { c: CountdownTarget; now: number | null }) {
         </p>
       </div>
 
-      <h3 className="font-geist font-black text-2xl md:text-3xl text-white uppercase leading-tight mb-1.5">
+      <h3 className="font-heading font-black text-2xl md:text-3xl text-white uppercase leading-tight mb-1.5">
         {c.title}
       </h3>
       <p className="font-sans text-white/55 text-xs md:text-sm mb-7">{c.subtitle}</p>
 
       {c.target ? (
         parts === "live" ? (
-          <p className={`font-geist font-black text-3xl md:text-5xl uppercase ${t.accent} mb-7`}>
+          <p className={`font-heading font-black text-3xl md:text-5xl uppercase ${t.accent} mb-7`}>
             It&apos;s happening.
           </p>
         ) : (
@@ -92,7 +92,7 @@ function CountdownCard({ c, now }: { c: CountdownTarget; now: number | null }) {
             ) : (
               ["Days", "Hours", "Min", "Sec"].map((l) => (
                 <div key={l} className="text-center">
-                  <p className="font-geist font-black text-4xl md:text-6xl leading-none text-white/25">--</p>
+                  <p className="font-heading font-black text-4xl md:text-6xl leading-none text-white/25">--</p>
                   <p className="font-sans text-white/45 text-[9px] md:text-[10px] tracking-widest uppercase mt-2">{l}</p>
                 </div>
               ))
@@ -103,7 +103,7 @@ function CountdownCard({ c, now }: { c: CountdownTarget; now: number | null }) {
         <div className="flex gap-5 md:gap-8 mb-7" aria-hidden>
           {["Days", "Hours", "Min", "Sec"].map((l) => (
             <div key={l} className="text-center">
-              <p className="font-geist font-black text-4xl md:text-6xl leading-none text-white/15">??</p>
+              <p className="font-heading font-black text-4xl md:text-6xl leading-none text-white/15">??</p>
               <p className="font-sans text-white/35 text-[9px] md:text-[10px] tracking-widest uppercase mt-2">{l}</p>
             </div>
           ))}
@@ -117,7 +117,7 @@ function CountdownCard({ c, now }: { c: CountdownTarget; now: number | null }) {
           href={c.cta.href}
           target={c.cta.external ? "_blank" : undefined}
           rel={c.cta.external ? "noopener noreferrer" : undefined}
-          className={`inline-block font-geist font-black text-xs px-7 py-4 uppercase tracking-widest transition-colors duration-200 ${t.btn}`}
+          className={`inline-block font-heading font-black text-xs px-7 py-4 uppercase tracking-widest transition-colors duration-200 ${t.btn}`}
         >
           {c.cta.label} →
         </a>
@@ -147,7 +147,7 @@ export default function Countdown() {
       </div>
 
       <h2 className="leading-none mb-12 md:mb-16">
-        <span className="font-geist font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
+        <span className="font-heading font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
           The Next
         </span>
         <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,4.5rem)] text-otaku block">

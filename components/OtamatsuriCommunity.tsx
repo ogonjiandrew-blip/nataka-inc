@@ -85,7 +85,7 @@ export default function OtamatsuriCommunity() {
       {/* Giant katakana watermark — festival poster energy */}
       <span
         aria-hidden
-        className="absolute -right-6 top-16 font-geist font-black text-[clamp(5rem,18vw,14rem)] leading-none text-white/[0.03] select-none pointer-events-none"
+        className="absolute -right-6 top-16 font-heading font-black text-[clamp(5rem,18vw,14rem)] leading-none text-white/[0.03] select-none pointer-events-none"
       >
         オタ祭
       </span>
@@ -110,7 +110,7 @@ export default function OtamatsuriCommunity() {
             transition={{ duration: 1, delay: 0.1, ease: [0.77, 0, 0.175, 1] }}
           >
             <h2 className="leading-none">
-              <span className="font-geist font-black text-[clamp(2.2rem,8vw,7rem)] text-white uppercase block">
+              <span className="font-heading font-black text-[clamp(2.2rem,8vw,7rem)] text-white uppercase block">
                 Otamatsuri<span className="text-[#E8442E]">.</span>
               </span>
               <span className="font-display font-semibold italic text-[clamp(1.4rem,4vw,3rem)] text-white/60 block mt-2">
@@ -146,13 +146,13 @@ export default function OtamatsuriCommunity() {
           >
             <Link
               href="/community"
-              className="font-geist font-black text-xs text-ink bg-[#E8442E] px-7 py-4 uppercase tracking-widest hover:bg-[#FF6B54] transition-colors duration-200"
+              className="font-heading font-black text-xs text-ink bg-[#E8442E] px-7 py-4 uppercase tracking-widest hover:bg-[#FF6B54] transition-colors duration-200"
             >
               Enter the Community →
             </Link>
             <Link
               href="/work/otamatsuri-promo-film"
-              className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-[#E8442E] hover:text-[#FF6B54] transition-colors duration-200"
+              className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-[#E8442E] hover:text-[#FF6B54] transition-colors duration-200"
             >
               See the Otamatsuri Film
             </Link>
@@ -181,10 +181,10 @@ export default function OtamatsuriCommunity() {
               transition={{ duration: 0.55, delay: 0.5 + i * 0.12 }}
               className="p-6 md:p-7 border border-white/8 bg-white/[0.02] hover:border-[#E8442E]/30 transition-colors duration-300 group"
             >
-              <span aria-hidden className="font-geist font-black text-[#E8442E]/70 text-lg block mb-4 group-hover:text-[#FF6B54] transition-colors duration-300">
+              <span aria-hidden className="font-heading font-black text-[#E8442E]/70 text-lg block mb-4 group-hover:text-[#FF6B54] transition-colors duration-300">
                 {p.jp}
               </span>
-              <h4 className="font-geist font-black text-white text-sm uppercase mb-2">{p.title}</h4>
+              <h4 className="font-heading font-black text-white text-sm uppercase mb-2">{p.title}</h4>
               <p className="font-sans text-white/60 text-xs leading-relaxed">{p.desc}</p>
             </motion.div>
           ))}

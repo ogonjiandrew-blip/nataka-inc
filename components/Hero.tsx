@@ -1,177 +1,77 @@
-"use client";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import LoopVideo from "@/components/LoopVideo";
+import { waLink } from "@/lib/whatsapp";
 
-import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useTextScramble } from "@/hooks/useTextScramble";
-import MagneticButton from "@/components/MagneticButton";
-import LetterReveal from "@/components/LetterReveal";
+/**
+ * Server-rendered hero. The headline is real text in the first HTML byte, so
+ * it is both the LCP element and the H1 search engines read; the line wipes
+ * and the fade are CSS (globals.css: .hero-wipe, .hero-rise), so they run
+ * before hydration.
+ */
+const lines = [
+  { text: "We create", tone: "text-white" },
+  { text: "what moves", tone: "text-accent-dark" },
+  { text: "people", tone: "text-white", stop: true },
+];
 
 export default function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    // Trigger entrance immediately on mount — faster hero paint / better LCP
-    setReady(true);
-  }, []);
-
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.7], [0.52, 0.92]);
-  const textY          = useTransform(scrollYProgress, [0, 1],   ["0%", "22%"]);
-  const textOpacity    = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
-  const line1 = useTextScramble("WE CREATE",  ready, 400);
-  const line2 = useTextScramble("WHAT MOVES", ready, 700);
-  const line3 = useTextScramble("PEOPLE.",    ready, 1000);
-
   return (
-    <section ref={containerRef} className="relative min-h-[100dvh] flex flex-col justify-end overflow-hidden">
+    <section className="relative min-h-[100dvh] flex flex-col justify-end overflow-hidden">
+      <LoopVideo src="/videos/hero-reel.mp4" poster="/videos/hero-reel-poster.jpg" />
 
-      {/* Video */}
-      {/* 14KB poster paints immediately (fast LCP); the montage streams in behind it */}
-      <video src="/videos/hero.mp4" autoPlay muted loop playsInline preload="metadata"
-        poster="/videos/hero-poster.jpg"
-        className="absolute inset-0 w-full h-full object-cover" />
+      {/* A light veil keeps the footage visible; the left and bottom washes carry the type */}
+      <div aria-hidden="true" className="absolute inset-0 bg-ink/20" />
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/40 to-transparent" />
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-ink via-ink/70 to-transparent" />
+      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink/70 to-transparent" />
 
-      {/* Base overlay */}
-      <motion.div style={{ opacity: overlayOpacity }} className="absolute inset-0 bg-ink pointer-events-none" />
+      <div className="relative w-full max-w-7xl mx-auto px-6 md:px-12 pt-28 pb-16 md:pb-24">
+        <p className="hero-rise flex flex-col sm:flex-row sm:items-center gap-y-1.5 font-sans font-medium text-[10px] md:text-[11px] uppercase tracking-[0.28em] text-cream/70 mb-6 md:mb-8">
+          <span>Nairobi, Kenya</span>
+          <span aria-hidden="true" className="hidden sm:inline mx-3 text-cream/35">/</span>
+          <span>Marketing &amp; brand promotion</span>
+        </p>
 
-      {/* Hard gradient at the bottom — gives the text a solid ground to sit on */}
-      <div className="absolute bottom-0 inset-x-0 h-[70%] bg-gradient-to-t from-ink via-ink/80 to-transparent pointer-events-none" />
-
-      {/* Top vignette for nav legibility */}
-      <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-ink/75 to-transparent pointer-events-none" />
-
-      {/* ── Content ── */}
-      <motion.div
-        style={{ y: textY, opacity: textOpacity }}
-        className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-36 md:pb-44"
-      >
-        {/* Location label */}
-        <div className="mb-6">
-          <LetterReveal
-            text="Nairobi, Kenya  ·  Marketing & Brand Promotion"
-            inView={ready}
-            delay={0.2}
-            stagger={0.025}
-            className="font-sans text-teal text-[10px] tracking-widest2 uppercase font-medium"
-          />
-        </div>
-
-        {/* Scramble headline — this is the page's H1.
-            An sr-only prefix carries the target keywords (the visible tagline
-            is brand voice, not keyword text). */}
-        <h1 className="mb-5 md:mb-8">
-          <span className="sr-only">
-            Nataka Inc — Marketing and Brand Promotion Agency in Nairobi, Kenya.{" "}
-          </span>
-          <div
-            className="font-geist font-black leading-[0.92] uppercase"
-            style={{ fontSize: "clamp(1.9rem, 9vw, 8.5rem)" }}
-          >
-            {/* Line 1 — white with shadow */}
-            <motion.div
-              initial={{ clipPath: "inset(0 100% 0 0)" }}
-              animate={ready ? { clipPath: "inset(0 0% 0 0)" } : {}}
-              transition={{ duration: 0.9, delay: 0.35, ease: [0.77, 0, 0.175, 1] }}
-              style={{
-                color: "#FFFFFF",
-                textShadow: "0 2px 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)",
-              }}
+        <h1 className="font-heading font-extrabold uppercase stretch-wide leading-[0.94] tracking-[-0.025em] text-[clamp(2rem,8.6vw,8.25rem)]">
+          <span className="sr-only">Nataka Inc, marketing and brand promotion agency in Nairobi, Kenya. </span>
+          {lines.map((l, i) => (
+            <span
+              key={l.text}
+              className={`hero-wipe block whitespace-nowrap ${l.tone}`}
+              style={{ animationDelay: `${120 + i * 170}ms` }}
             >
-              {line1}
-            </motion.div>
-
-            {/* Line 2 — teal with glow */}
-            <motion.div
-              initial={{ clipPath: "inset(0 100% 0 0)" }}
-              animate={ready ? { clipPath: "inset(0 0% 0 0)" } : {}}
-              transition={{ duration: 0.9, delay: 0.55, ease: [0.77, 0, 0.175, 1] }}
-              style={{
-                color: "#0ABFBF",
-                textShadow: "0 0 60px rgba(10,191,191,0.45), 0 2px 40px rgba(0,0,0,0.7)",
-              }}
-            >
-              {line2}
-            </motion.div>
-
-            {/* Line 3 — white with shadow */}
-            <motion.div
-              initial={{ clipPath: "inset(0 100% 0 0)" }}
-              animate={ready ? { clipPath: "inset(0 0% 0 0)" } : {}}
-              transition={{ duration: 0.9, delay: 0.75, ease: [0.77, 0, 0.175, 1] }}
-              style={{
-                color: "#FFFFFF",
-                textShadow: "0 2px 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)",
-              }}
-            >
-              {line3}
-            </motion.div>
-          </div>
+              {l.text}
+              {l.stop && <span className="text-signal">.</span>}
+            </span>
+          ))}
         </h1>
 
-        {/* Subline */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={ready ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 1.1 }}
-          className="font-sans text-white/85 text-sm md:text-lg max-w-md leading-relaxed mb-8 md:mb-10 font-light"
-          style={{ textShadow: "0 1px 20px rgba(0,0,0,0.6)" }}
+        <p
+          className="hero-rise mt-7 md:mt-9 font-sans text-cream/80 text-base md:text-lg leading-relaxed max-w-[46ch]"
+          style={{ animationDelay: "700ms" }}
         >
-          Marketing campaigns, brand films and social content for businesses in Kenya.
-          Strategy, cinematic production and rollout, built around your next launch.
-        </motion.p>
+          Marketing campaigns, brand films and social content for businesses in Kenya. Strategy, cinematic production
+          and rollout, built around your next launch.
+        </p>
 
-        {/* CTAs — white primary, teal outline secondary */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={ready ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 1.3 }}
-          className="flex flex-col sm:flex-row gap-3 sm:gap-4"
-        >
-          {/* White primary — maximum contrast against anything on screen */}
-          <MagneticButton
+        <div className="hero-rise mt-9 md:mt-10 flex flex-col sm:flex-row gap-3" style={{ animationDelay: "820ms" }}>
+          <a
             href="#work"
-            className="inline-flex items-center justify-center px-10 py-4 bg-white text-ink font-geist font-black text-xs tracking-widest uppercase hover:bg-cream transition-colors duration-300"
-            strength={0.3}
+            className="inline-flex items-center justify-center bg-white text-ink font-heading font-bold text-xs uppercase tracking-[0.16em] px-9 py-[1.1rem] hover:bg-accent active:translate-y-px transition-colors"
           >
-            See Our Work
-          </MagneticButton>
-
-          {/* Teal outline secondary */}
-          <MagneticButton
-            href="#contact"
-            className="inline-flex items-center justify-center px-10 py-4 border border-teal/60 text-teal font-sans text-xs tracking-widest uppercase hover:border-teal hover:bg-teal/10 transition-all duration-300"
-            strength={0.2}
+            See our work
+          </a>
+          <a
+            href={waLink("Source: natakainc.com (homepage)\nHi Nataka, I'd like to start a project. My company, the goal and our target date: ")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center justify-center gap-3 border border-white/30 text-white font-heading font-bold text-xs uppercase tracking-[0.16em] px-9 py-[1.1rem] hover:border-white/70 active:translate-y-px transition-colors"
           >
-            Start a Project
-          </MagneticButton>
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 1 }}
-        className="absolute bottom-28 right-8 md:right-12 hidden md:flex flex-col items-center gap-2"
-      >
-        <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-          className="w-px h-12 bg-gradient-to-b from-teal/70 to-transparent" />
-        <span className="font-sans text-white/35 text-[9px] tracking-widest uppercase mt-1">Scroll</span>
-      </motion.div>
-
-      {/* Stats bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.8, duration: 0.8 }}
-        className="absolute bottom-0 inset-x-0 border-t border-white/8 bg-ink/85 backdrop-blur-sm"
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-4 grid grid-cols-3">
-          {[ ["Strategy", "A clear campaign brief"], ["Production", "Film & social content"], ["Rollout", "A plan to reach buyers"] ].map(([title, label]) => <div key={title} className="text-center px-1 md:px-2"><p className="font-geist font-black text-teal text-sm md:text-2xl">{title}</p><p className="hidden sm:block font-sans text-white/50 text-[9px] md:text-[10px] tracking-wider uppercase mt-0.5">{label}</p></div>)}
+            Start a project
+            <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+          </a>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

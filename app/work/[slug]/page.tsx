@@ -120,18 +120,18 @@ export default function CaseStudyPage({ params }: Props) {
         <div className="absolute top-8 left-6 md:left-12 z-10">
           <Link
             href="/gallery"
-            className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-teal transition-colors"
+            className="font-sans text-white/55 text-xs tracking-widest uppercase hover:text-accent transition-colors"
           >
             ← Gallery
           </Link>
         </div>
 
         <div className="absolute bottom-0 inset-x-0 px-6 md:px-12 pb-14 max-w-7xl mx-auto">
-          <p className="font-mono text-[11px] text-teal tracking-widest uppercase mb-4">
+          <p className="font-mono text-[11px] text-accent tracking-widest uppercase mb-4">
             {study.category} · {study.year}
           </p>
           <p className="font-sans text-white/60 text-sm tracking-widest uppercase mb-2">{study.client}</p>
-          <h1 className="font-geist font-black text-[clamp(2.8rem,10vw,7rem)] text-white uppercase leading-none">
+          <h1 className="font-heading font-black text-[clamp(2.8rem,10vw,7rem)] text-white uppercase leading-none">
             {study.title}
           </h1>
         </div>
@@ -163,7 +163,7 @@ export default function CaseStudyPage({ params }: Props) {
 
       {/* Challenge */}
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-4xl mx-auto">
-        <h2 className="font-mono text-[11px] text-teal tracking-widest uppercase mb-6">01 — The Challenge</h2>
+        <h2 className="font-mono text-[11px] text-accent tracking-widest uppercase mb-6">01 — The Challenge</h2>
         <p className="font-sans text-cream/75 text-lg leading-relaxed">{study.challenge}</p>
       </div>
 
@@ -180,11 +180,11 @@ export default function CaseStudyPage({ params }: Props) {
 
       {/* Approach */}
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-4xl mx-auto">
-        <h2 className="font-mono text-[11px] text-teal tracking-widest uppercase mb-8">02 — The Approach</h2>
+        <h2 className="font-mono text-[11px] text-accent tracking-widest uppercase mb-8">02 — The Approach</h2>
         <ul className="space-y-6">
           {study.approach.map((step, i) => (
             <li key={i} className="flex gap-5 items-start">
-              <span className="font-geist font-black text-teal/50 text-sm pt-1 tabular-nums flex-shrink-0">
+              <span className="font-heading font-black text-accent/50 text-sm pt-1 tabular-nums flex-shrink-0">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <p className="font-sans text-cream/75 text-lg leading-relaxed">{step}</p>
@@ -206,7 +206,7 @@ export default function CaseStudyPage({ params }: Props) {
 
       {/* Result */}
       <div className="px-6 md:px-12 pb-16 md:pb-20 max-w-4xl mx-auto">
-        <h2 className="font-mono text-[11px] text-teal tracking-widest uppercase mb-6">03 — The Result</h2>
+        <h2 className="font-mono text-[11px] text-accent tracking-widest uppercase mb-6">03 — The Result</h2>
         <p className="font-sans text-cream/85 text-xl leading-relaxed mb-10">{study.result}</p>
 
         {study.watchUrl && (
@@ -214,7 +214,7 @@ export default function CaseStudyPage({ params }: Props) {
             href={study.watchUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 font-geist font-black text-sm text-ink bg-teal px-8 py-4 uppercase tracking-widest hover:bg-teal-light transition-colors"
+            className="inline-flex items-center gap-3 font-heading font-black text-sm text-ink bg-accent px-8 py-4 uppercase tracking-widest hover:bg-accent-light transition-colors"
           >
             ▶ {study.watchLabel ?? "Watch the film"}
           </a>
@@ -223,8 +223,8 @@ export default function CaseStudyPage({ params }: Props) {
 
       {/* CTA */}
       <div className="px-6 md:px-12 pb-16 md:pb-24 max-w-7xl mx-auto">
-        <div className="border border-teal/30 bg-teal/[0.04] p-10 md:p-16 text-center">
-          <h2 className="font-geist font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
+        <div className="border border-accent/30 bg-accent/[0.04] p-10 md:p-16 text-center">
+          <h2 className="font-heading font-black text-[clamp(1.6rem,4vw,3rem)] text-white uppercase leading-tight mb-4">
             Have a project like this?
           </h2>
           <p className="font-sans text-cream/60 text-base mb-8 max-w-xl mx-auto">
@@ -233,7 +233,7 @@ export default function CaseStudyPage({ params }: Props) {
           <a
             href={waLink(`Hi Nataka, I saw your ${study.title} project and would like to discuss something similar. Source: ${siteUrl}/work/${study.slug}`)}
             target="_blank" rel="noopener noreferrer"
-            className="inline-block font-geist font-black text-sm text-ink bg-teal px-10 py-5 uppercase tracking-widest hover:bg-teal-light transition-colors duration-200"
+            className="inline-block font-heading font-black text-sm text-ink bg-accent px-10 py-5 uppercase tracking-widest hover:bg-accent-light transition-colors duration-200"
           >
             Discuss Your Project
           </a>
@@ -245,11 +245,11 @@ export default function CaseStudyPage({ params }: Props) {
         <div className="h-px bg-white/8 mb-10" />
         <div className="flex flex-wrap items-center gap-4">
           <span className="font-mono text-[11px] text-white/40 tracking-widest uppercase">Explore</span>
-          <Link href="/gallery" className="font-sans text-xs text-teal tracking-widest uppercase border border-teal/30 px-5 py-3 hover:bg-teal hover:text-ink transition-colors">
+          <Link href="/gallery" className="font-sans text-xs text-accent tracking-widest uppercase border border-accent/30 px-5 py-3 hover:bg-accent hover:text-ink transition-colors">
             Full Gallery
           </Link>
           {others.map((c) => (
-            <Link key={c.slug} href={`/work/${c.slug}`} className="font-sans text-xs text-teal tracking-widest uppercase border border-teal/30 px-5 py-3 hover:bg-teal hover:text-ink transition-colors">
+            <Link key={c.slug} href={`/work/${c.slug}`} className="font-sans text-xs text-accent tracking-widest uppercase border border-accent/30 px-5 py-3 hover:bg-accent hover:text-ink transition-colors">
               {c.title}
             </Link>
           ))}

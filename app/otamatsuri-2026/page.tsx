@@ -447,7 +447,7 @@ export default function Otamatsuri2026Page() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/40" />
 
-          <span aria-hidden className="absolute right-2 top-24 md:top-28 font-geist font-black text-[clamp(4rem,15vw,12rem)] leading-none text-white/[0.05] select-none pointer-events-none">
+          <span aria-hidden className="absolute right-2 top-24 md:top-28 font-heading font-black text-[clamp(4rem,15vw,12rem)] leading-none text-white/[0.05] select-none pointer-events-none">
             オタ祭
           </span>
 
@@ -479,7 +479,7 @@ export default function Otamatsuri2026Page() {
               "Otamatsuri2026." — one token, which is not the keyword.
             */}
             <h1 className="leading-none mb-6">
-              <span className="font-geist font-black text-[clamp(2.4rem,10vw,8rem)] text-white uppercase block">
+              <span className="font-heading font-black text-[clamp(2.4rem,10vw,8rem)] text-white uppercase block">
                 Otamatsuri
               </span>
               {" "}
@@ -498,7 +498,7 @@ export default function Otamatsuri2026Page() {
             <div className="flex flex-wrap gap-3 mt-8">
               {PHASE === "recap" && (
                 <a href="#recap"
-                  className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
+                  className="font-heading font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
                   See the Photos →
                 </a>
               )}
@@ -506,18 +506,18 @@ export default function Otamatsuri2026Page() {
                   should read why the room exists before they walk into it. */}
               {PHASE === "after" && (
                 <a href="#whatsapp"
-                  className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
+                  className="font-heading font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
                   Get the Footage →
                 </a>
               )}
               {PHASE === "before" && (
                 <a href={TICKETS} target="_blank" rel="noopener noreferrer"
-                  className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
+                  className="font-heading font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
                   Get Tickets →
                 </a>
               )}
               <a href={FILM} target="_blank" rel="noopener noreferrer"
-                className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200">
+                className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200">
                 Watch the Promo Film
               </a>
             </div>
@@ -541,7 +541,7 @@ export default function Otamatsuri2026Page() {
                   22 August 2026 · That&apos;s a wrap
                 </p>
               </div>
-              <h2 className="font-geist font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase leading-none mb-5">
+              <h2 className="font-heading font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase leading-none mb-5">
                 It&apos;s done.{" "}
                 <span className="font-display font-semibold italic normal-case text-otaku block">
                   We got all of it.
@@ -555,7 +555,7 @@ export default function Otamatsuri2026Page() {
               </p>
               <a
                 href="#whatsapp"
-                className="inline-block font-geist font-black text-xs text-ink bg-otaku px-8 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200"
+                className="inline-block font-heading font-black text-xs text-ink bg-otaku px-8 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200"
               >
                 Get the Footage →
               </a>
@@ -580,7 +580,7 @@ export default function Otamatsuri2026Page() {
             </div>
 
             <h2 className="leading-none mb-8 md:mb-10">
-              <span className="font-geist font-black text-[clamp(1.6rem,5vw,3.5rem)] text-white uppercase block">
+              <span className="font-heading font-black text-[clamp(1.6rem,5vw,3.5rem)] text-white uppercase block">
                 Otamatsuri 2026
               </span>
               {" "}
@@ -597,7 +597,7 @@ export default function Otamatsuri2026Page() {
 
             {RECAP.winners.length > 0 && (
               <div className="mb-14">
-                <h3 className="font-geist font-black text-white text-sm uppercase tracking-widest mb-6">
+                <h3 className="font-heading font-black text-white text-sm uppercase tracking-widest mb-6">
                   Competition Winners
                 </h3>
                 <dl className="border-t border-white/10">
@@ -661,7 +661,7 @@ export default function Otamatsuri2026Page() {
         {/* Facts */}
         <section className="py-16 md:py-24 px-6 md:px-12 max-w-7xl mx-auto">
           <h2 className="leading-none mb-10 md:mb-14">
-            <span className="font-geist font-black text-[clamp(1.6rem,5vw,3.5rem)] text-white uppercase block">Everything You</span>
+            <span className="font-heading font-black text-[clamp(1.6rem,5vw,3.5rem)] text-white uppercase block">Everything You</span>
             <span className="font-display font-semibold italic text-[clamp(1.6rem,5vw,3.5rem)] text-otaku block">Need to Know.</span>
           </h2>
 
@@ -677,7 +677,7 @@ export default function Otamatsuri2026Page() {
           {PHASE === "before" && (
             <div className="mt-8 border border-otaku/30 bg-otaku/[0.05] p-6">
               <p className="font-sans text-white/80 text-sm leading-relaxed">
-                <span className="font-geist font-black text-otaku-light uppercase text-xs tracking-widest">Heads up · </span>
+                <span className="font-heading font-black text-otaku-light uppercase text-xs tracking-widest">Heads up · </span>
                 Ticket prices rise in phases as the day gets closer, so going early is the cheapest it will be.
                 Prices are set by the organisers —{" "}
                 <a href={TICKETS} target="_blank" rel="noopener noreferrer" className="text-otaku-light underline underline-offset-2 hover:text-white transition-colors">
@@ -696,15 +696,15 @@ export default function Otamatsuri2026Page() {
             <p className="font-sans text-otaku-light text-[10px] tracking-widest2 uppercase font-medium">On the day</p>
           </div>
           <h2 className="leading-none mb-12 md:mb-16">
-            <span className="font-geist font-black text-[clamp(1.6rem,5vw,3.5rem)] text-white uppercase block">What&apos;s</span>
+            <span className="font-heading font-black text-[clamp(1.6rem,5vw,3.5rem)] text-white uppercase block">What&apos;s</span>
             <span className="font-display font-semibold italic text-[clamp(1.6rem,5vw,3.5rem)] text-otaku block">Happening.</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {happening.map((h) => (
               <div key={h.title} className="border border-white/8 bg-white/[0.02] hover:border-otaku/30 transition-colors duration-300 p-6 md:p-7 group">
-                <span aria-hidden className="font-geist font-black text-otaku/70 text-base block mb-4 group-hover:text-otaku-light transition-colors duration-300">{h.jp}</span>
-                <h3 className="font-geist font-black text-white text-sm uppercase mb-2 leading-tight">{h.title}</h3>
+                <span aria-hidden className="font-heading font-black text-otaku/70 text-base block mb-4 group-hover:text-otaku-light transition-colors duration-300">{h.jp}</span>
+                <h3 className="font-heading font-black text-white text-sm uppercase mb-2 leading-tight">{h.title}</h3>
                 <p className="font-sans text-white/60 text-xs leading-relaxed">{h.desc}</p>
               </div>
             ))}
@@ -729,7 +729,7 @@ export default function Otamatsuri2026Page() {
                 <span className="h-px w-10 bg-otaku" />
                 <p className="font-sans text-otaku-light text-[10px] tracking-widest2 uppercase font-medium">The Promo Film</p>
               </div>
-              <h2 className="font-geist font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase leading-none mb-5">
+              <h2 className="font-heading font-black text-[clamp(1.5rem,4.5vw,3rem)] text-white uppercase leading-none mb-5">
                 We shot it.<br /><span className="font-display font-semibold italic normal-case text-otaku">See the frames.</span>
               </h2>
               <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed mb-7">
@@ -738,13 +738,13 @@ export default function Otamatsuri2026Page() {
                 channel — watch it there, then take the frames.
               </p>
               <div className="flex flex-wrap gap-3">
-                <a href={FILM} target="_blank" rel="noopener noreferrer" className="font-geist font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
+                <a href={FILM} target="_blank" rel="noopener noreferrer" className="font-heading font-black text-xs text-ink bg-otaku px-7 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
                   Watch the Film →
                 </a>
-                <Link href="/community#wallpapers" className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200">
+                <Link href="/community#wallpapers" className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200">
                   Free Wallpapers ↓
                 </Link>
-                <Link href="/community#photocard" className="font-geist font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200">
+                <Link href="/community#photocard" className="font-heading font-black text-xs text-white border border-white/25 px-7 py-4 uppercase tracking-widest hover:border-otaku hover:text-otaku-light transition-colors duration-200">
                   Make a Photocard
                 </Link>
               </div>
@@ -755,7 +755,7 @@ export default function Otamatsuri2026Page() {
         {/* FAQ */}
         <section className="py-16 md:py-24 px-6 md:px-12 max-w-7xl mx-auto">
           <h2 className="leading-none mb-12 md:mb-16">
-            <span className="font-geist font-black text-[clamp(1.6rem,5vw,3.5rem)] text-white uppercase block">Otamatsuri 2026</span>
+            <span className="font-heading font-black text-[clamp(1.6rem,5vw,3.5rem)] text-white uppercase block">Otamatsuri 2026</span>
             <span className="font-display font-semibold italic text-[clamp(1.6rem,5vw,3.5rem)] text-otaku block">Questions.</span>
           </h2>
 
@@ -772,7 +772,7 @@ export default function Otamatsuri2026Page() {
             {allFaqs.map((f) => (
               <details key={f.q} className="group border-b border-white/10 py-5">
                 <summary className="flex items-start justify-between gap-6 cursor-pointer list-none">
-                  <h3 className="font-geist font-black text-white text-sm md:text-base uppercase leading-tight group-hover:text-otaku-light transition-colors">
+                  <h3 className="font-heading font-black text-white text-sm md:text-base uppercase leading-tight group-hover:text-otaku-light transition-colors">
                     {f.q}
                   </h3>
                   <span aria-hidden className="text-otaku text-xl leading-none shrink-0 transition-transform duration-300 group-open:rotate-45">+</span>
@@ -786,7 +786,7 @@ export default function Otamatsuri2026Page() {
         {/* Final CTA */}
         <section className="px-6 md:px-12 pb-24 md:pb-32 max-w-7xl mx-auto">
           <div className="border border-otaku/25 p-8 md:p-14" style={{ background: "linear-gradient(135deg, rgba(232,68,46,0.12) 0%, rgba(232,68,46,0.02) 60%, rgba(232,68,46,0) 100%)" }}>
-            <h2 className="font-geist font-black text-[clamp(1.5rem,5vw,3.4rem)] text-white uppercase leading-none mb-5">
+            <h2 className="font-heading font-black text-[clamp(1.5rem,5vw,3.4rem)] text-white uppercase leading-none mb-5">
               See you at <span className="text-otaku">The Carnivore.</span>
             </h2>
             <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed max-w-2xl mb-8">
@@ -800,11 +800,11 @@ export default function Otamatsuri2026Page() {
             </p>
             <div className="flex flex-wrap gap-3">
               {PHASE === "before" && (
-                <a href={TICKETS} target="_blank" rel="noopener noreferrer" className="font-geist font-black text-xs text-ink bg-otaku px-8 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
+                <a href={TICKETS} target="_blank" rel="noopener noreferrer" className="font-heading font-black text-xs text-ink bg-otaku px-8 py-4 uppercase tracking-widest hover:bg-otaku-light transition-colors duration-200">
                   Get Tickets →
                 </a>
               )}
-              <Link href="/community#fan-wall" className={`font-geist font-black text-xs px-8 py-4 uppercase tracking-widest transition-colors duration-200 ${PHASE !== "before" ? "text-ink bg-otaku hover:bg-otaku-light" : "text-white border border-white/25 hover:border-otaku hover:text-otaku-light"}`}>
+              <Link href="/community#fan-wall" className={`font-heading font-black text-xs px-8 py-4 uppercase tracking-widest transition-colors duration-200 ${PHASE !== "before" ? "text-ink bg-otaku hover:bg-otaku-light" : "text-white border border-white/25 hover:border-otaku hover:text-otaku-light"}`}>
                 Get On the Fan Wall
               </Link>
             </div>

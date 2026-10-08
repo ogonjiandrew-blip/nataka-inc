@@ -226,7 +226,7 @@ export default function PhotocardMaker() {
 
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12 md:mb-16">
         <h2 className="leading-none">
-          <span className="font-geist font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
+          <span className="font-heading font-black text-[clamp(1.8rem,6vw,4.5rem)] text-white uppercase block">
             Your Name.
           </span>
           <span className="font-display font-semibold italic text-[clamp(1.8rem,6vw,4.5rem)] block" style={{ color: t.deep }}>
@@ -256,7 +256,7 @@ export default function PhotocardMaker() {
                   type="button"
                   onClick={() => setTheme(k)}
                   aria-pressed={theme === k}
-                  className="font-geist font-black text-xs px-6 py-3.5 uppercase tracking-widest border transition-colors duration-200"
+                  className="font-heading font-black text-xs px-6 py-3.5 uppercase tracking-widest border transition-colors duration-200"
                   style={
                     theme === k
                       ? { background: THEMES[k].deep, borderColor: THEMES[k].deep, color: k === "kpop" ? "#fff" : "#080808" }
@@ -314,7 +314,7 @@ export default function PhotocardMaker() {
             type="button"
             onClick={download}
             disabled={busy}
-            className="font-geist font-black text-xs px-8 py-4 uppercase tracking-widest transition-colors duration-200 disabled:opacity-60"
+            className="font-heading font-black text-xs px-8 py-4 uppercase tracking-widest transition-colors duration-200 disabled:opacity-60"
             style={{ background: t.deep, color: theme === "kpop" ? "#fff" : "#080808" }}
           >
             {busy ? "Making it…" : "Download My Card ↓"}
