@@ -112,9 +112,9 @@ export const servicePages: ServicePage[] = [
     headlineAccent: "In Nairobi.",
     heroImage: "/videos/za-mabuda-still.jpg",
     heroVideo: {
-      src: "/videos/hero-reel-v4.mp4",
-      srcMobile: "/videos/hero-reel-v4-mobile.mp4",
-      poster: "/videos/hero-reel-v4-poster.jpg",
+      src: "/videos/hero-reel-v5.mp4",
+      srcMobile: "/videos/hero-reel-v5-mobile.mp4",
+      poster: "/videos/hero-reel-v5-poster.jpg",
       label: "Our shoots, our VFX for @dance10fikshun and AI footage from AANOTHER",
     },
     heroSummary: "Brand films, commercials and corporate video, from concept and script to the shoot, the grade and delivery in every format.",
