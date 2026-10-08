@@ -1,5 +1,5 @@
 /** Credit line under the hero: names already credited elsewhere on the site, nothing invented. */
-const credits = ["dance10fikshun", "Ssaru x Fathermoh", "Sarit Centre", "Vijana Barubaru", "Scar Mkadinali", "Teslah"];
+const credits = ["dance10fikshun", "MAXUS Kenya", "Ssaru x Fathermoh", "Sarit Centre", "Vijana Barubaru", "Scar Mkadinali", "Teslah"];
 
 export default function Credits() {
   return (

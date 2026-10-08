@@ -13,14 +13,15 @@ import { projects } from "@/lib/work";
 const TALL = "md:aspect-auto md:h-[clamp(340px,34vw,500px)]";
 const SHORT = "md:aspect-auto md:h-[clamp(240px,22vw,330px)]";
 
-/* Screens on a wall: the newest piece beside a wide film, a row of three, then
-   two portraits beside the way into everything else. Data lives in lib/work.ts. */
+/* Screens on a wall: the newest piece beside a wide film, a row of three, a row
+   of portraits, then a full-width way into everything else. Data lives in lib/work.ts. */
 const layout = [
   { id: "gun-vs-sword", cell: "md:col-span-5", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 42vw" },
   { id: "za-mabuda", cell: "md:col-span-7", media: `aspect-[16/10] ${TALL}`, sizes: "(max-width: 768px) 100vw, 58vw" },
   { id: "sarit", cell: "md:col-span-4", media: `aspect-[16/10] ${SHORT}`, sizes: "(max-width: 768px) 100vw, 33vw" },
   { id: "save-her", cell: "md:col-span-4", media: `aspect-[16/10] ${SHORT}`, sizes: "(max-width: 768px) 100vw, 33vw" },
   { id: "cool-in-school", cell: "md:col-span-4", media: `aspect-[16/10] ${SHORT}`, sizes: "(max-width: 768px) 100vw, 33vw" },
+  { id: "maxus", cell: "md:col-span-4", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 33vw" },
   { id: "kwanini", cell: "md:col-span-4", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 33vw" },
   { id: "teslah", cell: "md:col-span-4", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 33vw" },
 ];
@@ -59,25 +60,23 @@ export default function Work() {
         })}
 
         {/* Closing tile: the route to everything else */}
-        <Reveal delay={0.08} className="md:col-span-4">
+        <Reveal delay={0.08} className="md:col-span-12">
           <Link
             href="/gallery"
-            className="group relative flex h-full min-h-[280px] flex-col justify-between overflow-hidden rounded-[22px] p-8 md:p-10 ring-1 ring-white/[0.07] hover:ring-white/20 transition-[box-shadow] duration-500"
+            className="group relative flex h-full min-h-[240px] md:min-h-[260px] flex-col justify-between overflow-hidden rounded-[22px] p-8 md:p-12 ring-1 ring-white/[0.07] hover:ring-white/20 transition-[box-shadow] duration-500"
           >
             <Image
               src="/stills/fashion/10.jpg"
               alt=""
               fill
-              sizes="(max-width: 768px) 100vw, 33vw"
+              sizes="(max-width: 1280px) 100vw, 1200px"
               quality={75}
               className="object-cover opacity-40 scale-[1.04] transition-[opacity,transform] duration-[900ms] ease-out group-hover:opacity-55 group-hover:scale-[1.08]"
             />
             <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-tr from-ink via-ink/60 to-ember/30" />
             <span className="relative font-mono text-[11px] uppercase tracking-[0.12em] text-cream/70">More work</span>
             <span className="relative font-heading font-extrabold uppercase stretch-wide text-white tracking-[-0.02em] leading-[1] text-[clamp(1.8rem,3.6vw,3.2rem)]">
-              Open the
-              <br />
-              gallery
+              Open the gallery
               <ArrowUpRight
                 size={30}
                 weight="bold"

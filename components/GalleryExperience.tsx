@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 
@@ -12,28 +12,18 @@ function Loading() {
   );
 }
 
+// The sphere (three.js) is its own bundle and only downloads when someone opens it
 const SphereGallery = dynamic(() => import("@/components/SphereGallery"), {
   ssr: false,
   loading: () => <Loading />,
 });
 
-const STORAGE_KEY = "nataka-gallery-view";
-
+/**
+ * The grid opens first for everyone: it is fast and every image is indexable.
+ * The 3D sphere stays one tap away on the toggle for people who want it.
+ */
 export default function GalleryExperience({ children }: { children: React.ReactNode }) {
-  const [view, setView] = useState<"3d" | "grid">("3d");
-  const [ready, setReady] = useState(false);
-
-  // Restore the visitor's last-chosen view (default 3D for first-timers)
-  useEffect(() => {
-    const saved = typeof window !== "undefined" ? window.localStorage.getItem(STORAGE_KEY) : null;
-    if (saved === "grid" || saved === "3d") setView(saved);
-    setReady(true);
-  }, []);
-
-  const choose = (v: "3d" | "grid") => {
-    setView(v);
-    try { window.localStorage.setItem(STORAGE_KEY, v); } catch { /* ignore */ }
-  };
+  const [view, setView] = useState<"3d" | "grid">("grid");
 
   return (
     <div className="relative min-h-[100dvh]">
@@ -47,28 +37,26 @@ export default function GalleryExperience({ children }: { children: React.ReactN
       >
         <button
           type="button"
-          onClick={() => choose("3d")}
-          aria-pressed={view === "3d"}
-          className={`rounded-full px-5 py-2.5 font-heading font-bold text-[11px] tracking-[0.16em] uppercase transition-colors duration-200 ${view === "3d" ? "bg-signal text-on-signal" : "text-white/80 hover:text-white"}`}
-        >
-          3D
-        </button>
-        <button
-          type="button"
-          onClick={() => choose("grid")}
+          onClick={() => setView("grid")}
           aria-pressed={view === "grid"}
           className={`rounded-full px-5 py-2.5 font-heading font-bold text-[11px] tracking-[0.16em] uppercase transition-colors duration-200 ${view === "grid" ? "bg-signal text-on-signal" : "text-white/80 hover:text-white"}`}
         >
           Grid
         </button>
+        <button
+          type="button"
+          onClick={() => setView("3d")}
+          aria-pressed={view === "3d"}
+          className={`rounded-full px-5 py-2.5 font-heading font-bold text-[11px] tracking-[0.16em] uppercase transition-colors duration-200 ${view === "3d" ? "bg-signal text-on-signal" : "text-white/80 hover:text-white"}`}
+        >
+          3D
+        </button>
       </motion.div>
 
-      {/* Until the saved choice is read, show a loader (avoids mounting the 3D bundle if the visitor prefers Grid) */}
-      {!ready && <Loading />}
-      {ready && view === "3d" && <SphereGallery />}
+      {view === "3d" && <SphereGallery />}
 
       {/* Grid / crawl view: always in the DOM so search engines can index it */}
-      <div className={ready && view === "grid" ? "block" : "hidden"}>{children}</div>
+      <div className={view === "grid" ? "block" : "hidden"}>{children}</div>
     </div>
   );
 }

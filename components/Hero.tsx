@@ -25,9 +25,9 @@ export default function Hero() {
 
       <div className="relative isolate flex min-h-[calc(100dvh-20px)] md:min-h-[calc(100dvh-32px)] flex-col justify-end overflow-hidden rounded-[22px] md:rounded-[32px] ring-1 ring-white/10 shadow-[0_40px_120px_-40px_rgba(0,0,0,0.9)]">
         <LoopVideo
-          src="/videos/hero-reel-v3.mp4"
-          srcMobile="/videos/hero-reel-v3-mobile.mp4"
-          poster="/videos/hero-reel-v3-poster.jpg"
+          src="/videos/hero-reel-v4.mp4"
+          srcMobile="/videos/hero-reel-v4-mobile.mp4"
+          poster="/videos/hero-reel-v4-poster.jpg"
         />
 
         {/* A light veil keeps the footage visible; the washes carry the type */}
