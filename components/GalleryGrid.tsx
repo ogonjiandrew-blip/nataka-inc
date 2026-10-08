@@ -36,7 +36,10 @@ const fashionStills = ["/stills/fashion/1.jpg", "/stills/fashion/2.jpg", "/still
 const teslahStills = ["/stills/teslah/web-1.jpg", "/stills/teslah/web-2.jpg", "/stills/teslah/3.jpg", "/stills/teslah/web-4.jpg", "/stills/teslah/web-5.jpg", "/stills/teslah/web-6.jpg", "/stills/teslah/web-7.jpg", "/stills/teslah/web-8.jpg", "/stills/teslah/web-9.jpg"];
 const otamatsuriStills = ["/stills/otamatsuri/web-1.jpg", "/stills/otamatsuri/web-2.jpg", "/stills/otamatsuri/web-3.jpg", "/stills/otamatsuri/web-4.jpg", "/stills/otamatsuri/web-5.jpg", "/stills/otamatsuri/web-6.jpg", "/stills/otamatsuri/web-7.jpg", "/stills/otamatsuri/web-8.jpg"];
 
+const maxusStills = ["d90-golden", "d90-dirt", "t60-highway", "wheel", "t60-sun", "d90-front", "t60-yard", "d90-palms", "d90-bank"].map((n) => `/stills/maxus/${n}.jpg`);
+
 const groups = [
+  { heading: "MAXUS Kenya", kind: "Launch films and social", alt: "MAXUS Kenya vehicle photographed by Nataka Inc, automotive content in Nairobi, Kenya", imgs: maxusStills },
   { heading: "Teslah", kind: "Music video", href: "/work/teslah-music-video", alt: "Teslah music video still by Nataka Inc, music video production in Nairobi, Kenya", imgs: teslahStills },
   { heading: "Otamatsuri", kind: "Festival promo film", href: "/work/otamatsuri-promo-film", alt: "Otamatsuri cinematic film still by Nataka Inc, film and video production in Nairobi, Kenya", imgs: otamatsuriStills },
   { heading: "Studio", kind: "Visual stills", alt: "Nataka Inc studio visual still, media and creative production in Nairobi, Kenya", imgs: aiStills },

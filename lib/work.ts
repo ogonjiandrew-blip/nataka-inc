@@ -24,9 +24,9 @@ export const projects: Record<string, Project> = {
     id: "maxus",
     title: "MAXUS Kenya",
     meta: "Launch films and weekly social for MAXUS Kenya, KMEA Motors",
-    poster: "/videos/maxus-poster.jpg",
-    alt: "MAXUS T60 pickup on a murram road, from Nataka Inc's launch films for MAXUS Kenya",
-    preview: "/videos/previews/maxus.mp4",
+    poster: "/stills/maxus/d90-dirt.jpg",
+    alt: "MAXUS D90 on a murram road at golden hour, from Nataka Inc's films for MAXUS Kenya",
+    gallery: ["/stills/maxus/d90-dirt.jpg", "/stills/maxus/d90-golden.jpg", "/stills/maxus/t60-highway.jpg", "/stills/maxus/wheel.jpg"],
     href: "https://www.instagram.com/maxuskenya/",
   },
   "gun-vs-sword": {

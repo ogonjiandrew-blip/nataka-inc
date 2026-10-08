@@ -361,7 +361,7 @@ export const servicePages: ServicePage[] = [
     headlineAccent: "Moves Metal.",
     heroImage: "/videos/save-her-car.jpg",
     heroSummary: "Launch films, showroom content and lead campaigns that help dealers and motor brands reach serious buyers.",
-    work: ["save-her", "maxus"],
+    work: ["maxus", "save-her"],
     intro:
       "Cars sell on desire, and desire is visual. Nataka Inc builds automotive marketing for dealerships, importers and motor brands across Kenya: cinematic vehicle films, high-volume showroom content, and social campaigns engineered to fill your sales floor with qualified buyers. We make a Ksh 3M SUV look like the Ksh 3M decision it is.",
     deliverables: [
@@ -460,7 +460,7 @@ export const servicePages: ServicePage[] = [
     headlineAccent: "Notice.",
     heroImage: "/stills/1/4.jpg",
     heroSummary: "Hero films, teasers and launch-week content that give buyers a reason to look, then a reason to buy.",
-    work: ["sarit", "maxus"],
+    work: ["maxus", "kwanini"],
     intro:
       "Most product launches in Kenya land with a single post and a shrug. Nataka Inc builds launch campaigns with an arc (tease, reveal, sustain) so your product enters the market with momentum, not silence. From hero films to launch-day social content, we make sure the right people are paying attention the moment you go live.",
     deliverables: [
