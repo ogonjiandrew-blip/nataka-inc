@@ -3,11 +3,13 @@ export type CaseStudy = {
   title: string;
   titleAccent: string;
   lede: string;
-  loop: { src: string; poster: string; alt: string; tag: string; caption: string };
+  loop: { src: string; poster: string; alt: string; tag: string; caption: string; duration: string };
   stats: { value: string; label: string }[];
   stills: { src: string; alt: string; caption: string }[];
   verticalsText: string;
-  verticals: { src: string; poster: string; title: string; meta: string }[];
+  verticals: { src: string; poster: string; title: string; meta: string; duration: string }[];
+  /** ISO date the videos went up on the site (VideoObject uploadDate) */
+  published: string;
   forYou: string[];
   cta: { button: string; whatsappMessage: string; watchHref: string; watchLabel: string };
   disclosure: string;
@@ -741,6 +743,7 @@ export const servicePages: ServicePage[] = [
         alt: "AANOTHER, the AI rock band made by Nataka: opening of the I Mean It music video",
         tag: "AANOTHER · I MEAN IT",
         caption: "Opening of the I Mean It music video, upscaled to 4K. Graded as 1980s arena-rock broadcast footage.",
+        duration: "PT12S",
       },
       stats: [
         { value: "3", label: "Music videos" },
@@ -756,11 +759,12 @@ export const servicePages: ServicePage[] = [
         { src: "/ai/aanother/chain.jpg", alt: "Guitarist pulling the frontman down by his chain", caption: "I Mean It" },
         { src: "/ai/aanother/smile.jpg", alt: "Frontman smiling down at the guitarist by the drum kit", caption: "I Mean It" },
       ],
+      published: "2026-10-08",
       verticalsText:
         "Every song ships as a full music video plus vertical cut-downs for Shorts, Reels and TikTok, each opening on its strongest moment.",
       verticals: [
-        { src: "/ai/aanother/short-wire.mp4", poster: "/ai/aanother/short-wire-poster.jpg", title: "The wire snaps", meta: "Short · Stay Mad" },
-        { src: "/ai/aanother/short-flinch.mp4", poster: "/ai/aanother/short-flinch-poster.jpg", title: "He doesn't flinch", meta: "Short · Say It Again" },
+        { src: "/ai/aanother/short-wire.mp4", poster: "/ai/aanother/short-wire-poster.jpg", title: "The wire snaps", meta: "Short · Stay Mad", duration: "PT15S" },
+        { src: "/ai/aanother/short-flinch.mp4", poster: "/ai/aanother/short-flinch-poster.jpg", title: "He doesn't flinch", meta: "Short · Say It Again", duration: "PT12S" },
       ],
       forYou: [
         "A brand character who looks the same in your first post and your hundredth, with no talent fee per appearance.",
@@ -802,6 +806,7 @@ export const servicePages: ServicePage[] = [
       { question: "How much does an AI commercial cost in Kenya?", answer: "It depends on length, how many shots and whether we also shoot live footage. A short AI spot usually costs a fraction of an equivalent traditional shoot, because there is no location, crew-day or permit cost for the impossible shots. Send the brief on WhatsApp and we quote within 24 hours, with a free 48-hour concept." },
       { question: "Will people be able to tell it is AI?", answer: "Only if you want them to. We grade and composite AI shots to match real camera footage, and we avoid the things that give AI away: plastic skin, warped hands, melting text. Where AI cannot pass, we shoot that moment for real." },
       { question: "Can you put AI effects on video we already filmed?", answer: "Yes. Effects on real footage is one of our strongest services: send the clip and we add destruction, transformations, new environments or powers while keeping the real people and performance." },
+      { question: "Is AI video safe for our brand, legally?", answer: "It is when it is made carefully. Every Nataka AI production follows seven published rules: written consent before any likeness, clear AI labels, a human director on every frame, a frame-by-frame check for AI mistakes, no fake customers, no political deepfakes, and a record of which tools touched your material. Ask for them in your contract.", link: { href: "/ai-standard", label: "Read the Nataka AI Standard" } },
       { question: "Can you create an AI version of our brand ambassador or a real person?", answer: "Only with that person's written consent and a signed release. We will not animate anyone's likeness without it. With consent, we can build a consistent character for campaigns and series." },
       { question: "Who owns the AI video you make for us?", answer: "You do. The finished video is licensed to you for the agreed use, and we document which tools were used so your legal team has a clear record." },
       { question: "Do you work with agencies and clients outside Nairobi?", answer: "Yes. AI production is fully remote-friendly. We work with agencies and brands across Kenya, East Africa and internationally." },

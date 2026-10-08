@@ -117,6 +117,16 @@ export const metadata: Metadata = {
 
   verification: {
     google: "e223ee2dafac8bcd",
+    // Other engines' webmaster tools: set the env var to the code each console gives you.
+    ...(process.env.NEXT_PUBLIC_YANDEX_VERIFICATION ? { yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION } : {}),
+    other: Object.fromEntries(
+      [
+        ["msvalidate.01", process.env.NEXT_PUBLIC_BING_VERIFICATION],
+        ["naver-site-verification", process.env.NEXT_PUBLIC_NAVER_VERIFICATION],
+        ["baidu-site-verification", process.env.NEXT_PUBLIC_BAIDU_VERIFICATION],
+        ["seznam-wmt", process.env.NEXT_PUBLIC_SEZNAM_VERIFICATION],
+      ].filter((e): e is [string, string] => Boolean(e[1]))
+    ),
   },
 
   category: "business",
@@ -177,6 +187,10 @@ export default function RootLayout({
                     "AI commercials",
                     "generative AI video",
                     "visual effects",
+                    "AI music videos",
+                    "consistent AI characters",
+                    "AI advertising compliance in Kenya",
+                    "AI content labelling",
                   ],
                   address: {
                     "@type": "PostalAddress",
@@ -227,7 +241,7 @@ export default function RootLayout({
                     "https://www.instagram.com/natakainc",
                     "https://www.tiktok.com/@natakainc",
                     "https://www.linkedin.com/company/128374044",
-                    "https://www.youtube.com/@natakainc",
+                    "https://www.youtube.com/@nataka_inc",
                   ],
                 },
                 {

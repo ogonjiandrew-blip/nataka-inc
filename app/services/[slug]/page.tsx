@@ -78,6 +78,19 @@ export default function ServicePage({ params }: Props) {
           acceptedAnswer: { "@type": "Answer", text: f.answer },
         })),
       },
+      ...(service.caseStudy
+        ? [service.caseStudy.loop, ...service.caseStudy.verticals].map((v, i) => ({
+            "@type": "VideoObject",
+            "@id": `${siteUrl}/services/${service.slug}#video-${i + 1}`,
+            name: i === 0 ? `AANOTHER, ${service.caseStudy!.loop.tag.split("·").pop()!.trim()} (AI music video by Nataka)` : `AANOTHER: ${(v as { title: string }).title} (AI Short by Nataka)`,
+            description: i === 0 ? service.caseStudy!.loop.caption : service.caseStudy!.verticalsText,
+            thumbnailUrl: `${siteUrl}${v.poster}`,
+            contentUrl: `${siteUrl}${v.src}`,
+            uploadDate: service.caseStudy!.published,
+            duration: v.duration,
+            publisher: { "@id": `${siteUrl}/#org` },
+          }))
+        : []),
       {
         "@type": "BreadcrumbList",
         itemListElement: [

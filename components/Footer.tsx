@@ -4,6 +4,7 @@ const services = [
   { label: "Brand Promotion", href: "/services/brand-promotion-kenya" },
   { label: "Video Production", href: "/services/video-production-nairobi" },
   { label: "AI Video Production", href: "/services/ai-video-production-kenya" },
+  { label: "The Nataka AI Standard", href: "/ai-standard" },
   { label: "Corporate Video", href: "/services/corporate-video-production-kenya" },
   { label: "Music Videos", href: "/services/music-video-production-nairobi" },
   { label: "Brand Strategy", href: "/services/brand-strategy-kenya" },
