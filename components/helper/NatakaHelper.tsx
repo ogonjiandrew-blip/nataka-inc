@@ -1,20 +1,38 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   AnimatePresence,
   animate,
   motion,
+  useAnimationFrame,
   useMotionValue,
   useScroll,
   useSpring,
   useTransform,
   useVelocity,
+  type MotionValue,
 } from "framer-motion";
 import { PaperPlaneRight, X } from "@phosphor-icons/react";
 import HelperGirl, { type Eyes, type Mouth } from "@/components/helper/HelperGirl";
-import { onWakeRequest, setHelperMode } from "@/lib/helperStore";
+import { DangoWarmup } from "@/components/helper/HelperDango";
+import { bumpPill, markMorph, onWakeRequest, setHelperMode } from "@/lib/helperStore";
+import {
+  CRUISE,
+  FALL,
+  RISE,
+  clamp,
+  jellyX,
+  jellyY,
+  kick,
+  slowOver,
+  smooth,
+  smoothPath,
+  stretchAlong,
+  type Bezier,
+  type Pt,
+} from "@/components/helper/softBody";
 import { waLink } from "@/lib/whatsapp";
 
 const STORAGE = "nataka-helper-v1";
@@ -29,17 +47,21 @@ type Spark = { id: number; x: number; y: number; s: number; c: string };
 
 const wait = (ms: number) => new Promise((r) => window.setTimeout(r, ms));
 const BOUNCY = { type: "spring" as const, stiffness: 520, damping: 17, mass: 0.8 };
+// Mochi's jelly: a firm squash and two small wobbles (the dango is softer)
+const JELLY = { stiffness: 420, damping: 13 };
+const CROUCH: Bezier = [0.3, 0, 0.6, 1];
 
 /**
- * Mochi, the site helper. After 15 seconds of browsing she flies in, waves and
- * offers the four things people come here for. If nobody answers, or they say
- * no, she yawns, flies to the WhatsApp button and naps there as a dango. Tapping
- * the dango wakes her up again.
+ * Mochi, the site helper. After 15 seconds of browsing she flies in (with a
+ * loop), waves and offers the four things people come here for. If nobody
+ * answers, or they say no, she yawns, flies to the WhatsApp button, lands on it
+ * and squashes down into a sleeping dango. Tapping the dango wakes her up again.
  *
- * Motion is physical rather than keyframed where it can be: she banks and
- * stretches with her real velocity, her hair and the bunny's ears follow through
- * on a spring fed by that velocity (and by how fast the page scrolls), and every
- * hop has anticipation, stretch, squash and settle.
+ * Motion follows the dango in the Clannad ending: she keeps her volume, stretches
+ * along the way she is travelling, crouches before a hop, hangs at the top, lands
+ * with a squash and wobbles back like jelly. Flights are one smooth path, never a
+ * string of stops. Hair, clips, ears and her head follow through on springs fed
+ * by her real speed and acceleration.
  */
 export default function NatakaHelper() {
   const pathname = usePathname();
@@ -60,48 +82,59 @@ export default function NatakaHelper() {
   const [blink, setBlink] = useState(false);
   const [blush, setBlush] = useState(false);
   const [question, setQuestion] = useState("");
-  const [trail, setTrail] = useState<Spark[]>([]);
   const [burst, setBurst] = useState(0);
   const [hearts, setHearts] = useState(0);
-  const [poof, setPoof] = useState<{ id: number; x: number; y: number } | null>(null);
+  const [poof, setPoof] = useState<{ id: number; x: number; y: number; small?: boolean } | null>(null);
+  const [warm, setWarm] = useState(false);
 
   const dockRef = useRef<HTMLDivElement>(null);
   const phaseRef = useRef<Phase>("waiting");
   const idleRef = useRef<number>();
   const busyRef = useRef(false); // an expression beat is playing; idle fidgets wait
+  const fidgetRef = useRef(false); // a fidget is playing; tickles wait, hover reactions do not
 
   /* ---------- motion values ---------- */
-  const x = useMotionValue(0); // flight offset from the dock
+  const x = useMotionValue(0); // where her feet are, from the dock's centre and bottom
   const y = useMotionValue(0);
-  const hopY = useMotionValue(0); // small hops on top of the flight
-  const rot = useMotionValue(0); // deliberate tilts
+  const hopY = useMotionValue(0); // hops on top of the flight
+  const floatY = useMotionValue(0); // the idle hover, part of her motion so her hair follows it
+  const rot = useMotionValue(0); // deliberate tilts, twirls, the loop
   const size = useMotionValue(1);
-  const squashX = useMotionValue(1);
-  const squashY = useMotionValue(1);
+  const jelly = useMotionValue(0); // + squash, - stretch, from her feet
 
-  const vx = useVelocity(x);
-  const vy = useVelocity(y);
-  const vHop = useVelocity(hopY);
+  // written every frame by the rig while she is on screen
+  const velX = useMotionValue(0);
+  const velY = useMotionValue(0);
+  const stretch = useMotionValue("none");
+  const headX = useMotionValue(0);
+  const headY = useMotionValue(0);
+  const bankTarget = useMotionValue(0);
+
   const { scrollY } = useScroll();
   const vScroll = useVelocity(scrollY);
 
-  // Bank into turns, from horizontal speed
-  const bank = useSpring(useTransform(vx, [-1800, 0, 1800], [20, 0, -20]), { stiffness: 170, damping: 16 });
+  // she leans into the direction she is flying
+  const bank = useSpring(bankTarget, { stiffness: 170, damping: 18 });
   const rotate = useTransform([rot, bank], ([a, b]) => (a as number) + (b as number));
-  // Stretch along the direction of travel, squash on impacts
-  const stretch = useTransform([vx, vy, vHop], ([a, b, c]) => Math.min(0.14, Math.hypot(a as number, (b as number) + (c as number)) / 9000));
-  const scaleX = useTransform([size, squashX, stretch], ([s, q, t]) => (s as number) * (q as number) * (1 - (t as number) * 0.6));
-  const scaleY = useTransform([size, squashY, stretch], ([s, q, t]) => (s as number) * (q as number) * (1 + (t as number)));
-  const yTotal = useTransform([y, hopY], ([a, b]) => (a as number) + (b as number));
-  // Follow-through for hair, clips and bunny ears
-  const swaySource = useTransform([vx, vy, vHop, vScroll], ([a, b, c, d]) =>
-    Math.max(-24, Math.min(24, (a as number) / 110 + ((b as number) + (c as number)) / 80 + (d as number) / 160)),
+  const sx = useTransform([size, jelly], ([s, j]) => (s as number) * jellyX(clamp(j as number, -0.4, 0.45)));
+  const sy = useTransform([size, jelly], ([s, j]) => (s as number) * jellyY(clamp(j as number, -0.4, 0.45)));
+  const yTotal = useTransform([y, hopY, floatY], ([a, b, c]) => (a as number) + (b as number) + (c as number));
+  // follow-through for hair, clips and bunny ears
+  const swaySource = useTransform([velX, velY, vScroll], ([a, b, d]) =>
+    clamp((a as number) / 110 + (b as number) / 80 + (d as number) / 160, -24, 24),
   );
   const sway = useSpring(swaySource, { stiffness: 150, damping: 6, mass: 0.6 });
-  // Where she is looking, -1..1 on each axis, softened by a spring; the head tilts with it
+  // where she is looking, -1..1 on each axis, softened by a spring; the head tilts with it
   const lookX = useSpring(0, { stiffness: 120, damping: 14 });
   const lookY = useSpring(0, { stiffness: 120, damping: 14 });
   const tilt = useTransform(lookX, (v) => v * 6);
+  // her shadow stays on the floor: smaller as she rises, wider when she squashes, gone when she flies off
+  const shadowScale = useTransform([hopY, floatY, jelly], ([h, f, j]) =>
+    (1 - clamp(-((h as number) + (f as number)) / 70, 0, 0.5)) * jellyX(clamp(j as number, -0.4, 0.45)),
+  );
+  const shadowOpacity = useTransform([y, hopY, floatY], ([a, h, f]) =>
+    0.5 * (1 - clamp(Math.abs(a as number) / 40, 0, 1)) * (1 - clamp(-((h as number) + (f as number)) / 90, 0, 0.6)),
+  );
 
   const go = useCallback((p: Phase) => {
     phaseRef.current = p;
@@ -110,54 +143,46 @@ export default function NatakaHelper() {
 
   /* ---------- geometry ---------- */
   const dockBox = () => dockRef.current?.getBoundingClientRect();
-  const pillTarget = () => {
+  // where her feet go on the WhatsApp button, in screen space
+  const pillFeet = (): Pt => {
     const pill = document.querySelector("[data-wa-pill]")?.getBoundingClientRect();
-    if (pill) return { x: pill.right - 16 - 33, y: pill.top - 12 };
-    return { x: window.innerWidth - 70, y: window.innerHeight - 96 };
+    if (pill && pill.width > 0) return { x: pill.right - 52, y: pill.top + 8 };
+    return { x: window.innerWidth - 76, y: window.innerHeight - 64 };
   };
-  const toOffset = (pt: { x: number; y: number }) => {
+  // a screen point as an offset of her feet from the dock
+  const toOff = (p: Pt): Pt => {
     const r = dockBox();
-    if (!r) return { dx: 0, dy: 0 };
-    return { dx: pt.x - (r.left + r.width / 2), dy: pt.y - (r.top + r.height / 2) };
+    return r ? { x: p.x - (r.left + r.width / 2), y: p.y - r.bottom } : { x: 0, y: 0 };
   };
 
   /* ---------- physical beats ---------- */
-  const squash = (strength = 1) =>
-    Promise.all([
-      animate(squashY, [1, 1 - 0.2 * strength, 1 + 0.1 * strength, 1 - 0.04 * strength, 1], { duration: 0.6, ease: "easeOut" }),
-      animate(squashX, [1, 1 + 0.18 * strength, 1 - 0.08 * strength, 1 + 0.03 * strength, 1], { duration: 0.6, ease: "easeOut" }),
-    ]);
+  // hit her jelly: positive squashes, negative stretches; it springs back with a wobble
+  const squish = (v: number) => kick(jelly, v, JELLY);
   const hop = async (h = 14) => {
     if (reduce) return;
-    // anticipation, launch, fall, land, settle
-    await Promise.all([animate(squashY, 0.86, { duration: 0.09 }), animate(squashX, 1.1, { duration: 0.09 })]);
-    animate(squashY, 1, { duration: 0.12 });
-    animate(squashX, 1, { duration: 0.12 });
-    await animate(hopY, [0, -h, 0], { duration: 0.42, ease: [0.33, 0, 0.67, 1], times: [0, 0.45, 1] });
-    await squash(0.7);
+    await animate(jelly, 0.14, { duration: 0.1, ease: CROUCH }); // crouch
+    squish(-4.5); // the crouch springs into a stretch as she leaves the ground
+    const up = 0.17 + h / 160;
+    await animate(hopY, -h, { duration: up, ease: RISE }); // fast launch, hang at the top
+    await animate(hopY, 0, { duration: up * 0.8, ease: FALL }); // fast fall
+    squish(3 + h / 5); // squash, wobble, settle
   };
-
-  /* ---------- sparkle trail while she flies ---------- */
-  const trailTimer = useRef<number>();
-  const startTrail = () => {
-    if (reduce) return;
-    let n = 0;
-    trailTimer.current = window.setInterval(() => {
-      const r = dockBox();
-      if (!r) return;
-      const id = Date.now() + n++;
-      const p = {
-        id,
-        x: r.left + r.width / 2 + x.get() + (Math.random() - 0.5) * 26,
-        y: r.top + r.height * 0.7 + y.get() + (Math.random() - 0.5) * 18,
-        s: 0.6 + Math.random() * 0.7,
-        c: ["#FFE6A3", "#BFEFF6", "#FFC9D8"][n % 3],
-      };
-      setTrail((t) => [...t.slice(-22), p]);
-      window.setTimeout(() => setTrail((t) => t.filter((q) => q.id !== id)), 800);
-    }, 65);
-  };
-  const stopTrail = () => window.clearInterval(trailTimer.current);
+  // walk a smooth path at an even pace (or slower over a stretch of it); `onStep` gets the distance 0..1
+  const fly = (
+    path: ReturnType<typeof smoothPath>,
+    o: { speed: number; min: number; max: number; ease?: Bezier; slow?: ReturnType<typeof slowOver>; onStep?: (s: number) => void },
+  ) =>
+    animate(0, 1, {
+      duration: clamp((path.total * (o.slow?.stretchTime ?? 1)) / o.speed, o.min, o.max),
+      ease: o.ease ?? CRUISE,
+      onUpdate: (u) => {
+        const s = o.slow ? o.slow.warp(u) : u;
+        const q = path.at(s);
+        x.set(q.x);
+        y.set(q.y);
+        o.onStep?.(s);
+      },
+    });
 
   /* ---------- talking: typewriter text with a moving mouth ---------- */
   const say = async (text: string) => {
@@ -208,32 +233,58 @@ export default function NatakaHelper() {
   const arrive = async () => {
     if (phaseRef.current !== "waiting") return;
     go("arriving");
-    setVisible(true);
     try {
       window.sessionStorage.setItem(STORAGE, "met");
     } catch {}
-    await wait(30);
     const r = dockBox();
     if (!r || reduce) {
       x.set(0);
       y.set(0);
-    } else {
-      const x0 = window.innerWidth - r.left + 60;
-      const y0 = -(r.top + r.height + 60);
-      x.set(x0);
-      y.set(y0);
-      setFlying(true);
-      startTrail();
-      const opts = { duration: 2.7, ease: "easeInOut" as const, times: [0, 0.24, 0.44, 0.6, 0.82, 1] };
-      await Promise.all([
-        animate(x, [x0, x0 * 0.62, x0 * 0.42, x0 * 0.3, x0 * 0.1, 0], opts),
-        animate(y, [y0, y0 * 0.5, y0 * 0.76, y0 * 0.42, y0 * 0.06, 0], opts),
-        animate(rot, [0, -6, 14, -8, 3, 0], opts),
-      ]);
-      stopTrail();
-      setFlying(false);
-      await squash(1);
+      setVisible(true);
+      await greet(false);
+      return;
     }
+    // She swoops in from the top right, loops once, and comes down onto her spot
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const cx = r.left + r.width / 2;
+    const by = r.bottom;
+    const R = clamp(Math.min(W, H) * 0.085, 44, 86);
+    const lc = { x: Math.max(cx + 150, W * 0.42), y: clamp(H * 0.45, R + 90, by - 260) };
+    const path = smoothPath(
+      [
+        { x: W + 90, y: -70 },
+        { x: W * 0.76, y: H * 0.2 },
+        { x: lc.x + R * 1.7, y: lc.y + R * 0.75 },
+        { x: lc.x, y: lc.y + R },
+        { x: lc.x - R, y: lc.y },
+        { x: lc.x, y: lc.y - R },
+        { x: lc.x + R, y: lc.y },
+        { x: lc.x - R * 0.2, y: lc.y + R * 1.15 },
+        { x: cx + 46, y: by - 150 },
+        { x: cx, y: by },
+      ].map((p) => ({ x: p.x - cx, y: p.y - by })),
+    );
+    const loopIn = path.knot(3);
+    const loopOut = path.knot(7);
+    const start = path.at(0);
+    x.set(start.x);
+    y.set(start.y);
+    rot.set(0);
+    setVisible(true);
+    setFlying(true);
+    // the loop is a real loop-de-loop: she eases over it and her body turns all the way round with the path
+    await fly(path, {
+      speed: 950,
+      min: 2.3,
+      max: 3.4,
+      slow: slowOver(loopIn, loopOut, 1.7),
+      onStep: (s) => rot.set(360 * smooth((s - loopIn) / (loopOut - loopIn))),
+    });
+    rot.set(0);
+    setFlying(false);
+    squish(6.5); // touch down: squash and wobble
+    await wait(380);
     await greet(false);
   };
 
@@ -266,24 +317,35 @@ export default function NatakaHelper() {
     setBubble("closed");
     setEyes("sleepy");
     setMouth("yawn");
+    // the dango mounts on the button unseen while she yawns, so turning into it never stalls
+    setHelperMode("landing");
     await wait(reduce ? 0 : 500);
 
-    const target = pillTarget();
-    const { dx, dy } = toOffset(target);
+    const feet = pillFeet();
     if (!reduce) {
-      await hop(8);
-      setFlying(true);
-      startTrail();
-      const opts = { duration: 1.5, ease: "easeInOut" as const };
-      await Promise.all([
-        animate(x, [x.get(), dx * 0.5, dx], opts),
-        animate(y, [y.get(), Math.min(0, dy) - 90, dy], opts),
-        animate(size, [1, 1, 0.55], opts),
+      const t = toOff(feet);
+      const s0 = { x: x.get(), y: y.get() };
+      const H = window.innerHeight;
+      const path = smoothPath([
+        s0,
+        { x: s0.x + 24, y: s0.y - 90 },
+        { x: (s0.x + t.x) / 2, y: Math.min(s0.y, t.y) - clamp(H * 0.32, 160, 300) },
+        { x: t.x - 36, y: t.y - 110 },
+        t,
       ]);
-      stopTrail();
+      // crouch, spring into the air, arc over the page, shrinking as she goes
+      await animate(jelly, 0.16, { duration: 0.14, ease: CROUCH });
+      squish(-5);
+      setFlying(true);
+      await fly(path, { speed: 900, min: 1.25, max: 2.1, ease: [0.42, 0, 0.6, 0.86], onStep: (s) => size.set(1 - 0.34 * smooth(s)) });
       setFlying(false);
+      // she lands on the button and squashes down into the dango
+      squish(8);
+      await wait(70);
     }
-    setPoof({ id: Date.now(), x: target.x, y: target.y });
+    markMorph();
+    bumpPill(1);
+    setPoof({ id: Date.now(), x: feet.x, y: feet.y - 16, small: true });
     setVisible(false);
     setHelperMode("asleep");
     try {
@@ -296,30 +358,37 @@ export default function NatakaHelper() {
   const wake = async () => {
     if (phaseRef.current !== "asleep") return;
     go("waking");
-    const target = pillTarget();
-    setPoof({ id: Date.now(), x: target.x, y: target.y });
-    setHelperMode("awake");
+    const feet = pillFeet();
+    const t = toOff(feet);
+    // she comes out of the dango's stretch, already rising
     setEyes("surprised");
     setMouth("o");
-    const { dx, dy } = toOffset(target);
-    x.set(reduce ? 0 : dx);
-    y.set(reduce ? 0 : dy);
-    size.set(reduce ? 1 : 0.55);
+    x.set(reduce ? 0 : t.x);
+    y.set(reduce ? 0 : t.y);
+    size.set(reduce ? 1 : 0.66);
     rot.set(0);
+    hopY.set(0);
+    jelly.set(reduce ? 0 : -0.3);
+    setPoof({ id: Date.now(), x: feet.x, y: feet.y - 16, small: true });
+    setHelperMode("awake");
     setVisible(true);
     if (!reduce) {
-      await wait(200);
-      setFlying(true);
-      startTrail();
-      const opts = { duration: 1.35, ease: "easeInOut" as const };
-      await Promise.all([
-        animate(x, [dx, dx * 0.5, 0], opts),
-        animate(y, [dy, Math.min(0, dy) - 110, 0], opts),
-        animate(size, [0.55, 1.06, 1], opts),
+      const H = window.innerHeight;
+      const path = smoothPath([
+        t,
+        { x: t.x - 14, y: t.y - 170 },
+        { x: t.x * 0.45, y: Math.min(t.y, 0) - clamp(H * 0.3, 150, 280) },
+        { x: 44, y: -130 },
+        { x: 0, y: 0 },
       ]);
-      stopTrail();
+      // a beat at the button so you see her spring out of the dango, then off at cruising speed
+      squish(-2);
+      await wait(110);
+      setFlying(true);
+      await fly(path, { speed: 950, min: 1.3, max: 2.1, onStep: (s) => size.set(0.66 + 0.34 * smooth(s)) });
       setFlying(false);
-      await squash(0.9);
+      squish(6);
+      await wait(360);
     }
     await greet(true);
   };
@@ -390,21 +459,60 @@ export default function NatakaHelper() {
   // The dango was tapped
   useEffect(() => onWakeRequest(() => wake()));
 
+  // Once, soon after the page loads and while nothing else is busy, draw her and the dango
+  // unseen for a moment: the browser compiles their painted look then, instead of stalling
+  // for a fraction of a second on the frame she first appears.
+  useEffect(() => {
+    if (SKIP.includes(pathname)) return;
+    type Idle = (cb: () => void, o?: { timeout: number }) => number;
+    const idle: Idle = (window as unknown as { requestIdleCallback?: Idle }).requestIdleCallback ?? ((cb) => window.setTimeout(cb, 600));
+    let off: number;
+    const t = window.setTimeout(
+      () =>
+        idle(
+          () => {
+            setWarm(true);
+            off = window.setTimeout(() => setWarm(false), 700);
+          },
+          { timeout: 4000 },
+        ),
+      1500,
+    );
+    return () => {
+      window.clearTimeout(t);
+      window.clearTimeout(off);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const showGirl = visible && (phase === "arriving" || phase === "greeting" || phase === "leaving" || phase === "waking");
+
+  // The idle hover: a slow bob while she waits at her spot, still while she flies
+  useEffect(() => {
+    if (!showGirl || flying || reduce) {
+      const c = animate(floatY, 0, { duration: 0.25 });
+      return () => c.stop();
+    }
+    const c = animate(floatY, -6, { duration: 1.3, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" });
+    return () => c.stop();
+  }, [showGirl, flying, reduce, floatY]);
+
   // Eyes follow the pointer
   useEffect(() => {
     if (!visible) return;
     const onMove = (e: PointerEvent) => {
+      if (flying) return;
       const r = dockBox();
       if (!r) return;
       const cx = r.left + r.width / 2 + x.get();
-      const cy = r.top + r.height * 0.58 + y.get();
-      lookX.set(Math.max(-1, Math.min(1, (e.clientX - cx) / 260)));
-      lookY.set(Math.max(-1, Math.min(1, (e.clientY - cy) / 260)));
+      const cy = r.bottom - r.width * 0.5 + y.get();
+      lookX.set(clamp((e.clientX - cx) / 260, -1, 1));
+      lookY.set(clamp((e.clientY - cy) / 260, -1, 1));
     };
     window.addEventListener("pointermove", onMove);
     return () => window.removeEventListener("pointermove", onMove);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
+  }, [visible, flying]);
 
   // Blinks, sometimes doubled
   useEffect(() => {
@@ -428,13 +536,14 @@ export default function NatakaHelper() {
     return () => window.clearTimeout(t);
   }, [visible, reduce]);
 
-  // Fidgets while she waits for an answer: glances, tilts, squints, hops, a little twirl
+  // Fidgets while she waits for an answer: glances, tilts, smiles, hops, a little twirl
   useEffect(() => {
     if (phase !== "greeting" || reduce) return;
     let t: number;
     const loop = () => {
       t = window.setTimeout(async () => {
-        if (!busyRef.current) {
+        if (!busyRef.current && !fidgetRef.current) {
+          fidgetRef.current = true;
           const pick = Math.floor(Math.random() * 5);
           if (pick === 0) {
             lookX.set(-0.95);
@@ -445,7 +554,9 @@ export default function NatakaHelper() {
             lookX.set(0);
             lookY.set(0);
           } else if (pick === 1) {
-            await animate(rot, [0, -7, 2, 0], { duration: 1, ease: "easeInOut" });
+            animate(rot, -7, { type: "spring", stiffness: 120, damping: 10 });
+            await wait(520);
+            await animate(rot, 0, { type: "spring", stiffness: 200, damping: 9 });
           } else if (pick === 2) {
             setEyes("happy");
             setMouth("grin");
@@ -455,10 +566,12 @@ export default function NatakaHelper() {
           } else if (pick === 3) {
             await hop(12);
           } else {
-            await animate(rot, [0, 360], { duration: 0.75, ease: [0.45, 0, 0.2, 1] });
+            // wind up, spin past a full turn and spring back to it, with a hop under it
+            await animate(rot, -14, { duration: 0.16, ease: "easeOut" });
+            await Promise.all([animate(rot, 360, { type: "spring", stiffness: 140, damping: 13 }), hop(8)]);
             rot.set(0);
-            await squash(0.6);
           }
+          fidgetRef.current = false;
         }
         loop();
       }, 2600 + Math.random() * 2600);
@@ -477,17 +590,11 @@ export default function NatakaHelper() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
-  useEffect(
-    () => () => {
-      window.clearTimeout(idleRef.current);
-      window.clearInterval(trailTimer.current);
-    },
-    [],
-  );
+  useEffect(() => () => window.clearTimeout(idleRef.current), []);
 
   /* ---------- micro reactions ---------- */
   const tickle = async () => {
-    if (busyRef.current || phaseRef.current !== "greeting") return;
+    if (busyRef.current || fidgetRef.current || phaseRef.current !== "greeting") return;
     busyRef.current = true;
     setBlush(true);
     setEyes("happy");
@@ -528,7 +635,6 @@ export default function NatakaHelper() {
     }
   };
 
-  const showGirl = visible && (phase === "arriving" || phase === "greeting" || phase === "leaving" || phase === "waking");
   const chipVariants = {
     hidden: { opacity: 0, y: 10, scale: 0.8 },
     show: { opacity: 1, y: 0, scale: 1, transition: BOUNCY },
@@ -536,24 +642,13 @@ export default function NatakaHelper() {
 
   return (
     <>
-      {/* Sparkle trail and poof, in screen space */}
+      {/* Sparkle trail, in screen space behind her */}
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[9978]">
-        <AnimatePresence>
-          {trail.map((p) => (
-            <motion.span
-              key={p.id}
-              className="absolute block"
-              style={{ left: p.x, top: p.y }}
-              initial={{ opacity: 0.95, scale: p.s, rotate: 0 }}
-              animate={{ opacity: 0, scale: 0.15, rotate: 120, y: 14 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <Star className="h-3 w-3 -translate-x-1/2 -translate-y-1/2" color={p.c} />
-            </motion.span>
-          ))}
-        </AnimatePresence>
+        <Trail active={flying && showGirl && !reduce} x={x} y={y} dockRef={dockRef} />
+      </div>
 
+      {/* The puff when she turns into the dango or back: a ring around the change, in front of the button */}
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[9981]">
         <AnimatePresence>
           {poof && (
             <motion.span
@@ -562,19 +657,22 @@ export default function NatakaHelper() {
               style={{ left: poof.x, top: poof.y }}
               initial={{ opacity: 1 }}
               animate={{ opacity: 0 }}
-              transition={{ duration: 0.85, ease: "easeOut" }}
+              transition={{ duration: poof.small ? 0.6 : 0.85, ease: "easeOut" }}
               onAnimationComplete={() => setPoof(null)}
             >
               {[0, 1, 2, 3, 4, 5, 6].map((i) => {
-                const a = (i / 7) * Math.PI * 2;
+                const a = (i / 7) * Math.PI * 2 - Math.PI / 2;
+                const d = poof.small ? 10 : 14; // puff size
+                const r0 = poof.small ? 22 : 12; // starts around the change, not over it
+                const r1 = poof.small ? 42 : 34;
                 return (
                   <motion.span
                     key={i}
-                    className="absolute block -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/90 blur-[1px]"
-                    style={{ width: 16 + (i % 3) * 5, height: 16 + (i % 3) * 5 }}
-                    initial={{ x: 0, y: 0, scale: 0.3 }}
-                    animate={{ x: Math.cos(a) * 30, y: Math.sin(a) * 22 - 6, scale: 1.25 }}
-                    transition={{ type: "spring", stiffness: 220, damping: 14 }}
+                    className="absolute block rounded-full bg-white/90 blur-[1px]"
+                    style={{ width: d + (i % 3) * 4, height: d + (i % 3) * 4, left: -(d + (i % 3) * 4) / 2, top: -(d + (i % 3) * 4) / 2 }}
+                    initial={{ x: Math.cos(a) * r0, y: Math.sin(a) * r0 * 0.75, scale: 0.4 }}
+                    animate={{ x: Math.cos(a) * r1, y: Math.sin(a) * r1 * 0.75 - 6, scale: [0.4, 1.15, 0.6] }}
+                    transition={{ default: { type: "spring", stiffness: 200, damping: 16 }, scale: { duration: 0.55, ease: "easeOut" } }}
                   />
                 );
               })}
@@ -583,87 +681,110 @@ export default function NatakaHelper() {
         </AnimatePresence>
       </div>
 
-      {/* Her dock, bottom left; the girl flies relative to it */}
+      {/* The one-off warm-up drawing (see above): 1% opacity so it is really painted, never seen */}
+      {warm && !showGirl && (
+        <div aria-hidden="true" className="pointer-events-none fixed bottom-5 left-3 z-[1] flex w-[86px] items-end opacity-[0.01] md:bottom-7 md:left-7 md:w-[106px]">
+          <HelperGirl lookX={lookX} lookY={lookY} tilt={tilt} sway={sway} className="h-auto w-full" />
+          <div className="absolute bottom-0 left-0">
+            <DangoWarmup />
+          </div>
+        </div>
+      )}
+
+      {/* Her dock, bottom left; she flies relative to it */}
       <div ref={dockRef} className="pointer-events-none fixed bottom-5 left-3 z-[9979] w-[86px] md:bottom-7 md:left-7 md:w-[106px]">
+        <AnimatePresence>
+          {showGirl && (
+            <motion.span
+              key="shadow"
+              aria-hidden="true"
+              className="absolute -bottom-1.5 left-[22%] block h-2.5 w-[56%] rounded-[50%] bg-black/60 blur-[3px]"
+              style={{ x, scaleX: shadowScale, opacity: shadowOpacity }}
+              exit={{ opacity: 0, transition: { duration: 0.12 } }}
+            />
+          )}
+        </AnimatePresence>
+
         <AnimatePresence>
           {showGirl && (
             <motion.div
               key="girl"
               className="pointer-events-auto relative cursor-pointer"
-              style={{ x, y: yTotal, rotate, scaleX, scaleY, originY: 1 }}
+              style={{ x, y: yTotal }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              exit={{ opacity: 0, transition: { duration: 0.12 } }}
+              transition={{ duration: 0.15 }}
               onMouseEnter={tickle}
               onClick={tickle}
             >
-              {/* floor shadow that breathes with the float */}
-              {!flying && (
-                <motion.span
-                  aria-hidden="true"
-                  className="absolute -bottom-2 left-1/2 block h-2.5 w-[60%] -translate-x-1/2 rounded-[50%] bg-black/35 blur-[3px]"
-                  animate={reduce ? undefined : { scaleX: [1, 0.8, 1], opacity: [0.55, 0.3, 0.55] }}
-                  transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-                />
-              )}
-
-              {/* layered idle float: three loops on different rhythms */}
-              <motion.div animate={reduce || flying ? undefined : { y: [0, -6, 0] }} transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}>
-                <motion.div animate={reduce || flying ? undefined : { x: [0, 2.5, 0, -2.5, 0] }} transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}>
-                  <motion.div animate={reduce || flying ? undefined : { rotate: [-1.6, 1.6, -1.6] }} transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }} style={{ originY: 1 }}>
-                    <HelperGirl
-                      eyes={eyes}
-                      mouth={mouth}
-                      waving={waving}
-                      flying={flying}
-                      blink={blink}
-                      blush={blush}
-                      talking={talking}
-                      lookX={lookX}
-                      lookY={lookY}
-                      tilt={tilt}
-                      sway={sway}
-                      className="h-auto w-full"
-                    />
+              <Rig
+                x={x}
+                y={y}
+                hopY={hopY}
+                floatY={floatY}
+                velX={velX}
+                velY={velY}
+                stretch={stretch}
+                headX={headX}
+                headY={headY}
+                bankTarget={bankTarget}
+                lookX={lookX}
+                lookY={lookY}
+                flying={flying}
+              />
+              {/* stretch along her path, lean, then squash from her feet */}
+              <motion.div style={{ transform: stretch, originX: 0.5, originY: 0.55 }}>
+                <motion.div style={{ rotate, originX: 0.5, originY: 0.6 }}>
+                  <motion.div style={{ scaleX: sx, scaleY: sy, originX: 0.5, originY: 1 }}>
+                    {/* idle sway, on the compositor (globals.css) */}
+                    <div className={reduce ? undefined : "mochi-sway"}>
+                      <div className={reduce ? undefined : "mochi-rock"}>
+                        <HelperGirl
+                          eyes={eyes}
+                          mouth={mouth}
+                          waving={waving}
+                          flying={flying}
+                          blink={blink}
+                          blush={blush}
+                          talking={talking}
+                          lookX={lookX}
+                          lookY={lookY}
+                          tilt={tilt}
+                          sway={sway}
+                          headX={headX}
+                          headY={headY}
+                          className="h-auto w-full"
+                        />
+                      </div>
+                    </div>
                   </motion.div>
                 </motion.div>
               </motion.div>
 
               {/* two tiny sparkles orbiting her while she waits */}
               {phase === "greeting" && !reduce && (
-                <motion.span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute left-1/2 top-[42%] block h-0 w-0"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
-                >
+                <span aria-hidden="true" className="mochi-orbit pointer-events-none absolute left-1/2 top-[42%] block h-0 w-0">
                   {[0, 180].map((deg) => (
-                    <motion.span
-                      key={deg}
-                      className="absolute block"
-                      style={{ rotate: deg, x: 0, y: 0 }}
-                    >
-                      <motion.span
-                        className="absolute block"
-                        style={{ left: 58, top: -6 }}
-                        animate={{ opacity: [0.2, 1, 0.2], scale: [0.6, 1, 0.6] }}
-                        transition={{ duration: 1.8, repeat: Infinity, delay: deg / 360 }}
-                      >
-                        <Star className="h-2.5 w-2.5" color={deg ? "#BFEFF6" : "#FFE08A"} />
-                      </motion.span>
-                    </motion.span>
+                    <span key={deg} className="absolute block" style={{ transform: `rotate(${deg}deg)` }}>
+                      <span className="absolute block" style={{ left: 58, top: -6 }}>
+                        <span className="mochi-twinkle block" style={{ animationDelay: deg ? "-0.45s" : "0s" }}>
+                          <Star className="h-2.5 w-2.5" color={deg ? "#BFEFF6" : "#FFE08A"} />
+                        </span>
+                      </span>
+                    </span>
                   ))}
-                </motion.span>
+                </span>
               )}
 
               {/* sparkle burst on happy beats */}
               {burst > 0 && !reduce && (
                 <span key={burst} aria-hidden="true" className="pointer-events-none absolute inset-0">
-                  {[[-16, 8], [98, 4], [-8, 58], [102, 50], [44, -16], [70, -10]].map(([sx, sy], i) => (
+                  {[[-16, 8], [98, 4], [-8, 58], [102, 50], [44, -16], [70, -10]].map(([bx, by], i) => (
                     <motion.span
                       key={i}
                       className="absolute block"
-                      style={{ left: `${sx}%`, top: `${sy}%` }}
+                      style={{ left: `${bx}%`, top: `${by}%` }}
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: [0, 1, 0], scale: [0, 1.2, 0.5], rotate: [0, 60], y: [0, -6] }}
                       transition={{ duration: 0.85, delay: i * 0.05, ease: "easeOut" }}
@@ -811,7 +932,7 @@ export default function NatakaHelper() {
                             setQuestion(e.target.value);
                             resetIdle();
                             // a little nod with every keystroke
-                            if (!reduce) animate(rot, [0, -3, 0], { duration: 0.22 });
+                            if (!reduce) animate(rot, 0, { type: "spring", stiffness: 500, damping: 12, velocity: -60 });
                           }}
                           maxLength={240}
                           placeholder="Ask anything, we reply on WhatsApp"
@@ -851,10 +972,124 @@ export default function NatakaHelper() {
   );
 }
 
+/**
+ * Runs every frame while Mochi is on screen: measures her real velocity, then
+ * stretches her along it, banks her into turns, lets her eyes lead while she
+ * flies, and moves her head on its own damped spring so it lags when she
+ * speeds up and carries on for a moment when she stops.
+ */
+function Rig({
+  x,
+  y,
+  hopY,
+  floatY,
+  velX,
+  velY,
+  stretch,
+  headX,
+  headY,
+  bankTarget,
+  lookX,
+  lookY,
+  flying,
+}: {
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+  hopY: MotionValue<number>;
+  floatY: MotionValue<number>;
+  velX: MotionValue<number>;
+  velY: MotionValue<number>;
+  stretch: MotionValue<string>;
+  headX: MotionValue<number>;
+  headY: MotionValue<number>;
+  bankTarget: MotionValue<number>;
+  lookX: MotionValue<number>;
+  lookY: MotionValue<number>;
+  flying: boolean;
+}) {
+  const st = useRef({ init: false, px: 0, py: 0, vx: 0, vy: 0, hx: 0, hy: 0, hvx: 0, hvy: 0 });
+  const flyingRef = useRef(flying);
+  flyingRef.current = flying;
+
+  const step = useCallback(
+    (_t: number, delta: number) => {
+      const s = st.current;
+      const dt = clamp(delta / 1000, 1 / 240, 1 / 20);
+      const X = x.get();
+      const Y = y.get() + hopY.get() + floatY.get();
+      // first frame, or a jump (she reappears somewhere else): no fake speed
+      if (!s.init || Math.hypot(X - s.px, Y - s.py) > 260) {
+        Object.assign(s, { init: true, px: X, py: Y, vx: 0, vy: 0 });
+      }
+      const rvx = (X - s.px) / dt;
+      const rvy = (Y - s.py) / dt;
+      s.px = X;
+      s.py = Y;
+      // velocity smoothed over ~45 ms so the stretch never flickers
+      const k = 1 - Math.exp(-dt / 0.045);
+      const dvx = (rvx - s.vx) * k;
+      const dvy = (rvy - s.vy) * k;
+      s.vx += dvx;
+      s.vy += dvy;
+      velX.set(s.vx);
+      velY.set(s.vy);
+      stretch.set(Math.hypot(s.vx, s.vy) < 25 ? "none" : stretchAlong(s.vx, s.vy, 5500, 0.18));
+      bankTarget.set(clamp(s.vx / 1500, -1, 1) * 12);
+      if (flyingRef.current) {
+        lookX.set(clamp(s.vx / 700, -1, 1));
+        lookY.set(clamp(s.vy / 700, -1, 1));
+      }
+      // head inertia: a damped spring pushed the opposite way to every change of speed
+      s.hvx += (-300 * s.hx - 18 * s.hvx) * dt - 0.2 * dvx;
+      s.hvy += (-300 * s.hy - 18 * s.hvy) * dt - 0.3 * dvy;
+      s.hx = clamp(s.hx + s.hvx * dt, -5, 5);
+      s.hy = clamp(s.hy + s.hvy * dt, -6, 6);
+      headX.set(s.hx);
+      headY.set(s.hy);
+    },
+    [x, y, hopY, floatY, velX, velY, stretch, headX, headY, bankTarget, lookX, lookY],
+  );
+  useAnimationFrame(step);
+  return null;
+}
+
+/**
+ * Sparkles shed behind her while she flies. Plain DOM nodes with a CSS
+ * animation (globals.css), added and removed outside React, so the trail never
+ * re-renders anything and runs on the compositor.
+ */
+function Trail({ active, x, y, dockRef }: { active: boolean; x: MotionValue<number>; y: MotionValue<number>; dockRef: RefObject<HTMLDivElement> }) {
+  const layer = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!active) return;
+    let n = 0;
+    const id = window.setInterval(() => {
+      const r = dockRef.current?.getBoundingClientRect();
+      const host = layer.current;
+      if (!r || !host) return;
+      const c = ["#FFE6A3", "#BFEFF6", "#FFC9D8"][n++ % 3];
+      const el = document.createElement("span");
+      el.className = "mochi-spark";
+      el.style.left = `${r.left + r.width / 2 + x.get() + (Math.random() - 0.5) * 26}px`;
+      el.style.top = `${r.bottom - r.width * 0.42 + y.get() + (Math.random() - 0.5) * 18}px`;
+      el.style.setProperty("--s", (0.6 + Math.random() * 0.7).toFixed(2));
+      el.innerHTML = `<svg viewBox="0 0 20 20" width="12" height="12"><path d="${STAR}" fill="${c}"/></svg>`;
+      const drop = () => el.remove();
+      el.addEventListener("animationend", drop);
+      window.setTimeout(drop, 1200);
+      host.appendChild(el);
+    }, 65);
+    return () => window.clearInterval(id);
+  }, [active, x, y, dockRef]);
+  return <div ref={layer} className="absolute inset-0" />;
+}
+
+const STAR = "M10 0 L 12.4 7.6 L 20 10 L 12.4 12.4 L 10 20 L 7.6 12.4 L 0 10 L 7.6 7.6 Z";
+
 function Star({ className, color }: { className?: string; color: string }) {
   return (
     <svg viewBox="0 0 20 20" className={className} aria-hidden="true">
-      <path d="M10 0 L 12.4 7.6 L 20 10 L 12.4 12.4 L 10 20 L 7.6 12.4 L 0 10 L 7.6 7.6 Z" fill={color} />
+      <path d={STAR} fill={color} />
     </svg>
   );
 }

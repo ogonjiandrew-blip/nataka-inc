@@ -387,6 +387,34 @@ a:focus-visible {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
+/* ── Mochi, the site helper ──
+   Her idle sway, the sparkles orbiting her and the trail she leaves while flying
+   run as CSS animations on the compositor, so they cost the main thread nothing
+   while she moves. Andrew's standing call is that her motion always runs, so the
+   durations are marked important to win over the reduced-motion rule above, the
+   same as her framer-driven motion. Sways go back and forth between two poses
+   (alternate, ease-in-out) like a pendulum, never stopping mid-swing. */
+@keyframes mochi-sway { from { transform: translateX(-2.5px); } to { transform: translateX(2.5px); } }
+@keyframes mochi-rock { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
+@keyframes mochi-orbit { to { transform: rotate(360deg); } }
+@keyframes mochi-twinkle { from { opacity: 0.2; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes mochi-spark {
+  from { opacity: 0.95; transform: translate(-50%, -50%) scale(var(--s, 1)) rotate(0deg); }
+  to { opacity: 0; transform: translate(-50%, calc(-50% + 14px)) scale(0.15) rotate(120deg); }
+}
+.mochi-sway { animation: mochi-sway 2.1s ease-in-out infinite alternate; animation-duration: 2.1s !important; }
+.mochi-rock { transform-origin: 50% 100%; animation: mochi-rock 1.7s ease-in-out -0.6s infinite alternate; animation-duration: 1.7s !important; }
+.mochi-orbit { animation: mochi-orbit 9s linear infinite; animation-duration: 9s !important; }
+.mochi-twinkle { animation: mochi-twinkle 0.9s ease-in-out infinite alternate; animation-duration: 0.9s !important; }
+.mochi-spark {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+  animation: mochi-spark 0.8s ease-out forwards;
+  animation-duration: 0.8s !important;
+}
+
 /* ══════════════════════════════════════════════════════════════════════
    EMAKI — the Japanese hanging-scroll skin.
    Scoped entirely under .emaki so it cannot leak into the rest of the site.

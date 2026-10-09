@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 
 export type Eyes = "open" | "happy" | "wink" | "surprised" | "sleepy" | "sparkle";
@@ -15,8 +15,11 @@ const SKIN = "#FFF4F6";
  * haze instead of a hard outline. Head and body are separate layers so the head
  * can tilt toward the pointer and lag behind the body; hair, clips and the
  * bunny's ears take `sway` (a spring fed by her real speed) for follow-through.
+ * `headX`/`headY` carry the head's own inertia: it lags when she speeds up and
+ * keeps going for a moment when she lands. Memoised, so the typewriter in the
+ * speech bubble does not redraw her on every letter.
  */
-export default function HelperGirl({
+function HelperGirl({
   eyes = "open",
   mouth = "cat",
   waving = false,
@@ -28,6 +31,8 @@ export default function HelperGirl({
   lookY,
   tilt,
   sway,
+  headX,
+  headY,
   className,
 }: {
   eyes?: Eyes;
@@ -41,6 +46,8 @@ export default function HelperGirl({
   lookY: MotionValue<number>;
   tilt: MotionValue<number>;
   sway: MotionValue<number>;
+  headX?: MotionValue<number>;
+  headY?: MotionValue<number>;
   className?: string;
 }) {
   // Andrew's standing call (as with the hero reel and BTS popup): the animation always runs,
@@ -131,7 +138,7 @@ export default function HelperGirl({
         </motion.g>
 
         {/* ---------- head ---------- */}
-        <motion.g style={{ rotate: tilt, originX: 0.5, originY: 0.92 }}>
+        <motion.g style={{ rotate: tilt, x: headX, y: headY, originX: 0.5, originY: 0.92 }}>
           {/* long side locks, swinging with her movement */}
           <motion.g style={{ rotate: swayHair, originX: 0.7, originY: 0 }}>
             <motion.g style={{ originX: 0.7, originY: 0 }} animate={reduce ? undefined : { rotate: [-3, 4, -3] }} transition={loop(2.3)}>
@@ -251,6 +258,8 @@ export default function HelperGirl({
     </svg>
   );
 }
+
+export default memo(HelperGirl);
 
 function EyesLayer({
   eyes,

@@ -5,11 +5,11 @@
  * for Kenyan clients. Opens a chat with a pre-filled message.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, AnimatePresence, animate, useMotionValue, useScroll, useMotionValueEvent, useTransform } from "framer-motion";
 import { waLink } from "@/lib/whatsapp";
-import { useHelperMode, requestWake } from "@/lib/helperStore";
+import { useHelperMode, requestWake, onPillBump } from "@/lib/helperStore";
 import HelperDango from "@/components/helper/HelperDango";
 
 /*
@@ -26,6 +26,14 @@ export default function WhatsAppButton() {
   // The site helper naps on this button once she has said hello
   const helper = useHelperMode();
   const [jostle, setJostle] = useState(0);
+  // When Mochi or the dango lands on the button it dips under the weight and springs back
+  const dip = useMotionValue(0);
+  const pillX = useTransform(dip, (v) => 1 + v * 0.6);
+  const pillY = useTransform(dip, (v) => 1 - v);
+  useEffect(
+    () => onPillBump((s) => animate(dip, 0, { type: "spring", stiffness: 520, damping: 13, velocity: 2.2 * s })),
+    [dip],
+  );
 
   // appear after the visitor has scrolled a little, not over the hero
   const { scrollY } = useScroll();
@@ -47,9 +55,14 @@ export default function WhatsAppButton() {
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9980]"
         >
-        <AnimatePresence>{helper === "asleep" && <HelperDango key="dango" onWake={requestWake} jostle={jostle} />}</AnimatePresence>
-        <a
+        <AnimatePresence>
+          {(helper === "asleep" || helper === "landing") && (
+            <HelperDango key="dango" onWake={requestWake} jostle={jostle} dip={dip} standby={helper === "landing"} />
+          )}
+        </AnimatePresence>
+        <motion.a
           data-wa-pill
+          style={{ scaleX: pillX, scaleY: pillY, originY: 1 }}
           onMouseEnter={() => setJostle((j) => j + 1)}
           href={waLink(`Hi Nataka, I'd like to discuss a project. I was looking at https://www.natakainc.com${pathname}`)}
           target="_blank"
@@ -65,7 +78,7 @@ export default function WhatsAppButton() {
           <span className="font-heading font-bold text-[11px] uppercase tracking-[0.16em] whitespace-nowrap">
             WhatsApp us
           </span>
-        </a>
+        </motion.a>
         </motion.div>
       )}
     </AnimatePresence>

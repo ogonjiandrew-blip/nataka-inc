@@ -6,7 +6,9 @@
  */
 import { useSyncExternalStore } from "react";
 
-export type HelperMode = "off" | "awake" | "asleep";
+// "landing": she is about to fly to the WhatsApp button, so the dango mounts there
+// unseen (and its first paint is done) before she lands and turns into it.
+export type HelperMode = "off" | "awake" | "landing" | "asleep";
 
 let mode: HelperMode = "off";
 const listeners = new Set<() => void>();
@@ -31,6 +33,34 @@ export function onWakeRequest(cb: () => void) {
   wakeListeners.add(cb);
   return () => {
     wakeListeners.delete(cb);
+  };
+}
+
+/*
+ * Mochi lands on the WhatsApp button and squashes down into the dango. The
+ * dango reads this flag once so it starts squashed and wobbles into shape,
+ * instead of dropping in from above.
+ */
+let morphAt = 0;
+export function markMorph() {
+  morphAt = Date.now();
+}
+// only a fresh landing counts: if the button was off screen, a dango that mounts later plops in
+export function takeMorph() {
+  const m = Date.now() - morphAt < 1500;
+  morphAt = 0;
+  return m;
+}
+
+/* Something landed on the WhatsApp button: it dips and springs back. */
+const bumpListeners = new Set<(strength: number) => void>();
+export function bumpPill(strength = 1) {
+  bumpListeners.forEach((l) => l(strength));
+}
+export function onPillBump(cb: (strength: number) => void) {
+  bumpListeners.add(cb);
+  return () => {
+    bumpListeners.delete(cb);
   };
 }
 
