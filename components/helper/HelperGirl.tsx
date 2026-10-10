@@ -6,24 +6,76 @@ import { motion, useTransform, type MotionValue } from "framer-motion";
 export type Eyes = "open" | "happy" | "wink" | "surprised" | "sleepy" | "sparkle";
 export type Mouth = "cat" | "smile" | "grin" | "o" | "yawn" | "pout";
 
-const LINE = "#E6A1B6";
-const LASH = "#B07990";
-const SKIN = "#FFF4F6";
+const LID = "#6E3E4E";
+const LINE = "#B06C81";
+
+/*
+ * Her artwork is Andrew's pick from four Higgsfield (Nano Banana Pro) options, cut out
+ * with the eyes and mouth painted out of the skin (public/helper/mochi-*.webp, 1336 x 1785
+ * at full size). The face is drawn live on top so she can blink, look around, talk and
+ * change expression. Face coordinates are in the original 2048px artwork, so the overlay
+ * is shifted by the crop offset (359, 132).
+ */
+const ART = { w: 1336, h: 1785, x: 359, y: 132 };
+
+type EyeGeo = {
+  iris: [number, number, number, number];
+  white: [number, number, number, number];
+  shine: [number, number, number, number];
+  lights: [number, number, number][];
+  lid: string;
+  crease: string;
+  closed: string;
+  happy: string;
+  flick: string;
+  half: [number, number, number, number];
+};
+
+const EYE: Record<"L" | "R", EyeGeo> = {
+  L: {
+    iris: [804, 1108, 86, 96],
+    white: [790, 1124, 102, 88],
+    shine: [805, 1166, 52, 27],
+    lights: [
+      [829, 1060, 26],
+      [791, 1081, 9],
+      [744, 1133, 12],
+    ],
+    lid: "M657 1066 C 688 1022 738 990 800 986 C 845 984 872 1000 886 1032 C 866 1024 842 1018 800 1019 C 752 1021 712 1044 692 1072 C 684 1086 690 1110 700 1129 C 688 1134 672 1121 668 1100 C 665 1086 662 1076 657 1066 Z",
+    crease: "M803 972 Q 828 964 852 980",
+    closed: "M676 1110 Q 786 1160 893 1103",
+    happy: "M681 1130 Q 788 1040 891 1121",
+    flick: "M676 1110 L 655 1097",
+    half: [676, 1112, 893, 1108],
+  },
+  R: {
+    iris: [1214, 1133, 94, 97],
+    white: [1230, 1146, 98, 88],
+    shine: [1200, 1192, 50, 27],
+    lights: [
+      [1184, 1082, 26],
+      [1221, 1106, 9],
+      [1262, 1164, 12],
+    ],
+    lid: "M1143 1054 C 1140 1030 1162 1016 1202 1013 C 1262 1010 1312 1040 1340 1082 C 1349 1093 1356 1100 1357 1110 C 1350 1117 1342 1113 1337 1109 C 1341 1130 1343 1150 1337 1169 C 1326 1173 1318 1160 1318 1140 C 1314 1112 1296 1076 1256 1057 C 1222 1043 1182 1046 1160 1068 Z",
+    crease: "M1167 996 Q 1192 987 1216 997",
+    closed: "M1122 1128 Q 1236 1181 1350 1121",
+    happy: "M1125 1141 Q 1236 1062 1346 1141",
+    flick: "M1350 1121 L 1371 1109",
+    half: [1122, 1136, 1350, 1132],
+  },
+};
 
 /**
- * Mochi, drawn soft: pencil-wobble rose lines, watercolour shading and a white
- * haze instead of a hard outline. Head and body are separate layers so the head
- * can tilt toward the pointer and lag behind the body; hair, clips and the
- * bunny's ears take `sway` (a spring fed by her real speed) for follow-through.
- * `headX`/`headY` carry the head's own inertia: it lags when she speeds up and
- * keeps going for a moment when she lands. Memoised, so the typewriter in the
- * speech bubble does not redraw her on every letter.
+ * Mochi: her painted artwork plus a live face. The whole figure breathes, tilts toward
+ * where she looks, leans with `sway` like soft jelly (follow-through from her real speed)
+ * and wiggles while she waves. Memoised, so the typewriter in the speech bubble does not
+ * redraw her on every letter.
  */
 function HelperGirl({
   eyes = "open",
   mouth = "cat",
   waving = false,
-  flying = false,
   blink = false,
   blush = false,
   talking = false,
@@ -31,8 +83,6 @@ function HelperGirl({
   lookY,
   tilt,
   sway,
-  headX,
-  headY,
   className,
 }: {
   eyes?: Eyes;
@@ -50,20 +100,16 @@ function HelperGirl({
   headY?: MotionValue<number>;
   className?: string;
 }) {
-  // Andrew's standing call (as with the hero reel and BTS popup): the animation always runs,
-  // even when the OS asks for reduced motion.
-  const reduce = false;
-  const px = useTransform(lookX, (v) => v * 3);
-  const py = useTransform(lookY, (v) => v * 2.4);
-  const hx = useTransform(lookX, (v) => v * 1.5);
-  const hy = useTransform(lookY, (v) => v * 1.2);
-  // Follow-through: different parts swing by different amounts
-  const swayHair = useTransform(sway, (v) => v * 0.7);
-  const swayTip = useTransform(sway, (v) => v * 1.3);
-  const swayEarL = useTransform(sway, (v) => -v * 1.1);
-  const swayEarR = useTransform(sway, (v) => v * 1.1);
+  // eyes follow the pointer: irises move more than their highlights (artwork units: ~14 per screen px)
+  const px = useTransform(lookX, (v) => v * 22);
+  const py = useTransform(lookY, (v) => v * 15);
+  const hx = useTransform(lookX, (v) => v * 9);
+  const hy = useTransform(lookY, (v) => v * 7);
+  const lean = useTransform(tilt, (v) => v * 0.5);
+  // soft-body follow-through: the top of her lags behind like jelly
+  const skew = useTransform(sway, (v) => Math.max(-3.5, Math.min(3.5, v * 0.12)));
 
-  // Mouth flaps while she "speaks" a line
+  // the mouth flaps while she "speaks" a line
   const [flap, setFlap] = useState(false);
   useEffect(() => {
     if (!talking) return setFlap(false);
@@ -71,298 +117,217 @@ function HelperGirl({
     return () => window.clearInterval(id);
   }, [talking]);
 
-  const loop = (d: number, delay = 0) =>
-    reduce ? { duration: 0 } : { duration: d, repeat: Infinity, ease: "easeInOut" as const, delay };
+  const shut = blink && (eyes === "open" || eyes === "sparkle" || eyes === "surprised");
+  const left = shut ? "blink" : eyes === "wink" ? "open" : eyes;
+  const right = shut ? "blink" : eyes === "wink" ? "happy" : eyes;
 
   return (
-    <svg viewBox="0 0 220 236" className={className} aria-hidden="true" style={{ overflow: "visible" }}>
-      <defs>
-        <radialGradient id="hg-eye" cx=".5" cy=".64" r=".64">
-          <stop offset="0" stopColor="#C49AB0" />
-          <stop offset=".5" stopColor="#71485E" />
-          <stop offset="1" stopColor="#3B2232" />
-        </radialGradient>
-        <linearGradient id="hg-hair" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#FDE8EF" />
-          <stop offset="1" stopColor="#F5C3D3" />
-        </linearGradient>
-        <linearGradient id="hg-top" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#E3F3FA" />
-          <stop offset="1" stopColor="#CBE7F3" />
-        </linearGradient>
-        {/* Pencil wobble on every edge, plus a soft white haze around her */}
-        <filter id="hg-paint" x="-30%" y="-30%" width="160%" height="160%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="wob" />
-          <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="halo" />
-          <feFlood floodColor="#FFFFFF" floodOpacity="0.5" />
-          <feComposite in2="halo" operator="in" result="glow" />
-          <feMerge>
-            <feMergeNode in="glow" />
-            <feMergeNode in="wob" />
-          </feMerge>
-        </filter>
-        <filter id="hg-b1" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="1.2" />
-        </filter>
-        <filter id="hg-b3" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" />
-        </filter>
-      </defs>
-
-      <g filter="url(#hg-paint)" stroke={LINE} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round">
-        {/* ---------- body, behind the head ---------- */}
-        <motion.g style={{ originX: 0.5, originY: 1 }} animate={reduce ? undefined : { scaleY: [1, 1.035, 1] }} transition={loop(2.8)}>
-          {/* feet dangle; they kick back while she flies */}
-          <motion.g
-            style={{ originX: 0.5, originY: 0 }}
-            animate={reduce ? undefined : { rotate: flying ? [10, 22, 10] : [-4, 5, -4] }}
-            transition={loop(flying ? 0.42 : 2.2)}
-          >
-            <path d="M97 204 C 96 211, 95 216, 97 221 C 99 224, 105 224, 106 220 C 107 215, 107 209, 107 204 Z" fill={SKIN} />
-            <path d="M114 204 C 114 210, 115 215, 118 219 C 120 223, 126 222, 126 217 C 125 212, 124 208, 123 204 Z" fill={SKIN} />
-          </motion.g>
-          <path d="M84 208 C 80 190, 90 168, 110 168 C 130 168, 140 190, 136 208 C 126 212, 94 212, 84 208 Z" fill="url(#hg-top)" />
-          <path d="M90 196 C 100 204, 120 204, 130 196" fill="none" stroke="#B8DCEB" strokeWidth="5" filter="url(#hg-b3)" opacity=".8" />
-          <path d="M99 172 C 103 179, 117 179, 121 172" fill="none" stroke="#B5DDEB" strokeWidth="1.8" />
-          {/* arm hugging a mini bunny that wiggles */}
-          <path d="M88 180 C 80 184, 78 194, 84 198 C 88 200, 92 196, 92 190 Z" fill="url(#hg-top)" />
-          <motion.g style={{ originX: 0.5, originY: 1 }} animate={reduce ? undefined : { rotate: [-6, 6, -6], y: [0, -1.2, 0] }} transition={loop(1.5, 0.2)}>
-            <ellipse cx="95" cy="196" rx="9.5" ry="8.5" fill="#FFFFFF" />
-            <path d="M89 190 C 86 181, 88 177, 91 178 C 93 180, 93 186, 92 190 M 98 189 C 99 181, 102 178, 104 180 C 105 183, 102 188, 100 191" fill="#FFFFFF" />
-            <circle cx="92" cy="196" r="1.2" fill="#8E6A7E" stroke="none" />
-            <circle cx="98" cy="196" r="1.2" fill="#8E6A7E" stroke="none" />
-            <ellipse cx="95" cy="199.5" rx="2" ry="1.2" fill="#FFC6D4" stroke="none" />
-          </motion.g>
-          <circle cx="84" cy="199" r="4.6" fill={SKIN} />
-        </motion.g>
-
-        {/* ---------- head ---------- */}
-        <motion.g style={{ rotate: tilt, x: headX, y: headY, originX: 0.5, originY: 0.92 }}>
-          {/* long side locks, swinging with her movement */}
-          <motion.g style={{ rotate: swayHair, originX: 0.7, originY: 0 }}>
-            <motion.g style={{ originX: 0.7, originY: 0 }} animate={reduce ? undefined : { rotate: [-3, 4, -3] }} transition={loop(2.3)}>
-              <path d="M46 128 C 40 150, 34 176, 22 208 C 36 204, 48 190, 56 172 C 60 158, 60 142, 58 132 Z" fill="url(#hg-hair)" />
-            </motion.g>
-          </motion.g>
-          <motion.g style={{ rotate: swayHair, originX: 0.3, originY: 0 }}>
-            <motion.g style={{ originX: 0.3, originY: 0 }} animate={reduce ? undefined : { rotate: [3, -4, 3] }} transition={loop(2.3, 0.35)}>
-              <path d="M174 128 C 180 150, 186 176, 198 208 C 184 204, 172 190, 164 172 C 160 158, 160 142, 162 132 Z" fill="url(#hg-hair)" />
-            </motion.g>
-          </motion.g>
-
-          {/* hair dome with watercolour shading and soft highlights */}
-          <path d="M30 124 C 26 74, 62 30, 110 30 C 158 30, 194 74, 190 124 C 190 138, 186 148, 180 156 L 40 156 C 34 148, 30 138, 30 124 Z" fill="url(#hg-hair)" />
-          <path d="M40 128 C 50 146, 80 152, 110 152 C 140 152, 170 146, 180 128" fill="none" stroke="#EFAFC4" strokeWidth="9" filter="url(#hg-b3)" opacity=".7" />
-          <path d="M58 66 C 70 52, 86 46, 102 44 M 148 54 C 160 62, 168 74, 172 88" fill="none" stroke="#FFFFFF" strokeWidth="4" filter="url(#hg-b1)" />
-
-          {/* fluffy white clips */}
-          <motion.g style={{ rotate: swayTip, originX: 0.5, originY: 0.5 }}>
-            <path d="M36 152 C 30 148, 30 140, 36 138 C 36 132, 44 130, 47 135 C 52 132, 58 138, 54 143 C 58 148, 52 154, 47 151 C 44 156, 36 156, 36 152 Z" fill="#FFFFFF" />
-          </motion.g>
-          <motion.g style={{ rotate: swayTip, originX: 0.5, originY: 0.5 }}>
-            <path d="M184 152 C 190 148, 190 140, 184 138 C 184 132, 176 130, 173 135 C 168 132, 162 138, 166 143 C 162 148, 168 154, 173 151 C 176 156, 184 156, 184 152 Z" fill="#FFFFFF" />
-          </motion.g>
-
-          {/* face with a soft shadow under the bangs */}
-          <ellipse cx="110" cy="126" rx="50" ry="42" fill={SKIN} stroke="none" />
-          <path d="M66 116 C 86 124, 134 124, 154 116" fill="none" stroke="#F6CCD9" strokeWidth="10" filter="url(#hg-b3)" opacity=".75" />
-          <path d="M60 130 C 64 154, 86 168, 110 168 C 134 168, 156 154, 160 130" fill="none" />
-
-          {/* bangs: fill only, lower edge drawn */}
-          <path
-            d="M58 124 C 54 84, 78 58, 110 58 C 142 58, 166 84, 162 124 C 158 116, 152 110, 146 108 C 144 114, 140 118, 134 118 C 132 108, 124 102, 116 102 C 114 110, 110 114, 104 114 C 100 106, 92 102, 86 104 C 84 112, 80 116, 74 116 C 72 110, 66 108, 62 110 C 61 114, 59 119, 58 124 Z"
-            fill="url(#hg-hair)"
-            stroke="none"
-          />
-          <path d="M58 124 C 59 119, 61 114, 62 110 C 66 108, 72 110, 74 116 C 80 116, 84 112, 86 104 C 92 102, 100 106, 104 114 C 110 114, 114 110, 116 102 C 124 102, 132 108, 134 118 C 140 118, 144 114, 146 108 C 152 110, 158 116, 162 124" fill="none" />
-          <path d="M92 72 C 102 66, 118 66, 128 72" fill="none" stroke="#FFFFFF" strokeWidth="3.4" filter="url(#hg-b1)" />
-
-          {/* ahoge: idle sway plus a springy boing from her movement */}
-          <motion.g style={{ rotate: swayTip, originX: 0.15, originY: 1 }}>
-            <motion.g style={{ originX: 0.15, originY: 1 }} animate={reduce ? undefined : { rotate: [-9, 9, -9] }} transition={loop(1.8)}>
-              <path d="M110 32 C 106 18, 114 8, 126 10 C 118 14, 114 22, 116 32" fill="url(#hg-hair)" />
-            </motion.g>
-          </motion.g>
-
-          {/* bunny plush on her head */}
-          <motion.g animate={reduce ? undefined : { y: [0, -1.6, 0] }} transition={loop(2.6, 0.5)}>
-            <motion.g style={{ rotate: swayEarL, originX: 0.6, originY: 1 }}>
-              <motion.g style={{ originX: 0.6, originY: 1 }} animate={reduce ? undefined : { rotate: [0, 0, -16, 4, 0, 0] }} transition={{ ...loop(3.6), times: [0, 0.66, 0.74, 0.8, 0.86, 1] }}>
-                <path d="M50 46 C 41 31, 41 17, 48 14 C 55 14, 59 30, 59 42 Z" fill="#FFFFFF" />
-                <path d="M49 21 C 50 28, 52 35, 55 40" fill="none" stroke="#FFD0DC" strokeWidth="3" />
-              </motion.g>
-            </motion.g>
-            <motion.g style={{ rotate: swayEarR, originX: 0.2, originY: 1 }}>
-              <motion.g style={{ originX: 0.2, originY: 1 }} animate={reduce ? undefined : { rotate: [0, 0, 14, -4, 0, 0] }} transition={{ ...loop(3.6, 0.1), times: [0, 0.66, 0.74, 0.8, 0.86, 1] }}>
-                <path d="M66 42 C 68 29, 75 18, 82 20 C 87 24, 80 37, 73 46 Z" fill="#FFFFFF" />
-                <path d="M78 25 C 75 31, 72 37, 69 42" fill="none" stroke="#FFD0DC" strokeWidth="3" />
-              </motion.g>
-            </motion.g>
-            <ellipse cx="62" cy="58" rx="21" ry="17.5" fill="#FFFFFF" />
-            <path d="M46 66 C 54 72, 70 72, 78 66" fill="none" stroke="#F1DCE4" strokeWidth="6" filter="url(#hg-b3)" />
-            <circle cx="55" cy="57" r="1.9" fill="#8E6A7E" stroke="none" />
-            <circle cx="69" cy="57" r="1.9" fill="#8E6A7E" stroke="none" />
-            <path d="M60 62 C 61 63.6, 63 63.6, 64 62" fill="none" stroke="#C98AA0" strokeWidth="1.5" />
-            <ellipse cx="50" cy="63" rx="4" ry="2.2" fill="#FFC6D4" stroke="none" />
-            <ellipse cx="74" cy="63" rx="4" ry="2.2" fill="#FFC6D4" stroke="none" />
-          </motion.g>
-
-          {/* eyes */}
-          <motion.g
-            style={{ originY: 0.5 }}
-            animate={{ scaleY: blink && (eyes === "open" || eyes === "sparkle" || eyes === "surprised") ? 0.08 : 1 }}
-            transition={{ type: "spring", stiffness: 900, damping: 30 }}
-          >
-            <EyesLayer eyes={eyes} px={px} py={py} hx={hx} hy={hy} reduce={!!reduce} />
-          </motion.g>
-
-          {/* watercolour blush */}
-          <motion.g
-            stroke="none"
-            fill="#FFB3C7"
-            filter="url(#hg-b3)"
-            animate={{ opacity: blush ? 1 : 0.8, scale: blush ? 1.25 : 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 12 }}
-            style={{ originX: 0.5, originY: 0.5 }}
-          >
-            <ellipse cx="68" cy="152" rx="12" ry="7" />
-            <ellipse cx="152" cy="152" rx="12" ry="7" />
-          </motion.g>
-
-          <MouthLayer mouth={talking ? (flap ? "o" : "smile") : mouth} />
-        </motion.g>
-
-        {/* ---------- waving arm, in front of everything ---------- */}
-        <motion.g
-          style={{ originX: 0, originY: 1 }}
-          animate={waving && !reduce ? { rotate: [0, -28, 10, -28, 10, -4, 0] } : { rotate: 0 }}
-          transition={waving && !reduce ? { duration: 1.4, ease: "easeInOut" } : { type: "spring", stiffness: 260, damping: 12 }}
+    <motion.div className={`relative ${className ?? ""}`} style={{ rotate: lean, skewX: skew, originX: 0.5, originY: 1 }}>
+      <motion.div
+        style={{ originX: 0.5, originY: 1 }}
+        animate={{ scaleY: [1, 1.018, 1], scaleX: [1, 0.992, 1] }}
+        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <motion.div
+          style={{ originX: 0.5, originY: 0.95 }}
+          animate={waving ? { rotate: [0, -5, 4, -4, 3, 0] } : { rotate: 0 }}
+          transition={waving ? { duration: 1.4, ease: "easeInOut" } : { type: "spring", stiffness: 260, damping: 14 }}
         >
-          <path d="M130 180 C 138 176, 146 170, 152 162 C 156 164, 157 169, 154 172 C 148 180, 140 186, 132 188 Z" fill="url(#hg-top)" />
-          <motion.g
-            style={{ originX: 0.2, originY: 0.9 }}
-            animate={waving && !reduce ? { rotate: [0, -14, 12, -14, 12, 0] } : { rotate: 0 }}
-            transition={waving && !reduce ? { duration: 1.4, ease: "easeInOut", delay: 0.06 } : { duration: 0.2 }}
-          >
-            <path d="M151 166 C 147 160, 149 153, 155 152 C 158 148, 164 150, 163 155 C 167 155, 168 161, 164 164 C 162 168, 156 170, 151 166 Z" fill={SKIN} />
-          </motion.g>
-          {waving && (
-            <g stroke="#FFD86E" strokeWidth="2.2" fill="none">
-              <path d="M172 144 C 176 148, 177 152, 176 156" />
-              <path d="M178 138 C 184 144, 185 152, 183 158" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/helper/mochi-384.webp"
+            srcSet="/helper/mochi-192.webp 192w, /helper/mochi-384.webp 384w"
+            sizes="(min-width: 768px) 96px, 76px"
+            width={384}
+            height={513}
+            alt=""
+            draggable={false}
+            decoding="async"
+            className="block h-auto w-full select-none"
+          />
+          <svg viewBox={`0 0 ${ART.w} ${ART.h}`} className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
+            <defs>
+              <linearGradient id="mg-iris" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#6E3C4B" />
+                <stop offset=".55" stopColor="#7E4A5A" />
+                <stop offset="1" stopColor="#8F5A6B" />
+              </linearGradient>
+              <linearGradient id="mg-white" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#DCD2E2" />
+                <stop offset=".45" stopColor="#FFFFFF" />
+              </linearGradient>
+              <radialGradient id="mg-shine" cx=".5" cy=".75" r=".75">
+                <stop offset="0" stopColor="#E0BAC6" />
+                <stop offset="1" stopColor="#B98597" />
+              </radialGradient>
+              <radialGradient id="mg-blush" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stopColor="#FF9BB4" stopOpacity=".75" />
+                <stop offset="1" stopColor="#FF9BB4" stopOpacity="0" />
+              </radialGradient>
+              <clipPath id="mg-halfL">
+                <rect x="600" y="1112" width="330" height="140" />
+              </clipPath>
+              <clipPath id="mg-halfR">
+                <rect x="1080" y="1136" width="320" height="140" />
+              </clipPath>
+            </defs>
+            <g transform={`translate(${-ART.x} ${-ART.y})`}>
+              {/* creases above the eyes */}
+              <g fill="none" stroke={LINE} strokeWidth="9" strokeLinecap="round">
+                <path d={EYE.L.crease} />
+                <path d={EYE.R.crease} />
+              </g>
+
+              <Eye side="L" state={left} px={px} py={py} hx={hx} hy={hy} />
+              <Eye side="R" state={right} px={px} py={py} hx={hx} hy={hy} />
+
+              {/* extra blush when she is tickled or flattered */}
+              <motion.g
+                initial={false}
+                animate={{ opacity: blush ? 1 : 0, scale: blush ? 1 : 0.8 }}
+                transition={{ type: "spring", stiffness: 300, damping: 14 }}
+                style={{ originX: 0.5, originY: 0.5 }}
+              >
+                <ellipse cx="720" cy="1226" rx="78" ry="44" fill="url(#mg-blush)" />
+                <ellipse cx="1170" cy="1252" rx="78" ry="44" fill="url(#mg-blush)" />
+              </motion.g>
+
+              <MouthShape mouth={talking ? (flap ? "o" : "smile") : mouth} />
+
+              {/* "!" lines when she is surprised */}
+              {eyes === "surprised" && (
+                <g stroke="#FF9BB4" strokeWidth="11" strokeLinecap="round">
+                  <path d="M1560 760 L 1592 704" />
+                  <path d="M1600 820 L 1658 790" />
+                </g>
+              )}
+
+              {/* wave marks beside her raised hand */}
+              {waving && (
+                <motion.g
+                  fill="none"
+                  stroke="#FFD86E"
+                  strokeWidth="11"
+                  strokeLinecap="round"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 1, 1, 0.6, 1, 0] }}
+                  transition={{ duration: 1.4 }}
+                >
+                  <path d="M1420 1250 Q 1436 1276 1428 1304" />
+                  <path d="M1450 1228 Q 1472 1270 1460 1318" />
+                </motion.g>
+              )}
             </g>
-          )}
-        </motion.g>
-      </g>
-    </svg>
+          </svg>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
 
 export default memo(HelperGirl);
 
-function EyesLayer({
-  eyes,
+function Eye({
+  side,
+  state,
   px,
   py,
   hx,
   hy,
-  reduce,
 }: {
-  eyes: Eyes;
+  side: "L" | "R";
+  state: Eyes | "blink";
   px: MotionValue<number>;
   py: MotionValue<number>;
   hx: MotionValue<number>;
   hy: MotionValue<number>;
-  reduce: boolean;
 }) {
-  if (eyes === "happy") {
+  const e = EYE[side];
+  if (state === "happy") return <path d={e.happy} fill="none" stroke={LID} strokeWidth="19" strokeLinecap="round" />;
+  if (state === "blink")
     return (
-      <g fill="none" stroke={LASH} strokeWidth="3">
-        <path d="M74 140 C 78 128, 94 128, 98 140" />
-        <path d="M122 140 C 126 128, 142 128, 146 140" />
+      <g fill="none" stroke={LID} strokeLinecap="round">
+        <path d={e.closed} strokeWidth="17" />
+        <path d={e.flick} strokeWidth="13" />
       </g>
     );
-  }
-  if (eyes === "sleepy") {
-    return (
-      <g>
-        <ellipse cx="86" cy="142" rx="12.5" ry="9" fill="url(#hg-eye)" stroke="#C391A7" strokeWidth="1.6" />
-        <ellipse cx="134" cy="142" rx="12.5" ry="9" fill="url(#hg-eye)" stroke="#C391A7" strokeWidth="1.6" />
-        <path d="M72 138 C 78 134, 94 134, 100 138 M 120 138 C 126 134, 142 134, 148 138" fill="none" stroke={LASH} strokeWidth="3" />
-        <circle cx="82" cy="142" r="2.4" fill="#FFFFFF" stroke="none" />
-        <circle cx="130" cy="142" r="2.4" fill="#FFFFFF" stroke="none" />
-      </g>
-    );
-  }
-  const big = eyes === "surprised";
-  const one = (cx: number, closed: boolean) =>
-    closed ? (
-      <path key={cx} d={`M${cx - 12} 140 C ${cx - 8} 128, ${cx + 8} 128, ${cx + 12} 140`} fill="none" stroke={LASH} strokeWidth="3" />
-    ) : (
-      <g key={cx}>
-        <ellipse cx={cx} cy="136" rx={big ? 15 : 14} ry={big ? 17.5 : 16} fill="url(#hg-eye)" stroke="#C391A7" strokeWidth="1.6" />
-        <motion.ellipse cx={cx} cy="139" rx={big ? 4 : 6} ry={big ? 5.5 : 8} fill="#2B1621" stroke="none" opacity=".45" style={{ x: px, y: py }} />
-        <motion.g stroke="none" fill="#FFFFFF" style={{ x: hx, y: hy }}>
-          {eyes === "sparkle" ? (
-            <motion.path
-              d={`M${cx - 6} 120 L ${cx - 4} 126 L ${cx + 2} 128 L ${cx - 4} 130 L ${cx - 6} 136 L ${cx - 8} 130 L ${cx - 14} 128 L ${cx - 8} 126 Z`}
-              style={{ originX: 0.5, originY: 0.5 }}
-              animate={reduce ? undefined : { scale: [1, 1.25, 1], rotate: [0, 20, 0] }}
-              transition={{ duration: 0.8, repeat: Infinity }}
-            />
-          ) : (
-            <motion.circle
-              cx={cx - 6}
-              cy="128"
-              r={big ? 6 : 5.4}
-              style={{ originX: 0.5, originY: 0.5 }}
-              animate={reduce ? undefined : { scale: [1, 1, 1.18, 1] }}
-              transition={{ duration: 3.4, repeat: Infinity, times: [0, 0.8, 0.88, 1], delay: cx > 110 ? 0.15 : 0 }}
-            />
-          )}
-          <circle cx={cx + 6} cy="143" r="2.3" />
-        </motion.g>
-        <ellipse cx={cx} cy="148" rx="8" ry="3" fill="#F2C2D3" stroke="none" opacity=".8" filter="url(#hg-b1)" />
-        <path
-          d={cx < 110 ? `M${cx - 15} 128 C ${cx - 12} 117, ${cx + 12} 116, ${cx + 15} 126` : `M${cx - 15} 126 C ${cx - 12} 116, ${cx + 12} 117, ${cx + 15} 128`}
-          fill="none"
-          stroke={LASH}
-          strokeWidth="2.8"
-        />
-      </g>
-    );
+  const big = state === "surprised";
+  const [cx, cy, rx, ry] = e.iris;
+  const irx = big ? rx * 0.74 : rx;
+  const iry = big ? ry * 0.78 : ry;
+  const [wx, wy, wrx, wry] = e.white;
+  const [sx, sy, srx, sry] = e.shine;
+  const [x1, y1, x2, y2] = e.half;
   return (
     <g>
-      {one(86, false)}
-      {one(134, eyes === "wink")}
-      {big && (
-        <g stroke="#FFA7BC" strokeWidth="2.6" fill="none">
-          <path d="M168 78 L 172 62 M 178 84 L 188 74" />
-        </g>
+      <g clipPath={state === "sleepy" ? `url(#mg-half${side})` : undefined}>
+        <ellipse cx={wx} cy={wy} rx={big ? wrx * 1.04 : wrx} ry={big ? wry * 1.04 : wry} fill="url(#mg-white)" />
+        {/* the iris, its shine and highlights move with her gaze */}
+        <motion.g style={{ x: px, y: py }}>
+          <ellipse cx={cx} cy={cy} rx={irx} ry={iry} fill="url(#mg-iris)" />
+          <ellipse cx={sx} cy={big ? cy + iry * 0.55 : sy} rx={big ? srx * 0.75 : srx} ry={big ? sry * 0.75 : sry} fill="url(#mg-shine)" />
+        </motion.g>
+        <motion.g style={{ x: hx, y: hy }} fill="#FFFFFF">
+          {e.lights.map(([lx, ly, r], i) =>
+            i === 0 && state === "sparkle" ? (
+              <motion.path
+                key={i}
+                d={star(lx, ly, r * 1.45)}
+                style={{ originX: 0.5, originY: 0.5 }}
+                animate={{ scale: [1, 1.22, 1], rotate: [0, 18, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+              />
+            ) : i === 0 ? (
+              <motion.circle
+                key={i}
+                cx={lx}
+                cy={ly}
+                r={big ? r * 0.8 : r}
+                style={{ originX: 0.5, originY: 0.5 }}
+                animate={{ scale: [1, 1, 1.16, 1] }}
+                transition={{ duration: 3.4, repeat: Infinity, times: [0, 0.8, 0.88, 1], delay: side === "R" ? 0.15 : 0 }}
+              />
+            ) : (
+              <circle key={i} cx={lx} cy={ly} r={big ? r * 0.8 : r} />
+            ),
+          )}
+        </motion.g>
+      </g>
+      {state === "sleepy" ? (
+        <path d={`M${x1} ${y1} Q ${cx} ${y1 - 14} ${x2} ${y2}`} fill="none" stroke={LID} strokeWidth="19" strokeLinecap="round" />
+      ) : (
+        <path d={e.lid} fill={LID} transform={big ? "translate(0 -10)" : undefined} />
       )}
     </g>
   );
 }
 
-function MouthLayer({ mouth }: { mouth: Mouth }) {
+function star(x: number, y: number, s: number) {
+  const k = s * 0.18;
+  return `M${x} ${y - s} Q ${x + k} ${y - k} ${x + s} ${y} Q ${x + k} ${y + k} ${x} ${y + s} Q ${x - k} ${y + k} ${x - s} ${y} Q ${x - k} ${y - k} ${x} ${y - s} Z`;
+}
+
+function MouthShape({ mouth }: { mouth: Mouth }) {
   switch (mouth) {
-    case "smile":
-      return <path d="M104 156 C 106 161, 114 161, 116 156 Z" fill="#F6A9BA" stroke="#DE93A8" strokeWidth="1.6" />;
     case "grin":
       return (
         <g>
-          <path d="M101 155 C 104 164, 116 164, 119 155 Z" fill="#F6A9BA" stroke="#DE93A8" strokeWidth="1.6" />
-          <path d="M106 160 C 108 162, 112 162, 114 160" fill="none" stroke="#FFCFDB" strokeWidth="1.8" />
+          <path d="M950 1206 Q 996 1266 1042 1204 Z" fill="#D9677C" stroke={LINE} strokeWidth="8" strokeLinejoin="round" />
+          <ellipse cx="996" cy="1240" rx="17" ry="8" fill="#F29AA8" />
         </g>
       );
     case "o":
-      return <ellipse cx="110" cy="158" rx="3" ry="3.8" fill="#F6A9BA" stroke="#DE93A8" strokeWidth="1.6" />;
+      return <ellipse cx="996" cy="1226" rx="13" ry="16" fill="#D9677C" stroke={LINE} strokeWidth="7" />;
     case "yawn":
-      return <ellipse cx="110" cy="159" rx="5" ry="6.2" fill="#EF96AB" stroke="#DE93A8" strokeWidth="1.6" />;
+      return (
+        <g>
+          <ellipse cx="996" cy="1232" rx="21" ry="27" fill="#D9677C" stroke={LINE} strokeWidth="7" />
+          <ellipse cx="996" cy="1248" rx="11" ry="7" fill="#F29AA8" />
+        </g>
+      );
     case "pout":
-      return <path d="M105 160 C 107 156, 113 156, 115 160" fill="none" stroke="#DE93A8" strokeWidth="2" />;
+      return <path d="M970 1232 Q 996 1214 1022 1232" fill="none" stroke={LINE} strokeWidth="9" strokeLinecap="round" />;
     default:
-      return <path d="M103 156 C 105 160, 109 160, 110 156 C 111 160, 115 160, 117 156" fill="none" stroke="#DE93A8" strokeWidth="1.8" />;
+      return <path d="M953 1212 Q 996 1252 1040 1209" fill="none" stroke={LINE} strokeWidth="9" strokeLinecap="round" />;
   }
 }

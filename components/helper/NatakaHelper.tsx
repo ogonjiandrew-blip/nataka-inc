@@ -16,7 +16,6 @@ import {
 } from "framer-motion";
 import { PaperPlaneRight, X } from "@phosphor-icons/react";
 import HelperGirl, { type Eyes, type Mouth } from "@/components/helper/HelperGirl";
-import { DangoWarmup } from "@/components/helper/HelperDango";
 import { bumpPill, markMorph, onWakeRequest, setHelperMode } from "@/lib/helperStore";
 import {
   CRUISE,
@@ -459,9 +458,8 @@ export default function NatakaHelper() {
   // The dango was tapped
   useEffect(() => onWakeRequest(() => wake()));
 
-  // Once, soon after the page loads and while nothing else is busy, draw her and the dango
-  // unseen for a moment: the browser compiles their painted look then, instead of stalling
-  // for a fraction of a second on the frame she first appears.
+  // Once, soon after the page loads and while nothing else is busy, draw her unseen for a
+  // moment: her artwork is fetched and decoded then, instead of on the frame she first appears.
   useEffect(() => {
     if (SKIP.includes(pathname)) return;
     type Idle = (cb: () => void, o?: { timeout: number }) => number;
@@ -505,7 +503,7 @@ export default function NatakaHelper() {
       const r = dockBox();
       if (!r) return;
       const cx = r.left + r.width / 2 + x.get();
-      const cy = r.bottom - r.width * 0.5 + y.get();
+      const cy = r.bottom - r.width * 0.6 + y.get();
       lookX.set(clamp((e.clientX - cx) / 260, -1, 1));
       lookY.set(clamp((e.clientY - cy) / 260, -1, 1));
     };
@@ -681,18 +679,15 @@ export default function NatakaHelper() {
         </AnimatePresence>
       </div>
 
-      {/* The one-off warm-up drawing (see above): 1% opacity so it is really painted, never seen */}
+      {/* The one-off warm-up drawing (see above): 1% opacity so it is really decoded and painted, never seen */}
       {warm && !showGirl && (
-        <div aria-hidden="true" className="pointer-events-none fixed bottom-5 left-3 z-[1] flex w-[86px] items-end opacity-[0.01] md:bottom-7 md:left-7 md:w-[106px]">
+        <div aria-hidden="true" className="pointer-events-none fixed bottom-5 left-3 z-[1] w-[76px] opacity-[0.01] md:bottom-7 md:left-7 md:w-[96px]">
           <HelperGirl lookX={lookX} lookY={lookY} tilt={tilt} sway={sway} className="h-auto w-full" />
-          <div className="absolute bottom-0 left-0">
-            <DangoWarmup />
-          </div>
         </div>
       )}
 
       {/* Her dock, bottom left; she flies relative to it */}
-      <div ref={dockRef} className="pointer-events-none fixed bottom-5 left-3 z-[9979] w-[86px] md:bottom-7 md:left-7 md:w-[106px]">
+      <div ref={dockRef} className="pointer-events-none fixed bottom-5 left-3 z-[9979] w-[76px] md:bottom-7 md:left-7 md:w-[96px]">
         <AnimatePresence>
           {showGirl && (
             <motion.span
@@ -826,7 +821,7 @@ export default function NatakaHelper() {
             role="dialog"
             aria-modal="false"
             aria-label="Mochi, the Nataka helper"
-            className="fixed bottom-[124px] left-3 z-[9979] w-[min(300px,calc(100vw-24px))] md:bottom-[154px] md:left-7"
+            className="fixed bottom-[130px] left-3 z-[9979] w-[min(300px,calc(100vw-24px))] md:bottom-[164px] md:left-7"
             initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.5, y: 24, rotate: -4 }}
             animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0, rotate: 0 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.7, y: 14, transition: { duration: 0.18 } }}
@@ -1071,7 +1066,7 @@ function Trail({ active, x, y, dockRef }: { active: boolean; x: MotionValue<numb
       const el = document.createElement("span");
       el.className = "mochi-spark";
       el.style.left = `${r.left + r.width / 2 + x.get() + (Math.random() - 0.5) * 26}px`;
-      el.style.top = `${r.bottom - r.width * 0.42 + y.get() + (Math.random() - 0.5) * 18}px`;
+      el.style.top = `${r.bottom - r.width * 0.62 + y.get() + (Math.random() - 0.5) * 18}px`;
       el.style.setProperty("--s", (0.6 + Math.random() * 0.7).toFixed(2));
       el.innerHTML = `<svg viewBox="0 0 20 20" width="12" height="12"><path d="${STAR}" fill="${c}"/></svg>`;
       const drop = () => el.remove();

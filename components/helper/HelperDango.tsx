@@ -5,7 +5,8 @@ import { AnimatePresence, animate, motion, useMotionValue, useSpring, useTransfo
 import { bumpPill, takeMorph } from "@/lib/helperStore";
 import { FALL, RISE, clamp, jellyX, jellyY, kick } from "@/components/helper/softBody";
 
-const LINE = "#E6A1B6";
+const LINE = "#B06C81"; // the rose line of her artwork
+const LID = "#6E3E4E";
 // Softer and wobblier than Mochi: a few visible jiggles before it settles, like the Clannad dango
 const JELLY = { stiffness: 320, damping: 9 };
 const wait = (ms: number) => new Promise((r) => window.setTimeout(r, ms));
@@ -265,28 +266,17 @@ export default function HelperDango({
         <svg viewBox="0 0 160 110" className="h-full w-full overflow-visible" aria-hidden="true">
           <defs>
             <linearGradient id="hd-body" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#FDE4EC" />
-              <stop offset="1" stopColor="#F7C7D6" />
+              <stop offset="0" stopColor="#FFE6EE" />
+              <stop offset="1" stopColor="#F9C5D5" />
             </linearGradient>
-            <filter id="hd-paint" x="-30%" y="-30%" width="160%" height="160%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="4" result="noise" />
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="wob" />
-              <feGaussianBlur in="SourceAlpha" stdDeviation="4.5" result="halo" />
-              <feFlood floodColor="#FFFFFF" floodOpacity="0.5" />
-              <feComposite in2="halo" operator="in" result="glow" />
-              <feMerge>
-                <feMergeNode in="glow" />
-                <feMergeNode in="wob" />
-              </feMerge>
-            </filter>
-            <filter id="hd-b3" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" />
-            </filter>
+            <radialGradient id="hd-blush" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stopColor="#FF9BB4" stopOpacity=".7" />
+              <stop offset="1" stopColor="#FF9BB4" stopOpacity="0" />
+            </radialGradient>
           </defs>
 
-          <g filter="url(#hd-paint)" stroke={LINE} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round">
-            <path d="M14 98 C 12 58, 44 28, 80 28 C 116 28, 148 58, 146 98 C 120 102, 40 102, 14 98 Z" fill="url(#hd-body)" />
-            <path d="M26 92 C 50 98, 110 98, 134 92" fill="none" stroke="#EFAFC4" strokeWidth="9" filter="url(#hd-b3)" opacity=".7" />
+          {/* drawn like Mochi's artwork: clean rose outline, flat pastel fill, glossy highlight */}
+          <g stroke={LINE} strokeWidth="3" strokeLinejoin="round" strokeLinecap="round">
             <motion.g
               style={{ originX: 0.2, originY: 1 }}
               animate={{ rotate: waking ? [0, -18, 12, 0] : hover ? [0, 14, 0] : [-6, 10, -6] }}
@@ -294,49 +284,57 @@ export default function HelperDango({
             >
               <path d="M78 30 C 74 18, 80 10, 90 12 C 84 16, 82 22, 84 30" fill="url(#hd-body)" />
             </motion.g>
-            <path d="M36 52 C 44 42, 56 36, 68 34" fill="none" stroke="#FFFFFF" strokeWidth="4" filter="url(#hd-b3)" />
+            <path d="M14 98 C 12 58, 44 28, 80 28 C 116 28, 148 58, 146 98 C 120 102, 40 102, 14 98 Z" fill="url(#hd-body)" />
+            <path d="M20 90 C 44 98, 116 98, 140 90 C 141 94, 140 97, 139 98 C 116 101, 44 101, 21 98 C 20 96, 19 93, 20 90 Z" fill="#F4B3C8" stroke="none" opacity=".6" />
+            <ellipse cx="50" cy="48" rx="15" ry="6.5" transform="rotate(-28 50 48)" fill="#FFFFFF" stroke="none" opacity=".85" />
+            <circle cx="67" cy="38" r="2.6" fill="#FFFFFF" stroke="none" opacity=".85" />
 
             {/* the face, lagging a touch behind the body */}
             <motion.g style={{ y: faceY }}>
               {eyes === "sleep" && (
-                <g fill="none" stroke="#A86C86" strokeWidth="3">
+                <g fill="none" stroke={LID} strokeWidth="3.4">
                   <path d="M52 66 C 56 71, 64 71, 68 66" />
                   <path d="M92 66 C 96 71, 104 71, 108 66" />
                 </g>
               )}
               {eyes === "peek" && (
                 <g>
-                  <path d="M52 66 C 56 71, 64 71, 68 66" fill="none" stroke="#A86C86" strokeWidth="3" />
-                  <ellipse cx="100" cy="66" rx="6" ry="7" fill="#5C3A4C" stroke="#A86C86" strokeWidth="2" />
+                  <path d="M52 66 C 56 71, 64 71, 68 66" fill="none" stroke={LID} strokeWidth="3.4" />
+                  <ellipse cx="100" cy="66" rx="6" ry="7" fill={LID} stroke="none" />
                   <circle cx="98" cy="63.5" r="2" fill="#FFFFFF" stroke="none" />
                 </g>
               )}
               {(eyes === "startled" || eyes === "awake") && (
-                <g stroke="#A86C86" strokeWidth="2">
-                  <circle cx="60" cy="66" r={eyes === "awake" ? 6.5 : 5.5} fill="#5C3A4C" />
-                  <circle cx="100" cy="66" r={eyes === "awake" ? 6.5 : 5.5} fill="#5C3A4C" />
-                  <circle cx="58.5" cy="64" r="1.8" fill="#FFFFFF" stroke="none" />
-                  <circle cx="98.5" cy="64" r="1.8" fill="#FFFFFF" stroke="none" />
+                <g stroke="none">
+                  <circle cx="60" cy="66" r={eyes === "awake" ? 6.5 : 5.5} fill={LID} />
+                  <circle cx="100" cy="66" r={eyes === "awake" ? 6.5 : 5.5} fill={LID} />
+                  <circle cx="58.5" cy="64" r="1.8" fill="#FFFFFF" />
+                  <circle cx="98.5" cy="64" r="1.8" fill="#FFFFFF" />
                 </g>
               )}
               {eyes === "awake" && (
-                <g stroke="#FFA7BC" strokeWidth="2.4" fill="none">
+                <g stroke="#FF9BB4" strokeWidth="2.4" fill="none">
                   <path d="M118 40 L 124 30 M 128 48 L 138 42" />
                 </g>
               )}
 
-              <motion.g stroke="none" fill="#FFB3C7" filter="url(#hd-b3)" animate={{ opacity: hover || waking ? 1 : 0.8 }}>
-                <ellipse cx="46" cy="78" rx="9" ry="5.5" />
-                <ellipse cx="114" cy="78" rx="9" ry="5.5" />
+              {/* blush with the little hash marks from her artwork */}
+              <motion.g stroke="none" animate={{ opacity: hover || waking ? 1 : 0.8 }}>
+                <ellipse cx="46" cy="79" rx="12" ry="7" fill="url(#hd-blush)" />
+                <ellipse cx="114" cy="79" rx="12" ry="7" fill="url(#hd-blush)" />
+                <g stroke="#F08A9A" strokeWidth="1.5" fill="none">
+                  <path d="M40 81 L 42.5 76.5 M 45 81.5 L 47.5 77 M 50 82 L 52.5 77.5" />
+                  <path d="M108 82 L 110.5 77.5 M 113 81.5 L 115.5 77 M 118 81 L 120.5 76.5" />
+                </g>
               </motion.g>
 
               {startled || waking ? (
-                <ellipse cx="80" cy="80" rx="3" ry="3.6" fill="#F4A0B4" stroke="#D88AA0" strokeWidth="2" />
+                <ellipse cx="80" cy="80" rx="3" ry="3.6" fill="#D9677C" stroke={LINE} strokeWidth="1.8" />
               ) : (
                 <motion.path
                   d="M76 78 C 78 81, 82 81, 84 78"
                   fill="none"
-                  stroke="#D88AA0"
+                  stroke={LINE}
                   strokeWidth="2.2"
                   style={{ scaleY: mouthOpen, originX: 0.5, originY: 0 }}
                 />
@@ -390,36 +388,5 @@ export default function HelperDango({
         </svg>
       </motion.div>
     </motion.button>
-  );
-}
-
-/**
- * The dango's painted look on its own, drawn once unseen just after the page
- * loads so the browser has its filters ready before the first real dango.
- */
-export function DangoWarmup() {
-  return (
-    <svg viewBox="0 0 160 110" className="h-[50px] w-[72px]" aria-hidden="true">
-      <defs>
-        <filter id="hdw-paint" x="-30%" y="-30%" width="160%" height="160%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="4" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="wob" />
-          <feGaussianBlur in="SourceAlpha" stdDeviation="4.5" result="halo" />
-          <feFlood floodColor="#FFFFFF" floodOpacity="0.5" />
-          <feComposite in2="halo" operator="in" result="glow" />
-          <feMerge>
-            <feMergeNode in="glow" />
-            <feMergeNode in="wob" />
-          </feMerge>
-        </filter>
-        <filter id="hdw-b3" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" />
-        </filter>
-      </defs>
-      <g filter="url(#hdw-paint)" stroke={LINE} strokeWidth="2">
-        <path d="M14 98 C 12 58, 44 28, 80 28 C 116 28, 148 58, 146 98 C 120 102, 40 102, 14 98 Z" fill="#F7C7D6" />
-        <path d="M26 92 C 50 98, 110 98, 134 92" fill="none" stroke="#EFAFC4" strokeWidth="9" filter="url(#hdw-b3)" />
-      </g>
-    </svg>
   );
 }
