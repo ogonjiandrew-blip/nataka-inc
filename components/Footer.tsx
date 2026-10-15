@@ -22,6 +22,7 @@ const company = [
   { label: "About", href: "/#about" },
   { label: "Insights", href: "/blog" },
   { label: "Contact", href: "/#contact" },
+  { label: "Privacy", href: "/privacy" },
 ];
 
 const socialLinks = [
