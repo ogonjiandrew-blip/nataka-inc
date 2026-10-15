@@ -560,7 +560,7 @@ export const servicePages: ServicePage[] = [
     headlineAccent: "Actually Convert.",
     heroImage: "/stills/ssaru/1.jpg",
     heroSummary: "Creator campaigns matched to your audience, with briefs, usage rights and reporting agreed upfront.",
-    work: ["cool-in-school", "gun-vs-sword"],
+    work: ["black-torch", "gun-vs-sword"],
     intro:
       "Anyone can pay a creator to hold up a product. Nataka Inc runs influencer marketing in Kenya as a campaign with strategy behind it: the right creators for your audience, briefs that protect your brand, content that fits each platform, and measurement that tells you what it actually did for sales. We have the cultural relationships and the production muscle to make creator campaigns work.",
     deliverables: [
@@ -873,7 +873,7 @@ export const servicePages: ServicePage[] = [
     headlineAccent: "Beyond The Shoot.",
     heroImage: "/videos/za-mabuda-still.jpg",
     heroSummary: "Visual effects, colour and AI-enhanced editing that add what the shoot could not.",
-    work: ["aanother", "gun-vs-sword"],
+    work: ["black-torch", "gun-vs-sword"],
     intro:
       "Some of the best shots are never filmed. They're built. Nataka Inc offers VFX, motion graphics and AI-enhanced editing for brands, artists and agencies in Kenya and beyond. Whether you need existing footage elevated, impossible visuals created, or a faster, smarter post-production pipeline, we combine cinematic craft with the latest tools. We work remotely, so location is no limit.",
     deliverables: [

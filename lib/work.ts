@@ -38,6 +38,15 @@ export const projects: Record<string, Project> = {
     gallery: ["/stills/maxus/d90-dirt.jpg", "/stills/maxus/d90-golden.jpg", "/stills/maxus/t60-highway.jpg", "/stills/maxus/wheel.jpg"],
     href: "https://www.instagram.com/maxuskenya/",
   },
+  "black-torch": {
+    id: "black-torch",
+    title: "Black Torch x Crunchyroll",
+    meta: "Crunchyroll partnership with @dance10fikshun. VFX by Andrew Ogonji",
+    poster: "/videos/black-torch-poster.jpg",
+    alt: "A giant blade swung through floating debris, from the Black Torch fight made with Crunchyroll and @dance10fikshun, VFX by Andrew Ogonji of Nataka Inc",
+    preview: "/videos/previews/black-torch.mp4",
+    href: "https://www.instagram.com/p/DehV-xwC8Uv/",
+  },
   "gun-vs-sword": {
     id: "gun-vs-sword",
     title: "Gun vs Sword 2",

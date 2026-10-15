@@ -16,15 +16,16 @@ const SHORT = "md:aspect-auto md:h-[clamp(240px,22vw,330px)]";
 /* Screens on a wall: the newest piece beside a wide film, a row of three, then
    wide and portrait screens alternating down to the gallery. Data lives in lib/work.ts. */
 const layout = [
+  { id: "black-torch", cell: "md:col-span-7", media: `aspect-[16/10] ${TALL}`, sizes: "(max-width: 768px) 100vw, 58vw" },
   { id: "gun-vs-sword", cell: "md:col-span-5", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 42vw" },
+  { id: "kwanini", cell: "md:col-span-5", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 42vw" },
   { id: "za-mabuda", cell: "md:col-span-7", media: `aspect-[16/10] ${TALL}`, sizes: "(max-width: 768px) 100vw, 58vw" },
   { id: "sarit", cell: "md:col-span-4", media: `aspect-[16/10] ${SHORT}`, sizes: "(max-width: 768px) 100vw, 33vw" },
   { id: "save-her", cell: "md:col-span-4", media: `aspect-[16/10] ${SHORT}`, sizes: "(max-width: 768px) 100vw, 33vw" },
   { id: "cool-in-school", cell: "md:col-span-4", media: `aspect-[16/10] ${SHORT}`, sizes: "(max-width: 768px) 100vw, 33vw" },
   { id: "maxus", cell: "md:col-span-7", media: `aspect-[16/10] ${TALL}`, sizes: "(max-width: 768px) 100vw, 58vw" },
-  { id: "kwanini", cell: "md:col-span-5", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 42vw" },
-  { id: "chiq", cell: "md:col-span-4", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 33vw" },
-  { id: "teslah", cell: "md:col-span-4", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 33vw" },
+  { id: "chiq", cell: "md:col-span-5", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 42vw" },
+  { id: "teslah", cell: "md:col-span-5", media: `aspect-[4/5] ${TALL}`, sizes: "(max-width: 768px) 100vw, 42vw" },
 ];
 
 export default function Work() {
@@ -61,7 +62,7 @@ export default function Work() {
         })}
 
         {/* Closing tile: the route to everything else */}
-        <Reveal delay={0.08} className="md:col-span-4">
+        <Reveal delay={0.08} className="md:col-span-7">
           <Link
             href="/gallery"
             className="group relative flex h-full min-h-[280px] flex-col justify-between overflow-hidden rounded-[22px] p-8 md:p-12 ring-1 ring-white/[0.07] hover:ring-white/20 transition-[box-shadow] duration-500"
