@@ -12,13 +12,15 @@ const config: Config = {
         // Brand palette, October 2026 refresh: graphite, platinum and one signal red.
         // accent  = platinum. Buttons, links, active states (was teal until the refresh).
         // accent.dark = silver, the second tone in two-tone headlines.
-        // signal  = the brand colour (cyan family, set per palette in globals.css):
+        // signal  = the brand colour (the NATAKA logo green, set per palette in globals.css):
         //           the full stop that ends a headline, the logo dot, the primary action.
         // ember   = the same hue, deep, for the room light. on-signal = text on signal.
+        // Neutrals are CSS variables (globals.css) so the site can run dark or light
+        // ([data-theme] on <html>, or on a section to make a dark island).
         accent: {
-          DEFAULT: "#D9DDE2",
-          light: "#F1F3F5",
-          dark: "#9AA3AE",
+          DEFAULT: "rgb(var(--c-accent) / <alpha-value>)",
+          light: "rgb(var(--c-accent-light) / <alpha-value>)",
+          dark: "rgb(var(--c-accent-dark) / <alpha-value>)",
         },
         signal: {
           DEFAULT: "rgb(var(--c-signal) / <alpha-value>)",
@@ -30,17 +32,17 @@ const config: Config = {
           deep: "rgb(var(--c-ember-deep) / <alpha-value>)",
         },
         ink: {
-          DEFAULT: "#0B0C0E",
-          "50": "#1C1F23",
-          "100": "#131519",
-          "200": "#0E1013",
+          DEFAULT: "rgb(var(--c-ink) / <alpha-value>)",
+          "50": "rgb(var(--c-ink-50) / <alpha-value>)",
+          "100": "rgb(var(--c-ink-100) / <alpha-value>)",
+          "200": "rgb(var(--c-ink-200) / <alpha-value>)",
         },
         cream: {
-          DEFAULT: "#E7E9EC",
-          dark: "#C4C9D0",
+          DEFAULT: "rgb(var(--c-cream) / <alpha-value>)",
+          dark: "rgb(var(--c-cream-dark) / <alpha-value>)",
         },
-        // Off-white instead of #FFFFFF, so every text-white/bg-white reads as paper, not glare.
-        white: "#F5F6F8",
+        // "white" is the foreground: off-white paper on the dark site, near-black ink on the light one.
+        white: "rgb(var(--c-white) / <alpha-value>)",
         // Otamatsuri / anime — festival red
         otaku: {
           DEFAULT: "#E8442E",

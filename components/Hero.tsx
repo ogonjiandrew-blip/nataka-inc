@@ -23,7 +23,7 @@ export default function Hero() {
         className="pointer-events-none absolute -inset-x-[10%] -top-[10%] -bottom-[30%] -z-10 bg-[radial-gradient(55%_45%_at_50%_62%,rgb(var(--c-ember)/0.62),rgb(var(--c-ember)/0.18)_45%,transparent_72%)]"
       />
 
-      <div className="relative isolate flex min-h-[calc(100dvh-20px)] md:min-h-[calc(100dvh-32px)] flex-col justify-end overflow-hidden rounded-[22px] md:rounded-[32px] ring-1 ring-white/10 shadow-[0_40px_120px_-40px_rgba(0,0,0,0.9)]">
+      <div data-theme="dark" className="relative isolate flex min-h-[calc(100dvh-20px)] md:min-h-[calc(100dvh-32px)] flex-col justify-end overflow-hidden rounded-[22px] md:rounded-[32px] ring-1 ring-white/10 shadow-[0_40px_120px_-40px_rgba(0,0,0,0.9)]">
         <LoopVideo
           src="/videos/hero-reel-v5.mp4"
           srcMobile="/videos/hero-reel-v5-mobile.mp4"

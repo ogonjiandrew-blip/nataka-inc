@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 
 const navLinks = [
@@ -32,9 +32,24 @@ export default function Navbar() {
     if (past !== scrolled) setScrolled(past);
   });
 
+  // On the light site the bar turns light-on-dark while it sits over a dark card (the hero reel)
+  const headerRef = useRef<HTMLElement>(null);
+  const [overDark, setOverDark] = useState(false);
+  useEffect(() => {
+    const check = () => {
+      const under = document.elementsFromPoint(window.innerWidth / 2, 40).find((el) => !headerRef.current?.contains(el));
+      setOverDark(!!under?.closest('[data-theme="dark"]'));
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [scrolled]);
+
   return (
     <>
       <motion.header
+        ref={headerRef}
+        data-theme={overDark && !scrolled ? "dark" : undefined}
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
@@ -60,7 +75,7 @@ export default function Navbar() {
               href={link.href}
               onMouseEnter={() => setHoveredLink(link.label)}
               className="relative font-sans text-sm font-medium py-1 transition-colors duration-200"
-              style={{ color: hoveredLink === link.label ? "#F5F6F8" : "rgba(231,233,236,0.62)" }}
+              style={{ color: hoveredLink === link.label ? "rgb(var(--c-white))" : "rgb(var(--c-cream) / 0.62)" }}
             >
               {link.label}
               {hoveredLink === link.label && (

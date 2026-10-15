@@ -7,7 +7,7 @@ export default function AiBandFeature() {
   return (
     <section aria-labelledby="ai-band-title" className="relative isolate px-2.5 md:px-4">
       <div aria-hidden="true" className="pointer-events-none absolute -inset-x-[10%] -top-[20%] -bottom-[20%] -z-10 bg-[radial-gradient(50%_45%_at_50%_55%,rgb(var(--c-ember)/0.55),rgb(var(--c-ember)/0.15)_45%,transparent_72%)]" />
-      <div className="relative isolate overflow-hidden min-h-[640px] md:min-h-[86vh] flex items-end rounded-[22px] md:rounded-[32px] ring-1 ring-white/10">
+      <div data-theme="dark" className="relative isolate overflow-hidden min-h-[640px] md:min-h-[86vh] flex items-end rounded-[22px] md:rounded-[32px] ring-1 ring-white/10">
       <LoopVideo src="/ai/aanother/aanother-feature.mp4" poster="/ai/aanother/aanother-feature-poster.jpg" lazy />
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/45 to-ink/5" />
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink via-ink/60 to-transparent" />

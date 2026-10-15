@@ -6,14 +6,100 @@
   --accent: #D9DDE2;
   --accent-light: #F1F3F5;
   --accent-dark: #9AA3AE;
-  /* Palette: Glacier (default). Channels are bare RGB so Tailwind can add alpha. */
+  /* Palette: Want (default since 15 Oct 2026). The NATAKA logo green from the October 2026
+     Facebook "WANT" cover. Channels are bare RGB so Tailwind can add alpha.
+     #52A822 on the #0B0C0E room is 6.5:1, so it works as text; buttons carry
+     near-black text (6.8:1), never white (3:1). */
+  --c-signal: 82 168 34;         /* #52A822 logo green */
+  --c-signal-light: 120 216 65;  /* #78D841 */
+  --c-on-signal: 6 18 6;         /* #061206 */
+  --c-ember: 38 76 16;           /* #264C10 deep green room light */
+  --c-ember-deep: 21 42 9;       /* #152A09 */
+  --ink: #0B0C0E;
+  --cream: #E7E9EC;
+  /* Neutrals (Tailwind white / cream / ink / accent). Dark room, as live. */
+  --c-white: 245 246 248;
+  --c-cream: 231 233 236;
+  --c-cream-dark: 196 201 208;
+  --c-ink: 11 12 14;
+  --c-ink-50: 28 31 35;
+  --c-ink-100: 19 21 25;
+  --c-ink-200: 14 16 19;
+  --c-accent: 217 221 226;
+  --c-accent-light: 241 243 245;
+  --c-accent-dark: 154 163 174;
+  --page: #0B0C0E;
+  --page-text: #E7E9EC;
+}
+
+/* Light theme (previewed 15 Oct 2026, not in use): white and green like the Facebook "WANT"
+   cover, set data-theme="light" on <html>. Warm white paper, near-black
+   type, the logo green as the one accent with white text on it. */
+[data-theme="light"] {
+  --c-white: 17 19 22;           /* #111316 the foreground */
+  --c-cream: 43 47 54;           /* #2B2F36 body copy */
+  --c-cream-dark: 92 99 109;     /* #5C636D secondary copy */
+  --c-ink: 250 249 246;          /* #FAF9F6 paper */
+  --c-ink-50: 236 237 232;       /* card surfaces, a shade under the paper */
+  --c-ink-100: 241 242 238;
+  --c-ink-200: 246 246 242;
+  --c-accent: 30 34 40;          /* #1E2228 active states */
+  --c-accent-light: 12 14 17;
+  --c-accent-dark: 108 116 126;  /* #6C747E second tone in two-tone headlines */
+  --c-signal: 82 168 34;         /* #52A822 logo green */
+  --c-signal-light: 70 147 28;   /* #46931C hover: a shade deeper */
+  --c-on-signal: 255 255 255;    /* white on green, as on the cover */
+  --c-ember: 205 232 186;        /* #CDE8BA soft green light */
+  --c-ember-deep: 228 241 218;
+  --page: #FAF9F6;
+  --page-text: #2B2F36;
+}
+
+/* A green block, like the Facebook cover: white type on the logo green, white buttons. */
+[data-theme="green"] {
+  --c-white: 252 251 245;
+  --c-cream: 240 247 233;
+  --c-cream-dark: 214 236 199;
+  --c-ink: 82 168 34;
+  --c-ink-50: 72 150 29;
+  --c-ink-100: 76 158 31;
+  --c-ink-200: 79 163 32;
+  --c-accent: 255 255 255;
+  --c-accent-light: 255 255 255;
+  --c-accent-dark: 205 236 184;
+  --c-signal: 255 255 255;
+  --c-signal-light: 240 247 233;
+  --c-on-signal: 46 110 15;
+  --c-ember: 134 214 86;
+  --c-ember-deep: 62 134 25;
+  background-color: rgb(var(--c-ink));
+  color: rgb(var(--c-cream));
+}
+
+/* A dark island inside the light site: sections whose type sits on video. */
+[data-theme="light"] [data-theme="dark"] {
+  --c-white: 245 246 248;
+  --c-cream: 231 233 236;
+  --c-cream-dark: 196 201 208;
+  --c-ink: 11 12 14;
+  --c-ink-50: 28 31 35;
+  --c-ink-100: 19 21 25;
+  --c-ink-200: 14 16 19;
+  --c-accent: 217 221 226;
+  --c-accent-light: 241 243 245;
+  --c-accent-dark: 154 163 174;
+  --c-ember: 38 76 16;
+  --c-ember-deep: 21 42 9;
+  color: #E7E9EC;
+}
+
+/* Glacier, the cyan palette that was live until 15 Oct 2026. */
+[data-palette="glacier"] {
   --c-signal: 56 207 224;        /* #38CFE0 clean cyan */
   --c-signal-light: 128 229 240; /* #80E5F0 */
   --c-on-signal: 3 17 21;        /* #031115 */
   --c-ember: 9 78 92;            /* #094E5C deep teal room light */
   --c-ember-deep: 5 40 48;       /* #052830 */
-  --ink: #0B0C0E;
-  --cream: #E7E9EC;
 }
 
 /* Palette options shown to Andrew (set data-palette on <html> to preview).
@@ -46,8 +132,8 @@
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
-  background-color: #0B0C0E;
-  color: #E7E9EC;
+  background-color: var(--page);
+  color: var(--page-text);
   font-family: var(--font-archivo), system-ui, sans-serif;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -135,7 +221,7 @@ body {
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: #0B0C0E; }
+::-webkit-scrollbar-track { background: var(--page); }
 ::-webkit-scrollbar-thumb { background: #4A5059; }
 
 /* ── Grain texture ── */
@@ -252,6 +338,20 @@ body::before {
 @media (prefers-reduced-motion: no-preference) {
   .atmosphere { animation: darkroom-drift 48s ease-in-out infinite alternate; }
 }
+[data-theme="light"] .atmosphere {
+  background:
+    radial-gradient(38% 34% at 82% 12%, rgb(var(--c-ember) / 0.6), transparent 70%),
+    radial-gradient(46% 40% at 8% 88%, rgb(var(--c-ember) / 0.45), transparent 72%),
+    radial-gradient(34% 30% at 46% 52%, rgb(var(--c-ember-deep) / 0.5), transparent 70%),
+    #FAF9F6;
+}
+[data-theme="light"] .atmosphere::before { mix-blend-mode: multiply; opacity: 0.06; }
+[data-theme="light"] body::before { opacity: 0.025; }
+[data-theme="light"] .cursor-dot { background: #111316; }
+[data-theme="light"] .cursor-ring { border-color: rgba(17, 19, 22, 0.35); }
+[data-theme="light"] .cursor-ring.hover { border-color: rgba(17, 19, 22, 0.7); }
+[data-theme="light"] .cursor-label { color: rgba(17, 19, 22, 0.9); }
+[data-theme="light"] .ambient { opacity: 0.22; }
 
 /* Halftone: light print dots for edges and corners, faded in with a mask. */
 .halftone {
