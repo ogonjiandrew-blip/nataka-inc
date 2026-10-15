@@ -3,7 +3,7 @@ import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { waLink, PHONE_DISPLAY, PHONE_HREF } from "@/lib/whatsapp";
 import Reveal from "@/components/Reveal";
 
-const EMAIL = "andrew@natakainc.com";
+const EMAIL = "ogonjiandrew@gmail.com";
 
 const socialLinks = [
   { label: "Instagram", href: "https://www.instagram.com/natakainc/" },

@@ -81,8 +81,8 @@ export default function Footer() {
             <h3 className="font-mono text-xs text-cream/60 mb-4">Contact</h3>
             <ul className="space-y-2.5 font-sans text-sm text-cream/65">
               <li>
-                <a href="mailto:andrew@natakainc.com" className="hover:text-accent transition-colors">
-                  andrew@natakainc.com
+                <a href="mailto:ogonjiandrew@gmail.com" className="hover:text-accent transition-colors">
+                  ogonjiandrew@gmail.com
                 </a>
               </li>
               <li>

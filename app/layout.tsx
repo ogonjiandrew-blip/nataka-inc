@@ -86,7 +86,7 @@ export const metadata: Metadata = {
       "Campaign strategy, cinematic brand films and social content for businesses in Kenya. Plan your next brand campaign with Nataka Inc in Nairobi.",
     images: [
       {
-        url: `${siteUrl}/og-image.png`,
+        url: `${siteUrl}/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: "Nataka Inc — Marketing and Brand Promotion, Nairobi, Kenya",
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
     title: "Marketing & Brand Promotion Agency in Kenya | Nataka Inc",
     description:
       "Campaign strategy, cinematic brand films and social content for businesses in Kenya. Discuss your next campaign with Nataka Inc.",
-    images: [`${siteUrl}/og-image.png`],
+    images: [`${siteUrl}/og-image.jpg`],
     creator: "@natakainc",
   },
 
@@ -172,9 +172,9 @@ export default function RootLayout({
                     "Nataka Inc is a media and marketing agency in Nairobi, Kenya. Services include brand promotion, brand strategy, digital marketing, brand films, corporate video, social content and creator campaigns for businesses in Kenya.",
                   url: siteUrl,
                   logo: { "@type": "ImageObject", url: `${siteUrl}/logo.png`, width: 512, height: 512 },
-                  image: `${siteUrl}/og-image.png`,
+                  image: `${siteUrl}/og-image.jpg`,
                   telephone: "+254117386206",
-                  email: "andrew@natakainc.com",
+                  email: "ogonjiandrew@gmail.com",
                   knowsAbout: [
                     "brand promotion",
                     "video production",
@@ -219,7 +219,7 @@ export default function RootLayout({
                   contactPoint: {
                     "@type": "ContactPoint",
                     telephone: "+254117386206",
-                    email: "andrew@natakainc.com",
+                    email: "ogonjiandrew@gmail.com",
                     contactType: "customer service",
                     availableLanguage: ["English", "Swahili"],
                     areaServed: "KE",

@@ -8,7 +8,7 @@ const title = "Privacy Notice | Nataka Inc";
 const description =
   "How Nataka Inc collects, uses and protects the details you share through our Facebook and Instagram forms, WhatsApp, email and website, and how to use your rights under Kenya's Data Protection Act 2019.";
 const updated = "15 October 2026";
-const EMAIL = "andrew@natakainc.com";
+const EMAIL = "ogonjiandrew@gmail.com";
 
 const sections: { n: string; title: string; body: string[] }[] = [
   {
