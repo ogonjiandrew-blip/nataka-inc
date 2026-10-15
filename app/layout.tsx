@@ -43,12 +43,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
 
   title: {
-    default: "Marketing & Brand Promotion Agency in Kenya | Nataka Inc",
+    default: "Digital & Social Media Marketing in Kenya | Nataka Inc",
     template: "%s | Nataka Inc",
   },
 
   description:
-    "Nairobi-based marketing agency for Kenyan brands. Campaign strategy, brand films, social content and creator distribution. Discuss your next campaign with Nataka.",
+    "Digital and social media marketing for companies in Kenya. Nataka combines campaign strategy, content production and paid distribution. Discuss your brief.",
 
   // A focused set of core terms. (Google ignores the keywords meta for ranking;
   // real targeting lives in page titles, H1s, content and the service landing pages.)
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     locale: "en_KE",
     url: siteUrl,
     siteName: "Nataka Inc",
-    title: "Marketing & Brand Promotion Agency in Kenya | Nataka Inc",
+    title: "Digital & Social Media Marketing in Kenya | Nataka Inc",
     description:
       "Campaign strategy, cinematic brand films and social content for businesses in Kenya. Plan your next brand campaign with Nataka Inc in Nairobi.",
     images: [
@@ -96,7 +96,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Marketing & Brand Promotion Agency in Kenya | Nataka Inc",
+    title: "Digital & Social Media Marketing in Kenya | Nataka Inc",
     description:
       "Campaign strategy, cinematic brand films and social content for businesses in Kenya. Discuss your next campaign with Nataka Inc.",
     images: [`${siteUrl}/og-image.jpg`],
@@ -181,6 +181,8 @@ export default function RootLayout({
                     "music video production",
                     "brand strategy",
                     "digital marketing",
+                    "social media marketing in Kenya",
+                    "social content production",
                     "public relations",
                     "influencer marketing",
                     "AI video production",
@@ -233,6 +235,7 @@ export default function RootLayout({
                       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Video Production", url: `${siteUrl}/services/video-production-nairobi` } },
                       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Brand Strategy", url: `${siteUrl}/services/brand-strategy-kenya` } },
                       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Digital Marketing", url: `${siteUrl}/services/digital-marketing-nairobi` } },
+                      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Social Media Marketing", url: `${siteUrl}/services/social-media-marketing-kenya` } },
                       { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Video Production", url: `${siteUrl}/services/ai-video-production-kenya` } },
                     ],
                   },
@@ -242,6 +245,7 @@ export default function RootLayout({
                     "https://www.tiktok.com/@natakainc",
                     "https://www.linkedin.com/company/128374044",
                     "https://www.youtube.com/@nataka_inc",
+                    "https://www.facebook.com/61586208112869/",
                   ],
                 },
                 {

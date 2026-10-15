@@ -30,6 +30,8 @@ export type ServicePage = {
   /** Background loop; `srcMobile` is a vertical cut for phones, `label` discloses AI footage (AI Standard rule 02). */
   heroVideo?: { src: string; poster: string; srcMobile?: string; label?: string };
   heroSummary?: string;
+  /** Published package name; prices stay in lib/packages.ts. */
+  packageName?: string;
   /** Flagship piece of our own work, shown right after the intro */
   caseStudy?: CaseStudy;
   intro: string;
@@ -259,26 +261,33 @@ export const servicePages: ServicePage[] = [
     relatedServices: ["brand-promotion-kenya", "social-media-marketing-kenya", "influencer-marketing-kenya", "product-launch-video-kenya"],
     metaTitle: "Digital Marketing Agency in Nairobi, Kenya | Nataka Inc",
     metaDescription:
-      "Nataka Inc is a digital marketing agency in Nairobi offering social media management, content strategy, SEO and paid advertising for Kenyan brands. Data-driven campaigns that actually convert.",
+      "Digital marketing for companies in Kenya. Nataka connects strategy, social content, paid campaigns and enquiry journeys. Discuss your scope and service budget.",
     label: "Digital Marketing",
-    headline: "Marketing That",
-    headlineAccent: "Converts.",
+    headline: "Digital Marketing",
+    headlineAccent: "in Kenya.",
     heroImage: "/stills/1/6.jpg",
-    heroSummary: "Paid social, search and content plans built around enquiries and sales, with reporting you can act on.",
-    work: ["sarit", "cool-in-school"],
+    heroSummary: "A Nairobi team for company marketing: campaign strategy, content production, paid distribution and a clearer route from interest to enquiry.",
+    packageName: "Social Content Engine",
+    work: ["maxus", "sarit"],
     intro:
-      "Attention is the scarcest resource in Kenya's digital market, and most brands are wasting their budget chasing it badly. Nataka Inc builds digital marketing engines that earn attention and convert it: social media strategy, content production, SEO, and paid campaigns, all connected to business results you can measure.",
+      "Nataka Inc is a digital marketing agency based in Westlands, Nairobi, serving companies in Kenya. We connect your buyer, offer, content and distribution in one agreed plan. The work can include social media marketing, video production, paid campaigns, search-focused content and the enquiry journey. We scope the channels around your business problem and agree how progress will be measured.",
+    audience: [
+      { title: "Company marketing teams", description: "Creative production and campaign support that work with your brand standards, internal team and approval process." },
+      { title: "Businesses selling considered purchases", description: "Content and enquiry journeys that help buyers understand the offer, assess fit and speak to the right person." },
+      { title: "Brands preparing a launch", description: "An audience, message, production plan and rollout tied to a product, service or campaign date." },
+    ],
     deliverables: [
-      { title: "Social Media Management", description: "Strategy, content production, posting, and community management across Instagram, TikTok, LinkedIn, and X, with our production quality behind every post." },
-      { title: "Content Strategy & Production", description: "A content engine built around your brand: short-form video, photography, and copy that's platform-native and unmistakably yours." },
-      { title: "Paid Advertising", description: "Meta, Google, TikTok, and YouTube campaigns engineered for return, not vanity metrics." },
-      { title: "SEO", description: "Technical SEO, content strategy, and local search optimisation that puts your business in front of people already searching for what you do." },
+      { title: "Campaign Strategy", description: "Buyer research, competitor creative review, an offer and a channel plan. We agree the objective and responsibilities before production or media spend." },
+      { title: "Content & Social Marketing", description: "Films, short videos, photography and copy for the agreed channels. Quantities, publishing and community management responsibilities are written into the scope." },
+      { title: "Paid Campaigns & Enquiry Flow", description: "Creative and campaign setup with a suitable destination, qualification and WhatsApp or sales follow-up. Media spend and management costs are identified in the proposal." },
+      { title: "Search & Website Content", description: "Clear service pages, useful articles, internal links and technical discoverability. Search engines decide indexing and rankings; neither is guaranteed." },
+      { title: "Measurement & Review", description: "An agreed record of activity, enquiries and verified lead quality. Commercial reporting depends on the sales data your team can share and the attribution method we agree." },
     ],
     whyUs: [
-      "Production quality most marketing agencies can't match. Our content team is a film production company.",
-      "We measure what matters: leads, sales, and brand growth, not just likes.",
-      "Deep understanding of the Kenyan consumer across every platform and demographic.",
-      "One partner for strategy, content and distribution, with no fragmented vendor chains.",
+      "Inspect our published films and campaign stills to assess production craft and project credits.",
+      "One brief connects the message, content, distribution and next step for the buyer.",
+      "Scope, approval stages and the data needed for reporting are agreed before work begins.",
+      "Speak directly to the team producing the work in Nairobi.",
     ],
     process: [
       { step: "01", title: "Audit & Strategy", description: "We assess your current digital presence and build a channel strategy around your goals." },
@@ -287,20 +296,26 @@ export const servicePages: ServicePage[] = [
       { step: "04", title: "Optimise", description: "Monthly reporting on what's working, what isn't, and where the next opportunity is." },
     ],
     faqs: [
-      { question: "How much does digital marketing cost in Kenya?", answer: "Monthly digital marketing retainers in Kenya typically range from Ksh 50,000 for focused social media management to Ksh 500,000+ for full-service strategy, content production, and paid media. We scope to your goals and budget." },
-      { question: "Which social media platforms should my Kenyan business be on?", answer: "It depends on your audience. TikTok and Instagram dominate for consumer brands targeting 18-35s; LinkedIn for B2B; YouTube for long-form authority. We help you choose the two or three platforms where your audience actually is, and win there." },
-      { question: "How long before digital marketing shows results?", answer: "Paid campaigns generate data within days and results within weeks. Organic social and SEO compound over 3-6 months. We set realistic expectations upfront and report transparently every month." },
+      { question: "How much does digital marketing cost at Nataka?", answer: "The quote depends on strategy, production, channels and management responsibilities. Our monthly Social Content Engine is published at KES 150K–700K; it is a content package, not a fixed price for every digital marketing service. Media spend, additional services and costs are identified in the proposal.", link: { href: "/work-with-us#packages", label: "View our published packages" } },
+      { question: "Do you work with corporate companies across Kenya?", answer: "We are based in Westlands, Nairobi and scope work for businesses in Kenya. Tell us your locations, audience, internal approval requirements and target dates so we can plan production and campaign responsibilities." },
+      { question: "How is digital marketing different from social media marketing?", answer: "Social media marketing covers your content, conversations and advertising on social platforms. Digital marketing is broader: it can also include your website, search, other advertising and the journey from discovery to enquiry. The right scope depends on the problem you need to solve.", link: { href: "/blog/digital-marketing-vs-social-media-marketing-kenya", label: "Compare the two scopes" } },
+      { question: "Can you guarantee leads, sales or a first-page ranking?", answer: "No. We agree the objective, deliverables, measurement and review process. Buyer demand, budget, competition, platforms and your sales response affect results. We report what the available data supports and use it to decide the next improvement." },
+      { question: "What do you need to prepare a proposal?", answer: "Your company and website, target buyer, product or service, current marketing problem, intended start date and working budget. Separate your agency service budget from advertising spend and identify who will approve the work." },
     ],
     relatedPosts: [
-      "why-nairobi-brands-need-video-marketing-2026",
-      "brand-strategy-nairobi-building-brand-east-africa",
+      "how-to-choose-digital-marketing-agency-kenya",
+      "digital-marketing-vs-social-media-marketing-kenya",
+      "qualified-leads-facebook-ads-kenya",
     ],
     keywords: [
       "digital marketing agency Nairobi",
+      "digital marketing Kenya",
+      "digital marketing agency Kenya",
       "social media marketing Kenya",
       "SEO agency Nairobi",
       "paid advertising Kenya",
     ],
+    cta: { headline: "Let's scope your marketing.", text: "Share your company, buyer, business goal, start date and budget for agency services. We'll discuss the work and the right people for a scoping conversation.", whatsappMessage: "Hi Nataka, I'd like to discuss a paid digital marketing engagement. My company, goal, intended start date and budget for agency services: ", button: "Discuss the scope" },
   },
   {
     slug: "corporate-video-production-kenya",
@@ -504,27 +519,33 @@ export const servicePages: ServicePage[] = [
     relatedServices: ["brand-promotion-kenya", "digital-marketing-nairobi", "influencer-marketing-kenya", "product-launch-video-kenya"],
     metaTitle: "Social Media Marketing Agency in Kenya | Nataka Inc",
     metaDescription:
-      "Social media marketing for Kenyan brands: content systems, short-form video, community management and paid social that turn followers into customers. Nataka Inc runs socials that sell.",
+      "Social media marketing in Kenya for company teams. Content strategy, filming, short videos and campaign support. Monthly content from KES 150K. Scope quoted.",
     label: "Social Media Marketing",
-    headline: "Social That",
-    headlineAccent: "Sells.",
+    headline: "Social Media Marketing",
+    headlineAccent: "in Kenya.",
     heroImage: "/stills/4/1.jpg",
-    heroSummary: "A monthly shoot day, short-form video and a content calendar that keep your brand in the feed.",
-    work: ["cool-in-school", "sarit"],
+    heroSummary: "A content team for Kenyan companies: strategy, shoot days, short videos and a calendar. Monthly social content starts at KES 150K, with the final scope quoted.",
+    packageName: "Social Content Engine",
+    work: ["maxus", "sarit"],
     intro:
-      "Followers are not the goal, customers are. Nataka Inc runs social media for Kenyan brands as a system, not a guessing game: a content engine of scroll-stopping short-form video, consistent posting, real community management and paid social that turns attention into enquiries. With a film production team behind every post, your feed finally looks like the brand you actually are.",
+      "Nataka Inc provides social media marketing for businesses in Kenya from our Nairobi studio. We plan content around your buyer and offer, produce the videos and images, and agree how the material will be published, promoted and reviewed. Our team combines campaign thinking with film production. The goal and the evidence needed to judge progress are part of the brief.",
+    audience: [
+      { title: "Corporate marketing teams", description: "A content partner who can work with your brand guidelines, product experts, internal reviewers and campaign calendar." },
+      { title: "Retail and product brands", description: "Demonstrations, launches and offer-led content that explain what you sell and help buyers assess it." },
+      { title: "Service businesses", description: "Leadership interviews, explainers and answers to buyer questions that help a considered purchase move forward." },
+    ],
     deliverables: [
-      { title: "Content Systems", description: "A monthly engine of platform-native video and photography, planned and produced so your channels are never empty or off-brand." },
-      { title: "Short-Form Video", description: "TikToks, Reels and Shorts built to be watched, saved and shared, the format that actually grows accounts in 2026." },
-      { title: "Community Management", description: "Replies, DMs and comment moderation handled in your voice, so engagement turns into relationships and sales." },
-      { title: "Paid Social", description: "Meta and TikTok ad campaigns engineered for leads and sales, not vanity metrics." },
-      { title: "Analytics & Reporting", description: "Monthly reporting on what's working and what to do next, in plain language, tied to business goals." },
+      { title: "Content Direction & Calendar", description: "A buyer, an offer and a role for each piece of content. We agree the messages, formats, platforms and approval dates before production." },
+      { title: "Shoot Days & Short Videos", description: "Filming, editing, captions and adaptations from our production team. The published monthly package includes a shoot day and 8–20 short videos, depending on the agreed scope." },
+      { title: "Publishing & Community Support", description: "Posting, replies and moderation where included in your proposal. We agree who handles questions, sales enquiries, approvals and escalation." },
+      { title: "Paid Social Campaigns", description: "Creative, qualification and distribution where needed. Campaign management, media budget, usage rights and responsibilities are costed explicitly." },
+      { title: "Performance Review", description: "Review content and available enquiry data against the agreed objective. Count submitted leads, verified sales opportunities and customers separately." },
     ],
     whyUs: [
-      "Our content team is a film production company, so your short-form will outshine competitors shooting on a phone.",
-      "We know the Kenyan feed: the trends, sounds, humour and timing that actually travel here.",
-      "One team for strategy, content and ads, so there is no disconnect between what's posted and what's promoted.",
-      "We optimise toward enquiries and sales, and report on them honestly.",
+      "Our own production team creates the film and social assets. You can inspect the published work and credits.",
+      "Your scope connects content to a specific buyer, message and next action.",
+      "Production, approvals, publishing and follow-up have named responsibilities.",
+      "We distinguish production craft, attention and commercial results in the reporting.",
     ],
     process: [
       { step: "01", title: "Audit & Strategy", description: "We assess your channels and audience and build a platform strategy around your goals." },
@@ -533,13 +554,17 @@ export const servicePages: ServicePage[] = [
       { step: "04", title: "Optimise", description: "Monthly reporting and adjustments based on what's actually driving results." },
     ],
     faqs: [
-      { question: "How much does social media marketing cost in Kenya?", answer: "Your quote depends on production, content volume, platforms and management responsibilities. See the Social Content Engine on our packages page for the current indicative range. Community management and paid media requirements are confirmed in the written scope, including whether media spend is included.", link: { href: "/work-with-us#packages", label: "View the Social Content Engine" } },
-      { question: "Which platforms should my Kenyan brand focus on?", answer: "For most consumer brands, TikTok and Instagram drive the most growth; LinkedIn wins for B2B. We help you focus on the two or three platforms where your audience actually is and win there, rather than spreading thin." },
-      { question: "Do you create the content or just schedule it?", answer: "We create it. Strategy, filming, editing, copy and scheduling are all in-house. That's the difference between a feed that grows and one that just stays busy." },
+      { question: "How much does social media marketing cost at Nataka?", answer: "Our Social Content Engine is published at KES 150K–700K per month. It includes a monthly shoot day, 8–20 short videos, captions and content direction, a calendar and a performance review. The final quote depends on production complexity, quantities and responsibilities. Community management and paid media are confirmed in the written scope.", link: { href: "/blog/social-media-marketing-cost-kenya", label: "Read the pricing and scope guide" } },
+      { question: "Which platforms should our company focus on?", answer: "Start with your buyer, buying process and available content. We assess whether channels such as Facebook, Instagram, TikTok, LinkedIn or YouTube are appropriate rather than prescribing the same platforms to every company." },
+      { question: "Do you produce the content?", answer: "Yes. We can scope content direction, filming, editing, photography and copy with our production team. Your proposal identifies the original assets, adaptations, revisions and publishing responsibilities." },
+      { question: "Is advertising spend included in the monthly price?", answer: "Do not assume it is included. We identify content production, management, creator or usage costs and platform media spend in the proposal, and agree who pays and controls the advertising account." },
+      { question: "Do you work with an in-house marketing team?", answer: "Yes. Tell us what your team already handles and where it needs support. We can scope production and campaign work around your brand standards, reviewers and sales response process." },
+      { question: "How do we start?", answer: "Share your company, target customer, business goal, preferred start date and budget available for agency services. Include the person involved in choosing the team. We discuss the brief and quote before you commit." },
     ],
     relatedPosts: [
-      "why-nairobi-brands-need-video-marketing-2026",
-      "best-video-production-companies-nairobi-kenya",
+      "social-media-marketing-cost-kenya",
+      "qualified-leads-facebook-ads-kenya",
+      "marketing-reporting-qualified-leads-kenya",
     ],
     keywords: [
       "social media marketing Kenya",
@@ -548,6 +573,7 @@ export const servicePages: ServicePage[] = [
       "content creation Nairobi",
       "Instagram marketing Kenya",
     ],
+    cta: { headline: "Make Nataka your content team.", text: "Monthly social content starts at KES 150K. Share your company, goal, start date and working service budget so we can discuss the scope.", whatsappMessage: "Hi Nataka, I'd like to discuss a paid social media and content engagement. My company, goal, intended start date and budget for agency services: ", button: "Discuss monthly content" },
   },
   {
     slug: "influencer-marketing-kenya",

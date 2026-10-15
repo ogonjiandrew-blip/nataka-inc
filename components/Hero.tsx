@@ -66,8 +66,8 @@ export default function Hero() {
               className="hero-rise font-sans text-cream/80 text-base md:text-lg leading-relaxed max-w-[46ch]"
               style={{ animationDelay: "700ms" }}
             >
-              Marketing campaigns, brand films and social content for businesses in Kenya. Strategy, cinematic
-              production and rollout, built around your next launch.
+              Digital marketing, social media content and brand films for businesses in Kenya. Strategy,
+              cinematic production and rollout, built around your buyer and your next campaign.
             </p>
 
             <div className="hero-rise flex flex-col sm:flex-row gap-3" style={{ animationDelay: "820ms" }}>

@@ -6,6 +6,7 @@ import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { getPostBySlug, getAllPosts } from "@/lib/posts";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { waLink } from "@/lib/whatsapp";
 
 const siteUrl = "https://www.natakainc.com";
 
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     // absolute avoids the root template appending a second brand suffix, and
     // metaTitle already carries the brand.
-    title: { absolute: `${post.title} | Nataka Inc` },
+    title: { absolute: post.metaTitle ?? `${post.title} | Nataka Inc` },
     description: post.excerpt,
     // Was inheriting the root layout's homepage canonical → post looked like a
     // duplicate of "/" and got de-indexed. Self-canonical fixes it.
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [{ url: `${siteUrl}${post.coverImage}` }],
       type: "article",
       publishedTime: post.date,
-      modifiedTime: post.date,
+      modifiedTime: post.modified ?? post.date,
     },
     twitter: {
       card: "summary_large_image",
@@ -49,7 +50,9 @@ export default function PostPage({ params }: Props) {
   const post = getPostBySlug(params.slug);
   if (!post) notFound();
 
-  const allPosts = getAllPosts().filter((p) => p.slug !== post.slug).slice(0, 3);
+  const allPosts = (post.relatedPosts?.length
+    ? post.relatedPosts.map(getPostBySlug).filter((p): p is NonNullable<typeof p> => Boolean(p))
+    : getAllPosts().filter((p) => p.slug !== post.slug)).slice(0, 3);
 
   const url = `${siteUrl}/blog/${post.slug}`;
   const schema = {
@@ -62,12 +65,13 @@ export default function PostPage({ params }: Props) {
         description: post.excerpt,
         image: `${siteUrl}${post.coverImage}`,
         datePublished: post.date,
-        dateModified: post.date,
+        dateModified: post.modified ?? post.date,
         author: { "@id": `${siteUrl}/#org` },
         publisher: { "@id": `${siteUrl}/#org` },
         mainEntityOfPage: url,
         url,
         articleSection: post.category,
+        inLanguage: "en-KE",
       },
       {
         "@type": "BreadcrumbList",
@@ -126,10 +130,10 @@ export default function PostPage({ params }: Props) {
             Send us the goal, the date and a working budget. We reply with the scope that fits.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
-            <Link href="/#contact" className="group btn-primary self-start">
-              Start a project
+            <a href={waLink(`Source: ${url}\nHi Nataka, I'd like to discuss a paid engagement. My company, business goal, start date and working service budget: `)} target="_blank" rel="noopener noreferrer" className="group btn-primary self-start">
+              Discuss your brief
               <ArrowRight size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
+            </a>
             <Link href="/blog" className="font-heading font-semibold text-sm text-cream/80 underline underline-offset-[6px] decoration-white/25 hover:decoration-white hover:text-white">
               More insights
             </Link>

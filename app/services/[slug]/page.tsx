@@ -6,6 +6,7 @@ import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { getServiceBySlug, getAllServices, type ServicePage as Service } from "@/lib/services";
 import { getPostBySlug } from "@/lib/posts";
 import { waLink, PHONE_DISPLAY, PHONE_HREF } from "@/lib/whatsapp";
+import { packages } from "@/lib/packages";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LoopVideo from "@/components/LoopVideo";
@@ -91,6 +92,7 @@ export default function ServicePage({ params }: Props) {
     }`,
   );
   const workHref = service.caseStudy ? "#case-study" : service.work?.length ? "#work" : "/#work";
+  const contentPackage = packages.find((p) => p.name === service.packageName);
 
   // Service + FAQ structured data, scoped to this page
   const schema = {
@@ -230,6 +232,25 @@ export default function ServicePage({ params }: Props) {
 
       {service.caseStudy && <AiCaseStudy study={service.caseStudy} slug={service.slug} />}
       {service.work && <WorkStrip ids={service.work} />}
+
+      {contentPackage && (
+        <section aria-labelledby="service-budget" className="px-6 md:px-12 py-20 max-w-7xl mx-auto border-b border-white/10">
+          <p className="font-mono text-xs text-cream/60 uppercase tracking-[0.14em]">Monthly content option</p>
+          <div className="mt-5 grid md:grid-cols-2 gap-8 md:gap-16">
+            <div>
+              <h2 id="service-budget" className="font-heading font-bold text-white text-2xl md:text-4xl tracking-tight">{contentPackage.name}</h2>
+              <p className="mt-4 font-heading font-bold text-white text-xl md:text-2xl">{contentPackage.range}</p>
+              <Link href="/work-with-us#packages" className="mt-5 inline-block text-cream/80 underline underline-offset-4">Compare packages and scope</Link>
+            </div>
+            <div>
+              <ul className="space-y-2 font-sans text-cream/80">
+                {contentPackage.includes.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+              <p className="mt-5 text-sm leading-relaxed text-cream/60">An indicative content range, with deliverables agreed in your proposal. Additional management, creator involvement, usage rights and media spend are costed explicitly. A wider digital marketing scope is quoted separately.</p>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* What you get */}
       <section className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import Navbar from "@/components/Navbar";
+import { galleryGroups as groups, galleryImages } from "@/lib/galleryImages";
 import Footer from "@/components/Footer";
 
 const SITE = "https://www.natakainc.com";
@@ -28,44 +29,45 @@ const videoSchema = {
   })),
 };
 
-const aiStills = Array.from({ length: 31 }, (_, i) => `/stills/ai/1/${i + 1}.jpg`);
-const filmStills = ["/stills/1/1.jpg", "/stills/1/2.jpg", "/stills/1/4.jpg", "/stills/1/5.jpg", "/stills/1/6.jpg", "/stills/1/7.jpg", "/stills/1/8.jpg", "/stills/1/27.jpg", "/stills/1/43.jpg", "/stills/1/46.jpg", "/stills/1/a.jpg", "/stills/1/b.jpg"];
-const ssaruStills = ["/stills/ssaru/1.jpg", "/stills/ssaru/2.jpg"];
-const perfStills = ["/stills/2/1.jpg", "/stills/2/2.jpg", "/stills/2/3.jpg"];
-const fashionStills = ["/stills/fashion/1.jpg", "/stills/fashion/2.jpg", "/stills/fashion/3.jpg", "/stills/fashion/6.jpg", "/stills/fashion/7.jpg", "/stills/fashion/8.jpg", "/stills/fashion/9.jpg", "/stills/fashion/12.jpg"];
-const teslahStills = ["/stills/teslah/web-1.jpg", "/stills/teslah/web-2.jpg", "/stills/teslah/3.jpg", "/stills/teslah/web-4.jpg", "/stills/teslah/web-5.jpg", "/stills/teslah/web-6.jpg", "/stills/teslah/web-7.jpg", "/stills/teslah/web-8.jpg", "/stills/teslah/web-9.jpg"];
-const otamatsuriStills = ["/stills/otamatsuri/web-1.jpg", "/stills/otamatsuri/web-2.jpg", "/stills/otamatsuri/web-3.jpg", "/stills/otamatsuri/web-4.jpg", "/stills/otamatsuri/web-5.jpg", "/stills/otamatsuri/web-6.jpg", "/stills/otamatsuri/web-7.jpg", "/stills/otamatsuri/web-8.jpg"];
-
-const maxusStills = ["d90-golden", "d90-dirt", "t60-highway", "wheel", "t60-sun", "d90-front", "t60-yard", "d90-palms", "d90-bank"].map((n) => `/stills/maxus/${n}.jpg`);
-
-const groups = [
-  { heading: "MAXUS Kenya", kind: "Launch films and social", alt: "MAXUS Kenya vehicle photographed by Nataka Inc, automotive content in Nairobi, Kenya", imgs: maxusStills },
-  { heading: "Teslah", kind: "Music video", href: "/work/teslah-music-video", alt: "Teslah music video still by Nataka Inc, music video production in Nairobi, Kenya", imgs: teslahStills },
-  { heading: "Otamatsuri", kind: "Festival promo film", href: "/work/otamatsuri-promo-film", alt: "Otamatsuri cinematic film still by Nataka Inc, film and video production in Nairobi, Kenya", imgs: otamatsuriStills },
-  { heading: "Studio", kind: "Visual stills", alt: "Nataka Inc studio visual still, media and creative production in Nairobi, Kenya", imgs: aiStills },
-  { heading: "Film and campaign", kind: "Stills", alt: "Nataka Inc film and campaign still, video production company in Nairobi, Kenya", imgs: filmStills },
-  { heading: "Artist campaigns", kind: "Ssaru", alt: "Nataka Inc artist campaign still, Nairobi, Kenya", imgs: ssaruStills },
-  { heading: "Performance", kind: "Live", alt: "Nataka Inc performance still, Nairobi, Kenya", imgs: perfStills },
-  { heading: "Fashion editorial", kind: "Studio", alt: "Nataka Inc fashion editorial still, creative agency in Nairobi, Kenya", imgs: fashionStills },
-];
-
 export default function GalleryGrid() {
+  const imageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    "@id": `${SITE}/gallery#gallery`,
+    name: "Nataka Inc: films, campaign images and studio stills",
+    url: `${SITE}/gallery`,
+    publisher: { "@id": `${SITE}/#org` },
+    inLanguage: "en-KE",
+    associatedMedia: galleryImages.map((im) => ({
+      "@type": "ImageObject",
+      "@id": `${SITE}/gallery#${im.id}`,
+      name: im.title,
+      caption: im.caption,
+      description: im.caption,
+      contentUrl: `${SITE}${im.src}`,
+      url: `${SITE}/gallery#${im.id}`,
+      creditText: `Nataka Inc portfolio — ${im.kind}`,
+      isPartOf: { "@id": `${SITE}/gallery#gallery` },
+    })),
+  };
   return (
     <div className="min-h-screen text-cream">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(imageSchema) }} />
       <Navbar />
 
       <div className="px-6 md:px-12 pt-36 md:pt-48 pb-24 md:pb-32 max-w-7xl mx-auto">
         <p className="font-sans font-medium text-[10px] md:text-[11px] uppercase tracking-[0.28em] text-cream/70 mb-6">Gallery</p>
         <h1 className="font-heading font-extrabold uppercase stretch-wide tracking-[-0.025em] leading-[0.95] text-[clamp(2.3rem,6.4vw,5.8rem)]">
-          <span className="text-white">Every frame </span>
-          <span className="text-accent-dark">we made</span>
+          <span className="text-white">Nataka Inc </span>
+          <span className="text-accent-dark">in pictures</span>
           <span className="text-signal">.</span>
         </h1>
         <p className="mt-7 font-sans text-cream/70 text-base md:text-lg leading-relaxed max-w-[58ch]">
           Selected film, music video, campaign and studio work by Nataka Inc, a media, marketing and creative production
           company in Nairobi, Kenya.
         </p>
+        <p className="mt-4 font-sans text-cream/60 leading-relaxed max-w-[58ch]">Open a still to see the full image. Project captions identify the work; the AI studio section is labelled separately. For business enquiries, explore our <Link href="/services/social-media-marketing-kenya" className="underline underline-offset-4 text-cream/85">social media marketing</Link> and <Link href="/services/digital-marketing-nairobi" className="underline underline-offset-4 text-cream/85">digital marketing services in Kenya</Link>.</p>
 
         {/* Films */}
         <section className="mt-20 md:mt-28">
@@ -116,18 +118,23 @@ export default function GalleryGrid() {
               )}
             </div>
             <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-              {g.imgs.map((src, i) => (
-                <div key={src} className="group relative aspect-[4/5] overflow-hidden rounded-[16px] bg-ink-50 ring-1 ring-white/10">
+              {g.imgs.map((src) => {
+                const im = galleryImages.find((item) => item.src === src)!;
+                return (
+                <figure key={src} id={im.id} className="group scroll-mt-24">
+                <a href={src} target="_blank" rel="noopener noreferrer" aria-label={`Open full image: ${im.caption}`} className="relative block aspect-[4/5] overflow-hidden rounded-[16px] bg-ink-50 ring-1 ring-white/10 focus-visible:ring-signal">
                   <Image
                     src={src}
-                    alt={`${g.alt} (${i + 1})`}
+                    alt={im.caption}
                     fill
                     className="object-cover scale-[1.04] transition-transform duration-700 group-hover:scale-[1.08]"
                     sizes="(max-width: 768px) 50vw, 25vw"
                     quality={80}
                   />
-                </div>
-              ))}
+                </a>
+                <figcaption className="pt-3 px-1 font-sans text-xs leading-relaxed text-cream/65">{im.caption}</figcaption>
+                </figure>
+              );})}
             </div>
           </section>
         ))}

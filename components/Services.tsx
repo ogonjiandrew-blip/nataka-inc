@@ -31,10 +31,17 @@ const services: ServiceItem[] = [
   },
   {
     title: "Digital marketing",
-    line: "Paid social, search and content plans built around enquiries, not likes.",
+    line: "Strategy, content, paid campaigns and enquiry journeys for companies in Kenya.",
     href: "/services/digital-marketing-nairobi",
     image: "/stills/teslah/2.jpg",
     alt: "Studio portrait from a Nataka Inc music video shoot",
+  },
+  {
+    title: "Social media marketing",
+    line: "Monthly shoot days, short videos and a content calendar. Content from KES 150K a month.",
+    href: "/services/social-media-marketing-kenya",
+    image: "/stills/maxus/t60-highway.jpg",
+    alt: "MAXUS T60 campaign still from Nataka Inc's automotive films and social content",
   },
   {
     title: "Brand strategy",
@@ -45,13 +52,13 @@ const services: ServiceItem[] = [
   },
 ];
 
-/** Homepage services: the six most-asked-for, as a typographic index. */
+/** Homepage service paths, as a typographic index. */
 export default function Services() {
   return (
     <ServiceIndex
       id="services"
       title="What we make"
-      note="Six services, one team. Most clients start with one and add the rest once it works."
+      note="Campaigns, production and marketing from one team. Start with the work your company needs."
       items={services}
     />
   );

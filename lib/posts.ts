@@ -1,6 +1,9 @@
+import { marketingPosts } from "./marketingPosts";
+
 export type Post = {
   slug: string;
   title: string;
+  metaTitle?: string;
   excerpt: string;
   category: string;
   date: string;
@@ -8,9 +11,11 @@ export type Post = {
   readTime: string;
   coverImage: string;
   content: string;
+  relatedPosts?: string[];
 };
 
 export const posts: Post[] = [
+  ...marketingPosts,
   {
     slug: "ai-video-production-kenya-guide",
     title: "AI Video Production in Kenya: What It Can Do for Your Brand in 2026 (and What It Can't)",
@@ -831,5 +836,5 @@ export function getPostBySlug(slug: string): Post | undefined {
 }
 
 export function getAllPosts(): Post[] {
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
