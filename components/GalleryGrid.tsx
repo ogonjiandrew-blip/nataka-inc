@@ -4,16 +4,17 @@ import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import Navbar from "@/components/Navbar";
 import { galleryGroups as groups, galleryImages } from "@/lib/galleryImages";
 import Footer from "@/components/Footer";
+import { videoUploadDates } from "@/lib/videoDates";
 
 const SITE = "https://www.natakainc.com";
 
 const videos = [
-  { title: "Za Mabuda", cat: "Film / Direction", src: "/videos/za-mabuda.mp4", poster: "/videos/za-mabuda-still.jpg", desc: "Vijana Barubaru ft. Scar Mkadinali. A cinematic period film directed by Andrew Ogonji.", date: "2026-02-01" },
-  { title: "Kwanini", cat: "Music video / Direction", src: "/videos/kwanini-teaser.mp4", poster: "/videos/kwanini-teaser-poster.jpg", desc: "Ssaru x Fathermoh. The official music video, from concept to final cut in Nairobi.", date: "2026-01-15" },
-  { title: "Save Her", cat: "Music video", src: "/videos/save-her.mp4", poster: "/videos/save-her-poster.jpg", desc: "High-energy, cinematic music video production with bold visual storytelling.", date: "2026-01-20" },
-  { title: "Cool in School", cat: "Music video", src: "/videos/cool-in-school.mp4", poster: "/videos/cool-in-school-poster.jpg", desc: "A vibrant, colour-rich music video: Nairobi energy on a vintage film palette.", date: "2026-02-10" },
-  { title: "Your City", cat: "Brand / Commercial", src: "/videos/sarit.mp4", poster: "/videos/sarit-poster-clean.jpg", desc: "Brand film for Sarit Centre: premium commercial production for a Nairobi landmark.", date: "2026-02-20" },
-  { title: "Open Auditions", cat: "Brand film / Promo", src: "/videos/nataka-promo.mp4", poster: "/videos/nataka-promo-poster.jpg", desc: "A Nataka Inc promo: cinematic brand storytelling that captures who we are.", date: "2026-01-05" },
+  { title: "Za Mabuda", cat: "Film / Direction", src: "/videos/za-mabuda.mp4", poster: "/videos/za-mabuda-still.jpg", desc: "Vijana Barubaru ft. Scar Mkadinali. A cinematic period film directed by Andrew Ogonji.", date: videoUploadDates.zaMabuda },
+  { title: "Kwanini", cat: "Music video / Direction", src: "/videos/kwanini-teaser.mp4", poster: "/videos/kwanini-teaser-poster.jpg", desc: "Ssaru x Fathermoh. The official music video, from concept to final cut in Nairobi.", date: videoUploadDates.kwanini },
+  { title: "Save Her", cat: "Music video", src: "/videos/save-her.mp4", poster: "/videos/save-her-poster.jpg", desc: "High-energy, cinematic music video production with bold visual storytelling.", date: videoUploadDates.saveHer },
+  { title: "Cool in School", cat: "Music video", src: "/videos/cool-in-school.mp4", poster: "/videos/cool-in-school-poster.jpg", desc: "A vibrant, colour-rich music video: Nairobi energy on a vintage film palette.", date: videoUploadDates.coolInSchool },
+  { title: "Your City", cat: "Brand / Commercial", src: "/videos/sarit.mp4", poster: "/videos/sarit-poster-clean.jpg", desc: "Brand film for Sarit Centre: premium commercial production for a Nairobi landmark.", date: videoUploadDates.yourCity },
+  { title: "Open Auditions", cat: "Brand film / Promo", src: "/videos/nataka-promo.mp4", poster: "/videos/nataka-promo-poster.jpg", desc: "A Nataka Inc promo: cinematic brand storytelling that captures who we are.", date: videoUploadDates.openAuditions },
 ];
 
 const videoSchema = {

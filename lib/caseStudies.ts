@@ -1,3 +1,5 @@
+import { videoUploadDates } from "./videoDates";
+
 export type CaseStudy = {
   slug: string;
   client: string;
@@ -19,6 +21,8 @@ export type CaseStudy = {
   /** Optional external link (e.g. YouTube) */
   watchUrl?: string;
   watchLabel?: string;
+  /** Explicit ISO 8601 publication timestamp, including its timezone. */
+  uploadDate?: string;
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -54,6 +58,7 @@ export const caseStudies: CaseStudy[] = [
     result:
       "The official video is live on YouTube with 77,000+ views and climbing. It was conceived, shot and finished entirely in Nairobi, at a standard that sits alongside the best work coming out of London, Lagos or Johannesburg. Two of Kenya's most distinctive voices trusted us with their release, and the finished film is the reason the next artists call. Watch it below and judge the craft for yourself.",
     watchUrl: "https://www.youtube.com/watch?v=4oXe4H8vxbI",
+    uploadDate: videoUploadDates.kwanini,
     watchLabel: "Watch Kwanini on YouTube",
   },
   {

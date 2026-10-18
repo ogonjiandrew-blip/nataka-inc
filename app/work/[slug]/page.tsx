@@ -80,8 +80,8 @@ export default function CaseStudyPage({ params }: Props) {
     },
   ];
 
-  // Register the film with Google Video search when it's on YouTube.
-  if (ytId) {
+  // A project year is not a publication date. Require an explicit timestamp.
+  if (ytId && study.uploadDate) {
     graph.push({
       "@type": "VideoObject",
       name: `${workName} (Official Music Video)`,
@@ -90,7 +90,7 @@ export default function CaseStudyPage({ params }: Props) {
         `${siteUrl}${study.heroImage}`,
         `https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg`,
       ],
-      uploadDate: `${study.year}-01-01T00:00:00+03:00`,
+      uploadDate: study.uploadDate,
       embedUrl: `https://www.youtube.com/embed/${ytId}`,
       contentUrl: study.watchUrl,
       publisher: {

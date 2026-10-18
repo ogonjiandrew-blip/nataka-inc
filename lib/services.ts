@@ -1,3 +1,5 @@
+import { videoUploadDates } from "./videoDates";
+
 export type CaseStudy = {
   eyebrow: string;
   title: string;
@@ -8,7 +10,7 @@ export type CaseStudy = {
   stills: { src: string; alt: string; caption: string }[];
   verticalsText: string;
   verticals: { src: string; poster: string; title: string; meta: string; duration: string }[];
-  /** ISO date the videos went up on the site (VideoObject uploadDate) */
+  /** ISO 8601 timestamp with timezone for VideoObject uploadDate. */
   published: string;
   forYou: string[];
   cta: { button: string; whatsappMessage: string; watchHref: string; watchLabel: string };
@@ -816,7 +818,7 @@ export const servicePages: ServicePage[] = [
         { src: "/ai/aanother/chain.jpg", alt: "Guitarist pulling the frontman down by his chain", caption: "I Mean It" },
         { src: "/ai/aanother/smile.jpg", alt: "Frontman smiling down at the guitarist by the drum kit", caption: "I Mean It" },
       ],
-      published: "2026-10-08",
+      published: videoUploadDates.aanother,
       verticalsText:
         "Every song ships as a full music video plus vertical cut-downs for Shorts, Reels and TikTok, each opening on its strongest moment.",
       verticals: [
