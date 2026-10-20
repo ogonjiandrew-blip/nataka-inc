@@ -836,5 +836,8 @@ export function getPostBySlug(slug: string): Post | undefined {
 }
 
 export function getAllPosts(): Post[] {
-  return [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  // K-Wave recruitment is closed. Keep its source, but stop promoting the article.
+  return posts
+    .filter((p) => p.slug !== "kpop-in-kenya-nairobi-fandom-kwave")
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }

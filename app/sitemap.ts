@@ -67,11 +67,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${siteUrl}/kwave`,
-      changeFrequency: "weekly",
-      priority: 0.85,
-    },
-    {
       url: `${siteUrl}/live`,
       changeFrequency: "weekly",
       priority: 0.85,

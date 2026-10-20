@@ -18,7 +18,7 @@ import HelperDango from "@/components/helper/HelperDango";
  * these pages the wrong outcome is a cosplayer wanting their photos landing
  * in the sales inbox instead of the community.
  */
-const SUPPRESS_ON = ["/otamatsuri-2026", "/otamatsuri-experience", "/campaign-brief"];
+const SUPPRESS_ON = ["/otamatsuri-2026", "/otamatsuri-experience", "/campaign-brief", "/kwave"];
 
 export default function WhatsAppButton() {
   const pathname = usePathname();

@@ -13,14 +13,14 @@ import SceneRadar from "@/components/community/SceneRadar";
 const siteUrl = "https://www.natakainc.com";
 
 export const metadata: Metadata = {
-  title: { absolute: "Community — Otamatsuri, Anime & K-Pop in Kenya | Nataka Inc" },
+  title: { absolute: "Community — Otamatsuri, Anime & Cosplay in Kenya | Nataka Inc" },
   description:
-    "Otamatsuri stills and free phone wallpapers, the Kenyan cosplay fan wall, and a running board of Kenya's anime and K-pop events. Built with the community by Nataka Inc, Nairobi.",
+    "Otamatsuri stills and free phone wallpapers, the Kenyan cosplay fan wall, and a running board of Kenya's anime and cosplay events. Built with the community by Nataka Inc, Nairobi.",
   alternates: { canonical: `${siteUrl}/community` },
   openGraph: {
-    title: "Community | Nataka Inc — Otamatsuri, Anime & K-Pop in Kenya",
+    title: "Community | Nataka Inc — Otamatsuri, Anime & Cosplay in Kenya",
     description:
-      "Free Otamatsuri wallpapers, the Kenyan cosplay fan wall, and what's actually happening in Kenya's anime and K-pop scene.",
+      "Free Otamatsuri wallpapers, the Kenyan cosplay fan wall, and what's actually happening in Kenya's anime and cosplay scene.",
     url: `${siteUrl}/community`,
     type: "website",
     images: [{ url: `${siteUrl}/stills/otamatsuri/community/19.jpg` }],
@@ -80,7 +80,7 @@ export default function CommunityPage() {
             <div className="flex items-center gap-3 mb-5">
               <span className="h-px w-10 bg-otaku" />
               <p className="font-sans text-otaku-light text-[10px] tracking-widest2 uppercase font-medium">
-                Anime · Cosplay · K-Pop · Kenya
+                Anime · Cosplay · Kenya
               </p>
             </div>
 
@@ -188,37 +188,6 @@ export default function CommunityPage() {
         <PhotocardMaker />
         <FanWall />
         <SceneRadar />
-
-        {/* K-Wave crossover */}
-        <section className="px-6 md:px-12 pb-24 md:pb-32 max-w-7xl mx-auto">
-          <Link
-            href="/kwave"
-            className="group block relative overflow-hidden border border-kpop/25 hover:border-kpop/60 transition-colors duration-300"
-            style={{ background: "linear-gradient(135deg, rgba(255,61,127,0.13) 0%, rgba(255,61,127,0.03) 55%, rgba(255,61,127,0) 100%)" }}
-          >
-            <div className="p-8 md:p-14">
-              <p className="font-sans text-kpop-light text-[10px] tracking-widest2 uppercase font-medium mb-5">
-                Also from Nataka
-              </p>
-              <h2 className="leading-none mb-5">
-                <span className="font-heading font-black text-[clamp(1.6rem,5.5vw,4rem)] text-white uppercase block">
-                  K-Wave Kenya
-                </span>
-                <span className="font-display font-semibold italic text-[clamp(1.6rem,5.5vw,4rem)] text-kpop block">
-                  Filmed properly.
-                </span>
-              </h2>
-              <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed max-w-2xl mb-7">
-                Nairobi&apos;s K-pop fandom fills venues, learns full choreography and films
-                everything — mostly on shaky phones. We think the scene deserves better
-                footage than that.
-              </p>
-              <span className="inline-block font-heading font-black text-xs text-white bg-kpop px-7 py-4 uppercase tracking-widest group-hover:bg-kpop-mid transition-colors duration-200">
-                Enter K-Wave →
-              </span>
-            </div>
-          </Link>
-        </section>
 
         <Footer />
       </main>

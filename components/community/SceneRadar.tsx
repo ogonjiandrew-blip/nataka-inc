@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { sceneEvents, eventStatusLabel, type EventStatus } from "@/lib/community";
 
@@ -23,24 +23,14 @@ const statusStyle: Record<EventStatus, string> = {
   tba:       "text-white/45 border-white/15 bg-transparent",
 };
 
-type Filter = "all" | "anime" | "kpop";
-
-const filters: { id: Filter; label: string }[] = [
-  { id: "all",   label: "Everything" },
-  { id: "anime", label: "Anime & Cosplay" },
-  { id: "kpop",  label: "K-Pop" },
-];
-
 export default function SceneRadar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [filter, setFilter] = useState<Filter>("all");
-
-  const shown = sceneEvents.filter((e) => filter === "all" || e.kind === filter);
+  const shown = sceneEvents.filter((e) => e.kind === "anime");
 
   return (
     <section id="scene-radar" className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden scroll-mt-24" ref={ref}>
-      {/* Pink glow — this is the K-Wave half of the community world */}
+      {/* Community event board */}
       <div
         aria-hidden
         className="absolute -top-32 -right-24 w-[520px] h-[520px] rounded-full pointer-events-none"
@@ -66,29 +56,10 @@ export default function SceneRadar() {
             </span>
           </h2>
           <p className="font-sans text-white/70 text-sm leading-relaxed max-w-md">
-            Kenya&apos;s anime and K-pop scene is real, and it&apos;s scattered across group
+            Kenya&apos;s anime and cosplay scene is real, and it&apos;s scattered across group
             chats. This is our running board of it. We only post dates once an organiser has
             actually confirmed them — everything else says so plainly.
           </p>
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          {filters.map((f) => (
-            <button
-              key={f.id}
-              type="button"
-              onClick={() => setFilter(f.id)}
-              aria-pressed={filter === f.id}
-              className={`font-sans text-xs px-5 py-2.5 border transition-colors duration-200 ${
-                filter === f.id
-                  ? "bg-kpop text-white border-kpop font-semibold"
-                  : "text-white/65 border-white/15 hover:border-kpop/60 hover:text-white"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
         </div>
 
         {/* Board */}
@@ -109,7 +80,7 @@ export default function SceneRadar() {
                   {e.date ?? eventStatusLabel[e.status]}
                 </span>
                 <span className="font-sans text-kpop-light/70 text-[9px] tracking-widest uppercase">
-                  {e.kind === "kpop" ? "K-Pop" : "Anime"}
+                  Anime
                 </span>
                 <span className="font-sans text-white/40 text-[10px] tracking-wide ml-auto">
                   {e.venue}
@@ -142,7 +113,7 @@ export default function SceneRadar() {
         <div className="mt-10 border border-dashed border-kpop/30 bg-kpop/[0.03] p-7 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-5">
           <div>
             <h3 className="font-heading font-black text-white text-base uppercase mb-1.5">
-              Running something we&apos;ve missed?
+              Running an anime or cosplay event we&apos;ve missed?
             </h3>
             <p className="font-sans text-white/60 text-sm leading-relaxed max-w-lg">
               Send it over and we&apos;ll add it to the board. Free — you don&apos;t have to

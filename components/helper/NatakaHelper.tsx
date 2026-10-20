@@ -38,7 +38,7 @@ const STORAGE = "nataka-helper-v1";
 const SCROLL_MS = 15000; // how long someone browses before she says hello
 const IDLE_MS = 14000; // no answer for this long and she goes to nap
 // Pages with their own call to action or a live experience: no greeting there
-const SKIP = ["/live", "/booth-control", "/otamatsuri-experience", "/otamatsuri-2026", "/campaign-brief"];
+const SKIP = ["/live", "/booth-control", "/otamatsuri-experience", "/otamatsuri-2026", "/campaign-brief", "/kwave"];
 
 type Phase = "waiting" | "arriving" | "greeting" | "leaving" | "asleep" | "waking";
 type Bubble = "closed" | "typing" | "open" | "bye";

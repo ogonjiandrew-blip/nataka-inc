@@ -1,5 +1,5 @@
 /*
- * Community data — Otamatsuri drops, wallpapers and the Kenya anime/K-pop scene radar.
+ * Community data — Otamatsuri drops, wallpapers and the Kenya anime/cosplay scene radar.
  *
  * HONESTY RULE FOR THIS FILE: nothing here may claim a date, a turnout or a
  * release that hasn't actually happened. Unconfirmed items carry status "tba"
@@ -112,18 +112,6 @@ export const countdowns: CountdownTarget[] = [
       "Kenya's anime festival goes fully outdoor — cosplay competitions, vendors, community meetups, and an afterparty from 7PM.",
     cta: { label: "Get Tickets", href: "https://events.gig.co.ke/event/gev_1171/ticket", external: true },
   },
-  {
-    id: "kpop-meets-thai-2026",
-    title: "Kpop Meets Thai",
-    subtitle: "Summer Festival · Kijito Gardens, Nairobi",
-    // Sat 12 Dec 2026, 11:00 EAT — from the organiser's own ticket listing.
-    // 12 Dec falls on a Saturday only in 2026, which pins the year.
-    target: "2026-12-12T11:00:00+03:00",
-    theme: "kpop",
-    detail:
-      "Music, culture, connection — one day, 11am till 11pm. K-pop and Thai sounds in one lineup. Tickets Ksh 1,000.",
-    cta: { label: "Going? Join the Crew", href: "https://wa.me/254117386206?text=" + encodeURIComponent("I'm going to Kpop Meets Thai\n\nName:\nInstagram / TikTok handle:\nBias group:"), external: true },
-  },
 ];
 
 export type EventStatus = "confirmed" | "recurring" | "tba";
@@ -159,31 +147,6 @@ export const sceneEvents: SceneEvent[] = [
       "Kenya's anime and manga convention goes fully outdoor — cosplay competitions, anime vendors, community meetups, and an 18+ afterparty after 7PM.",
     nataka: "Nataka directed and produced the promo film.",
     link: { label: "Tickets", href: "https://events.gig.co.ke/event/gev_1171/ticket" },
-  },
-  {
-    name: "Kpop Meets Thai Festival",
-    kind: "kpop",
-    venue: "Kijito Gardens, Nairobi",
-    status: "confirmed",
-    date: "Sat 12 Dec 2026 · 11AM–11PM",
-    note:
-      "A one-day K-pop and Thai summer festival — music, culture and connection, running 11am to 11pm. Tickets Ksh 1,000.",
-  },
-  {
-    name: "K-pop Festa",
-    kind: "kpop",
-    venue: "KALRO Garden, Nairobi",
-    status: "recurring",
-    note:
-      "Hosted by the Kenyan K-pop Fan Club and drawing around 1,000 fans, with prizes presented by the Korean Ambassador.",
-  },
-  {
-    name: "K-Pop Fest KE",
-    kind: "kpop",
-    venue: "Nairobi",
-    status: "recurring",
-    note:
-      "Kenya's first K-Pop Fest — pulled together in about two weeks and still drew 300+ people. Demand outran the planning.",
   },
   {
     name: "Comic Con",
