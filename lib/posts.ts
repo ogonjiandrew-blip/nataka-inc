@@ -832,6 +832,7 @@ export const posts: Post[] = [
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
+  if (slug === "kpop-in-kenya-nairobi-fandom-kwave") return undefined;
   return posts.find((p) => p.slug === slug);
 }
 
